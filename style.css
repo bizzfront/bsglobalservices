@@ -9,6 +9,16 @@
     img{max-width:100%;display:block}
       .container{width:min(var(--container), 92%);margin-inline:auto}
 
+    /* Logo variants */
+    .logo-bs{display:inline-block;background-size:contain;background-repeat:no-repeat;background-position:center}
+    .brand .logo-bs{width:42px;height:42px}
+    .brand-hero .logo-bs{width:48px;height:48px}
+    .logo-bs--full{background-image:url('images/logo_bs_full.png')}
+    .logo-bs--white{background-image:url('images/logo_bs_white.png')}
+    .logo-bs--black{background-image:url('images/logo_bs_black.png')}
+    .logo-bs--wine{background-image:url('images/logo_bs_wine.png')}
+    .logo-bs--brown{background-image:url('images/logo_bs_brown.png')}
+
     /* Top banner bilingual */
     .topbar{background:#111;color:#ddd;font-size:.9rem}
     .topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.45rem 0}
@@ -20,7 +30,7 @@
     header.site-header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid #eee}
     .nav{display:flex;align-items:center;justify-content:space-between;padding:.8rem 0;gap:1rem}
     .brand{display:flex;align-items:center;gap:.7rem}
-    .brand img{width:42px;height:42px;object-fit:contain}
+    /* Logo text spacing handled by .brand span */
     .brand span{font-family:Montserrat, sans-serif;font-weight:700;letter-spacing:.3px}
     .menu{display:flex;gap:1.2rem;align-items:center}
     .menu a{font-weight:500}
@@ -64,7 +74,7 @@
       padding:.6rem .8rem; margin:.8rem 0;
       box-shadow:0 4px 12px rgba(0,0,0,.04);
     }
-    .brand-hero img{ width:48px; height:48px; object-fit:contain }
+    /* Brand strip logo handled by .brand-hero .logo-bs */
     .brand-hero-copy strong{ font-family:Montserrat, sans-serif }
     .brand-hero-copy small{ color:#555; display:block; margin-top:2px }
 
