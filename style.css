@@ -11,7 +11,7 @@
 
     /* Logo variants */
     .logo-bs{display:inline-block;background-size:contain;background-repeat:no-repeat;background-position:center}
-    .brand .logo-bs{width:42px;height:42px}
+    .brand .logo-bs{width:140px;aspect-ratio:2667/1372;height:auto}
     .brand-hero .logo-bs{width:48px;height:48px}
     .logo-bs--full{background-image:url('images/logo_bs_full.png')}
     .logo-bs--white{background-image:url('images/logo_bs_white.png')}
@@ -29,9 +29,7 @@
     /* Header */
     header.site-header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid #eee}
     .nav{display:flex;align-items:center;justify-content:space-between;padding:.8rem 0;gap:1rem}
-    .brand{display:flex;align-items:center;gap:.7rem}
-    /* Logo text spacing handled by .brand span */
-    .brand span{font-family:Montserrat, sans-serif;font-weight:700;letter-spacing:.3px}
+    .brand{display:flex;align-items:center}
     .menu{display:flex;gap:1.2rem;align-items:center}
     .menu a{font-weight:500}
     .cta-wa{background:var(--burgundy);color:#fff;padding:.6rem .9rem;border-radius:12px;font-weight:600;border:2px solid var(--burgundy)}
@@ -45,7 +43,7 @@
     }
 
     /* Hero with form */
-    .hero{display:grid;grid-template-columns:1.1fr .9fr;align-items:start;gap:1.2rem;padding:2.2rem 0}
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;align-items:start;gap:1.2rem;padding:2.2rem 0;position:relative}
     .badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(90,42,46,.08);color:#5A2A2E;padding:.35rem .65rem;border-radius:999px;font-size:.85rem;font-weight:600}
     .h1{font-family:Montserrat, sans-serif;font-weight:700;font-size:clamp(1.8rem, 3.5vw, 3rem);line-height:1.1;margin:1rem 0 .5rem}
     .lead{font-size:1.05rem;color:#333;max-width:58ch}
@@ -66,6 +64,11 @@
     textarea{min-height:110px;resize:vertical}
     .note{font-size:.85rem;color:#555}
     @media (max-width: 980px){ .hero{grid-template-columns:1fr} .hero > .form{position:static} }
+
+    /* Background slider */
+    .bg-slider{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+    .bg-slider .slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1s}
+    .bg-slider .slide.active{opacity:var(--bg-opacity,.25)}
 
     /* Brand strip inside hero */
     .brand-hero{
