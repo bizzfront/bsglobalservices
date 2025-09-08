@@ -71,6 +71,8 @@
     input,select,textarea{width:100%;padding:.7rem;border:1px solid #ddd;border-radius:10px;font:inherit}
     textarea{min-height:110px;resize:vertical}
     .note{font-size:.85rem;color:#555}
+    .contact{display:grid;grid-template-columns:1.1fr .9fr;gap:1rem}
+    @media (max-width: 720px){ .contact{grid-template-columns:1fr} }
     @media (max-width: 980px){ .hero{grid-template-columns:1fr} .hero > .form{position:static} }
 
     /* Background slider */
@@ -203,9 +205,9 @@
     @media (max-width: 980px){ .hero-wrap{grid-template-columns:1fr} }
 
     /* Quick nav */
-    nav.quick{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid #eee;backdrop-filter:saturate(140%) blur(6px)}
+    nav.quick{position:sticky;top:0;z-index:30;background:var(--gold);border-bottom:1px solid #eee;backdrop-filter:saturate(140%) blur(6px)}
     nav.quick .container{display:flex;gap:1rem;flex-wrap:wrap;padding:.6rem 0}
-    nav.quick a{font-weight:600;color:#3b3b3b}
+    nav.quick a{font-weight:600;color:var(--dark)}
     nav.quick a:hover{color:var(--burgundy)}
 
     /* Grids */
@@ -232,6 +234,8 @@
     .step h3{margin:0;color:var(--burgundy)}
     .step p{margin:6px 0 10px;color:#4b4b4b}
     .links{display:flex;gap:.6rem;flex-wrap:wrap}
+    #process .btn-ghost{background:var(--beige)}
+    #process .btn-ghost:hover{background:var(--beige);filter:brightness(.96)}
 
     /* Projects */
     .project .img{aspect-ratio:16/10;border-radius:12px;background:#f3f3f3 center/cover no-repeat;border:1px solid #eee}
