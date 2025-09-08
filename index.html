@@ -51,6 +51,7 @@
 </head>
 
 <body>
+   
   <!-- Top bilingual bar -->
   <div class="topbar">
     <div class="container wrap">
@@ -81,10 +82,8 @@
     </header>
 
   <!-- Hero with form -->
-  <main id="top" class="container hero">
-    <div class="bg-slider" style="--bg-opacity:.25">
-      <div class="slide active" style="background-image:url('images/sliders/index.jpg')"></div>
-    </div>
+  <main id="main" class="container hero">
+   
     <div>
       <span class="badge" id="badge-hero">Waterproof LVP • Orlando, FL</span>
 
@@ -433,7 +432,7 @@
   </section>
 
   <!-- Footer -->
-  <footer>
+  <footer id="footer">
     <div class="container fgrid">
       <div>
         <div class="brand" style="margin-bottom:.6rem">
@@ -467,7 +466,9 @@
       © <span id="year"></span> B&S Floor Supply. All rights reserved.
     </div>
   </footer>
-
+<div class="bg-slider" style="--bg-opacity:.50">
+      <div class="slide active" style="background-image:url('images/sliders/index.jpg')"></div>
+    </div>
   <script>
     // Mobile menu toggle
     const burger = document.getElementById('burger');
