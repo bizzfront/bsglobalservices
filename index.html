@@ -66,9 +66,8 @@
     <header class="site-header" aria-label="Main">
       <div class="container nav">
         <a href="#" class="brand" aria-label="B&S Floor Supply">
-          <span class="logo-bs logo-bs--full" role="img" aria-label="B&S Floor Supply logo"></span>
-          <span>B&S Floor Supply</span>
-        </a>
+        <span class="logo-bs logo-bs--full" role="img" aria-label="B&S Floor Supply logo"></span>
+      </a>
         <nav aria-label="Primary">
         <button class="burger" aria-label="Toggle menu" aria-controls="menu" aria-expanded="false" id="burger">
           <span></span><span></span><span></span>
@@ -83,6 +82,9 @@
 
   <!-- Hero with form -->
   <main id="top" class="container hero">
+    <div class="bg-slider" style="--bg-opacity:.25">
+      <div class="slide active" style="background-image:url('images/sliders/index.jpg')"></div>
+    </div>
     <div>
       <span class="badge" id="badge-hero">Waterproof LVP • Orlando, FL</span>
 
@@ -473,6 +475,20 @@
     burger?.addEventListener('click', ()=>{
       const open = menu.classList.toggle('show');
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    // Background slider
+    document.querySelectorAll('.bg-slider').forEach(slider => {
+      const slides = slider.querySelectorAll('.slide');
+      let i = 0;
+      slides[0]?.classList.add('active');
+      if (slides.length > 1) {
+        setInterval(() => {
+          slides[i].classList.remove('active');
+          i = (i + 1) % slides.length;
+          slides[i].classList.add('active');
+        }, 5000);
+      }
     });
 
     // Dynamic year
