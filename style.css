@@ -4,10 +4,10 @@
         --container:1180px;
       }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;font-family:Poppins,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--dark);background:#fff;scroll-behavior:smooth}
+    html,body{margin:0;padding:0;font-family:Poppins,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--dark);scroll-behavior:smooth}
     a{color:inherit;text-decoration:none}
     img{max-width:100%;display:block}
-      .container{width:min(var(--container), 92%);margin-inline:auto}
+    .container{width:min(var(--container), 92%);margin-inline:auto}
 
     /* Logo variants */
     .logo-bs{display:inline-block;background-size:contain;background-repeat:no-repeat;background-position:center}
@@ -19,6 +19,14 @@
     .logo-bs--wine{background-image:url('images/logo_bs_wine.png')}
     .logo-bs--brown{background-image:url('images/logo_bs_brown.png')}
 
+    /*slider variants*/
+    .index-slider--main{background-image:url('images/sliders/index.jpg'); background-position: fixed; background-size: cover; background-blend-mode: lighten; background-repeat: no-repeat; background-position: center;}
+    .flooring-install--main{background-image:url('images/sliders/flooring_install.png'); background-position: fixed; background-size: cover; background-blend-mode:multiply; background-repeat: no-repeat; background-position: center;}
+
+    /*Various sections*/
+    #contact, #faq, #reviews, #footer, #popular, #materials, #benefits, #top, #main, #products, #process, #projects, #testimonials{
+      z-index: 1; position: relative;
+    }
     /* Top banner bilingual */
     .topbar{background:#111;color:#ddd;font-size:.9rem}
     .topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.45rem 0}
@@ -66,9 +74,9 @@
     @media (max-width: 980px){ .hero{grid-template-columns:1fr} .hero > .form{position:static} }
 
     /* Background slider */
-    .bg-slider{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+    .bg-slider{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
     .bg-slider .slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1s}
-    .bg-slider .slide.active{opacity:var(--bg-opacity,.25)}
+    .bg-slider .slide.active{opacity:var(--bg-opacity,1)}
 
     /* Brand strip inside hero */
     .brand-hero{
@@ -128,7 +136,7 @@
     .success{color:var(--ok)} .error{color:var(--danger)}
 
     /* Two-tone sections */
-    .sec--light { background:#F5EBDD; }
+    .sec--light { background:#F5EBDD; z-index: 1; }
     .sec--white { background:#ffffff; }
     .sec--dark  { background:#5A2A2E; color:#f6f6f6; }
     .sec--dark a{ color:#fff; }
