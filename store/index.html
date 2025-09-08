@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>B&S Floor Supply — Store</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <!-- Top bilingual bar -->
+  <div class="topbar">
+    <div class="container wrap">
+      <div id="topbar-text">Available in English & Spanish · También atendemos en español</div>
+      <div class="lang-toggle" aria-label="Language switch">
+        <button class="lang-btn active" id="lang-en">EN</button>
+        <button class="lang-btn" id="lang-es">ES</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header" aria-label="Main">
+    <div class="container nav">
+      <a href="/" class="brand" aria-label="B&S Floor Supply">
+        <img src="https://bsglobalservices.com/newweb/assets/logo.png" alt="B&S Floor Supply logo" />
+        <span>B&S Floor Supply</span>
+      </a>
+      <nav aria-label="Primary">
+        <button class="burger" aria-label="Toggle menu" aria-controls="menu" aria-expanded="false" id="burger">
+          <span></span><span></span><span></span>
+        </button>
+        <div id="menu" class="menu" role="menu">
+          <a href="/services/flooring-install/" role="menuitem">Flooring Install</a>
+          <a href="/store/" role="menuitem">Store</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Store</h1>
+    <p>Coming soon.</p>
+  </main>
+
+  <script>
+    const burger = document.getElementById('burger');
+    const menu = document.getElementById('menu');
+    burger?.addEventListener('click', () => {
+      const open = menu.classList.toggle('show');
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  </script>
+</body>
+</html>
