@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>B&S Floor Supply — Flooring Installation</title>
+  <meta name="description" content="Professional flooring installation in Orlando: Waterproof LVP (SPC/WPC), ceramic, laminate and wood. Clear quotes, quick turnaround, bilingual support.">
+  <!-- Brand fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      /* Brand palette (from Visual Manual) */
+      --burgundy:#5A2A2E;
+      --gold:#CDA349;
+      --beige:#F5EBDD;
+      --gray:#D9D9D9;
+      --white:#FFFFFF;
+
+      --ink:#1d1d1f;
+      --radius:16px;
+      --gap:clamp(14px,2.4vw,26px);
+      --container:1180px;
+      --shadow:0 10px 30px rgba(0,0,0,.12);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--white);color:var(--ink);font-family:Poppins,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55}
+    img{max-width:100%;display:block}
+    a{color:inherit;text-decoration:none}
+    .container{width:min(var(--container),92%);margin-inline:auto}
+    .section{padding:clamp(56px,8vw,100px) 0}
+    h1,h2{font-family:Montserrat, sans-serif;margin:0 0 10px}
+    h1{font-weight:800;font-size:clamp(32px,5vw,54px);line-height:1.1;color:var(--burgundy)}
+    h2{font-weight:800;font-size:clamp(26px,3.4vw,40px)}
+    .lead{color:#454545;max-width:64ch}
+
+    /* Buttons */
+    .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.8rem 1rem;border-radius:999px;font-weight:600;border:2px solid transparent;cursor:pointer}
+    .btn-primary{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
+    .btn-primary:hover{filter:brightness(.93)}
+    .btn-ghost{background:transparent;border-color:var(--gold);color:var(--burgundy)}
+    .btn-ghost:hover{background:var(--beige)}
+
+    /* Hero */
+    header.hero{background:
+      radial-gradient(1000px 500px at -10% 0%, rgba(205,163,73,.12), transparent 70%),
+      radial-gradient(900px 520px at 110% 0%, rgba(90,42,46,.15), transparent 70%);}
+    .hero-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(16px,3vw,28px);align-items:start;padding:clamp(28px,3.5vw,40px) 0}
+    .hero .badge{display:inline-flex;gap:.5rem;align-items:center;background:rgba(90,42,46,.08);color:var(--burgundy);padding:.35rem .65rem;border-radius:999px;font-weight:700}
+    .hero .cta{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1rem}
+    .form{border:1px solid #eadfcd;border-radius:14px;padding:1rem;background:#fff;box-shadow:var(--shadow)}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+    .row-1{display:grid;grid-template-columns:1fr;gap:.7rem}
+    label{font-size:.9rem;font-weight:600}
+    input,select,textarea{width:100%;padding:.7rem;border:1px solid #ddd;border-radius:10px;font:inherit}
+    textarea{min-height:110px;resize:vertical}
+    @media (max-width: 980px){ .hero-wrap{grid-template-columns:1fr} }
+
+    /* Quick nav */
+    nav.quick{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid #eee;backdrop-filter:saturate(140%) blur(6px)}
+    nav.quick .container{display:flex;gap:1rem;flex-wrap:wrap;padding:.6rem 0}
+    nav.quick a{font-weight:600;color:#3b3b3b}
+    nav.quick a:hover{color:var(--burgundy)}
+
+    /* Grids */
+    .grid{display:grid;gap:var(--gap)}
+    .grid-3{grid-template-columns:repeat(3,1fr)}
+    .grid-4{grid-template-columns:repeat(4,1fr)}
+    @media (max-width: 960px){ .grid-3,.grid-4{grid-template-columns:1fr 1fr} }
+    @media (max-width: 620px){ .grid-3,.grid-4{grid-template-columns:1fr} }
+
+    /* Benefits cards */
+    .card{background:#fff;border:1px solid #eadfcd;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+    .pill{display:inline-flex;align-items:center;gap:.5rem;border-radius:999px;border:1px solid var(--gray);padding:.35rem .6rem;font-size:.85rem;color:#444}
+    .card h3{margin:10px 0 6px;font-size:1.1rem;color:var(--burgundy)}
+
+    /* Products */
+    .product .img{aspect-ratio:4/3;border-radius:12px;background:#f3f3f3 center/cover no-repeat;border:1px solid #eee}
+    .meta{display:flex;justify-content:space-between;color:#666;font-size:.9rem}
+
+    /* Process */
+    .steps{position:relative;margin-top:10px}
+    .steps::before{content:"";position:absolute;left:18px;top:0;bottom:0;width:2px;background:linear-gradient(var(--gold), transparent)}
+    .step{display:grid;grid-template-columns:52px 1fr;gap:12px;padding:12px 0}
+    .num{width:36px;height:36px;border-radius:999px;display:grid;place-items:center;font-weight:800;color:#091015;background:linear-gradient(135deg,var(--gold),#e4c581);box-shadow:0 6px 16px rgba(0,0,0,.15)}
+    .step h3{margin:0;color:var(--burgundy)}
+    .step p{margin:6px 0 10px;color:#4b4b4b}
+    .links{display:flex;gap:.6rem;flex-wrap:wrap}
+
+    /* Projects */
+    .project .img{aspect-ratio:16/10;border-radius:12px;background:#f3f3f3 center/cover no-repeat;border:1px solid #eee}
+    .badge{display:inline-block;background:var(--burgundy);color:#fff;border-radius:999px;padding:4px 10px;font-size:.75rem;font-weight:700}
+
+    /* Testimonials */
+    .t-card{background:var(--beige);border:1px solid #eadfcd;border-radius:var(--radius);padding:20px}
+    .t-quote{font-size:1.05rem}
+    .t-who{color:#555;font-size:.92rem}
+
+    /* Dark CTA strip */
+    .sec-dark{background:var(--burgundy);color:#fff}
+    .sec-dark h2{color:#fff}
+    .sec-dark .panel{background:#642f34;border:1px solid #7a3b41;border-radius:var(--radius);padding:22px}
+    .sec-dark input,.sec-dark textarea{background:#7a3b41;border-color:#a36a70;color:#fff}
+    .sec-dark .btn-primary{background:var(--gold);border-color:var(--gold);color:#201606}
+    .sec-dark .btn-primary:hover{filter:brightness(.96)}
+  </style>
+</head>
+<body>
+
+<nav class="quick" aria-label="Section navigation">
+  <div class="container">
+    <a href="#benefits">Benefits</a>
+    <a href="#products">Floors we install</a>
+    <a href="#process">How it works</a>
+    <a href="#projects">Projects</a>
+    <a href="#testimonials">Testimonials</a>
+    <a href="#contact">Get a quote</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container hero-wrap">
+    <div class="hero-copy">
+      <span class="badge">Bilingual EN/ES · Orlando, FL</span>
+      <h1>Professional Flooring Installation</h1>
+      <p class="lead">Transform your space with precision, speed, and care. We install <strong>Waterproof LVP (SPC/WPC)</strong>, ceramic, laminate and wood. Clear quotes and human support.</p>
+      <div class="cta">
+        <!-- TODO: replace with your real WhatsApp link -->
+        <a class="btn btn-primary" href="https://wa.me/16892968515?text=Hi%2C%20I%20want%20a%20flooring%20installation%20quote" target="_blank" rel="noopener">Request a WhatsApp quote</a>
+        <a class="btn btn-ghost" href="#process">See how it works</a>
+      </div>
+    </div>
+
+    <!-- Optional quick form -->
+    <form class="form" action="/send-quote" method="post" aria-label="Quick quote form">
+      <div class="row">
+        <div>
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" placeholder="Your name" required>
+        </div>
+        <div>
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" type="tel" placeholder="+1 (___) ___-____" required>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="city">City</label>
+          <input id="city" name="city" type="text" placeholder="Orlando / Kissimmee / St. Cloud">
+        </div>
+        <div>
+          <label for="floor">Floor type</label>
+          <input id="floor" name="floor" type="text" placeholder="LVP, ceramic, laminate, wood">
+        </div>
+      </div>
+      <div class="row-1">
+        <div>
+          <label for="msg">Notes</label>
+          <textarea id="msg" name="msg" placeholder="Approx. square footage, rooms, preferred dates…"></textarea>
+        </div>
+      </div>
+      <button class="btn btn-primary" type="submit">Get my quote</button>
+    </form>
+  </div>
+</header>
+
+<main>
+
+  <!-- Benefits -->
+  <section id="benefits" class="section">
+    <div class="container">
+      <h2>Why install with B&amp;S</h2>
+      <p class="lead">Real outcomes focused on <strong>well-being</strong>, <strong>comfort</strong>, <strong>safety</strong> and <strong>coziness</strong>.</p>
+
+      <div class="grid grid-4">
+        <article class="card">
+          <span class="pill">Well-being</span>
+          <h3>Spaces that feel renewed</h3>
+          <p>Immediate visual upgrade and a cared-for home vibe.</p>
+        </article>
+        <article class="card">
+          <span class="pill">Comfort</span>
+          <h3>Easy to clean</h3>
+          <p>Surfaces built for everyday life with low maintenance.</p>
+        </article>
+        <article class="card">
+          <span class="pill">Safety</span>
+          <h3>Level & durable installation</h3>
+          <p>Reduced tripping hazards and stability for high-traffic areas.</p>
+        </article>
+        <article class="card">
+          <span class="pill">Cozy</span>
+          <h3>Modern, warm aesthetics</h3>
+          <p>Materials that add style and a welcoming atmosphere.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Floors we install -->
+  <section id="products" class="section" style="background:var(--beige)">
+    <div class="container">
+      <h2>Floors we install (and sell)</h2>
+      <p class="lead">Choose the right option for your home or business. We recommend <strong>Waterproof LVP</strong> for Florida living.</p>
+
+      <div class="grid grid-4">
+        <article class="card product">
+          <div class="img" style="background-image:url('assets/lvp.jpg')" role="img" aria-label="Waterproof LVP flooring sample"></div>
+          <h3>Waterproof LVP (SPC/WPC)</h3>
+          <p class="lead">Water-resistant, ideal for kitchens and bathrooms. Durable wood-look.</p>
+          <div class="meta"><span>High traffic</span><span>Fast install</span></div>
+          <a class="btn btn-ghost" href="#catalog-lvp">Open catalog</a>
+        </article>
+
+        <article class="card product">
+          <div class="img" style="background-image:url('assets/ceramic.jpg')" role="img" aria-label="Ceramic tile"></div>
+          <h3>Ceramic</h3>
+          <p class="lead">Superior resistance with many styles for wet areas.</p>
+          <div class="meta"><span>High traffic</span><span>Easy care</span></div>
+          <a class="btn btn-ghost" href="#catalog-ceramic">Open catalog</a>
+        </article>
+
+        <article class="card product">
+          <div class="img" style="background-image:url('assets/laminate.jpg')" role="img" aria-label="Laminate flooring"></div>
+          <h3>Laminate</h3>
+          <p class="lead">Modern and budget-friendly. Great look for less.</p>
+          <div class="meta"><span>Quick install</span><span>Variety</span></div>
+          <a class="btn btn-ghost" href="#catalog-laminate">Open catalog</a>
+        </article>
+
+        <article class="card product">
+          <div class="img" style="background-image:url('assets/wood.jpg')" role="img" aria-label="Engineered wood"></div>
+          <h3>Wood (solid/engineered)</h3>
+          <p class="lead">Premium finish and timeless warmth.</p>
+          <div class="meta"><span>Premium</span><span>Home value</span></div>
+          <a class="btn btn-ghost" href="#catalog-wood">Open catalog</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process (with internal links) -->
+  <section id="process" class="section">
+    <div class="container">
+      <h2>How it works</h2>
+      <p class="lead">From start to finish, we’re with you at every step.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <div>
+            <h3>Choose your floor</h3>
+            <p>Explore our options and pick the right material before your in-home visit.</p>
+            <div class="links">
+              <a class="btn btn-ghost" href="#products">See floors</a>
+              <a class="btn btn-ghost" href="#catalog-lvp">LVP catalog</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="num">2</div>
+          <div>
+            <h3>Schedule an in-home measurement</h3>
+            <p>A specialist will measure your space and assess specific needs.</p>
+            <a class="btn btn-ghost" href="#contact">Book a visit</a>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="num">3</div>
+          <div>
+            <h3>Get a clear quote</h3>
+            <p>Materials + labor, no surprises. We’ll tailor options to your square footage.</p>
+            <a class="btn btn-ghost" href="#contact">Request quote</a>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="num">4</div>
+          <div>
+            <h3>Enjoy your new floor</h3>
+            <p>Clean and quick installation. We deliver your space ready to live in.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="section">
+    <div class="container">
+      <h2>Recent projects</h2>
+      <p class="lead">Replace the placeholders with your real images when available.</p>
+
+      <div class="grid grid-3">
+        <article class="card project">
+          <div class="img" style="background-image:url('assets/project1.jpg')" role="img" aria-label="Living room with LVP"></div>
+          <div class="meta" style="margin-top:8px"><span class="badge">LVP</span></div>
+          <h3>Residential living room — Orlando</h3>
+          <p class="lead">48-hour install. Comfort upgrade and low maintenance.</p>
+        </article>
+
+        <article class="card project">
+          <div class="img" style="background-image:url('assets/project2.jpg')" role="img" aria-label="Bathroom ceramic"></div>
+          <div class="meta" style="margin-top:8px"><span class="badge">Ceramic</span></div>
+          <h3>Bathroom — Kissimmee</h3>
+          <p class="lead">Slip-resistant ceramic. Safer wet area.</p>
+        </article>
+
+        <article class="card project">
+          <div class="img" style="background-image:url('assets/project3.jpg')" role="img" aria-label="Bedroom laminate"></div>
+          <div class="meta" style="margin-top:8px"><span class="badge">Laminate</span></div>
+          <h3>Bedroom — St. Cloud</h3>
+          <p class="lead">Aesthetic refresh in 24 hours with a smart budget.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="testimonials" class="section">
+    <div class="container">
+      <h2>What clients say</h2>
+      <div class="grid grid-3">
+        <article class="t-card">
+          <p class="t-quote">“My living room looks brand new and the team was on time.”</p>
+          <p class="t-who">Luis R. — Orlando</p>
+        </article>
+        <article class="t-card">
+          <p class="t-quote">“They finished my shop floor in two days. Super professional.”</p>
+          <p class="t-who">María P. — Kissimmee</p>
+        </article>
+        <article class="t-card">
+          <p class="t-quote">“The home visit explained everything and the quote was transparent.”</p>
+          <p class="t-who">Jorge A. — St. Cloud</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dark CTA -->
+  <section id="contact" class="section sec-dark">
+    <div class="container">
+      <h2>Ready to get a quote?</h2>
+      <div class="grid" style="grid-template-columns:1.1fr .9fr;gap:var(--gap)">
+        <div class="panel">
+          <h3>Chat on WhatsApp</h3>
+          <p class="lead">Bilingual assistance (EN/ES). Extended hours.</p>
+          <a class="btn btn-primary" href="https://wa.me/16892968515?text=Hi%2C%20I%20want%20a%20flooring%20installation%20quote" target="_blank" rel="noopener">Open WhatsApp</a>
+        </div>
+        <div class="panel">
+          <form action="/send-quote" method="post" aria-label="Detailed quote form">
+            <div class="row">
+              <div>
+                <label for="name2">Name</label>
+                <input id="name2" name="name" type="text" required>
+              </div>
+              <div>
+                <label for="email2">Email</label>
+                <input id="email2" name="email" type="email" required>
+              </div>
+            </div>
+            <div class="row">
+              <div>
+                <label for="phone2">Phone</label>
+                <input id="phone2" name="phone" type="tel" required>
+              </div>
+              <div>
+                <label for="city2">City</label>
+                <input id="city2" name="city" type="text" placeholder="Orlando / Kissimmee / St. Cloud">
+              </div>
+            </div>
+            <div class="row">
+              <div>
+                <label for="floor2">Floor type</label>
+                <input id="floor2" name="floor" type="text" placeholder="LVP, ceramic, laminate, wood">
+              </div>
+              <div>
+                <label for="sqft2">Approx. SQFT</label>
+                <input id="sqft2" name="sqft" type="number" min="0" step="1" placeholder="e.g., 650">
+              </div>
+            </div>
+            <div class="row-1">
+              <div>
+                <label for="msg2">Notes</label>
+                <textarea id="msg2" name="msg" placeholder="Rooms, timelines, removal, subfloor condition…"></textarea>
+              </div>
+            </div>
+            <button class="btn btn-primary" type="submit">Request my quote</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>

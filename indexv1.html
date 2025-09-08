@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>B&S Global Services — Vinyl Plank Flooring & Material Store | Orlando, FL</title>
+  <meta name="description" content="B&S Global Services: Vinyl plank (SPC/LVP) experts in Central Florida. Buy flooring materials in our store and get pro installation for any space: living rooms, kitchens, bathrooms, bedrooms, basements, stairs and more." />
+  <meta name="format-detection" content="telephone=no" />
+  <meta property="og:title" content="B&S — Vinyl Plank & Materials Store" />
+  <meta property="og:description" content="Shop vinyl plank flooring and book expert installation across Central Florida." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bsglobalservices.com/" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1615873968403-89e068629265?q=80&w=1600&auto=format&fit=crop" />
+  <link rel="preconnect" href="https://images.unsplash.com" />
+  <style>
+    :root{
+      --bg:#ffffff; --fg:#0f172a; --muted:#475569; --line:#e2e8f0;
+      --accent:#EC9200; /* Orange */
+      --accent-2:#DAAC0E; /* Light yellow */
+      --accent-dark:#270101; /* Brown */
+      --pill:#f8fafc;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial; color:var(--fg); background:var(--bg)}
+    a{color:var(--accent);text-decoration:none}
+    img{max-width:100%;display:block}
+    .container{max-width:1120px;margin-inline:auto;padding:0 20px}
+	.container-fluid{max-width:95%; margin-inline:auto;padding:0 20px}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.9rem 1.2rem;border-radius:14px;border:1px solid transparent;font-weight:700;letter-spacing:.2px}
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-primary:hover{background:var(--accent-2)}
+    .btn-ghost{background:#fff;border-color:var(--line);color:var(--fg)}
+    .btn-ghost:hover{border-color:#cbd5e1}
+    .btn-dark{background:var(--accent-dark);color:#ECCC8F}
+    .badge{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .55rem;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:.75rem}
+
+    header{position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:saturate(150%) blur(8px);border-bottom:1px solid var(--line);z-index:40}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:.8rem 0}
+    .brand{display:flex;align-items:center;gap:.7rem}
+    .logo{width:40px;height:40px;border-radius:12px;background:var(--accent-dark);color:#fff;display:grid;place-items:center;font-weight:800}
+    .nav-links{display:flex;gap:1.2rem}
+    .nav a{color:var(--muted)}
+    .nav a:hover{color:var(--accent-dark)}
+
+    /* HERO */
+    .hero{position:relative;isolation:isolate}
+    .hero-media{position:absolute;inset:0;z-index:-1}
+    .hero-media img{width:100%;height:100%;object-fit:cover}
+    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(39,1,1,.6),rgba(0,0,0,.35));z-index:-1}
+    .hero-inner{padding:60px 0 34px}
+    .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:28px}
+    .kicker{display:inline-flex;align-items:center;gap:.5rem;background:rgba(236,146,0,.9);color:#fff;border:1px solid rgba(255,255,255,.25);padding:.35rem .6rem;border-radius:999px;font-size:.8rem;font-weight:700}
+    .hero h1{color:#fff;font-size:clamp(2rem,3.2vw+1rem,3.2rem);line-height:1.08;margin:.6rem 0}
+    .hero p{color:#f8fafc;font-size:1.06rem;max-width:55ch}
+    .hero-ctas{margin-top:14px;display:flex;gap:.6rem;flex-wrap:wrap}
+    .trust{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;color:#fff;font-size:.9rem}
+    .trust .pill{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);padding:.35rem .6rem;border-radius:999px}
+
+    /* SECTION GENERIC */
+    section{padding:56px 0}
+    .section-title{text-align:center; font-size:clamp(1.6rem,1.2vw+1.2rem,2.2rem);font-weight:900;margin:0;color:var(--accent-dark)}
+    .muted{ text-align:center; color:var(--muted)}
+
+    /* FEATURE ROW (Store vs Install) */
+    .feature{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .feature .pane{border:1px solid var(--line);border-radius:18px;padding:18px;background:#fff}
+    .feature h3{margin:0 0 6px;font-size:1.3rem}
+
+    /* PRODUCT HIGHLIGHTS */
+    .grid-3{ display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{border:1px solid var(--line);border-radius:16px;background:#fff}
+    .card .img-wrap{overflow:hidden;border-bottom:1px solid var(--line)}
+    .card img{aspect-ratio:4/3;object-fit:cover;width:100%}
+    .card .pad{padding:14px}
+    .chip{display:inline-flex;align-items:center;gap:.3rem;border:1px dashed var(--line);border-radius:999px;padding:.25rem .5rem;font-size:.75rem;color:var(--accent-dark)}
+
+    /* SPACE TILES */
+    .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .tile{border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff}
+    .tile h4{margin:6px 0 2px}
+    .tile p{margin:0;color:var(--muted);font-size:.92rem}
+
+    /* QUOTE FORM */
+    .form-card{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 24px rgba(15,23,42,.08);padding:18px}
+    .form-title{font-weight:900;font-size:1.25rem;margin:4px 0 10px;color:var(--accent-dark)}
+    label{font-size:.85rem;font-weight:600;color:var(--accent-dark)}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    input,select,textarea{margin-top:6px;border:1px solid var(--line);border-radius:12px;padding:.8rem .9rem;font:inherit}
+    textarea{min-height:110px;resize:vertical}
+
+    /* FOOTER */
+    footer{border-top:1px solid var(--line);background:var(--accent-dark);color:#ECCC8F}
+    .foot-title{font-weight:700;font-size:.95rem;color:#ECCC8F}
+    footer a{color:#ECCC8F}
+    .copyright{border-top:1px solid #442020;padding:16px 0;color:#ECCC8F;font-size:.8rem;text-align:center}
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px){.grid-4{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:1fr 1fr}.feature{grid-template-columns:1fr}}
+    @media (max-width: 640px){.grid-4,.grid-3{grid-template-columns:1fr}.nav-links{display:none}.row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container-fluid nav">
+      <a class="brand" href="#top">
+        <span class="logo">B&S</span>
+        <span>
+          <strong>B&S Global Services</strong><br>
+          <span class="muted" style="font-size:.8rem">Vinyl Plank · Installations</span>
+        </span>
+      </a>
+      <nav class="nav-links">
+        <a href="/service-flooring/">Floor Install</a>
+		<a href="/store/">Materials</a>
+        <a href="#spaces">Spaces</a>
+        <a href="#projects">Projects</a>
+        <a href="#quote">Free Quote</a>
+      </nav>
+      <div style="display:flex;gap:.5rem;align-items:center">
+        <a class="btn btn-ghost" href="tel:+14072551284">(407) 255‑1284</a>
+        <a class="btn btn-primary" href="#quote">Free Quote</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO focused on Vinyl Plank + Store/Install split -->
+  <section class="hero" id="top">
+    <div class="hero-media"><img src="https://images.unsplash.com/photo-1615873968403-89e068629265?q=80&w=1600&auto=format&fit=crop" alt="Vinyl plank flooring" /></div>
+    <div class="container hero-inner">
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">Vinyl Plank Specialists · Licensed & Insured</span>
+          <h1>Shop Vinyl Plank Flooring & Book Pro Installation</h1>
+          <p>Central Florida’s choice for durable SPC/LVP floors and clean, on‑schedule installs. Buy materials in our store or request full service: delivery + installation.</p>
+          <div class="hero-ctas">
+            <a class="btn btn-primary" href="/store/">Browse Materials Store</a>
+            <a class="btn btn-dark" href="/service-flooring/">Flooring Installation</a>
+            <a class="btn btn-ghost" href="https://wa.me/14072551284" target="_blank" rel="noopener">WhatsApp 24/7</a>
+          </div>
+          <div class="trust" aria-label="Highlights">
+            <span class="pill">Waterproof SPC/LVP</span>
+            <span class="pill">Scratch‑resistant</span>
+            <span class="pill">Underlayment IXPE</span>
+            <span class="pill">Residential & Commercial</span>
+          </div>
+        </div>
+        <div class="form-card" id="quote">
+          <div class="form-title">Get a Fast Quote</div>
+          <form id="leadForm" novalidate>
+            <div class="row">
+              <div>
+                <label for="name">Full Name</label>
+                <input id="name" name="name" type="text" placeholder="John Doe" required />
+              </div>
+              <div>
+                <label for="phone">Phone</label>
+                <input id="phone" name="phone" type="tel" placeholder="(407) 123‑4567" required />
+              </div>
+            </div>
+            <div class="row">
+              <div>
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="you@email.com" required />
+              </div>
+              <div>
+                <label for="city">City</label>
+                <input id="city" name="city" type="text" placeholder="Orlando" />
+              </div>
+            </div>
+            <div class="row">
+              <div>
+                <label for="service">I need</label>
+                <select id="service" name="service">
+                  <option value="Materials Only">Materials Only (Store)</option>
+                  <option value="Install Only">Installation Only</option>
+                  <option value="Materials + Install">Materials + Install</option>
+                </select>
+              </div>
+              <div>
+                <label for="timeline">Timeline</label><br/>
+                <select id="timeline" name="timeline">
+                  <option value="ASAP">ASAP</option>
+                  <option value="2-4 weeks">2–4 weeks</option>
+                  <option value="1-3 months">1–3 months</option>
+                </select>
+              </div>
+            </div>
+            <label for="details">Project Details</label>
+            <textarea style="width:100%;" id="details" name="details" placeholder="Approx. square footage, rooms, preferred color/collection…"></textarea>
+            <div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+              <button class="btn btn-primary" type="submit">Send Request</button>
+              <a class="btn btn-ghost" href="tel:+14072551284">Call (407) 255‑1284</a>
+              <a class="btn btn-ghost" href="mailto:info@bsglobalservices.com">Email Us</a>
+            </div>
+            <output id="formMsg" class="muted" style="display:block;margin-top:6px"></output>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE: Store vs Installation quick comparison -->
+  <section>
+    <div class="container feature">
+      <div class="pane">
+        <div class="badge">🛒 Store</div>
+        <h3>Buy Vinyl Plank & Accessories</h3>
+        <p class="muted">SPC/LVP planks, trims, stair noses, underlayment, adhesives and more. Local delivery available.</p>
+        <div class="muted" style="display:flex;gap:8px;flex-wrap:wrap;margin:.4rem 0 1rem">
+          <span class="chip">5.5–8 mm thickness</span>
+          <span class="chip">20–22 mil wear layer</span>
+          <span class="chip">Click‑lock systems</span>
+          <span class="chip">UV protection</span>
+        </div>
+        <a class="btn btn-primary" href="/store/">Go to Store</a>
+      </div>
+      <div class="pane">
+        <div class="badge">🧰 Installation</div>
+        <h3>Professional Flooring Install</h3>
+        <p class="muted">Clean, precise installs for homes and businesses. Furniture move, demo & disposal options on request.</p>
+        <div class="muted" style="display:flex;gap:8px;flex-wrap:wrap;margin:.4rem 0 1rem">
+          <span class="chip">Subfloor prep</span>
+          <span class="chip">Moisture barrier</span>
+          <span class="chip">Stairs & transitions</span>
+          <span class="chip">Final clean‑up</span>
+        </div>
+        <a class="btn btn-dark" href="/service-flooring/">See Flooring Service</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCT HIGHLIGHTS (example vinyl lines) -->
+  <section>
+    <div class="container">
+      <h2 class="section-title">Popular Vinyl Plank Options</h2>
+      <p class="muted">Ask about availability and colors. Delivery across Central Florida.</p>
+      <div class="grid-3" style="margin-top:14px">
+        <article class="card">
+          <div class="img-wrap"><img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1400&auto=format&fit=crop" alt="Warm oak vinyl plank" /></div>
+          <div class="pad">
+            <strong>Warm Oak SPC</strong>
+            <p class="muted">5.5 mm • 22 mil wear layer • IXPE underlayment • Click‑lock</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
+              <span class="chip">Waterproof</span>
+              <span class="chip">Pets & Kids friendly</span>
+            </div>
+            <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+              <a class="btn btn-primary" href="/store/">Check Store</a>
+              <a class="btn btn-ghost" href="#quote">Get Install Quote</a>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="img-wrap"><img src="https://images.unsplash.com/photo-1582582429416-88e62c51d91d?q=80&w=1400&auto=format&fit=crop" alt="Gray plank vinyl" /></div>
+          <div class="pad">
+            <strong>Northern Gray LVP</strong>
+            <p class="muted">6.5 mm • 20 mil wear layer • Matte texture • UV protected</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
+              <span class="chip">Scratch‑resistant</span>
+              <span class="chip">Easy maintenance</span>
+            </div>
+            <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+              <a class="btn btn-primary" href="/store/">Check Store</a>
+              <a class="btn btn-ghost" href="#quote">Get Install Quote</a>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="img-wrap"><img src="https://images.unsplash.com/photo-1613541444697-2f8a5b76b4d4?q=80&w=1400&auto=format&fit=crop" alt="Natural plank vinyl" /></div>
+          <div class="pad">
+            <strong>Natural Maple SPC</strong>
+            <p class="muted">7 mm • 22 mil wear layer • Embossed in register • Low VOC</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
+              <span class="chip">Comfort IXPE</span>
+              <span class="chip">Click installation</span>
+            </div>
+            <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+              <a class="btn btn-primary" href="/store/">Check Store</a>
+              <a class="btn btn-ghost" href="#quote">Get Install Quote</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPACES common in US homes for this install -->
+  <section id="spaces" style="background:var(--accent-2); text-align:center; background-image: url(	https://bsglobalservices.com/service-flooring/service-flooring-remodelation.webp);">
+    <div class="container">
+      <h2 class="section-title" style="color:#FFF;">Vinyl Plank for Every Space</h2>
+      <p class="muted" style="color:#FFF;">Ideal for high‑traffic, moisture‑prone and family‑friendly areas.</p>
+      <div class="grid-4" style="margin-top:14px">
+        <div class="tile"><strong>Living Room</strong><p>Warm, quiet and durable—great for everyday activity.</p></div>
+        <div class="tile"><strong>Kitchen</strong><p>Waterproof surface with easy cleaning for spills.</p></div>
+        <div class="tile"><strong>Bathroom</strong><p>SPC resists humidity; pair with proper waterproofing.</p></div>
+        <div class="tile"><strong>Bedroom</strong><p>Comfortable feel and sound‑dampening underlayment.</p></div>
+        <div class="tile"><strong>Basement</strong><p>Moisture‑tolerant option with correct subfloor prep.</p></div>
+        <div class="tile"><strong>Stairs</strong><p>Coordinated nosings and transitions for a seamless look.</p></div>
+        <div class="tile"><strong>Hallways</strong><p>Scratch‑resistant finish handles high foot traffic.</p></div>
+        <div class="tile"><strong>Home Office</strong><p>Stylish, easy‑care floors for productive spaces.</p></div>
+      </div>
+      <div style="margin-top:16px;">
+        <a class="btn btn-primary" href="/store/">Shop Materials</a>
+        <a class="btn btn-dark" href="/service-flooring/">Book Installation</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS teaser -->
+  <section id="projects">
+    <div class="container">
+      <h2 class="section-title">Recent Vinyl Projects</h2>
+      <p class="muted">See finishes, colors and transitions our clients love.</p>
+      <div class="grid-3" style="margin-top:14px">
+        <article class="card"><div class="img-wrap"><img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=1400&auto=format&fit=crop" alt="Living room" /></div><div class="pad"><strong>Living Room · Orlando</strong><p class="muted">Warm oak SPC with white baseboards.</p></div></article>
+        <article class="card"><div class="img-wrap"><img src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1400&auto=format&fit=crop" alt="Bathroom" /></div><div class="pad"><strong>Bathroom · Kissimmee</strong><p class="muted">Matte gray plank with waterproof core.</p></div></article>
+        <article class="card"><div class="img-wrap"><img src="https://images.unsplash.com/photo-1616486886892-7c2d3d54b94e?q=80&w=1400&auto=format&fit=crop" alt="Kitchen" /></div><div class="pad"><strong>Kitchen · Osceola</strong><p class="muted">Scratch‑resistant surface for busy areas.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT CTA -->
+  <section id="contact" style="background-image:url('https://bsglobalservices.com/services/remodeling/increase.png'); background-position:center bottom; background-size:cover; background-repeat:no-repeat;">
+    <div class="container" style="text-align:center">
+      <h2 class="section-title">Ready to Choose Your Floor?</h2>
+      <p class="muted" style="color:#FFF;">Visit the store to compare colors and specs, or request a home visit for measurements.</p>
+      <div style="display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-top:8px">
+        <a class="btn btn-primary" href="/store/">Go to Store</a>
+        <a class="btn btn-dark" href="#quote">Get a Quote</a>
+        <a class="btn btn-ghost" href="tel:+14072551284">(407) 255‑1284</a>
+        <a class="btn btn-ghost" href="https://wa.me/14072551284" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container" style="padding:28px 0;display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr;gap:18px">
+      <div>
+        <strong class="foot-title">B&S Global Services</strong>
+        <p>Vinyl Plank · Materials Store · Installations</p>
+        <p>13103 Jade Garden Dr #207, Orlando, FL 32824</p>
+      </div>
+      <div>
+        <div class="foot-title">Quick Links</div>
+        <ul style="list-style:none;padding:0;line-height:1.9">
+          <li><a href="/service-flooring/">Flooring</a></li>
+		  <li><a href="/store/">Store</a></li>
+          <li><a href="#spaces">Spaces</a></li>
+          <li><a href="#quote">Quote</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="foot-title">Contact</div>
+        <ul style="list-style:none;padding:0;line-height:1.9">
+          <li><a href="tel:+14072551284">(407) 255‑1284</a></li>
+          <li><a href="mailto:info@bsglobalservices.com">info@bsglobalservices.com</a></li>
+          <li><a href="https://wa.me/14072551284">WhatsApp</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="foot-title">Service Areas</div>
+        <p>Orlando · Kissimmee · Osceola · Jacksonville · Buenaventura Lakes</p>
+      </div>
+    </div>
+    <div class="copyright">© <span id="year"></span> B&S Global Services. All rights reserved.</div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const leadForm = document.getElementById('leadForm');
+    const msg = document.getElementById('formMsg');
+    function validEmail(v){return /.+@.+\..+/.test(v)}
+    function validPhone(v){return /[0-9()\-\s+]{7,}/.test(v)}
+    leadForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(leadForm).entries());
+      if(!data.name){msg.textContent='Please enter your full name.'; msg.style.color='#b91c1c'; return}
+      if(!validPhone(data.phone)){msg.textContent='Please include a valid phone number.'; msg.style.color='#b91c1c'; return}
+      if(!validEmail(data.email)){msg.textContent='Please include a valid email.'; msg.style.color='#b91c1c'; return}
+      msg.textContent='Sending…'; msg.style.color='#475569';
+      try{
+        const res = await fetch('/api/quote',{
+          method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({source:'bsglobalservices.com/landing-vinyl',ts:new Date().toISOString(),...data})
+        });
+        if(!res.ok) throw new Error('Network error');
+        msg.textContent='Thank you! Your request has been received.'; msg.style.color='#065f46'; leadForm.reset();
+      }catch(err){
+        const subject = encodeURIComponent('Quote request — Vinyl Plank');
+        const body = encodeURIComponent(`Name: ${data.name}\nPhone: ${data.phone}\nEmail: ${data.email}\nCity: ${data.city||''}\nNeed: ${data.service}\nTimeline: ${data.timeline}\nDetails: ${data.details||''}`);
+        window.location.href = `mailto:info@bsglobalservices.com?subject=${subject}&body=${body}`;
+        msg.textContent='Opening your email app… If it does not open, please email us at info@bsglobalservices.com';
+        msg.style.color='#475569';
+      }
+    });
+  </script>
+
+  <!-- JSON-LD: Product list + Service -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ItemList",
+        "name": "Vinyl Plank Collections",
+        "itemListElement": [
+          {"@type":"Product","name":"Warm Oak SPC","category":"Vinyl Plank","url":"https://bsglobalservices.com/store/"},
+          {"@type":"Product","name":"Northern Gray LVP","category":"Vinyl Plank","url":"https://bsglobalservices.com/store/"},
+          {"@type":"Product","name":"Natural Maple SPC","category":"Vinyl Plank","url":"https://bsglobalservices.com/store/"}
+        ]
+      },
+      {
+        "@type": "Service",
+        "name": "Flooring Installation (Vinyl Plank)",
+        "areaServed": ["Orlando","Kissimmee","Osceola","Jacksonville","Buenaventura Lakes"],
+        "provider": {"@type":"LocalBusiness","name":"B&S Global Services","telephone":"+1 407-255-1284","url":"https://bsglobalservices.com/"}
+      }
+    ]
+  }
+  </script>
+</body>
+</html>
+
