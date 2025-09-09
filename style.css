@@ -144,6 +144,7 @@
     .sec--dark a{ color:#fff; }
     .sec--dark .sec-head h2::before{ background:#CDA349; }
     .sec--dark .card{ background:#642f34; border-color:#7a3b41; color:#fff }
+    .sec--dark .t{ background:#fff; border-color:#eadfcd; color:#5A2A2E }
     .sec--dark .pill{ background:rgba(255,255,255,.15); border-color:rgba(255,255,255,.25); color:#fff }
 
     /* Translucent image backgrounds */
