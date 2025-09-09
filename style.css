@@ -1,5 +1,5 @@
       :root{
-        --burgundy:#5A2A2E; --gold:#CDA349; --beige:#F5EBDD; --gray:#D9D9D9;
+        --burgundy:#591320; --gold:#CDA349; --beige:#F5EBDD; --gray:#D9D9D9;
         --dark:#1d1d1f; --white:#ffffff; --ok:#12a150; --danger:#b71c1c;
         --container:1180px;
       }
@@ -41,7 +41,7 @@
     .menu{display:flex;gap:1.2rem;align-items:center}
     .menu a{font-weight:500}
     .cta-wa{background:var(--burgundy);color:#fff;padding:.6rem .9rem;border-radius:12px;font-weight:600;border:2px solid var(--burgundy)}
-    .cta-wa:hover{background:#4c2327}
+    .cta-wa:hover{background:#591320}
     .burger{display:none;flex-direction:column;gap:5px}
     .burger span{width:26px;height:2px;background:#333;display:block;border-radius:2px}
     @media (max-width: 980px){
@@ -52,7 +52,7 @@
 
     /* Hero with form */
     .hero{display:grid;grid-template-columns:1.1fr .9fr;align-items:start;gap:1.2rem;padding:2.2rem 0;position:relative}
-    .badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(90,42,46,.08);color:#5A2A2E;padding:.35rem .65rem;border-radius:999px;font-size:.85rem;font-weight:600}
+    .badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(90,42,46,.08);color:#591320;padding:.35rem .65rem;border-radius:999px;font-size:.85rem;font-weight:600}
     .h1{font-family:Montserrat, sans-serif;font-weight:700;font-size:clamp(1.8rem, 3.5vw, 3rem);line-height:1.1;margin:1rem 0 .5rem}
     .lead{font-size:1.05rem;color:#333;max-width:58ch}
     .hero-cta{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1rem}
@@ -96,11 +96,11 @@
     .sec-head{display:flex;justify-content:space-between;align-items:end;gap:1rem;margin-bottom:1.4rem}
     .eyebrow{color:var(--gold);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:.8rem}
     h2{font-family:Montserrat, sans-serif;font-weight:700;margin:.35rem 0;position:relative;padding-left:.8rem}
-    h2::before{content:"";position:absolute;left:0;top:.2rem;bottom:.2rem;width:4px;background:#5A2A2E;border-radius:2px}
+    h2::before{content:"";position:absolute;left:0;top:.2rem;bottom:.2rem;width:4px;background:#591320;border-radius:2px}
     .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
     .card{border:1px solid #eadfcd;border-radius:14px;padding:1rem;background:#fff}
     .card h3{font-family:Montserrat, sans-serif;font-size:1.05rem}
-    .icon{width:36px;height:36px;border-radius:8px;background:rgba(205,163,73,.18);display:grid;place-items:center;margin-bottom:.6rem;color:#5A2A2E}
+    .icon{width:36px;height:36px;border-radius:8px;background:rgba(205,163,73,.18);display:grid;place-items:center;margin-bottom:.6rem;color:#591320}
     @media (max-width: 980px){ .grid-3{grid-template-columns:1fr} }
 
     /* Materials cards */
@@ -126,7 +126,7 @@
     @media (max-width:980px){ .twrap{grid-template-columns:1fr} }
 
     /* Footer */
-    footer{background:#5A2A2E;color:#f6f6f6;margin-top:2rem}
+    footer{background:#591320;color:#f6f6f6;margin-top:2rem}
     .fgrid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:1rem;padding:2rem 0}
     .fgrid a{color:#f6f6f6}
     .ft{border-top:1px solid rgba(255,255,255,.25);padding:1rem 0;color:#eee;font-size:.9rem}
@@ -140,11 +140,10 @@
     /* Two-tone sections */
     .sec--light { background:#F5EBDD; z-index: 1; }
     .sec--white { background:#ffffff; }
-    .sec--dark  { background:#5A2A2E; color:#f6f6f6; }
+    .sec--dark  { background:#591320; color:#f6f6f6; }
     .sec--dark a{ color:#fff; }
     .sec--dark .sec-head h2::before{ background:#CDA349; }
-    .sec--dark .card{ background:#642f34; border-color:#7a3b41; color:#fff }
-    .sec--dark .t{ background:#fff; border-color:#eadfcd; color:#5A2A2E }
+    .sec--dark .card{ background:#591320; border-color:#591320; color:#fff }
     .sec--dark .pill{ background:rgba(255,255,255,.15); border-color:rgba(255,255,255,.25); color:#fff }
 
     /* Translucent image backgrounds */
@@ -162,7 +161,7 @@
 \n/* Flooring installation styles */
     :root{
       /* Brand palette (from Visual Manual) */
-      --burgundy:#5A2A2E;
+      --burgundy:#591320;
       --gold:#CDA349;
       --beige:#F5EBDD;
       --gray:#D9D9D9;
@@ -250,7 +249,7 @@
     /* Dark CTA strip */
     .sec-dark{background:var(--burgundy);color:#fff}
     .sec-dark h2{color:#fff}
-    .sec-dark .panel{background:#642f34;border:1px solid #7a3b41;border-radius:var(--radius);padding:22px}
-    .sec-dark input,.sec-dark textarea{background:#7a3b41;border-color:#a36a70;color:#fff}
+    .sec-dark .panel{background:#591320;border:1px solid #591320;border-radius:var(--radius);padding:22px}
+    .sec-dark input,.sec-dark textarea{background:#591320; border-color:#a36a70;color:#fff}
     .sec-dark .btn-primary{background:var(--gold);border-color:var(--gold);color:#201606}
     .sec-dark .btn-primary:hover{filter:brightness(.96)}
