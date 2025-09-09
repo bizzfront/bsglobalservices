@@ -87,7 +87,7 @@ $from = getenv('MAIL_FROM') ?: 'info@bsglobalservices.com';
 $to = getenv('MAIL_TO') ?: 'info@bsglobalservices.com';
 
 ob_start();
-include __DIR__ . '/email-template.php';
+include __DIR__ . 'email-template.php';
 $body = ob_get_clean();
 
 $headers = 'From: "B&S Interior Design" <' . $from . ">\r\n";
