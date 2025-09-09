@@ -567,10 +567,11 @@
         trackEvent('lead_submit', {form_name: formName});
         status?.classList.remove('hide');
         if(status) status.textContent = 'Sending your request…';
-        if(form) Array.from(form.elements).forEach(el=>el.disabled=true);
+        const formData = new FormData(form);
+        Array.from(form.elements).forEach(el=>el.disabled=true);
         if(sendBtn) sendBtn.textContent = 'Sending…';
         try{
-          const res = await fetch(form.action || 'lead.php', {method:'POST', body:new FormData(form)});
+          const res = await fetch(form.action || 'lead.php', {method:'POST', body:formData});
           const data = await res.json();
           if(status) status.textContent = data.data || 'Request sent.';
           if(res.ok && data.code === '01') form.reset();
