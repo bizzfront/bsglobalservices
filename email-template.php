@@ -15,6 +15,7 @@
       Service: <?php echo htmlspecialchars($service); ?><br>
       Service Subject: <?php echo htmlspecialchars($service_detail); ?><br>
       Detail/Message: <?php echo nl2br(htmlspecialchars($message)); ?><br><br>
+      City: <?php echo nl2br(htmlspecialchars($city)); ?><br><br>
     </td>
   </tr>
   <tr>

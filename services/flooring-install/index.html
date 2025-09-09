@@ -78,18 +78,24 @@
       </div>
       <div class="row">
         <div>
+          <label for="email">Email</label>
+          <input id="email-hero" type="email" name="email" placeholder="info@globalservices.com" maxlength="255" required />
+        </div>
+        <div>
           <label for="city">City</label>
           <input id="city" name="city" type="text" placeholder="Orlando / Kissimmee / St. Cloud" maxlength="255" />
         </div>
+      </div>
+       <div class="row">
         <div>
           <label for="floor">Floor type</label>
-          <input id="floor" name="floor" type="text" placeholder="LVP, ceramic, laminate, wood" maxlength="255" />
+          <input id="floor" name="service" type="text" placeholder="LVP, ceramic, laminate, wood" maxlength="255" />
         </div>
       </div>
       <div class="row-1">
         <div>
           <label for="msg">Notes</label>
-          <textarea id="msg" name="msg" placeholder="Approx. square footage, rooms, preferred dates…" maxlength="255"></textarea>
+          <textarea id="message" name="message" placeholder="Approx. square footage, rooms, preferred dates…" maxlength="255"></textarea>
         </div>
       </div>
       <input type="hidden" name="form_name" value="B&S – Web Lead (quick)" />
@@ -441,8 +447,8 @@
       });
     }
 
-    bindForm('lead-form-hero','send-btn-hero','form-status-hero','B&S – Web Lead (quick)');
-    bindForm('lead-form-bottom','send-btn-bottom','form-status-bottom','B&S – Web Lead (bottom)');
+    bindForm('lead-form-hero','send-btn-hero','form-status-hero','B&S – Web Lead Flooring Services (quick)');
+    bindForm('lead-form-bottom','send-btn-bottom','form-status-bottom','B&S – Web Lead Flooring Services (bottom)');
   </script>
 
   </body>

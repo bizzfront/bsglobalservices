@@ -44,9 +44,10 @@ $service_detail = read_field('service_detail');
 $message = read_field('message', 1000);
 $formName = read_field('form_name');
 $source = read_field('source');
+$city = read_field('city');
 $sessionID = read_field('sessionID', 1000);
 
-if ($name === '' || $email === '' || $phone === '' || $service === '' || $message === '') {
+if ($name === '' || ($email === '' && $phone === '') || $service === '' || $message === '') {
     echo json_encode(['code' => '03', 'data' => 'Please complete all fields of the form.', 'fields' => [$name, $email, $phone, $service, $message]]);
     exit;
 }
@@ -61,10 +62,10 @@ if ($phone !== '' && !preg_match('/^[0-9 +()-]{7,20}$/', $phone)) {
     exit;
 }
 
-if ($zip !== '' && !preg_match('/^[0-9A-Za-z -]{3,10}$/', $zip)) {
+/*if ($zip !== '' && !preg_match('/^[0-9A-Za-z -]{3,10}$/', $zip)) {
     echo json_encode(['code' => '07', 'data' => 'ZIP code not valid.']);
     exit;
-}
+}*/
 
 $servername = getenv('DB_HOST');
 $username = getenv('DB_USER');
@@ -77,14 +78,14 @@ if ($conn->connect_error) {
     exit;
 }
 
-$stmt = $conn->prepare('INSERT INTO website_requests (name, email, phone, service, message, form_name, source, status) VALUES (?, ?, ?, ?, ?, ?, ?, \'Pending\')');
+$stmt = $conn->prepare('INSERT INTO website_requests (name, email, phone, service, message, form_name, source, status, city) VALUES (?, ?, ?, ?, ?, ?, ?,\'Pending\', ?)');
 if (!$stmt) {
     echo json_encode(['code' => '02', 'data' => 'A error occurred while preparing the query. Please try again later.']);
     $conn->close();
     exit;
 }
 
-$stmt->bind_param('sssssss', $name, $email, $phone, $service, $message, $formName, $source);
+$stmt->bind_param('sssssss', $name, $email, $phone, $service, $message, $formName, $source, $city);
 if (!$stmt->execute()) {
     echo json_encode(['code' => '02', 'data' => 'A error occurred while sending the form. Please try again later.']);
     $stmt->close();
