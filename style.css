@@ -131,7 +131,7 @@
 
     /* Testimonials */
     .twrap{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
-    .t{border:1px solid #eadfcd;border-radius:14px;padding:1rem;background:#fff}
+    .t{border:4px solid var(--gold);border-radius:14px;padding:1rem;background:#fff; color:var(--burgundy)}
     .t .who{display:flex;align-items:center;gap:.6rem;margin-top:.7rem}
     .avatar{width:36px;height:36px;border-radius:50%;background:#eee}
     @media (max-width:980px){ .twrap{grid-template-columns:1fr} }
