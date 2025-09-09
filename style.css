@@ -101,6 +101,17 @@
     .card{border:1px solid #eadfcd;border-radius:14px;padding:1rem;background:#fff}
     .card h3{font-family:Montserrat, sans-serif;font-size:1.05rem}
     .icon{width:36px;height:36px;border-radius:8px;background:rgba(205,163,73,.18);display:grid;place-items:center;margin-bottom:.6rem;color:#591320}
+
+    /* Popular carousel */
+    .carousel-wrap{position:relative}
+    .popular-carousel{display:flex;gap:1rem;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding-bottom:1rem}
+    .popular-carousel::-webkit-scrollbar{display:none}
+    .popular-carousel{-ms-overflow-style:none;scrollbar-width:none}
+    .popular-carousel .card{flex:0 0 calc((100% - 2rem)/3);scroll-snap-align:start}
+    @media (max-width:980px){.popular-carousel .card{flex-basis:100%}}
+    .carousel-btn{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:none;background:var(--burgundy);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2}
+    .carousel-btn.prev{left:-20px}
+    .carousel-btn.next{right:-20px}
     @media (max-width: 980px){ .grid-3{grid-template-columns:1fr} }
 
     /* Materials cards */
