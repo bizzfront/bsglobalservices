@@ -47,7 +47,7 @@ $source = read_field('source');
 $sessionID = read_field('sessionID', 1000);
 
 if ($name === '' || $email === '' || $phone === '' || $service === '' || $message === '') {
-    echo json_encode(['code' => '03', 'data' => 'Please complete all fields of the form.']);
+    echo json_encode(['code' => '03', 'data' => 'Please complete all fields of the form.', 'fields' => [$name, $email, $phone, $service, $message]]);
     exit;
 }
 
