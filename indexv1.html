@@ -152,21 +152,21 @@
             <div class="row">
               <div>
                 <label for="name">Full Name</label>
-                <input id="name" name="name" type="text" placeholder="John Doe" required />
+                <input id="name" name="name" type="text" placeholder="John Doe" maxlength="255" required />
               </div>
               <div>
                 <label for="phone">Phone</label>
-                <input id="phone" name="phone" type="tel" placeholder="(407) 123‑4567" required />
+                <input id="phone" name="phone" type="tel" placeholder="(407) 123‑4567" maxlength="255" required />
               </div>
             </div>
             <div class="row">
               <div>
                 <label for="email">Email</label>
-                <input id="email" name="email" type="email" placeholder="you@email.com" required />
+                <input id="email" name="email" type="email" placeholder="you@email.com" maxlength="255" required />
               </div>
               <div>
                 <label for="city">City</label>
-                <input id="city" name="city" type="text" placeholder="Orlando" />
+                <input id="city" name="city" type="text" placeholder="Orlando" maxlength="255" />
               </div>
             </div>
             <div class="row">
@@ -188,7 +188,7 @@
               </div>
             </div>
             <label for="details">Project Details</label>
-            <textarea style="width:100%;" id="details" name="details" placeholder="Approx. square footage, rooms, preferred color/collection…"></textarea>
+            <textarea style="width:100%;" id="details" name="details" placeholder="Approx. square footage, rooms, preferred color/collection…" maxlength="255"></textarea>
             <div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
               <button class="btn btn-primary" type="submit">Send Request</button>
               <a class="btn btn-ghost" href="tel:+14072551284">Call (407) 255‑1284</a>
@@ -374,12 +374,14 @@
     const leadForm = document.getElementById('leadForm');
     const msg = document.getElementById('formMsg');
     function validEmail(v){return /.+@.+\..+/.test(v)}
-    function validPhone(v){return /[0-9()\-\s+]{7,}/.test(v)}
+    function validPhone(v){return /^\+?[0-9()\-\s]{7,20}$/.test(v)}
+    function validZip(v){return /^\d{5}(?:-\d{4})?$/.test(v)}
     leadForm.addEventListener('submit', async (e)=>{
       e.preventDefault();
       const data = Object.fromEntries(new FormData(leadForm).entries());
       if(!data.name){msg.textContent='Please enter your full name.'; msg.style.color='#b91c1c'; return}
       if(!validPhone(data.phone)){msg.textContent='Please include a valid phone number.'; msg.style.color='#b91c1c'; return}
+      if(data.zip && !validZip(data.zip)){msg.textContent='Please include a valid ZIP code.'; msg.style.color='#b91c1c'; return}
       if(!validEmail(data.email)){msg.textContent='Please include a valid email.'; msg.style.color='#b91c1c'; return}
       msg.textContent='Sending…'; msg.style.color='#475569';
       try{
