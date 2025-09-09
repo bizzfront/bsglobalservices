@@ -143,7 +143,7 @@
         <div class="row-1">
           <div>
             <label for="message-hero" data-i18n="form_details">Project details</label>
-            <textarea id="message-hero" name="message" placeholder="Area size, rooms, preferred tone (e.g., Natural Maple / Northern Grey)…" maxlength="255"></textarea>
+            <textarea id="message-hero" name="message" placeholder="Area size, rooms, preferred tone (e.g., Natural Maple / Northern Grey)…" maxlength="255" required></textarea>
           </div>
         </div>
         <input type="hidden" name="form_name" value="B&S – Web Lead (hero)" />
@@ -434,7 +434,7 @@
           <div class="row-1">
             <div>
               <label for="message-bottom" data-i18n="form_details">Project details</label>
-              <textarea id="message-bottom" name="message" placeholder="Area size, rooms, preferred tone…" maxlength="255"></textarea>
+              <textarea id="message-bottom" name="message" placeholder="Area size, rooms, preferred tone…" maxlength="255" required></textarea>
             </div>
           </div>
           <input type="hidden" name="form_name" value="B&S – Web Lead (bottom)" />
@@ -561,13 +561,13 @@
       const form = document.getElementById(fid);
       const status = document.getElementById(statusId);
       const sendBtn = document.getElementById(sendBtnId);
-      form?.addEventListener('submit', ()=>{
-        trackEvent('lead_submit', {form_name: formName});
-        status?.classList.remove('hide'); if(status) status.textContent = 'Sending your request…';
-        if(form) Array.from(form.elements).forEach(el=>el.disabled=true);
-        if(sendBtn) sendBtn.textContent = 'Sending…';
-      });
-    }
+        form?.addEventListener('submit', ()=>{
+          trackEvent('lead_submit', {form_name: formName});
+          status?.classList.remove('hide'); if(status) status.textContent = 'Sending your request…';
+          setTimeout(()=>{ if(form) Array.from(form.elements).forEach(el=>el.disabled=true); });
+          if(sendBtn) sendBtn.textContent = 'Sending…';
+        });
+      }
     bindForm('lead-form-hero','send-btn-hero','form-status-hero','B&S – Web Lead (hero)');
     bindForm('lead-form-bottom','send-btn-bottom','form-status-bottom','B&S – Web Lead (bottom)');
 
