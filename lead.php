@@ -1,4 +1,19 @@
 <?php
+// Load environment variables from a local .env file if available
+$envPath = __DIR__ . '/.env';
+if (file_exists($envPath)) {
+    $env = parse_ini_file($envPath, false, INI_SCANNER_RAW);
+    if ($env !== false) {
+        foreach ($env as $key => $value) {
+            if (getenv($key) === false) {
+                putenv("$key=$value");
+                $_ENV[$key] = $value;
+                $_SERVER[$key] = $value;
+            }
+        }
+    }
+}
+
 header('Access-Control-Allow-Origin: ' . (getenv('ALLOW_ORIGIN') ?: 'https://bsglobalservices.com'));
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
@@ -87,7 +102,7 @@ $from = getenv('MAIL_FROM') ?: 'info@bsglobalservices.com';
 $to = getenv('MAIL_TO') ?: 'info@bsglobalservices.com';
 
 ob_start();
-include __DIR__ . 'email-template.php';
+include __DIR__ . '/email-template.php';
 $body = ob_get_clean();
 
 $headers = 'From: "B&S Interior Design" <' . $from . ">\r\n";
