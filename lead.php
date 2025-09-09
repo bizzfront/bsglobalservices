@@ -85,7 +85,7 @@ if (!$stmt) {
     exit;
 }
 
-$stmt->bind_param('sssssss', $name, $email, $phone, $service, $message, $formName, $source, $city);
+$stmt->bind_param('ssssssss', $name, $email, $phone, $service, $message, $formName, $source, $city);
 if (!$stmt->execute()) {
     echo json_encode(['code' => '02', 'data' => 'A error occurred while sending the form. Please try again later.']);
     $stmt->close();
