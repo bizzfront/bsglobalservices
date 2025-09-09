@@ -65,25 +65,25 @@
     </div>
 
     <!-- Optional quick form -->
-    <form class="form" action="../../send-quote" method="post" aria-label="Quick quote form">
+    <form class="form" id="lead-form-hero" action="../../lead.php" method="POST" aria-label="Quick quote form">
       <div class="row">
         <div>
           <label for="name">Name</label>
-          <input id="name" name="name" type="text" placeholder="Your name" maxlength="255" required>
+          <input id="name" name="name" type="text" placeholder="Your name" maxlength="255" required />
         </div>
         <div>
           <label for="phone">Phone</label>
-          <input id="phone" name="phone" type="tel" placeholder="+1 (___) ___-____" maxlength="255" required>
+          <input id="phone" name="phone" type="tel" placeholder="+1 (___) ___-____" maxlength="255" required />
         </div>
       </div>
       <div class="row">
         <div>
           <label for="city">City</label>
-          <input id="city" name="city" type="text" placeholder="Orlando / Kissimmee / St. Cloud" maxlength="255">
+          <input id="city" name="city" type="text" placeholder="Orlando / Kissimmee / St. Cloud" maxlength="255" />
         </div>
         <div>
           <label for="floor">Floor type</label>
-          <input id="floor" name="floor" type="text" placeholder="LVP, ceramic, laminate, wood" maxlength="255">
+          <input id="floor" name="floor" type="text" placeholder="LVP, ceramic, laminate, wood" maxlength="255" />
         </div>
       </div>
       <div class="row-1">
@@ -92,7 +92,10 @@
           <textarea id="msg" name="msg" placeholder="Approx. square footage, rooms, preferred dates…" maxlength="255"></textarea>
         </div>
       </div>
-      <button class="btn btn-primary" type="submit">Get my quote</button>
+      <input type="hidden" name="form_name" value="B&S – Web Lead (quick)" />
+      <input type="hidden" name="source" value="website_services" />
+      <button class="btn btn-primary" id="send-btn-hero" type="submit">Get my quote</button>
+      <p id="form-status-hero" class="note hide" aria-live="polite"></p>
     </form>
   </div>
 </main>
@@ -405,6 +408,41 @@
 
     // Dynamic year
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    function trackEvent(name, params){
+      if (window.gtag) gtag('event', name, params || {});
+      window.dataLayer && window.dataLayer.push({event: name, ...params});
+    }
+
+    function bindForm(fid, sendBtnId, statusId, formName){
+      const form = document.getElementById(fid);
+      const status = document.getElementById(statusId);
+      const sendBtn = document.getElementById(sendBtnId);
+      form?.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        const originalBtnText = sendBtn ? sendBtn.textContent : '';
+        trackEvent('lead_submit', {form_name: formName});
+        status?.classList.remove('hide');
+        if(status) status.textContent = 'Sending your request…';
+        const formData = new FormData(form);
+        Array.from(form.elements).forEach(el=>el.disabled=true);
+        if(sendBtn) sendBtn.textContent = 'Sending…';
+        try{
+          const res = await fetch(form.action || 'lead.php', {method:'POST', body:formData});
+          const data = await res.json();
+          if(status) status.textContent = data.data || 'Request sent.';
+          if(res.ok && data.code === '01') form.reset();
+        }catch(err){
+          if(status) status.textContent = 'An error occurred. Please try again later.';
+        }finally{
+          if(form) Array.from(form.elements).forEach(el=>el.disabled=false);
+          if(sendBtn) sendBtn.textContent = originalBtnText;
+        }
+      });
+    }
+
+    bindForm('lead-form-hero','send-btn-hero','form-status-hero','B&S – Web Lead (quick)');
+    bindForm('lead-form-bottom','send-btn-bottom','form-status-bottom','B&S – Web Lead (bottom)');
   </script>
 
   </body>
