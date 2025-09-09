@@ -561,13 +561,27 @@
       const form = document.getElementById(fid);
       const status = document.getElementById(statusId);
       const sendBtn = document.getElementById(sendBtnId);
-        form?.addEventListener('submit', ()=>{
-          trackEvent('lead_submit', {form_name: formName});
-          status?.classList.remove('hide'); if(status) status.textContent = 'Sending your request…';
-          setTimeout(()=>{ if(form) Array.from(form.elements).forEach(el=>el.disabled=true); });
-          if(sendBtn) sendBtn.textContent = 'Sending…';
-        });
-      }
+      form?.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        const originalBtnText = sendBtn ? sendBtn.textContent : '';
+        trackEvent('lead_submit', {form_name: formName});
+        status?.classList.remove('hide');
+        if(status) status.textContent = 'Sending your request…';
+        if(form) Array.from(form.elements).forEach(el=>el.disabled=true);
+        if(sendBtn) sendBtn.textContent = 'Sending…';
+        try{
+          const res = await fetch(form.action || 'lead.php', {method:'POST', body:new FormData(form)});
+          const data = await res.json();
+          if(status) status.textContent = data.data || 'Request sent.';
+          if(res.ok && data.code === '01') form.reset();
+        }catch(err){
+          if(status) status.textContent = 'An error occurred. Please try again later.';
+        }finally{
+          if(form) Array.from(form.elements).forEach(el=>el.disabled=false);
+          if(sendBtn) sendBtn.textContent = originalBtnText;
+        }
+      });
+    }
     bindForm('lead-form-hero','send-btn-hero','form-status-hero','B&S – Web Lead (hero)');
     bindForm('lead-form-bottom','send-btn-bottom','form-status-bottom','B&S – Web Lead (bottom)');
 
