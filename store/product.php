@@ -1,0 +1,109 @@
+<?php
+$products = json_decode(file_get_contents(__DIR__.'/../products.json'), true);
+$sku = $_GET['sku'] ?? '';
+$product = null;
+foreach ($products as $p) {
+  if ($p['sku'] === $sku) {
+    $product = $p;
+    break;
+  }
+}
+if (!$product) {
+  http_response_code(404);
+  echo 'Product not found';
+  exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title><?= htmlspecialchars($product['name']) ?> — B&S Floor Supply</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="topbar">
+    <div class="container wrap">
+      <div id="topbar-text">Available in English & Spanish · También atendemos en español</div>
+      <div class="lang-toggle" aria-label="Language switch">
+        <button class="lang-btn active" id="lang-en">EN</button>
+        <button class="lang-btn" id="lang-es">ES</button>
+      </div>
+    </div>
+  </div>
+  <header class="site-header" aria-label="Main">
+    <div class="container nav">
+      <a href="/" class="brand" aria-label="B&S Floor Supply">
+        <span class="logo-bs logo-bs--full" role="img" aria-label="B&S Floor Supply logo"></span>
+        <span>B&S Floor Supply</span>
+      </a>
+      <nav aria-label="Primary">
+        <button class="burger" aria-label="Toggle menu" aria-controls="menu" aria-expanded="false" id="burger">
+          <span></span><span></span><span></span>
+        </button>
+        <div id="menu" class="menu" role="menu">
+          <a href="../services/flooring-install/" role="menuitem">Flooring Install</a>
+          <a href="./" role="menuitem">Store</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <h1><?= htmlspecialchars($product['name']) ?></h1>
+    <img src="../<?= $product['image'] ?>" alt="<?= htmlspecialchars($product['name']) ?>" style="max-width:100%;border-radius:10px;aspect-ratio:16/10;object-fit:cover" />
+    <div class="product-detail">
+      <?= $product['Technical_Specifications'] ?>
+      <?= $product['Ke_Benefits'] ?>
+      <?= $product['Recommended_Use_Areas'] ?>
+      <?= $product['Logistics'] ?>
+    </div>
+    <div class="hero-cta" style="margin-top:1rem;">
+      <a href="../#contact" class="btn btn-primary">Get install Quote</a>
+    </div>
+  </main>
+  <footer id="footer">
+    <div class="container fgrid">
+      <div>
+        <div class="brand" style="margin-bottom:.6rem">
+          <span class="logo-bs logo-bs--white" role="img" aria-label="B&S Floor Supply logo"></span>
+          <span>B&S Floor Supply</span>
+        </div>
+        <p id="footer_pitch">Waterproof LVP — plus installation of laminate, vinyl and hardwood. Bilingual team. Fast, neat, reliable.</p>
+      </div>
+      <div>
+        <h4 style="margin-top:0" data-i18n="foot_nav">Explore</h4>
+        <nav>
+          <a href="/#benefits" data-i18n="nav_benefits">Benefits</a><br/>
+          <a href="/#materials" data-i18n="nav_types">Flooring Types</a><br/>
+          <a href="/#popular" data-i18n="nav_popular">Popular LVP</a><br/>
+          <a href="/#cases" data-i18n="nav_use">Use cases</a><br/>
+          <a href="/#reviews" data-i18n="nav_reviews">Reviews</a><br/>
+          <a href="/#faq" data-i18n="nav_faq">FAQ</a><br/>
+          <a href="/terms.html">Terms & Conditions</a>
+        </nav>
+      </div>
+      <div>
+        <h4 style="margin-top:0" data-i18n="foot_contact">Get in touch</h4>
+        <p>WhatsApp: <a href="https://wa.me/16892968515" target="_blank" rel="noopener">+1 (689) 296-8515</a></p>
+        <p>Alt. phone: +1 (407) 225-1284</p>
+        <p>Email: <a href="mailto:info@globalservices.com">info@globalservices.com</a></p>
+        <p>Orlando, Florida</p>
+        <p><a href="https://instagram.com/bsfloorsupply" target="_blank" rel="noopener">Instagram</a> · <a href="https://facebook.com/BSGlobalServices" target="_blank" rel="noopener">Facebook</a></p>
+      </div>
+    </div>
+    <div class="container ft">
+      © <span id="year"></span> B&S Floor Supply. All rights reserved.
+    </div>
+  </footer>
+  <script>
+    const burger = document.getElementById('burger');
+    const menu = document.getElementById('menu');
+    burger?.addEventListener('click', () => {
+      const open = menu.classList.toggle('show');
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
