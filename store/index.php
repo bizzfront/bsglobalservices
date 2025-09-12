@@ -1,3 +1,4 @@
+<?php $products = json_decode(file_get_contents(__DIR__.'/../products.json'), true); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,7 +40,20 @@
 
   <main class="container">
     <h1>Store</h1>
-    <p>Coming soon.</p>
+    <div class="grid-3">
+    <?php foreach($products as $p): ?>
+      <article class="card">
+        <a href="product.php?sku=<?= urlencode($p['sku']) ?>">
+          <img src="../<?= $p['image'] ?>" alt="<?= htmlspecialchars($p['name']) ?>" style="aspect-ratio:16/10;object-fit:cover;border-radius:10px" data-default="../<?= $p['image'] ?>" data-hover="../<?= $p['hoverImage'] ?>" onmouseenter="this.src=this.dataset.hover" onmouseleave="this.src=this.dataset.default">
+        </a>
+        <h3 style="margin:.7rem 0 0"><?= htmlspecialchars($p['name']) ?></h3>
+        <div class="hero-cta">
+          <a href="product.php?sku=<?= urlencode($p['sku']) ?>" class="btn btn-ghost">View Details</a>
+          <a href="../#contact" class="btn btn-primary">Get install Quote</a>
+        </div>
+      </article>
+    <?php endforeach; ?>
+    </div>
   </main>
 
   <!-- Footer -->
