@@ -583,7 +583,7 @@
           const cta = document.createElement('div');
           cta.className = 'hero-cta';
           const storeLink = document.createElement('a');
-          storeLink.href = '/store/product.php?sku='+encodeURIComponent(p.sku);
+          storeLink.href = 'store/product.php?sku='+encodeURIComponent(p.sku);
           storeLink.className = 'btn btn-ghost popular-check';
           storeLink.dataset.sku = p.sku;
           storeLink.textContent = 'Check Store';
