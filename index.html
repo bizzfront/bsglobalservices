@@ -240,68 +240,8 @@
 
       <div class="carousel-wrap">
         <button class="carousel-btn prev" id="popular-prev" aria-label="Scroll left">&#10094;</button>
-        <div class="popular-carousel" id="popular-carousel">
-          <article class="card">
-            <img src="images/Vinyl_LVP/Peanut/cube/index.png" alt="Northern Grey LVP" style="aspect-ratio:16/10;object-fit:cover;border-radius:10px" />
-            <h3 style="margin:.7rem 0 0" data-i18n="p1_name">Peanut</h3>
-            <!--<p class="note" style="margin:.35rem 0 .8rem" data-i18n="p1_desc">Cool-toned waterproof LVP with subtle grain. Pairs well with modern, minimal interiors.</p>-->
-            <div class="hero-cta">
-              <a href="/store/lvp-northern-grey" class="btn btn-ghost popular-check" data-sku="lvp-northern-grey" data-i18n="btn_store">Check Store</a>
-              <a href="#contact" class="btn btn-primary popular-quote" data-sku="lvp-northern-grey" data-i18n="btn_quote">Get install Quote</a>
-            </div>
-          </article>
-
-          <article class="card">
-            <img src="images/Vinyl_LVP/Strip_Natural_2/cube/index.png" alt="Natural Maple LVP" style="aspect-ratio:16/10;object-fit:cover;border-radius:10px" />
-            <h3 style="margin:.7rem 0 0" data-i18n="p2_name">Strip Natural</h3>
-            <!--<p class="note" style="margin:.35rem 0 .8rem" data-i18n="p2_desc">Warm hue that brightens any room. Scratch-resistant, pet- and family-friendly.</p>-->
-            <div class="hero-cta">
-              <a href="/store/lvp-natural-maple" class="btn btn-ghost popular-check" data-sku="lvp-natural-maple" data-i18n="btn_store">Check Store</a>
-              <a href="#contact" class="btn btn-primary popular-quote" data-sku="lvp-natural-maple" data-i18n="btn_quote">Get install Quote</a>
-            </div>
-          </article>
-
-          <article class="card">
-            <img src="images/Vinyl_LVP/Ribbon_Grey_2/cube/index.png" alt="Coastal Oak LVP" style="aspect-ratio:16/10;object-fit:cover;border-radius:10px" />
-            <h3 style="margin:.7rem 0 0" data-i18n="p3_name">Ribbon Grey</h3>
-            <!--<p class="note" style="margin:.35rem 0 .8rem" data-i18n="p3_desc">Beachy vibe with gentle texture. Great balance of tone for varied décor styles.</p>-->
-            <div class="hero-cta">
-              <a href="/store/lvp-coastal-oak" class="btn btn-ghost popular-check" data-sku="lvp-coastal-oak" data-i18n="btn_store">Check Store</a>
-              <a href="#contact" class="btn btn-primary popular-quote" data-sku="lvp-coastal-oak" data-i18n="btn_quote">Get install Quote</a>
-            </div>
-          </article>
-
-          <article class="card">
-            <img src="images/Vinyl_LVP/Northen_Grey_2/cube/index.png" alt="Coastal Oak LVP" style="aspect-ratio:16/10;object-fit:cover;border-radius:10px" />
-            <h3 style="margin:.7rem 0 0" data-i18n="p3_name">Northen Grey</h3>
-            <!--<p class="note" style="margin:.35rem 0 .8rem" data-i18n="p3_desc">Beachy vibe with gentle texture. Great balance of tone for varied décor styles.</p>-->
-            <div class="hero-cta">
-              <a href="/store/lvp-coastal-oak" class="btn btn-ghost popular-check" data-sku="lvp-coastal-oak" data-i18n="btn_store">Check Store</a>
-              <a href="#contact" class="btn btn-primary popular-quote" data-sku="lvp-coastal-oak" data-i18n="btn_quote">Get install Quote</a>
-            </div>
-          </article>
-
-          <article class="card">
-            <img src="images/Vinyl_LVP/Natural_Maple/cube/index.png" alt="Coastal Oak LVP" style="aspect-ratio:16/10;object-fit:cover;border-radius:10px" />
-            <h3 style="margin:.7rem 0 0" data-i18n="p3_name">Natural Maple</h3>
-            <!--<p class="note" style="margin:.35rem 0 .8rem" data-i18n="p3_desc">Beachy vibe with gentle texture. Great balance of tone for varied décor styles.</p>-->
-            <div class="hero-cta">
-              <a href="/store/lvp-coastal-oak" class="btn btn-ghost popular-check" data-sku="lvp-coastal-oak" data-i18n="btn_store">Check Store</a>
-              <a href="#contact" class="btn btn-primary popular-quote" data-sku="lvp-coastal-oak" data-i18n="btn_quote">Get install Quote</a>
-            </div>
-          </article>
-
-          <article class="card">
-            <img src="images/Vinyl_LVP/Caramel_2/cube/index.png" alt="Coastal Oak LVP" style="aspect-ratio:16/10;object-fit:cover;border-radius:10px" />
-            <h3 style="margin:.7rem 0 0" data-i18n="p3_name">Caramel</h3>
-            <!--<p class="note" style="margin:.35rem 0 .8rem" data-i18n="p3_desc">Beachy vibe with gentle texture. Great balance of tone for varied décor styles.</p>-->
-            <div class="hero-cta">
-              <a href="/store/lvp-coastal-oak" class="btn btn-ghost popular-check" data-sku="lvp-coastal-oak" data-i18n="btn_store">Check Store</a>
-              <a href="#contact" class="btn btn-primary popular-quote" data-sku="lvp-coastal-oak" data-i18n="btn_quote">Get install Quote</a>
-            </div>
-          </article>
-        </div>
-        <button class="carousel-btn next" id="popular-next" aria-label="Scroll right">&#10095;</button>
+        <div class="popular-carousel" id="popular-carousel"></div>
+          <button class="carousel-btn next" id="popular-next" aria-label="Scroll right">&#10095;</button>
       </div>
     </div>
   </section>
@@ -607,19 +547,57 @@
     bindForm('lead-form-hero','send-btn-hero','form-status-hero','B&S – Web Lead (hero)');
     bindForm('lead-form-bottom','send-btn-bottom','form-status-bottom','B&S – Web Lead (bottom)');
 
-    // Popular LVP buttons tracking
-    document.querySelectorAll('.popular-check').forEach(el=>{
-      el.addEventListener('click', ()=>{
-        const sku = el.getAttribute('data-sku') || 'unknown';
-        trackEvent('popular_check_store', {sku});
+    function bindPopularButtons(){
+      document.querySelectorAll('.popular-check').forEach(el=>{
+        el.addEventListener('click', ()=>{
+          const sku = el.getAttribute('data-sku') || 'unknown';
+          trackEvent('popular_check_store', {sku});
+        });
       });
-    });
-    document.querySelectorAll('.popular-quote').forEach(el=>{
-      el.addEventListener('click', ()=>{
-        const sku = el.getAttribute('data-sku') || 'unknown';
-        trackEvent('popular_get_quote', {sku});
+      document.querySelectorAll('.popular-quote').forEach(el=>{
+        el.addEventListener('click', ()=>{
+          const sku = el.getAttribute('data-sku') || 'unknown';
+          trackEvent('popular_get_quote', {sku});
+        });
       });
-    });
+    }
+
+    fetch('products.json')
+      .then(res=>res.json())
+      .then(products=>{
+        const carousel = document.getElementById('popular-carousel');
+        products.forEach(p=>{
+          const art = document.createElement('article');
+          art.className = 'card';
+          const img = document.createElement('img');
+          img.src = p.image;
+          img.alt = p.name + ' LVP';
+          img.style = 'aspect-ratio:16/10;object-fit:cover;border-radius:10px';
+          img.dataset.default = p.image;
+          img.dataset.hover = p.hoverImage;
+          img.addEventListener('mouseenter',()=>{img.src=img.dataset.hover;});
+          img.addEventListener('mouseleave',()=>{img.src=img.dataset.default;});
+          const h3 = document.createElement('h3');
+          h3.style = 'margin:.7rem 0 0';
+          h3.textContent = p.name;
+          const cta = document.createElement('div');
+          cta.className = 'hero-cta';
+          const storeLink = document.createElement('a');
+          storeLink.href = '/store/product.php?sku='+encodeURIComponent(p.sku);
+          storeLink.className = 'btn btn-ghost popular-check';
+          storeLink.dataset.sku = p.sku;
+          storeLink.textContent = 'Check Store';
+          const quoteLink = document.createElement('a');
+          quoteLink.href = '#contact';
+          quoteLink.className = 'btn btn-primary popular-quote';
+          quoteLink.dataset.sku = p.sku;
+          quoteLink.textContent = 'Get install Quote';
+          cta.append(storeLink, quoteLink);
+          art.append(img, h3, cta);
+          carousel?.appendChild(art);
+        });
+        bindPopularButtons();
+      });
 
     // Popular carousel scrolling
     const popCarousel = document.getElementById('popular-carousel');
