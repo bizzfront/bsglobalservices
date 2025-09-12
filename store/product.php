@@ -13,6 +13,14 @@ if (!$product) {
   echo 'Product not found';
   exit;
 }
+$baseDir = dirname(dirname($product['image']));
+$basePath = __DIR__ . '/../' . $baseDir;
+$images = array_merge(glob($basePath.'/*.png'), glob($basePath.'/*/*.png'));
+$images = array_map(function($p){return str_replace(__DIR__.'/../','',$p);}, $images);
+$selected = array_unique([$product['image'], $product['hoverImage']]);
+$others = array_diff($images, $selected);
+shuffle($others);
+$selected = array_merge($selected, array_slice($others, 0, max(0, 4 - count($selected))));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,17 +58,97 @@ if (!$product) {
   </header>
   <main class="container">
     <h1><?= htmlspecialchars($product['name']) ?></h1>
-    <img src="../<?= $product['image'] ?>" alt="<?= htmlspecialchars($product['name']) ?>" style="max-width:100%;border-radius:10px;aspect-ratio:16/10;object-fit:cover" />
-    <div class="product-detail">
-      <?= $product['Technical_Specifications'] ?>
-      <?= $product['Ke_Benefits'] ?>
-      <?= $product['Recommended_Use_Areas'] ?>
-      <?= $product['Logistics'] ?>
+    <div class="slider">
+      <?php foreach($selected as $i => $img): ?>
+        <img src="../<?= $img ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="<?= $i===0 ? 'active' : '' ?>">
+      <?php endforeach; ?>
+      <button class="prev" type="button">Prev</button>
+      <button class="next" type="button">Next</button>
+      <?php if(!empty($product['promo'])): ?>
+        <span class="promo-badge"><?= htmlspecialchars($product['promo']) ?></span>
+      <?php endif; ?>
     </div>
+    <div class="tabs">
+      <button class="tab-btn active" data-target="specs">Specifications</button>
+      <button class="tab-btn" data-target="benefits">Benefits</button>
+      <button class="tab-btn" data-target="use">Use Areas</button>
+      <button class="tab-btn" data-target="logistics">Logistics</button>
+    </div>
+    <div id="specs" class="tab-content active"><?= $product['Technical_Specifications'] ?></div>
+    <div id="benefits" class="tab-content"><?= $product['Ke_Benefits'] ?></div>
+    <div id="use" class="tab-content"><?= $product['Recommended_Use_Areas'] ?></div>
+    <div id="logistics" class="tab-content"><?= $product['Logistics'] ?></div>
     <div class="hero-cta" style="margin-top:1rem;">
-      <a href="../#contact" class="btn btn-primary">Get install Quote</a>
+      <a href="#contact" class="btn btn-primary">Get install Quote</a>
     </div>
   </main>
+
+  <section id="contact" class="sec--light">
+    <div class="container">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow" data-i18n="ey_contact">Let’s get your estimate</div>
+          <h2 data-i18n="h_contact">Contact & free estimate</h2>
+        </div>
+        <a href="https://wa.me/16892968515?text=Hi%20B%26S%20Floor%20Supply%2C%20I%27d%20like%20a%20free%20estimate." class="pill" id="cta-wa-pill" target="_blank" rel="noopener" data-i18n="cta_whatsapp">Chat on WhatsApp</a>
+      </div>
+      <div class="contact">
+        <form class="form" id="lead-form-bottom" action="../lead.php" method="POST" aria-labelledby="contact-bottom">
+          <div class="row">
+            <div>
+              <label for="name-bottom" data-i18n="form_name">Full name</label>
+              <input id="name-bottom" name="name" placeholder="Your name" maxlength="255" required />
+            </div>
+            <div>
+              <label for="phone-bottom" data-i18n="form_phone">Phone / WhatsApp</label>
+              <input id="phone-bottom" name="phone" placeholder="+1 (689) 296-8515" maxlength="255" required />
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label for="email-bottom">Email</label>
+              <input id="email-bottom" type="email" name="email" placeholder="info@globalservices.com" maxlength="255" required />
+            </div>
+            <div>
+              <label for="service-bottom" data-i18n="form_service">Service</label>
+              <select id="service-bottom" name="service">
+                <option value="lvp" data-i18n="opt_lvp">Waterproof LVP – supply & install</option>
+                <option value="install" data-i18n="opt_install">Installation only (Laminate / Vinyl / Hardwood)</option>
+                <option value="other" data-i18n="opt_other">Other flooring</option>
+              </select>
+            </div>
+          </div>
+          <div class="row-1">
+            <div>
+              <label for="message-bottom" data-i18n="form_details">Project details</label>
+              <textarea id="message-bottom" name="message" placeholder="Area size, rooms, preferred tone…" maxlength="255" required></textarea>
+            </div>
+          </div>
+          <input type="hidden" name="form_name" value="B&S – Web Lead (bottom)" />
+          <input type="hidden" name="source" value="website_store" />
+          <p class="note" data-i18n="form_note">By sending, you agree to be contacted via WhatsApp, phone or email.</p>
+          <div class="hero-cta">
+            <button type="submit" class="btn btn-primary" id="send-btn-bottom" data-i18n="cta_send">Send request</button>
+            <a class="btn btn-ghost" href="https://wa.me/16892968515?text=Hi%20B%26S%20Floor%20Supply%2C%20I%20need%20a%20quote." target="_blank" rel="noopener" id="cta-wa-form" data-i18n="cta_whatsapp">WhatsApp now</a>
+          </div>
+          <p id="form-status-bottom" class="note hide" aria-live="polite"></p>
+        </form>
+        <aside class="card">
+          <h3 data-i18n="info_t">Contact info</h3>
+          <p><strong>Phone (WhatsApp):</strong> <a href="https://wa.me/16892968515" target="_blank" rel="noopener">+1 (689) 296-8515</a></p>
+          <p><strong>Alt. phone:</strong> +1 (407) 225-1284</p>
+          <p><strong>Email:</strong> <a href="mailto:info@globalservices.com">info@globalservices.com</a></p>
+          <p><strong>Service area:</strong> Orlando, FL</p>
+          <div class="hero-cta">
+            <a href="https://instagram.com/bsfloorsupply" class="btn btn-ghost" target="_blank" rel="noopener">Instagram</a>
+            <a href="https://facebook.com/BSGlobalServices" class="btn btn-ghost" target="_blank" rel="noopener">Facebook</a>
+          </div>
+          <hr />
+          <p><small id="info_es">Prefer español? <em>También atendemos en español.</em></small></p>
+        </aside>
+      </div>
+    </div>
+  </section>
   <footer id="footer">
     <div class="container fgrid">
       <div>
@@ -102,6 +190,54 @@ if (!$product) {
       const open = menu.classList.toggle('show');
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
+    const imgs = document.querySelectorAll('.slider img');
+    let idx = 0;
+    function showSlide(n){
+      imgs[idx].classList.remove('active');
+      idx = (n + imgs.length) % imgs.length;
+      imgs[idx].classList.add('active');
+    }
+    document.querySelector('.next')?.addEventListener('click', ()=>showSlide(idx+1));
+    document.querySelector('.prev')?.addEventListener('click', ()=>showSlide(idx-1));
+    document.querySelectorAll('.tab-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.target).classList.add('active');
+      });
+    });
+    function trackEvent(name, params){
+      if (window.gtag) gtag('event', name, params || {});
+      window.dataLayer && window.dataLayer.push({event: name, ...params});
+    }
+    function bindForm(fid, sendBtnId, statusId, formName){
+      const form = document.getElementById(fid);
+      const status = document.getElementById(statusId);
+      const sendBtn = document.getElementById(sendBtnId);
+      form?.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        const originalBtnText = sendBtn ? sendBtn.textContent : '';
+        trackEvent('lead_submit', {form_name: formName});
+        status?.classList.remove('hide');
+        if(status) status.textContent = 'Sending your request…';
+        const formData = new FormData(form);
+        Array.from(form.elements).forEach(el=>el.disabled=true);
+        if(sendBtn) sendBtn.textContent = 'Sending…';
+        try{
+          const res = await fetch(form.action || '../lead.php', {method:'POST', body:formData});
+          const data = await res.json();
+          if(status) status.textContent = data.data || 'Request sent.';
+          if(res.ok && data.code === '01') form.reset();
+        }catch(err){
+          if(status) status.textContent = 'An error occurred. Please try again later.';
+        }finally{
+          if(form) Array.from(form.elements).forEach(el=>el.disabled=false);
+          if(sendBtn) sendBtn.textContent = originalBtnText;
+        }
+      });
+    }
+    bindForm('lead-form-bottom','send-btn-bottom','form-status-bottom','B&S – Web Lead (bottom)');
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
