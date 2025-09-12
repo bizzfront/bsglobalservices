@@ -34,9 +34,8 @@ if (!$product) {
   </div>
   <header class="site-header" aria-label="Main">
     <div class="container nav">
-      <a href="/" class="brand" aria-label="B&S Floor Supply">
+      <a href="../" class="brand" aria-label="B&S Floor Supply">
         <span class="logo-bs logo-bs--full" role="img" aria-label="B&S Floor Supply logo"></span>
-        <span>B&S Floor Supply</span>
       </a>
       <nav aria-label="Primary">
         <button class="burger" aria-label="Toggle menu" aria-controls="menu" aria-expanded="false" id="burger">
