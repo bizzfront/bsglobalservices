@@ -27,6 +27,10 @@
     #contact, #faq, #reviews, #footer, #popular, #materials, #benefits, #top, #main, #products, #process, #projects, #testimonials, #topbar{
       z-index: 1; position: relative;
     }
+
+    #process{
+      background-color: var(--gray); background:rgba(250, 250, 250, 0.9)
+    }
     /* Top banner bilingual */
     .topbar{background:var(--burgundy);color:#ddd;font-size:.9rem}
     .topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.45rem 0}
@@ -242,9 +246,9 @@
 
     /* Process */
     .steps{position:relative;margin-top:10px}
-    .steps::before{content:"";position:absolute;left:18px;top:0;bottom:0;width:2px;background:linear-gradient(var(--gold), transparent)}
+    .steps::before{z-index:0; content:"";position:absolute;left:18px;top:0;bottom:0;width:2px;background:linear-gradient(var(--gold), transparent)}
     .step{display:grid;grid-template-columns:52px 1fr;gap:12px;padding:12px 0}
-    .num{width:36px;height:36px;border-radius:999px;display:grid;place-items:center;font-weight:800;color:#091015;background:linear-gradient(135deg,var(--gold),#e4c581);box-shadow:0 6px 16px rgba(0,0,0,.15)}
+    .num{z-index:1; width:36px;height:36px;border-radius:999px;display:grid;place-items:center;font-weight:800;color:#091015;background:linear-gradient(135deg,var(--gold),#e4c581);box-shadow:0 6px 16px rgba(0,0,0,.15)}
     .step h3{margin:0;color:var(--burgundy)}
     .step p{margin:6px 0 10px;color:#4b4b4b}
     .links{display:flex;gap:.6rem;flex-wrap:wrap}
