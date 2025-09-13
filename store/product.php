@@ -56,17 +56,26 @@ $selected = array_merge($selected, array_slice($others, 0, max(0, 4 - count($sel
       </nav>
     </div>
   </header>
-  <main class="container">
-    <h1><?= htmlspecialchars($product['name']) ?></h1>
+  <main class="container" style="padding-bottom:3vw;">
+    <div class="sec-head">
+        <div style="margin-top:1.6vw;" >
+          <div class="eyebrow" data-i18n="ey_popular">Popular Vinyl Plank Options</div>
+          <h1 data-i18n="h_popular"><?= htmlspecialchars($product['name']) ?></h2>
+        </div>
+        <span class="pill"><?= htmlspecialchars($product['name']) ?></span>
+    </div>
+    <h1></h1>
     <div class="slider">
-      <?php foreach($selected as $i => $img): ?>
-        <img src="../<?= $img ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="<?= $i===0 ? 'active' : '' ?>">
-      <?php endforeach; ?>
-      <button class="prev" type="button">Prev</button>
-      <button class="next" type="button">Next</button>
-      <?php if(!empty($product['promo'])): ?>
-        <span class="promo-badge"><?= htmlspecialchars($product['promo']) ?></span>
-      <?php endif; ?>
+      <div>
+        <?php foreach($selected as $i => $img): ?>
+          <img src="../<?= $img ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="<?= $i===0 ? 'active' : '' ?>">
+        <?php endforeach; ?>
+        <button class="prev" type="button">Prev</button>
+        <button class="next" type="button">Next</button>
+        <?php if(!empty($product['promo'])): ?>
+          <div class="store-promo"><span><?= htmlspecialchars($product['promo']) ?></span></div>
+        <?php endif; ?>
+      </div>
     </div>
     <div class="tabs">
       <button class="tab-btn active" data-target="specs">Specifications</button>

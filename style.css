@@ -44,6 +44,9 @@
     .cta-wa:hover{background:#591320}
     .burger{display:none;flex-direction:column;gap:5px}
     .burger span{width:26px;height:2px;background:#333;display:block;border-radius:2px}
+
+
+
     @media (max-width: 980px){
       .menu{display:none;position:absolute;top:110px;left:0;right:0;flex-direction:column;background:#fff;padding:1rem;border-bottom:1px solid #eee}
       .menu.show{display:flex}
@@ -169,7 +172,7 @@
       background:linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.85));
     }
     .sec--image > *{ position:relative; z-index:1 }
-\n/* Flooring installation styles */
+  /* Flooring installation styles */
     :root{
       /* Brand palette (from Visual Manual) */
       --burgundy:#591320;
@@ -265,16 +268,32 @@
     .sec-dark .btn-primary{background:var(--gold);border-color:var(--gold);color:#201606}
     .sec-dark .btn-primary:hover{filter:brightness(.96)}
 
+    .product-card{position: relative;}
+
     /* Store cards */
-    .product-card .img-wrapper{position:relative;overflow:hidden;border-radius:10px;aspect-ratio:16/10}
+    .product-card .img-wrapper{position:relative;overflow:hidden;border-radius:10px;aspect-ratio:16/10; position: relative;}
     .product-card .img-wrapper img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .5s ease}
     .product-card .img-wrapper img.hover{opacity:0}
     .product-card .img-wrapper:hover img.hover{opacity:1}
     .product-card .img-wrapper:hover img.default{opacity:0}
     .promo-badge{position:absolute;top:10px;left:-40px;background:var(--danger);color:#fff;padding:5px 40px;transform:rotate(-45deg);font-size:.8rem;font-weight:700}
 
+    .store-promo>span {
+        position: absolute;
+        top: 120px; margin-left: 0px;
+        left: -10px;
+        background-color: red;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 5px 10px;
+        transform: rotate(-20deg);
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        z-index: 2;
+    }
     /* Product detail */
-    .slider{position:relative;margin:auto;aspect-ratio:16/10;overflow:hidden;border-radius:10px}
+    .slider{position:relative;margin:auto;aspect-ratio:16/10;overflow:hidden;border-radius:10px; background-color: var(--dark);}
+    .slider>div{position:relative; width: 70%; height:100%; margin: auto;}
     .slider img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s ease}
     .slider img.active{opacity:1}
     .slider button{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.5);color:#fff;border:none;padding:.5rem 1rem;cursor:pointer}
