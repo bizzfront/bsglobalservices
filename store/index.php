@@ -37,18 +37,25 @@
     </div>
   </header>
 
-  <main class="container">
-    <h1>Store</h1>
+  <main class="container" style="margin-bottom:2vw;">
+    <div class="sec-head">
+        <div style="margin-top:1.6vw;" >
+          <div class="eyebrow" data-i18n="ey_popular">Popular Vinyl Plank Options</div>
+          <h2 data-i18n="h_popular">Store</h2>
+        </div>
+        <span class="pill">Store</span>
+    </div>
     <div class="grid-3">
     <?php foreach($products as $p): ?>
       <article class="card product-card">
+        <?php if(!empty($p['promo'])): ?>
+          <div class="store-promo"><span><?= htmlspecialchars($p['promo']) ?></span></div>
+        <?php endif; ?>
         <a href="product.php?sku=<?= urlencode($p['sku']) ?>">
           <div class="img-wrapper">
             <img src="../<?= $p['image'] ?>" alt="<?= htmlspecialchars($p['name']) ?>" class="default">
             <img src="../<?= $p['hoverImage'] ?>" alt="" class="hover">
-            <?php if(!empty($p['promo'])): ?>
-              <span class="promo-badge"><?= htmlspecialchars($p['promo']) ?></span>
-            <?php endif; ?>
+            
           </div>
         </a>
         <h3 style="margin:.7rem 0 0"><?= htmlspecialchars($p['name']) ?></h3>
