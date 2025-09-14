@@ -15,82 +15,133 @@ $contact_source = 'website_store';
 <body>
 <?php include $base.'includes/header.php'; ?>
 
-  <main class="container" style="margin-bottom:2vw;">
-    <div class="sec-head">
-        <div style="margin-top:1.6vw;" >
-          <div class="eyebrow" data-i18n="ey_popular">Popular Vinyl Plank Options</div>
-          <h2 data-i18n="h_popular">Store</h2>
-        </div>
-        <span class="pill">Store</span>
+<section class="store-hero">
+  <div class="container wrap">
+    <h1>Store — Waterproof LVP</h1>
+    <p>SPC/WPC core · Attached pad · Easy click install</p>
+  </div>
+</section>
+
+<div class="container store-layout">
+  <aside class="store-filters" aria-label="Filters">
+    <h3>Filter</h3>
+    <div class="f-sec">
+      <label>Color family
+        <select id="fColor">
+          <option value="">All</option>
+          <option>Gray</option>
+          <option>Brown</option>
+          <option>Beige</option>
+        </select>
+      </label>
+      <label>Tone
+        <select id="fTone">
+          <option value="">All</option>
+          <option>Light</option>
+          <option>Medium</option>
+          <option>Dark</option>
+        </select>
+      </label>
     </div>
-    <div class="grid-3">
-    <?php foreach($products as $p): ?>
-      <article class="card product-card">
-        <?php if(!empty($p['promo'])): ?>
-          <div class="store-promo"><span><?= htmlspecialchars($p['promo']) ?></span></div>
-        <?php endif; ?>
-        <a href="product.php?sku=<?= urlencode($p['sku']) ?>">
-          <div class="img-wrapper">
-            <img src="../<?= $p['image'] ?>" alt="<?= htmlspecialchars($p['name']) ?>" class="default">
-            <img src="../<?= $p['hoverImage'] ?>" alt="" class="hover">
-            
-          </div>
-        </a>
-        <h3 style="margin:.7rem 0 0"><?= htmlspecialchars($p['name']) ?></h3>
-        <div class="hero-cta">
-          <a href="product.php?sku=<?= urlencode($p['sku']) ?>" class="btn btn-ghost">View Details</a>
-          <a href="#contact" class="btn btn-primary">Get install Quote</a>
-        </div>
-      </article>
-    <?php endforeach; ?>
+    <div class="f-sec">
+      <label>Thickness (mm) min
+        <input id="fThkMin" type="number" step="0.1" placeholder="e.g., 5.0">
+      </label>
+      <label>Wear layer (mil) min
+        <input id="fWearMin" type="number" step="1" placeholder="e.g., 12">
+      </label>
     </div>
+    <div class="f-sec">
+      <button class="btn btn-ghost" id="clearFilters" type="button">Clear all</button>
+    </div>
+  </aside>
+
+  <main>
+    <div class="store-bar">
+      <div class="store-chip">Waterproof</div>
+      <div class="store-chip">SPC Core</div>
+      <div class="store-chip">Attached Pad</div>
+      <div class="store-sort">
+        <label for="sortSel" class="muted" style="margin-right:6px;">Sort</label>
+        <select id="sortSel">
+          <option value="relevance" selected>Relevance</option>
+          <option value="price-asc">Price (low → high)</option>
+          <option value="price-desc">Price (high → low)</option>
+          <option value="rating-desc">Rating</option>
+        </select>
+      </div>
+    </div>
+
+    <section id="store-grid" class="store-grid" aria-live="polite"></section>
   </main>
+</div>
 
 <?php include $base.'includes/contact.php'; ?>
-
-  <!-- Footer -->
 <?php include $base.'includes/footer.php'; ?>
 
-  <script>
-    const burger = document.getElementById('burger');
-    const menu = document.getElementById('menu');
-    burger?.addEventListener('click', () => {
-      const open = menu.classList.toggle('show');
-      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-    function trackEvent(name, params){
-      if (window.gtag) gtag('event', name, params || {});
-      window.dataLayer && window.dataLayer.push({event: name, ...params});
-    }
-    function bindForm(fid, sendBtnId, statusId, formName){
-      const form = document.getElementById(fid);
-      const status = document.getElementById(statusId);
-      const sendBtn = document.getElementById(sendBtnId);
-      form?.addEventListener('submit', async (e)=>{
-        e.preventDefault();
-        const originalBtnText = sendBtn ? sendBtn.textContent : '';
-        trackEvent('lead_submit', {form_name: formName});
-        status?.classList.remove('hide');
-        if(status) status.textContent = 'Sending your request…';
-        const formData = new FormData(form);
-        Array.from(form.elements).forEach(el=>el.disabled=true);
-        if(sendBtn) sendBtn.textContent = 'Sending…';
-        try{
-          const res = await fetch(form.action || '<?=$base?>lead.php', {method:'POST', body:formData});
-          const data = await res.json();
-          if(status) status.textContent = data.data || 'Request sent.';
-          if(res.ok && data.code === '01') form.reset();
-        }catch(err){
-          if(status) status.textContent = 'An error occurred. Please try again later.';
-        }finally{
-          if(form) Array.from(form.elements).forEach(el=>el.disabled=false);
-          if(sendBtn) sendBtn.textContent = originalBtnText;
-        }
-      });
-    }
-    bindForm('lead-form-bottom','send-btn-bottom','form-status-bottom','B&S – Web Lead (bottom)');
-    // Dynamic year
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+<script>
+const PRODUCTS = <?= json_encode($products) ?>;
+
+function card(p){
+  const inStock = (p.inventory_status || '').toLowerCase() === 'in stock';
+  const priceSqft = p.price_sqft != null ? `$${p.price_sqft.toFixed(2)}` : '';
+  const priceBox = p.price_box != null ? `$${p.price_box.toFixed(2)}` : '';
+  const width = (p.width_in && p.length_in) ? `${p.width_in}×${p.length_in} in` : '';
+  const thk = p.thickness_mm ? `${p.thickness_mm} mm` : '';
+  const wear = p.wear_layer_mil ? `${p.wear_layer_mil} mil wear` : '';
+  const href = `product.php?sku=${encodeURIComponent(p.sku)}`;
+  let priceHtml = priceSqft ? `<div class=\"store-price\"><b>${priceSqft}</b><span class=\"store-per\">/sqft</span></div>` : `<div class=\"store-price\"><b>Call for price</b></div>`;
+  if(priceBox){ priceHtml += `<div class=\"store-price\"><span class=\"store-per\">≈ ${priceBox} / box</span></div>`; }
+  const badge = inStock ? '<span class="store-badge">In stock</span>' : '<span class="store-badge store-out">Backorder</span>';
+  return `\n  <article class=\"store-card\">\n    <a href=\"${href}\">\n      <div class=\"store-img\" style=\"background-image:url('..\/${p.image}')\">${badge}</div>\n    </a>\n    <div class=\"store-pad\">\n      <h3 class=\"store-title\"><a href=\"${href}\">${p.name}</a></h3>\n      <div class=\"store-sub\">${p.collection || ''}</div>\n      <div class=\"store-specs\">\n        ${thk? `<span class=\"store-pill\">${thk}</span>`:''}\n        ${wear? `<span class=\"store-pill\">${wear}</span>`:''}\n        ${width? `<span class=\"store-pill\">${width}</span>`:''}\n        <span class=\"store-pill\">${p.core || ''}</span>\n        <span class=\"store-pill\">${p.pad ? p.pad+' pad '+(p.pad_material||'') : ''}</span>\n      </div>\n      ${priceHtml}\n      <div class=\"store-cta\">\n        <a class=\"btn btn-ghost\" href=\"${href}\">View details</a>\n        <a class=\"btn btn-primary\" href=\"https://wa.me/16892968515?text=${encodeURIComponent(p.whatsapp_text || ('Hi, I want an estimate for SKU '+p.sku))}\" target=\"_blank\" rel=\"noopener\">Get estimate</a>\n      </div>\n    </div>\n  </article>`;
+}
+
+function applyFilters(list){
+  const cf = (document.getElementById('fColor').value||'').toLowerCase();
+  const tn = (document.getElementById('fTone').value||'').toLowerCase();
+  const thkMin = parseFloat(document.getElementById('fThkMin').value) || 0;
+  const wearMin = parseFloat(document.getElementById('fWearMin').value) || 0;
+  return list.filter(p=>{
+    const fam = (p.colorFamily||'').toLowerCase();
+    const tone = (p.tone||'').toLowerCase();
+    const thk = parseFloat(p.thickness_mm) || 0;
+    const wear = parseFloat(p.wear_layer_mil) || 0;
+    if(cf && fam !== cf) return false;
+    if(tn && tone !== tn) return false;
+    if(thkMin && thk < thkMin) return false;
+    if(wearMin && wear < wearMin) return false;
+    return true;
+  });
+}
+
+function applySort(list){
+  const v = document.getElementById('sortSel').value;
+  const copy = [...list];
+  if(v==='price-asc'){
+    copy.sort((a,b)=>(a.price_sqft??1e9)-(b.price_sqft??1e9));
+  }else if(v==='price-desc'){
+    copy.sort((a,b) => (b.price_sqft??-1)-(a.price_sqft??-1));
+  }else if(v==='rating-desc'){
+    copy.sort((a,b)=>(b.rating??0)-(a.rating??0));
+  }
+  return copy;
+}
+
+function render(){
+  let list = applyFilters(PRODUCTS);
+  list = applySort(list);
+  document.getElementById('store-grid').innerHTML = list.map(card).join('');
+}
+
+['sortSel','fColor','fTone','fThkMin','fWearMin'].forEach(id=>{
+  document.getElementById(id).addEventListener('change', render);
+});
+document.getElementById('clearFilters').addEventListener('click', ()=>{
+  ['fColor','fTone','fThkMin','fWearMin'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('sortSel').value='relevance';
+  render();
+});
+render();
+</script>
 </body>
 </html>
