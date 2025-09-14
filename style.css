@@ -396,7 +396,7 @@
       .register-page .panel{z-index:1; background:#fff;border:1px solid #eadfcd;border-radius:18px;box-shadow:var(--shadow);padding:18px}
       .register-page form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
       @media(max-width:760px){.register-page form{grid-template-columns:1fr}}
-      .register-page label{display:flex;flex-direction:column;font-size:.95rem;color:#333;gap:6px}
+      .register-page label{display:flex;flex-direction:column;font-size:.95rem;color:#333;gap:6px; font-weight: 360;}
       .register-page input,
       .register-page select,
       .register-page textarea{padding:.7rem .8rem;border:1px solid #ddd;border-radius:12px;font:inherit}
@@ -407,7 +407,7 @@
       .register-page .btn-ghost{background:transparent;border-color:var(--gold);color:var(--burgundy)}
       .register-page .btn-ghost:hover{background:var(--beige)}
       .register-page .help{font-size:.85rem;color:#666}
-      .register-page .consent{display:flex;align-items:flex-start;gap:10px}
+      .register-page .consent{display:flex;align-items:flex-start;gap:10px;}
       .register-page .consent input{margin-top:4px}
       .register-page .note{background:#fff8ea;border:1px solid #f0e0b9;color:#5a4a1f;padding:10px;border-radius:12px;font-size:.9rem}
       .register-page .slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}

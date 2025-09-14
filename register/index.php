@@ -122,14 +122,9 @@ window.SLOT_MINUTES=60;
           </select>
         </label>
 
-        <div class="row">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <strong>Available times</strong>
-            <small id="tzLabel" style="color:#666"></small>
-          </div>
-          <div id="slots" class="slots" role="group" aria-label="Available time slots"></div>
-          <input type="hidden" name="time" id="time" required />
-        </div>
+        
+        <input type="hidden" name="time" id="time" required />
+
 
         <label class="row">
           Notes (optional)
