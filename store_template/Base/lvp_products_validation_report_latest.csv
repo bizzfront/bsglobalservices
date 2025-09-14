@@ -1,0 +1,31 @@
+Row,SKU,Type,Message
+2,nan,Duplicate,SKU duplicado: nan
+3,nan,Duplicate,SKU duplicado: nan
+4,nan,Duplicate,SKU duplicado: nan
+5,nan,Duplicate,SKU duplicado: nan
+6,nan,Duplicate,SKU duplicado: nan
+7,nan,Duplicate,SKU duplicado: nan
+2,,Format,"Slug URL no válido (usar minúsculas, números y guiones): /waterproof-lvp-caramel"
+3,,Format,"Slug URL no válido (usar minúsculas, números y guiones): /waterproof-lvp-natural-maple"
+4,,Format,"Slug URL no válido (usar minúsculas, números y guiones): /waterproof-lvp-northen-grey"
+5,,Format,"Slug URL no válido (usar minúsculas, números y guiones): /waterproof-lvp-peanut"
+6,,Format,"Slug URL no válido (usar minúsculas, números y guiones): /waterproof-lvp-ribbon-grey"
+7,,Format,"Slug URL no válido (usar minúsculas, números y guiones): /waterproof-lvp-strip-natural"
+2,,Missing,Campo requerido vacío: SKU
+2,,Missing,Campo requerido vacío: Pies² por Caja
+3,,Missing,Campo requerido vacío: SKU
+3,,Missing,Campo requerido vacío: Pies² por Caja
+4,,Missing,Campo requerido vacío: SKU
+4,,Missing,Campo requerido vacío: Pies² por Caja
+5,,Missing,Campo requerido vacío: SKU
+5,,Missing,Campo requerido vacío: Pies² por Caja
+6,,Missing,Campo requerido vacío: SKU
+6,,Missing,Campo requerido vacío: Pies² por Caja
+7,,Missing,Campo requerido vacío: SKU
+7,,Missing,Campo requerido vacío: Pies² por Caja
+2,,Range,Capa de Desgaste (mil) fuera de rango sugerido (4-30): 0.55
+3,,Range,Capa de Desgaste (mil) fuera de rango sugerido (4-30): 0.55
+4,,Range,Capa de Desgaste (mil) fuera de rango sugerido (4-30): 0.55
+5,,Range,Capa de Desgaste (mil) fuera de rango sugerido (4-30): 0.55
+6,,Range,Capa de Desgaste (mil) fuera de rango sugerido (4-30): 0.55
+7,,Range,Capa de Desgaste (mil) fuera de rango sugerido (4-30): 0.55
