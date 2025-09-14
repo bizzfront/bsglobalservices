@@ -74,7 +74,8 @@ $contact_source = 'website_home';
       </div>
 
       <h1 class="h1" id="hero-title">Waterproof LVP Flooring — <br />Sales & Expert Installation</h1>
-      <p class="lead" id="hero-lead" style="color: white; text-shadow: 1px 1px 2px #000;">
+      <!--  style="color: white; text-shadow: 1px 1px 2px #000;" -->
+      <p class="lead" id="hero-lead">
         Modern floors that stand up to daily life. We sell Waterproof LVP and install laminate, vinyl and hardwood with a bilingual team.
       </p>
       <div class="hero-cta">
@@ -260,7 +261,7 @@ $contact_source = 'website_home';
   <!-- Footer -->
 <?php include $base.'includes/footer.php'; ?>
 <div class="bg-slider" style="--bg-opacity:.50">
-      <div class="slide active" style="background-image:url('images/sliders/index.jpg')"></div>
+      <div class="slide active" style="background-image:url('images/sliders/flooring_install.png')"></div>
     </div>
   <script>
     // Mobile menu toggle
