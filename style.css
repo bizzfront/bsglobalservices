@@ -407,8 +407,9 @@
       .register-page .btn-ghost{background:transparent;border-color:var(--gold);color:var(--burgundy)}
       .register-page .btn-ghost:hover{background:var(--beige)}
       .register-page .help{font-size:.85rem;color:#666}
-      .register-page .consent{display:flex;align-items:flex-start;gap:10px;}
-      .register-page .consent input{margin-top:4px}
+      .register-page .row.consent{display:flex;align-items:flex-start;gap:10px;}
+      .register-page .row.consent label{display:block;flex:1;}
+      .register-page .row.consent input{margin-top:4px}
       .register-page .note{background:#fff8ea;border:1px solid #f0e0b9;color:#5a4a1f;padding:10px;border-radius:12px;font-size:.9rem}
       .register-page .slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
       @media(max-width:540px){.register-page .slots{grid-template-columns:repeat(2,1fr)}}
