@@ -99,7 +99,7 @@
     .brand-hero-copy small{ color:#555; display:block; margin-top:2px }
 
     /* Sections */
-    section{padding:3rem 0}
+    section{padding:1rem 0}
     .sec-head{display:flex;justify-content:space-between;align-items:end;gap:1rem;margin-bottom:1.4rem}
     .eyebrow{color:var(--gold);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:.8rem}
     h2{font-family:Montserrat, sans-serif;font-weight:700;margin:.35rem 0;position:relative;padding-left:.8rem}
@@ -317,7 +317,7 @@
     .store-hero p{margin:0;color:#555}
 
     .store-layout{display:grid;grid-template-columns:280px 1fr;gap:var(--gap);padding:clamp(14px,3vw,22px) 0}
-    @media (max-width:980px){.store-layout{grid-template-columns:1fr}}
+    @media (max-width:980px){.store-layout{grid-template-columns:1fr} .store-filters{position:relative !important;}}
 
     .store-filters{border:1px solid #eadfcd;border-radius:16px;padding:16px;background:#fff;box-shadow:var(--shadow);position:sticky;top:74px;height:max-content}
     .store-filters h3{margin:0 0 8px;font-family:Montserrat,sans-serif;color:#5A2A2E}
@@ -327,9 +327,9 @@
     .store-filters input[type="number"], .store-filters select{width:100%;padding:.5rem;border:1px solid #ddd;border-radius:10px;font:inherit}
 
     .store-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
-    .store-chip{border:1px solid #eadfcd;border-radius:999px;padding:.45rem .7rem;background:#fff}
+    .store-chip{border:1px solid #eadfcd;border-radius:999px;padding:1.45rem .7rem;background:#fff}
     .store-sort{margin-left:auto}
-    .store-sort select{border:1px solid #ddd;border-radius:999px;padding:.45rem .7rem;font:inherit}
+    .store-sort select{border:1px solid #ddd;border-radius:999px;padding:.45rem .2rem;font:inherit}
 
     .store-grid{display:grid;gap:var(--gap);grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
 
