@@ -33,7 +33,17 @@ $active = $active ?? '';
         <?php else: ?>
           <a href="<?=$base?>store/" role="menuitem">Store</a>
         <?php endif; ?>
+        <a href="<?=$base?>store/cart.php" role="menuitem">Cart (<span id="cart-count">0</span>)</a>
       </div>
     </nav>
   </div>
 </header>
+<script src="<?=$base?>store/cart.js"></script>
+<script>
+  function updateCartCount(){
+    const el = document.getElementById('cart-count');
+    if(el) el.textContent = cart.getCount();
+  }
+  document.addEventListener('cartchange', updateCartCount);
+  updateCartCount();
+</script>
