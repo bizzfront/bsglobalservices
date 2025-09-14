@@ -18,6 +18,7 @@ $base = $base ?? '';
         <a href="<?=$base?>#portfolio" data-i18n="nav_use">Portfolio / Proyects</a><br/>
         <a href="<?=$base?>#reviews" data-i18n="nav_reviews">Reviews</a><br/>
         <a href="<?=$base?>#faq" data-i18n="nav_faq">FAQ</a><br/>
+        <a href="<?=$base?>register/">Catalog &amp; Schedule</a><br/>
         <a href="<?=$base?>terms.html">Terms & Conditions</a>
       </nav>
     </div>
