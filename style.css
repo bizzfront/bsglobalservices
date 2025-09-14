@@ -312,6 +312,15 @@
         .product-top .product-cart{width:40%}
       }
 
+      .calc{margin:1rem 0}
+      .calc form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+      .calc label{display:flex;flex-direction:column;font-size:.95rem;color:#333;gap:6px}
+      .calc input{padding:.7rem .8rem;border:1px solid #ddd;border-radius:12px;font:inherit}
+      .calc .full{grid-column:1/-1}
+      .calc .or{text-align:center;color:#777}
+      .calc button{justify-self:start}
+      @media(max-width:540px){.calc form{grid-template-columns:1fr}}
+
     .tabs{display:flex;margin-top:1rem;border-bottom:1px solid #eadfcd}
     .tabs button{flex:1;padding:.6rem;background:#f4ede4;border:none;cursor:pointer;font-weight:700;color:var(--burgundy)}
     .tabs button.active{background:var(--burgundy);color:#fff}

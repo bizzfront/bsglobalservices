@@ -77,20 +77,25 @@ $contact_source = 'website_store';
           <?php endif; ?>
         </div>
 
-        <div id="calc" class="calc" style="margin:1rem 0;">
+        <div id="calc" class="calc">
           <h3>Material calculator</h3>
-          <div class="row">
-            <label>Length (ft)<input type="number" id="calcLen" step="0.1"></label>
-            <label>Width (ft)<input type="number" id="calcWid" step="0.1"></label>
-          </div>
-          <div class="row">
-            <span>or</span>
-          </div>
-          <div class="row">
-            <label>Boxes<input type="number" id="calcBoxes" min="1" value="1"></label>
-          </div>
-          <p id="calcSummary" class="note"></p>
-          <button type="button" id="addToCart" class="btn btn-primary">Add to cart</button>
+          <form id="calcForm">
+            <label>
+              Length (ft)
+              <input type="number" id="calcLen" step="0.1">
+            </label>
+            <label>
+              Width (ft)
+              <input type="number" id="calcWid" step="0.1">
+            </label>
+            <div class="full or">or</div>
+            <label class="full">
+              Boxes
+              <input type="number" id="calcBoxes" min="1" value="1">
+            </label>
+            <p id="calcSummary" class="note full"></p>
+            <button type="button" id="addToCart" class="btn btn-primary full">Add to cart</button>
+          </form>
         </div>
       </div>
     </div>
