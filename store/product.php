@@ -56,16 +56,49 @@ $contact_source = 'website_store';
         <?php endif; ?>
       </div>
     </div>
-    <div class="tabs">
-      <button class="tab-btn active" data-target="specs">Specifications</button>
-      <button class="tab-btn" data-target="benefits">Benefits</button>
-      <button class="tab-btn" data-target="use">Use Areas</button>
-      <button class="tab-btn" data-target="logistics">Logistics</button>
+    <?php
+      $priceSqft = isset($product['price_sqft']) && $product['price_sqft'] !== null ? '$'.number_format($product['price_sqft'],2) : '';
+      $priceBox = isset($product['price_box']) && $product['price_box'] !== null ? '$'.number_format($product['price_box'],2) : '';
+    ?>
+    <div class="store-price">
+      <?php if($priceSqft): ?>
+        <div><b><?= $priceSqft ?></b><span class="store-per">/sqft</span></div>
+      <?php else: ?>
+        <div><b>Call for price</b></div>
+      <?php endif; ?>
+      <?php if($priceBox): ?>
+        <div><span class="store-per">≈ <?= $priceBox ?> / box</span></div>
+      <?php endif; ?>
     </div>
-    <div id="specs" class="tab-content active"><?= $product['Technical_Specifications'] ?></div>
-    <div id="benefits" class="tab-content"><?= $product['Ke_Benefits'] ?></div>
-    <div id="use" class="tab-content"><?= $product['Recommended_Use_Areas'] ?></div>
-    <div id="logistics" class="tab-content"><?= $product['Logistics'] ?></div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-target="overview">Overview</button>
+      <button class="tab-btn" data-target="specs">Specifications</button>
+    </div>
+    <div id="overview" class="tab-content active">
+      <?php if(!empty($product['short_desc'])): ?>
+        <ul>
+          <?php foreach (explode(';', $product['short_desc']) as $b): if(trim($b)): ?>
+            <li><?= htmlspecialchars(trim($b)) ?></li>
+          <?php endif; endforeach; ?>
+        </ul>
+      <?php endif; ?>
+      <?php if(!empty($product['long_desc'])): ?>
+        <p><?= htmlspecialchars($product['long_desc']) ?></p>
+      <?php endif; ?>
+    </div>
+    <div id="specs" class="tab-content">
+      <ul>
+        <?php if($product['thickness_mm']): ?><li><strong>Thickness:</strong> <?= $product['thickness_mm'] ?> mm</li><?php endif; ?>
+        <?php if($product['wear_layer_mil']): ?><li><strong>Wear layer:</strong> <?= $product['wear_layer_mil'] ?> mil</li><?php endif; ?>
+        <?php if($product['width_in'] && $product['length_in']): ?><li><strong>Plank size:</strong> <?= $product['width_in'] ?>×<?= $product['length_in'] ?> in</li><?php endif; ?>
+        <?php if($product['core']): ?><li><strong>Core:</strong> <?= htmlspecialchars($product['core']) ?></li><?php endif; ?>
+        <?php if($product['pad']): ?><li><strong>Pad:</strong> <?= htmlspecialchars($product['pad']) ?> <?= htmlspecialchars($product['pad_material'] ?? '') ?></li><?php endif; ?>
+        <?php if($product['installation']): ?><li><strong>Installation:</strong> <?= htmlspecialchars($product['installation']) ?></li><?php endif; ?>
+        <?php if($product['waterproof']): ?><li><strong>Waterproof:</strong> <?= htmlspecialchars($product['waterproof']) ?></li><?php endif; ?>
+        <?php if($product['scratch_resistant']): ?><li><strong>Scratch resistant:</strong> <?= htmlspecialchars($product['scratch_resistant']) ?></li><?php endif; ?>
+      </ul>
+    </div>
     <div class="hero-cta" style="margin-top:1rem;">
       <a href="#contact" class="btn btn-primary">Get install Quote</a>
     </div>
