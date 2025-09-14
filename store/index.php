@@ -90,10 +90,32 @@ function card(p){
   const thk = p.thickness_mm ? `${p.thickness_mm} mm` : '';
   const wear = p.wear_layer_mil ? `${p.wear_layer_mil} mil wear` : '';
   const href = `product.php?sku=${encodeURIComponent(p.sku)}`;
-  let priceHtml = priceSqft ? `<div class=\"store-price\"><b>${priceSqft}</b><span class=\"store-per\">/sqft</span></div>` : `<div class=\"store-price\"><b>Call for price</b></div>`;
-  if(priceBox){ priceHtml += `<div class=\"store-price\"><span class=\"store-per\">≈ ${priceBox} / box</span></div>`; }
+  let priceHtml = priceSqft ? `<div class="store-price"><b>${priceSqft}</b><span class="store-per">/sqft</span></div>` : `<div class="store-price"><b>Call for price</b></div>`;
+  if(priceBox){ priceHtml += `<div class="store-price"><span class="store-per">≈ ${priceBox} / box</span></div>`; }
   const badge = inStock ? '<span class="store-badge">In stock</span>' : '<span class="store-badge store-out">Backorder</span>';
-  return `\n  <article class=\"store-card\">\n    <a href=\"${href}\">\n      <div class=\"store-img\" style=\"background-image:url('..\/${p.image}')\">${badge}</div>\n    </a>\n    <div class=\"store-pad\">\n      <h3 class=\"store-title\"><a href=\"${href}\">${p.name}</a></h3>\n      <div class=\"store-sub\">${p.collection || ''}</div>\n      <div class=\"store-specs\">\n        ${thk? `<span class=\"store-pill\">${thk}</span>`:''}\n        ${wear? `<span class=\"store-pill\">${wear}</span>`:''}\n        ${width? `<span class=\"store-pill\">${width}</span>`:''}\n        <span class=\"store-pill\">${p.core || ''}</span>\n        <span class=\"store-pill\">${p.pad ? p.pad+' pad '+(p.pad_material||'') : ''}</span>\n      </div>\n      ${priceHtml}\n      <div class=\"store-cta\">\n        <a class=\"btn btn-ghost\" href=\"${href}\">View details</a>\n        <a class=\"btn btn-primary\" href=\"https://wa.me/16892968515?text=${encodeURIComponent(p.whatsapp_text || ('Hi, I want an estimate for SKU '+p.sku))}\" target=\"_blank\" rel=\"noopener\">Get estimate</a>\n      </div>\n    </div>\n  </article>`;
+  const img = p.image ? `../${p.image}` : '';
+  return `
+  <article class="store-card">
+    <a href="${href}">
+      <div class="store-img" style="background-image:url('${img}')">${badge}</div>
+    </a>
+    <div class="store-pad">
+      <h3 class="store-title"><a href="${href}">${p.name}</a></h3>
+      <div class="store-sub">${p.collection || ''}</div>
+      <div class="store-specs">
+        ${thk? `<span class="store-pill">${thk}</span>`:''}
+        ${wear? `<span class="store-pill">${wear}</span>`:''}
+        ${width? `<span class="store-pill">${width}</span>`:''}
+        <span class="store-pill">${p.core || ''}</span>
+        <span class="store-pill">${p.pad ? p.pad+' pad '+(p.pad_material||'') : ''}</span>
+      </div>
+      ${priceHtml}
+      <div class="store-cta">
+        <a class="btn btn-ghost" href="${href}">View details</a>
+        <a class="btn btn-primary" href="https://wa.me/16892968515?text=${encodeURIComponent(p.whatsapp_text || ('Hi, I want an estimate for SKU '+p.sku))}" target="_blank" rel="noopener">Get estimate</a>
+      </div>
+    </div>
+  </article>`;
 }
 
 function applyFilters(list){
