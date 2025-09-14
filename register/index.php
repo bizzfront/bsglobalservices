@@ -74,10 +74,12 @@ window.SLOT_MINUTES=60;
           <textarea name="message" rows="3" placeholder="Square footage, timeline, preferred color…"></textarea>
         </label>
 
-        <div class="row consent">
-          <input id="consent" type="checkbox" required />
-          <label for="consent">I agree to be contacted by B&amp;S Floor Supply regarding my request. <span class="help">(You can unsubscribe anytime.)</span></label>
-        </div>
+
+          
+        <label class="row consent" for="consent">
+          <input id="consent" type="checkbox" required />I agree to be contacted by B&amp;S Floor Supply regarding my request. <span class="help">(You can unsubscribe anytime.)</span>
+        </label>
+       
 
         <div class="row" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">
           <button class="btn btn-primary" type="submit">Submit</button>
