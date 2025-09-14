@@ -381,14 +381,19 @@
         font-family:Poppins,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
         line-height:1.55;
       }
-      .register-page .wrap{width:min(1000px,92%);margin-inline:auto}
-      .register-page .hero{background:linear-gradient(180deg,#F5EBDD 0,#fff 100%);border-bottom:1px solid #eadfcd}
-      .register-page .hero .wrap{padding:clamp(28px,7vw,72px) 0}
+
+      .register-page h2{font-size:clamp(1.3em, 2vw, 2rem);line-height:1.1;margin:0; padding-left: 0;}
+
+      .register-page h2::before{content:"";position:absolute;left:0;top:0;bottom:0;width:0px;background:#591320;border-radius:0px}
+
+      .register-page .wrap{width:min(1000px,95%); margin-inline:auto;}
+      .register-page .hero{margin: auto; background:linear-gradient(180deg,#F5EBDD 0,transparent 100%);border-bottom:1px solid #eadfcd}
+      .register-page .hero .wrap{padding:clamp(14px,5vw,72px) 0; margin-inline:unset; margin: auto;}
       .register-page h1{font-family:Montserrat,sans-serif;font-weight:800;color:var(--burgundy);margin:0 0 8px;font-size:clamp(26px,3.6vw,44px)}
       .register-page p.sub{margin:0;color:#444}
-      .register-page .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:-24px}
+      .register-page .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:-24px; z-index: 1; padding-bottom: 4dvw;}
       @media(max-width:960px){.register-page .grid{grid-template-columns:1fr}}
-      .register-page .panel{background:#fff;border:1px solid #eadfcd;border-radius:18px;box-shadow:var(--shadow);padding:18px}
+      .register-page .panel{z-index:1; background:#fff;border:1px solid #eadfcd;border-radius:18px;box-shadow:var(--shadow);padding:18px}
       .register-page form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
       @media(max-width:760px){.register-page form{grid-template-columns:1fr}}
       .register-page label{display:flex;flex-direction:column;font-size:.95rem;color:#333;gap:6px}
