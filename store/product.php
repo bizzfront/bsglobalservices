@@ -58,7 +58,11 @@ $contact_source = 'website_store';
     </div>
     <?php
       $priceSqft = isset($product['price_sqft']) && $product['price_sqft'] !== null ? '$'.number_format($product['price_sqft'],2) : '';
-      $priceBox = isset($product['price_box']) && $product['price_box'] !== null ? '$'.number_format($product['price_box'],2) : '';
+      $priceBoxNum = $product['price_box'] ?? null;
+      if ($priceBoxNum === null && isset($product['price_sqft'], $product['sqft_per_box'])) {
+        $priceBoxNum = $product['price_sqft'] * $product['sqft_per_box'];
+      }
+      $priceBox = $priceBoxNum !== null ? '$'.number_format($priceBoxNum,2) : '';
     ?>
     <div class="store-price">
       <?php if($priceSqft): ?>
@@ -69,6 +73,22 @@ $contact_source = 'website_store';
       <?php if($priceBox): ?>
         <div><span class="store-per">≈ <?= $priceBox ?> / box</span></div>
       <?php endif; ?>
+    </div>
+
+    <div id="calc" class="calc" style="margin:1rem 0;">
+      <h3>Material calculator</h3>
+      <div class="row">
+        <label>Length (ft)<input type="number" id="calcLen" step="0.1"></label>
+        <label>Width (ft)<input type="number" id="calcWid" step="0.1"></label>
+      </div>
+      <div class="row">
+        <span>or</span>
+      </div>
+      <div class="row">
+        <label>Boxes<input type="number" id="calcBoxes" min="1" value="1"></label>
+      </div>
+      <p id="calcSummary" class="note"></p>
+      <button type="button" id="addToCart" class="btn btn-primary">Add to cart</button>
     </div>
 
     <div class="tabs">
@@ -130,6 +150,30 @@ $contact_source = 'website_store';
         document.getElementById(btn.dataset.target).classList.add('active');
       });
     });
+    const SKU = <?= json_encode($product['sku']) ?>;
+    const SQFT_PER_BOX = <?= json_encode($product['sqft_per_box'] ?? null) ?>;
+    const PRICE_SQFT = <?= json_encode($product['price_sqft']) ?>;
+    const PRICE_BOX = <?= json_encode($product['price_box']) ?>;
+    function updateCalc(){
+      const len = parseFloat(document.getElementById('calcLen').value);
+      const wid = parseFloat(document.getElementById('calcWid').value);
+      let boxes = parseInt(document.getElementById('calcBoxes').value) || 0;
+      if(len && wid && SQFT_PER_BOX){
+        const sqft = len * wid;
+        boxes = Math.ceil(sqft / SQFT_PER_BOX);
+        document.getElementById('calcBoxes').value = boxes;
+      }
+      const pricePerBox = PRICE_BOX || (PRICE_SQFT && SQFT_PER_BOX ? PRICE_SQFT * SQFT_PER_BOX : 0);
+      const summary = boxes ? `${boxes} box(es)` + (pricePerBox ? ` — $${(boxes*pricePerBox).toFixed(2)}` : '') : '';
+      document.getElementById('calcSummary').textContent = summary;
+      return boxes;
+    }
+    ['calcLen','calcWid','calcBoxes'].forEach(id=>document.getElementById(id)?.addEventListener('input', updateCalc));
+    document.getElementById('addToCart')?.addEventListener('click', ()=>{
+      const boxes = updateCalc();
+      if(boxes>0) cart.addItem(SKU, boxes);
+    });
+    updateCalc();
     function trackEvent(name, params){
       if (window.gtag) gtag('event', name, params || {});
       window.dataLayer && window.dataLayer.push({event: name, ...params});
