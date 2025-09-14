@@ -46,6 +46,18 @@ $formName = read_field('form_name');
 $source = read_field('source');
 $city = read_field('city');
 $sessionID = read_field('sessionID', 1000);
+$cartRaw = $_POST['cart'] ?? '';
+$cartItems = json_decode($cartRaw, true);
+if (is_array($cartItems) && $cartItems) {
+    $message .= "\n\nCart items:\n";
+    foreach ($cartItems as $it) {
+        $sku = preg_replace('/[^\w-]/', '', $it['sku'] ?? '');
+        $qty = intval($it['quantity'] ?? 0);
+        if ($sku && $qty > 0) {
+            $message .= $sku . ' x ' . $qty . "\n";
+        }
+    }
+}
 
 if ($name === '' || ($email === '' && $phone === '') || $service === '' || $message === '') {
     echo json_encode(['code' => '03', 'data' => 'Please complete all fields of the form.', 'fields' => [$name, $email, $phone, $service, $message]]);

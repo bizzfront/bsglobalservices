@@ -85,7 +85,8 @@ const PRODUCTS = <?= json_encode($products) ?>;
 function card(p){
   const inStock = (p.inventory_status || '').toLowerCase() === 'in stock';
   const priceSqft = p.price_sqft != null ? `$${p.price_sqft.toFixed(2)}` : '';
-  const priceBox = p.price_box != null ? `$${p.price_box.toFixed(2)}` : '';
+  const pb = p.price_box != null ? p.price_box : (p.price_sqft != null && p.sqft_per_box != null ? p.price_sqft * p.sqft_per_box : null);
+  const priceBox = pb != null ? `$${pb.toFixed(2)}` : '';
   const width = (p.width_in && p.length_in) ? `${p.width_in}×${p.length_in} in` : '';
   const thk = p.thickness_mm ? `${p.thickness_mm} mm` : '';
   const wear = p.wear_layer_mil ? `${p.wear_layer_mil} mil wear` : '';
@@ -111,8 +112,9 @@ function card(p){
       </div>
       ${priceHtml}
       <div class="store-cta">
+        <input type="number" class="qty" min="1" value="1" aria-label="Quantity">
+        <button class="btn btn-primary add-cart" data-sku="${p.sku}" type="button">Add to cart</button>
         <a class="btn btn-ghost" href="${href}">View details</a>
-        <a class="btn btn-primary" href="https://wa.me/16892968515?text=${encodeURIComponent(p.whatsapp_text || ('Hi, I want an estimate for SKU '+p.sku))}" target="_blank" rel="noopener">Get estimate</a>
       </div>
     </div>
   </article>`;
@@ -152,7 +154,14 @@ function applySort(list){
 function render(){
   let list = applyFilters(PRODUCTS);
   list = applySort(list);
-  document.getElementById('store-grid').innerHTML = list.map(card).join('');
+  const grid = document.getElementById('store-grid');
+  grid.innerHTML = list.map(card).join('');
+  grid.querySelectorAll('.add-cart').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const qty = parseInt(btn.parentElement.querySelector('.qty').value) || 1;
+      cart.addItem(btn.dataset.sku, qty);
+    });
+  });
 }
 
 ['sortSel','fColor','fTone','fThkMin','fWearMin'].forEach(id=>{
