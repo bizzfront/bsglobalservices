@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>B&S Floor Supply — Store</title>
+<meta name="description" content="Shop B&S Floor Supply. Waterproof LVP with SPC/WPC core, attached pad, easy click install.">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--burgundy:#5A2A2E;--gold:#CDA349;--beige:#F5EBDD;--gray:#D9D9D9;--white:#FFFFFF;--ink:#1d1d1f;--gap:clamp(14px,2.4vw,26px);--container:1180px;--radius:16px;--shadow:0 10px 30px rgba(0,0,0,.12)}
+  *{box-sizing:border-box} html,body{margin:0;background:#fff;color:var(--ink);font-family:Poppins,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55}
+  a{text-decoration:none;color:inherit}
+  .container{width:min(var(--container),92%);margin-inline:auto}
+  header.top{border-bottom:1px solid #eee;background:#fff;position:sticky;top:0;z-index:30}
+  header.top .wrap{display:grid;grid-template-columns:1fr auto auto;gap:14px;align-items:center;padding:12px 0}
+  .brand{font-family:Montserrat, sans-serif;font-weight:800;color:var(--burgundy)}
+  nav a{margin-right:16px}
+
+  .hero{background:linear-gradient(180deg,#F5EBDD 0,#fff 100%);border-bottom:1px solid #eadfcd}
+  .hero .wrap{padding:clamp(22px,6vw,64px) 0}
+  .hero h1{font-family:Montserrat,sans-serif;font-weight:800;color:#5A2A2E;margin:0 0 6px;font-size:clamp(26px,3.6vw,42px)}
+  .hero p{margin:0;color:#555}
+
+  .layout{display:grid;grid-template-columns:280px 1fr;gap:var(--gap);padding:clamp(14px,3vw,22px) 0}
+  @media (max-width:980px){.layout{grid-template-columns:1fr}}
+
+  aside.filters{border:1px solid #eadfcd;border-radius:16px;padding:16px;background:#fff;box-shadow:var(--shadow);position:sticky;top:74px;height:max-content}
+  .filters h3{margin:0 0 8px;font-family:Montserrat,sans-serif;color:#5A2A2E}
+  .f-sec{border-top:1px dashed #eadfcd;padding-top:10px;margin-top:10px}
+  .f-sec:first-of-type{border-top:0;padding-top:0;margin-top:0}
+  .f-sec label{display:block;margin:8px 0;color:#333}
+  .f-sec input[type="number"], .f-sec select{width:100%;padding:.5rem;border:1px solid #ddd;border-radius:10px;font:inherit}
+
+  .bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+  .chip{border:1px solid #eadfcd;border-radius:999px;padding:.45rem .7rem;background:#fff}
+  .sort{margin-left:auto} .sort select{border:1px solid #ddd;border-radius:999px;padding:.45rem .7rem;font:inherit}
+
+  .grid{display:grid;gap:var(--gap);grid-template-columns:repeat(3,1fr)}
+  @media (max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:620px){.grid{grid-template-columns:1fr}}
+
+  .card{background:#fff;border:1px solid #eadfcd;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+  .img{aspect-ratio:16/10;background:#f3f3f3 center/cover no-repeat;position:relative}
+  .badge{position:absolute;left:10px;top:10px;background:#5A2A2E;color:#fff;border-radius:999px;padding:4px 10px;font-size:.75rem;font-weight:700}
+  .out{background:#bbb !important}
+  .pad{padding:14px}
+  .title{font-weight:700;margin:0 0 2px}
+  .sub{color:#666;font-size:.92rem;margin:0 0 8px}
+  .specs{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 10px}
+  .pill{border:1px solid #eadfcd;border-radius:999px;padding:.25rem .5rem;font-size:.83rem;color:#3b3b3b;background:#fff}
+  .price{display:flex;gap:10px;align-items:baseline;margin:6px 0 8px}
+  .price b{font-size:1.1rem}
+  .price .per{color:#777}
+  .cta{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding:0 14px 14px}
+  .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.65rem .9rem;border-radius:999px;font-weight:600;border:2px solid transparent;cursor:pointer}
+  .btn-primary{background:#5A2A2E;color:#fff;border-color:#5A2A2E}
+  .btn-primary:hover{filter:brightness(.93)}
+  .btn-ghost{background:transparent;border-color:#CDA349;color:#5A2A2E}
+  .btn-ghost:hover{background:#F5EBDD}
+</style>
+
+<script>
+// === B&S Store Config (edit here) ===
+window.WA_NUMBER = "16892968515";                 // TODO: replace with your final WhatsApp number (digits only)
+window.EMAIL_TO  = "orders@bsfloorsupply.com";    // TODO: replace with your order inbox
+window.FORMSPREE_ID = "";                         // Optional: set your Formspree ID (e.g., "xyzz123"); leave empty to use mailto fallback
+// ====================================
+</script>
+
+
+<link rel="canonical" href="https://www.bsfloorsupply.com/store" />
+<meta property="og:title" content="B&S Floor Supply — Store: Waterproof LVP">
+<meta property="og:description" content="Shop waterproof LVP with SPC/WPC core, attached pad and easy click install.">
+<meta property="og:type" content="website">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Store — Waterproof LVP",
+  "url": "https://www.bsfloorsupply.com/store",
+  "isPartOf": {"@type":"WebSite","name":"B&S Floor Supply","url":"https://www.bsfloorsupply.com"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Home","item":"https://www.bsfloorsupply.com/"},
+    {"@type":"ListItem","position":2,"name":"Store","item":"https://www.bsfloorsupply.com/store"},
+    {"@type":"ListItem","position":3,"name":"Waterproof LVP","item":"https://www.bsfloorsupply.com/store"}
+  ]
+}
+</script>
+
+</head>
+<body>
+
+<header class="top">
+  <div class="container wrap">
+    <div class="brand">B&amp;S Floor Supply</div>
+    <nav>
+      <a href="#">Store</a>
+      <a href="#">Installation</a>
+      <a href="#">Contact</a>
+    </nav>
+    <div></div>
+  </div>
+</header>
+
+
+<nav aria-label="Breadcrumb" class="container" style="padding:10px 0 0; font-size:.9rem; color:#666;">
+  <a href="/" style="color:#666; text-decoration:none;">Home</a> &raquo; 
+  <span>Store</span> &raquo; 
+  <strong>Waterproof LVP</strong>
+</nav>
+
+<section class="hero">
+  <div class="container wrap">
+    <h1>Store — Waterproof LVP</h1>
+    <p>SPC/WPC core · Attached pad · Easy click install</p>
+  </div>
+</section>
+
+<div class="container layout">
+  <aside class="filters" aria-label="Filters">
+    <h3>Filter</h3>
+    <div class="f-sec">
+      <label>Color family
+        <select id="fColor">
+          <option value="">All</option>
+          <option>Gray</option>
+          <option>Brown</option>
+          <option>Beige</option>
+        </select>
+      </label>
+      <label>Tone
+        <select id="fTone">
+          <option value="">All</option>
+          <option>Light</option>
+          <option>Medium</option>
+          <option>Dark</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="f-sec">
+      <label>Thickness (mm) min
+        <input id="fThkMin" type="number" step="0.1" placeholder="e.g., 5.0">
+      </label>
+      <label>Wear layer (mil) min
+        <input id="fWearMin" type="number" step="1" placeholder="e.g., 12">
+      </label>
+    </div>
+
+    <div class="f-sec">
+      <button class="btn btn-ghost" id="clearFilters" type="button">Clear all</button>
+    </div>
+  </aside>
+
+  <main>
+    <div class="bar">
+      <div class="chip">Waterproof</div>
+      <div class="chip">SPC Core</div>
+      <div class="chip">Attached Pad</div>
+      <div class="sort" style="margin-left:auto">
+        <label for="sortSel" class="muted" style="margin-right:6px;">Sort</label>
+        <select id="sortSel">
+          <option value="relevance" selected>Relevance</option>
+          <option value="price-asc">Price (low → high)</option>
+          <option value="price-desc">Price (high → low)</option>
+          <option value="rating-desc">Rating</option>
+        </select>
+      </div>
+    </div>
+
+    <section id="grid" class="grid" aria-live="polite"></section>
+  </main>
+</div>
+
+<script>
+const PRODUCTS = [
+  {
+    "SKU": NaN,
+    "Código Interno": NaN,
+    "Nombre del Producto": "Waterproof LVP",
+    "Colección": "ORLANDO",
+    "Marca": "INTERTEK",
+    "Nombre de Color": "Caramel",
+    "Familia de Color (Gray/Brown/Beige)": "Brown",
+    "Tono (Light/Medium/Dark)": "Medium",
+    "Aspecto Madera (Oak/Maple/Walnut/etc.)": "Walnut",
+    "Ancho de Tabla (in)": 7,
+    "Largo de Tabla (in)": 48,
+    "Espesor Total (mm)": 5.5,
+    "Capa de Desgaste (mil)": 0.55,
+    "Tipo de Núcleo (SPC/WPC)": "WPC",
+    "Textura Superficial (EIR/Matte/Handscraped)": "Deep Embossed Texture",
+    "Tipo de Borde (Micro-Bevel/Square)": NaN,
+    "Acabado (PU/UV/Ceramic Bead)": "UV",
+    "Bajo Manto Integrado (Sí/No)": "Si",
+    "Material del Bajo Manto (IXPE/EVA)": "IXPE",
+    "Método de Instalación (Click/Floating/Glue Down)": "Unilin Click System (no glue)",
+    "Resistencia al Agua (Waterproof/Water-Resistant)": "Si",
+    "Resistencia a Rayones/Manchas (Sí/No)": "Si",
+    "Compatible con Calefacción Radiante (Sí/No)": NaN,
+    "Certificación VOC (FloorScore/GreenGuard)": NaN,
+    "Libre de Ftalatos (Sí/No)": NaN,
+    "Clasificación de Fuego (ASTM E84)": NaN,
+    "Coeficiente de Fricción (COF seco/húmedo)": NaN,
+    "Garantía Residencial (años)": NaN,
+    "Garantía Comercial (años)": NaN,
+    "Pies² por Caja": NaN,
+    "Planchas por Caja": NaN,
+    "Peso por Caja (lb)": NaN,
+    "Cajas por Pallet": NaN,
+    "Precio por Pie² (USD)": 1.69,
+    "Precio por Caja (USD)": NaN,
+    "MSRP por Pie² (USD)": NaN,
+    "Estado de Inventario (In Stock/Backorder)": "In Stock",
+    "Cantidad Disponible (Pie²)": NaN,
+    "Tiempo de Entrega (días)": 2,
+    "Proveedor": NaN,
+    "País de Origen": NaN,
+    "Imagen Principal (URL)": "https://lh3.googleusercontent.com/p/AF1QipPWvHVwaxPlFnCjID1A1obLTsr7xsGBHjYNfOxP=w243-h174-n-k-no-nu",
+    "Imagen en Ambiente (URL)": "https://lh3.googleusercontent.com/p/AF1QipNqziUkrLtGs3epkyw26gW0iObNXKR1oiY9Gknx=w243-h174-n-k-no-nu",
+    "Detalle Close-up (URL)": NaN,
+    "Ficha Técnica (URL)": NaN,
+    "Guía de Instalación (URL)": NaN,
+    "Garantía PDF (URL)": NaN,
+    "Guía de Mantenimiento (URL)": NaN,
+    "Muestra Disponible (Sí/No)": NaN,
+    "Precio de Muestra (USD)": NaN,
+    "Lead Time de Muestra (días)": NaN,
+    "T-Molding SKU": NaN,
+    "Reducer SKU": NaN,
+    "Stair Nose SKU": NaN,
+    "Quarter Round SKU": NaN,
+    "Otros Accesorios/SKUs": NaN,
+    "SEO Title (máx 60)": "Caramel Waterproof Vinyl Plank Flooring\nCaramel LVP SPC 7x48 – Durable Floors\nBuy Caramel Vinyl Plank in Orlando\nCaramel Wood Look Waterproof LVP\nCaramel SPC Vinyl Flooring with Pad\nCaramel Vinyl Plank – Easy Click Install\nCaramel Luxury Vinyl Plank Flooring\nCaramel LVP – Waterproof & Scratch Proof\nCaramel SPC Flooring for Homes & Offices\nCaramel Waterproof Floors – Best Price\n",
+    "Meta Description (máx 155)": "Shop Caramel waterproof vinyl plank flooring. Durable LVP, easy click install, and modern wood look. Orlando delivery available.",
+    "Slug URL": NaN,
+    "Descripción Corta (bullets separados por ;)": "💧 Waterproof; 🛡 Slip Resistant; ⿢ 22 mil Wear Layer; ☀ UV Coating; 🔇 IXPE Pad; 🔧🧩 Click Lock; 🧽 Easy to Clean; 🔥 Fire Retardant",
+    "Descripción Larga": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use.",
+    "Badges (New/Best Seller/Sale)": NaN,
+    "Rating (1-5)": NaN,
+    "Nº Reseñas": NaN,
+    "Disponibilidad Orlando (Sí/No)": "Si",
+    "Disponibilidad Kissimmee (Sí/No)": "Si",
+    "Disponibilidad St. Cloud (Sí/No)": "Si",
+    "Texto WhatsApp Prefill": "Hello, I am interested in the Waterproof LVP flooring collection. Please send me more details.",
+    "title_display": "Caramel",
+    "subtitle": "INTERTEK · ORLANDO",
+    "price_sqft_fmt": "$1.69",
+    "price_box_fmt": "$nan",
+    "thickness_fmt": "5.5",
+    "wear_fmt": "1",
+    "width_fmt": "7.0",
+    "length_fmt": "48.0",
+    "pdp_href": "lvp-caramel.html"
+  },
+  {
+    "SKU": NaN,
+    "Código Interno": NaN,
+    "Nombre del Producto": "Waterproof LVP",
+    "Colección": "ORLANDO",
+    "Marca": "INTERTEK",
+    "Nombre de Color": "Natural Maple",
+    "Familia de Color (Gray/Brown/Beige)": "Beige",
+    "Tono (Light/Medium/Dark)": "Light",
+    "Aspecto Madera (Oak/Maple/Walnut/etc.)": "Maple",
+    "Ancho de Tabla (in)": 7,
+    "Largo de Tabla (in)": 48,
+    "Espesor Total (mm)": 5.5,
+    "Capa de Desgaste (mil)": 0.55,
+    "Tipo de Núcleo (SPC/WPC)": "WPC",
+    "Textura Superficial (EIR/Matte/Handscraped)": "Deep Embossed Texture",
+    "Tipo de Borde (Micro-Bevel/Square)": NaN,
+    "Acabado (PU/UV/Ceramic Bead)": "UV",
+    "Bajo Manto Integrado (Sí/No)": "Si",
+    "Material del Bajo Manto (IXPE/EVA)": "IXPE",
+    "Método de Instalación (Click/Floating/Glue Down)": "Unilin Click System (no glue)",
+    "Resistencia al Agua (Waterproof/Water-Resistant)": "Si",
+    "Resistencia a Rayones/Manchas (Sí/No)": "Si",
+    "Compatible con Calefacción Radiante (Sí/No)": NaN,
+    "Certificación VOC (FloorScore/GreenGuard)": NaN,
+    "Libre de Ftalatos (Sí/No)": NaN,
+    "Clasificación de Fuego (ASTM E84)": NaN,
+    "Coeficiente de Fricción (COF seco/húmedo)": NaN,
+    "Garantía Residencial (años)": NaN,
+    "Garantía Comercial (años)": NaN,
+    "Pies² por Caja": NaN,
+    "Planchas por Caja": NaN,
+    "Peso por Caja (lb)": NaN,
+    "Cajas por Pallet": NaN,
+    "Precio por Pie² (USD)": 1.69,
+    "Precio por Caja (USD)": NaN,
+    "MSRP por Pie² (USD)": NaN,
+    "Estado de Inventario (In Stock/Backorder)": "In Stock",
+    "Cantidad Disponible (Pie²)": NaN,
+    "Tiempo de Entrega (días)": 2,
+    "Proveedor": NaN,
+    "País de Origen": NaN,
+    "Imagen Principal (URL)": "https://lh3.googleusercontent.com/p/AF1QipPWvHVwaxPlFnCjID1A1obLTsr7xsGBHjYNfOxP=w243-h174-n-k-no-nu",
+    "Imagen en Ambiente (URL)": "https://lh3.googleusercontent.com/p/AF1QipNqziUkrLtGs3epkyw26gW0iObNXKR1oiY9Gknx=w243-h174-n-k-no-nu",
+    "Detalle Close-up (URL)": NaN,
+    "Ficha Técnica (URL)": NaN,
+    "Guía de Instalación (URL)": NaN,
+    "Garantía PDF (URL)": NaN,
+    "Guía de Mantenimiento (URL)": NaN,
+    "Muestra Disponible (Sí/No)": NaN,
+    "Precio de Muestra (USD)": NaN,
+    "Lead Time de Muestra (días)": NaN,
+    "T-Molding SKU": NaN,
+    "Reducer SKU": NaN,
+    "Stair Nose SKU": NaN,
+    "Quarter Round SKU": NaN,
+    "Otros Accesorios/SKUs": NaN,
+    "SEO Title (máx 60)": "Natural Maple Waterproof Vinyl Plank\nMaple Look SPC Flooring – Easy Install\nNatural Maple LVP Flooring Orlando\nBuy Natural Maple Waterproof LVP SPC\nNatural Maple Vinyl Plank with Pad\nNatural Maple Luxury Vinyl Flooring\nMaple Style Waterproof LVP Flooring\nNatural Maple SPC Vinyl – 7x48 Board\nNatural Maple Durable Waterproof LVP\nNatural Maple Vinyl Flooring for Homes\n",
+    "Meta Description (máx 155)": "Maple LVP flooring with embossed finish. Durable, waterproof, and easy to install. Perfect for Florida homes and offices.",
+    "Slug URL": NaN,
+    "Descripción Corta (bullets separados por ;)": "💧 Waterproof; 🛡 Slip Resistant; ⿢ 22 mil Wear Layer; ☀ UV Coating; 🔇 IXPE Pad; 🔧🧩 Click Lock; 🧽 Easy to Clean; 🔥 Fire Retardant",
+    "Descripción Larga": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use.",
+    "Badges (New/Best Seller/Sale)": NaN,
+    "Rating (1-5)": NaN,
+    "Nº Reseñas": NaN,
+    "Disponibilidad Orlando (Sí/No)": "Si",
+    "Disponibilidad Kissimmee (Sí/No)": "Si",
+    "Disponibilidad St. Cloud (Sí/No)": "Si",
+    "Texto WhatsApp Prefill": "Hello, I am interested in the Waterproof LVP flooring collection. Please send me more details.",
+    "title_display": "Natural Maple",
+    "subtitle": "INTERTEK · ORLANDO",
+    "price_sqft_fmt": "$1.69",
+    "price_box_fmt": "$nan",
+    "thickness_fmt": "5.5",
+    "wear_fmt": "1",
+    "width_fmt": "7.0",
+    "length_fmt": "48.0",
+    "pdp_href": "lvp-natural-maple.html"
+  },
+  {
+    "SKU": NaN,
+    "Código Interno": NaN,
+    "Nombre del Producto": "Waterproof LVP",
+    "Colección": "ORLANDO",
+    "Marca": "INTERTEK",
+    "Nombre de Color": "Northen Grey",
+    "Familia de Color (Gray/Brown/Beige)": "Gray",
+    "Tono (Light/Medium/Dark)": "Medium",
+    "Aspecto Madera (Oak/Maple/Walnut/etc.)": "Oak",
+    "Ancho de Tabla (in)": 7,
+    "Largo de Tabla (in)": 48,
+    "Espesor Total (mm)": 5.5,
+    "Capa de Desgaste (mil)": 0.55,
+    "Tipo de Núcleo (SPC/WPC)": "WPC",
+    "Textura Superficial (EIR/Matte/Handscraped)": "Deep Embossed Texture",
+    "Tipo de Borde (Micro-Bevel/Square)": NaN,
+    "Acabado (PU/UV/Ceramic Bead)": "UV",
+    "Bajo Manto Integrado (Sí/No)": "Si",
+    "Material del Bajo Manto (IXPE/EVA)": "IXPE",
+    "Método de Instalación (Click/Floating/Glue Down)": "Unilin Click System (no glue)",
+    "Resistencia al Agua (Waterproof/Water-Resistant)": "Si",
+    "Resistencia a Rayones/Manchas (Sí/No)": "Si",
+    "Compatible con Calefacción Radiante (Sí/No)": NaN,
+    "Certificación VOC (FloorScore/GreenGuard)": NaN,
+    "Libre de Ftalatos (Sí/No)": NaN,
+    "Clasificación de Fuego (ASTM E84)": NaN,
+    "Coeficiente de Fricción (COF seco/húmedo)": NaN,
+    "Garantía Residencial (años)": NaN,
+    "Garantía Comercial (años)": NaN,
+    "Pies² por Caja": NaN,
+    "Planchas por Caja": NaN,
+    "Peso por Caja (lb)": NaN,
+    "Cajas por Pallet": NaN,
+    "Precio por Pie² (USD)": 1.69,
+    "Precio por Caja (USD)": NaN,
+    "MSRP por Pie² (USD)": NaN,
+    "Estado de Inventario (In Stock/Backorder)": "In Stock",
+    "Cantidad Disponible (Pie²)": NaN,
+    "Tiempo de Entrega (días)": 2,
+    "Proveedor": NaN,
+    "País de Origen": NaN,
+    "Imagen Principal (URL)": "https://lh3.googleusercontent.com/p/AF1QipPWvHVwaxPlFnCjID1A1obLTsr7xsGBHjYNfOxP=w243-h174-n-k-no-nu",
+    "Imagen en Ambiente (URL)": "https://lh3.googleusercontent.com/p/AF1QipNqziUkrLtGs3epkyw26gW0iObNXKR1oiY9Gknx=w243-h174-n-k-no-nu",
+    "Detalle Close-up (URL)": NaN,
+    "Ficha Técnica (URL)": NaN,
+    "Guía de Instalación (URL)": NaN,
+    "Garantía PDF (URL)": NaN,
+    "Guía de Mantenimiento (URL)": NaN,
+    "Muestra Disponible (Sí/No)": NaN,
+    "Precio de Muestra (USD)": NaN,
+    "Lead Time de Muestra (días)": NaN,
+    "T-Molding SKU": NaN,
+    "Reducer SKU": NaN,
+    "Stair Nose SKU": NaN,
+    "Quarter Round SKU": NaN,
+    "Otros Accesorios/SKUs": NaN,
+    "SEO Title (máx 60)": "Northen Grey Waterproof Vinyl Plank\nGrey Wood Look SPC Flooring Orlando\nBuy Northen Grey LVP Vinyl Plank Floor\nNorthen Grey SPC Flooring – 7x48 Size\nNorthen Grey LVP Flooring with Pad\nGrey Waterproof Vinyl Floors – Durable\nNorthen Grey Luxury Vinyl Plank SPC\nModern Grey Waterproof Vinyl Flooring\nNorthen Grey SPC Flooring – Easy Install\nGrey LVP Flooring Orlando – Northen Grey\n",
+    "Meta Description (máx 155)": "Northen Grey waterproof vinyl plank flooring. Modern grey tone with LVP durability and easy click installation.",
+    "Slug URL": NaN,
+    "Descripción Corta (bullets separados por ;)": "💧 Waterproof; 🛡 Slip Resistant; ⿢ 22 mil Wear Layer; ☀ UV Coating; 🔇 IXPE Pad; 🔧🧩 Click Lock; 🧽 Easy to Clean; 🔥 Fire Retardant",
+    "Descripción Larga": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use.",
+    "Badges (New/Best Seller/Sale)": NaN,
+    "Rating (1-5)": NaN,
+    "Nº Reseñas": NaN,
+    "Disponibilidad Orlando (Sí/No)": "Si",
+    "Disponibilidad Kissimmee (Sí/No)": "Si",
+    "Disponibilidad St. Cloud (Sí/No)": "Si",
+    "Texto WhatsApp Prefill": "Hello, I am interested in the Waterproof LVP flooring collection. Please send me more details.",
+    "title_display": "Northen Grey",
+    "subtitle": "INTERTEK · ORLANDO",
+    "price_sqft_fmt": "$1.69",
+    "price_box_fmt": "$nan",
+    "thickness_fmt": "5.5",
+    "wear_fmt": "1",
+    "width_fmt": "7.0",
+    "length_fmt": "48.0",
+    "pdp_href": "lvp-northen-grey.html"
+  },
+  {
+    "SKU": NaN,
+    "Código Interno": NaN,
+    "Nombre del Producto": "Waterproof LVP",
+    "Colección": "ORLANDO",
+    "Marca": "INTERTEK",
+    "Nombre de Color": "Peanut",
+    "Familia de Color (Gray/Brown/Beige)": "Brown",
+    "Tono (Light/Medium/Dark)": "Light",
+    "Aspecto Madera (Oak/Maple/Walnut/etc.)": "Oak",
+    "Ancho de Tabla (in)": 7,
+    "Largo de Tabla (in)": 48,
+    "Espesor Total (mm)": 5.5,
+    "Capa de Desgaste (mil)": 0.55,
+    "Tipo de Núcleo (SPC/WPC)": "WPC",
+    "Textura Superficial (EIR/Matte/Handscraped)": "Deep Embossed Texture",
+    "Tipo de Borde (Micro-Bevel/Square)": NaN,
+    "Acabado (PU/UV/Ceramic Bead)": "UV",
+    "Bajo Manto Integrado (Sí/No)": "Si",
+    "Material del Bajo Manto (IXPE/EVA)": "IXPE",
+    "Método de Instalación (Click/Floating/Glue Down)": "Unilin Click System (no glue)",
+    "Resistencia al Agua (Waterproof/Water-Resistant)": "Si",
+    "Resistencia a Rayones/Manchas (Sí/No)": "Si",
+    "Compatible con Calefacción Radiante (Sí/No)": NaN,
+    "Certificación VOC (FloorScore/GreenGuard)": NaN,
+    "Libre de Ftalatos (Sí/No)": NaN,
+    "Clasificación de Fuego (ASTM E84)": NaN,
+    "Coeficiente de Fricción (COF seco/húmedo)": NaN,
+    "Garantía Residencial (años)": NaN,
+    "Garantía Comercial (años)": NaN,
+    "Pies² por Caja": NaN,
+    "Planchas por Caja": NaN,
+    "Peso por Caja (lb)": NaN,
+    "Cajas por Pallet": NaN,
+    "Precio por Pie² (USD)": 1.69,
+    "Precio por Caja (USD)": NaN,
+    "MSRP por Pie² (USD)": NaN,
+    "Estado de Inventario (In Stock/Backorder)": "In Stock",
+    "Cantidad Disponible (Pie²)": NaN,
+    "Tiempo de Entrega (días)": 2,
+    "Proveedor": NaN,
+    "País de Origen": NaN,
+    "Imagen Principal (URL)": "https://lh3.googleusercontent.com/p/AF1QipPWvHVwaxPlFnCjID1A1obLTsr7xsGBHjYNfOxP=w243-h174-n-k-no-nu",
+    "Imagen en Ambiente (URL)": "https://lh3.googleusercontent.com/p/AF1QipNqziUkrLtGs3epkyw26gW0iObNXKR1oiY9Gknx=w243-h174-n-k-no-nu",
+    "Detalle Close-up (URL)": NaN,
+    "Ficha Técnica (URL)": NaN,
+    "Guía de Instalación (URL)": NaN,
+    "Garantía PDF (URL)": NaN,
+    "Guía de Mantenimiento (URL)": NaN,
+    "Muestra Disponible (Sí/No)": NaN,
+    "Precio de Muestra (USD)": NaN,
+    "Lead Time de Muestra (días)": NaN,
+    "T-Molding SKU": NaN,
+    "Reducer SKU": NaN,
+    "Stair Nose SKU": NaN,
+    "Quarter Round SKU": NaN,
+    "Otros Accesorios/SKUs": NaN,
+    "SEO Title (máx 60)": "Peanut Waterproof Vinyl Plank Flooring\nPeanut SPC LVP – 22mil Wear Layer\nBuy Peanut Vinyl Plank in Orlando\nPeanut Wood Look Waterproof Flooring\nPeanut SPC Vinyl Plank with IXPE Pad\nPeanut LVP Flooring – Easy Installation\nPeanut Luxury Vinyl Plank 7x48 Board\nPeanut SPC Flooring – Scratch Resistant\nPeanut Waterproof LVP for Homes & Offices\nPeanut Vinyl Flooring Orlando – Best Price\n",
+    "Meta Description (máx 155)": "Buy Northen Grey LVP in Orlando. Durable waterproof vinyl plank flooring with modern grey wood look.",
+    "Slug URL": NaN,
+    "Descripción Corta (bullets separados por ;)": "💧 Waterproof; 🛡 Slip Resistant; ⿢ 22 mil Wear Layer; ☀ UV Coating; 🔇 IXPE Pad; 🔧🧩 Click Lock; 🧽 Easy to Clean; 🔥 Fire Retardant",
+    "Descripción Larga": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use.",
+    "Badges (New/Best Seller/Sale)": NaN,
+    "Rating (1-5)": NaN,
+    "Nº Reseñas": NaN,
+    "Disponibilidad Orlando (Sí/No)": "Si",
+    "Disponibilidad Kissimmee (Sí/No)": "Si",
+    "Disponibilidad St. Cloud (Sí/No)": "Si",
+    "Texto WhatsApp Prefill": "Hello, I am interested in the Waterproof LVP flooring collection. Please send me more details.",
+    "title_display": "Peanut",
+    "subtitle": "INTERTEK · ORLANDO",
+    "price_sqft_fmt": "$1.69",
+    "price_box_fmt": "$nan",
+    "thickness_fmt": "5.5",
+    "wear_fmt": "1",
+    "width_fmt": "7.0",
+    "length_fmt": "48.0",
+    "pdp_href": "lvp-peanut.html"
+  },
+  {
+    "SKU": NaN,
+    "Código Interno": NaN,
+    "Nombre del Producto": "Waterproof LVP",
+    "Colección": "ORLANDO",
+    "Marca": "INTERTEK",
+    "Nombre de Color": "Ribbon Grey",
+    "Familia de Color (Gray/Brown/Beige)": "Gray",
+    "Tono (Light/Medium/Dark)": "Dark",
+    "Aspecto Madera (Oak/Maple/Walnut/etc.)": "Oak",
+    "Ancho de Tabla (in)": 7,
+    "Largo de Tabla (in)": 48,
+    "Espesor Total (mm)": 5.5,
+    "Capa de Desgaste (mil)": 0.55,
+    "Tipo de Núcleo (SPC/WPC)": "WPC",
+    "Textura Superficial (EIR/Matte/Handscraped)": "Deep Embossed Texture",
+    "Tipo de Borde (Micro-Bevel/Square)": NaN,
+    "Acabado (PU/UV/Ceramic Bead)": "UV",
+    "Bajo Manto Integrado (Sí/No)": "Si",
+    "Material del Bajo Manto (IXPE/EVA)": "IXPE",
+    "Método de Instalación (Click/Floating/Glue Down)": "Unilin Click System (no glue)",
+    "Resistencia al Agua (Waterproof/Water-Resistant)": "Si",
+    "Resistencia a Rayones/Manchas (Sí/No)": "Si",
+    "Compatible con Calefacción Radiante (Sí/No)": NaN,
+    "Certificación VOC (FloorScore/GreenGuard)": NaN,
+    "Libre de Ftalatos (Sí/No)": NaN,
+    "Clasificación de Fuego (ASTM E84)": NaN,
+    "Coeficiente de Fricción (COF seco/húmedo)": NaN,
+    "Garantía Residencial (años)": NaN,
+    "Garantía Comercial (años)": NaN,
+    "Pies² por Caja": NaN,
+    "Planchas por Caja": NaN,
+    "Peso por Caja (lb)": NaN,
+    "Cajas por Pallet": NaN,
+    "Precio por Pie² (USD)": 1.69,
+    "Precio por Caja (USD)": NaN,
+    "MSRP por Pie² (USD)": NaN,
+    "Estado de Inventario (In Stock/Backorder)": "In Stock",
+    "Cantidad Disponible (Pie²)": NaN,
+    "Tiempo de Entrega (días)": 2,
+    "Proveedor": NaN,
+    "País de Origen": NaN,
+    "Imagen Principal (URL)": "https://lh3.googleusercontent.com/p/AF1QipPWvHVwaxPlFnCjID1A1obLTsr7xsGBHjYNfOxP=w243-h174-n-k-no-nu",
+    "Imagen en Ambiente (URL)": "https://lh3.googleusercontent.com/p/AF1QipNqziUkrLtGs3epkyw26gW0iObNXKR1oiY9Gknx=w243-h174-n-k-no-nu",
+    "Detalle Close-up (URL)": NaN,
+    "Ficha Técnica (URL)": NaN,
+    "Guía de Instalación (URL)": NaN,
+    "Garantía PDF (URL)": NaN,
+    "Guía de Mantenimiento (URL)": NaN,
+    "Muestra Disponible (Sí/No)": NaN,
+    "Precio de Muestra (USD)": NaN,
+    "Lead Time de Muestra (días)": NaN,
+    "T-Molding SKU": NaN,
+    "Reducer SKU": NaN,
+    "Stair Nose SKU": NaN,
+    "Quarter Round SKU": NaN,
+    "Otros Accesorios/SKUs": NaN,
+    "SEO Title (máx 60)": "Ribbon Grey Waterproof Vinyl Plank\nBlue Grey SPC Flooring – Modern Style\nRibbon Grey LVP Flooring Orlando\nBuy Ribbon Grey Waterproof Vinyl SPC\nRibbon Grey Luxury Vinyl Plank Flooring\nRibbon Grey SPC Flooring with Pad\nModern Ribbon Grey Waterproof Floors\nRibbon Grey Vinyl Plank 7x48 Boards\nRibbon Grey LVP Flooring – Easy Install\nRibbon Grey SPC Flooring for Homes\n",
+    "Meta Description (máx 155)": "Buy Ribbon Grey waterproof LVP floors. Durable and stylish flooring for Florida homes and offices.",
+    "Slug URL": NaN,
+    "Descripción Corta (bullets separados por ;)": "💧 Waterproof; 🛡 Slip Resistant; ⿢ 22 mil Wear Layer; ☀ UV Coating; 🔇 IXPE Pad; 🔧🧩 Click Lock; 🧽 Easy to Clean; 🔥 Fire Retardant",
+    "Descripción Larga": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use.",
+    "Badges (New/Best Seller/Sale)": NaN,
+    "Rating (1-5)": NaN,
+    "Nº Reseñas": NaN,
+    "Disponibilidad Orlando (Sí/No)": "Si",
+    "Disponibilidad Kissimmee (Sí/No)": "Si",
+    "Disponibilidad St. Cloud (Sí/No)": "Si",
+    "Texto WhatsApp Prefill": "Hello, I am interested in the Waterproof LVP flooring collection. Please send me more details.",
+    "title_display": "Ribbon Grey",
+    "subtitle": "INTERTEK · ORLANDO",
+    "price_sqft_fmt": "$1.69",
+    "price_box_fmt": "$nan",
+    "thickness_fmt": "5.5",
+    "wear_fmt": "1",
+    "width_fmt": "7.0",
+    "length_fmt": "48.0",
+    "pdp_href": "lvp-ribbon-grey.html"
+  },
+  {
+    "SKU": NaN,
+    "Código Interno": NaN,
+    "Nombre del Producto": "Waterproof LVP",
+    "Colección": "ORLANDO",
+    "Marca": "INTERTEK",
+    "Nombre de Color": "Strip Natural",
+    "Familia de Color (Gray/Brown/Beige)": "Beige",
+    "Tono (Light/Medium/Dark)": "Medium",
+    "Aspecto Madera (Oak/Maple/Walnut/etc.)": "Oak",
+    "Ancho de Tabla (in)": 7,
+    "Largo de Tabla (in)": 48,
+    "Espesor Total (mm)": 5.5,
+    "Capa de Desgaste (mil)": 0.55,
+    "Tipo de Núcleo (SPC/WPC)": "WPC",
+    "Textura Superficial (EIR/Matte/Handscraped)": "Deep Embossed Texture",
+    "Tipo de Borde (Micro-Bevel/Square)": NaN,
+    "Acabado (PU/UV/Ceramic Bead)": "UV",
+    "Bajo Manto Integrado (Sí/No)": "Si",
+    "Material del Bajo Manto (IXPE/EVA)": "IXPE",
+    "Método de Instalación (Click/Floating/Glue Down)": "Unilin Click System (no glue)",
+    "Resistencia al Agua (Waterproof/Water-Resistant)": "Si",
+    "Resistencia a Rayones/Manchas (Sí/No)": "Si",
+    "Compatible con Calefacción Radiante (Sí/No)": NaN,
+    "Certificación VOC (FloorScore/GreenGuard)": NaN,
+    "Libre de Ftalatos (Sí/No)": NaN,
+    "Clasificación de Fuego (ASTM E84)": NaN,
+    "Coeficiente de Fricción (COF seco/húmedo)": NaN,
+    "Garantía Residencial (años)": NaN,
+    "Garantía Comercial (años)": NaN,
+    "Pies² por Caja": NaN,
+    "Planchas por Caja": NaN,
+    "Peso por Caja (lb)": NaN,
+    "Cajas por Pallet": NaN,
+    "Precio por Pie² (USD)": 1.69,
+    "Precio por Caja (USD)": NaN,
+    "MSRP por Pie² (USD)": NaN,
+    "Estado de Inventario (In Stock/Backorder)": "In Stock",
+    "Cantidad Disponible (Pie²)": NaN,
+    "Tiempo de Entrega (días)": 2,
+    "Proveedor": NaN,
+    "País de Origen": NaN,
+    "Imagen Principal (URL)": "https://lh3.googleusercontent.com/p/AF1QipPWvHVwaxPlFnCjID1A1obLTsr7xsGBHjYNfOxP=w243-h174-n-k-no-nu",
+    "Imagen en Ambiente (URL)": "https://lh3.googleusercontent.com/p/AF1QipNqziUkrLtGs3epkyw26gW0iObNXKR1oiY9Gknx=w243-h174-n-k-no-nu",
+    "Detalle Close-up (URL)": NaN,
+    "Ficha Técnica (URL)": NaN,
+    "Guía de Instalación (URL)": NaN,
+    "Garantía PDF (URL)": NaN,
+    "Guía de Mantenimiento (URL)": NaN,
+    "Muestra Disponible (Sí/No)": NaN,
+    "Precio de Muestra (USD)": NaN,
+    "Lead Time de Muestra (días)": NaN,
+    "T-Molding SKU": NaN,
+    "Reducer SKU": NaN,
+    "Stair Nose SKU": NaN,
+    "Quarter Round SKU": NaN,
+    "Otros Accesorios/SKUs": NaN,
+    "SEO Title (máx 60)": "Strip Natural Waterproof Vinyl Plank\nBuy Strip Natural LVP Flooring Orlando\nStrip Natural SPC Flooring – 7x48 Size\nNatural Beige LVP Flooring – Waterproof\nStrip Natural Vinyl Plank with IXPE Pad\nDurable Strip Natural SPC Vinyl Flooring\nStrip Natural Wood Look Vinyl Flooring\nStrip Natural LVP Floors – Easy Install\nWaterproof Strip Natural SPC Flooring\nStrip Natural Vinyl Flooring for Homes\n",
+    "Meta Description (máx 155)": "Strip Natural SPC flooring. Easy to install, waterproof, and modern beige wood style.",
+    "Slug URL": NaN,
+    "Descripción Corta (bullets separados por ;)": "💧 Waterproof; 🛡 Slip Resistant; ⿢ 22 mil Wear Layer; ☀ UV Coating; 🔇 IXPE Pad; 🔧🧩 Click Lock; 🧽 Easy to Clean; 🔥 Fire Retardant",
+    "Descripción Larga": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use.",
+    "Badges (New/Best Seller/Sale)": NaN,
+    "Rating (1-5)": NaN,
+    "Nº Reseñas": NaN,
+    "Disponibilidad Orlando (Sí/No)": "Si",
+    "Disponibilidad Kissimmee (Sí/No)": "Si",
+    "Disponibilidad St. Cloud (Sí/No)": "Si",
+    "Texto WhatsApp Prefill": "Hello, I am interested in the Waterproof LVP flooring collection. Please send me more details.",
+    "title_display": "Strip Natural",
+    "subtitle": "INTERTEK · ORLANDO",
+    "price_sqft_fmt": "$1.69",
+    "price_box_fmt": "$nan",
+    "thickness_fmt": "5.5",
+    "wear_fmt": "1",
+    "width_fmt": "7.0",
+    "length_fmt": "48.0",
+    "pdp_href": "lvp-strip-natural.html"
+  }
+];
+
+const grid = document.getElementById('grid');
+const sortSel = document.getElementById('sortSel');
+const fColor = document.getElementById('fColor');
+const fTone = document.getElementById('fTone');
+const fThkMin = document.getElementById('fThkMin');
+const fWearMin = document.getElementById('fWearMin');
+const clearBtn = document.getElementById('clearFilters');
+
+function card(p){
+  const inStock = (p["Estado de Inventario (In Stock/Backorder)"]||"").toLowerCase()==="in stock";
+  const priceSqft = p.price_sqft_fmt || "";
+  const priceBox = p.price_box_fmt || "";
+  const width = p.length_fmt && p.width_fmt ? `${p.width_fmt}×${p.length_fmt} in` : "";
+  const thk = p.thickness_fmt ? `${p.thickness_fmt} mm` : "";
+  const wear = p.wear_fmt ? `${p.wear_fmt} mil wear` : "";
+  const img = p["Imagen Principal (URL)"] || "";
+  const title = p.title_display || p["Nombre de Color"] || p["SKU"];
+  const subtitle = p.subtitle || "";
+  const href = p.pdp_href || (p["Slug URL"] ? ('/lvp/'+p["Slug URL"]) : '#');
+
+  let priceHtml = priceSqft ? `<div class="price"><b>${priceSqft}</b><span class="per">/sqft</span></div>` : `<div class="price"><b>Call for price</b></div>`;
+  if(priceBox){ priceHtml += `<div class="price"><span class="per">≈ ${priceBox} / box</span></div>`; }
+  const badge = inStock ? '<span class="badge">In stock</span>' : '<span class="badge out">Backorder</span>';
+
+  return `
+  <article class="card">
+    <a href="${href}">
+      <div class="img" style="background-image:url('${img}')">${badge}</div>
+    </a>
+    <div class="pad">
+      <h3 class="title"><a href="${href}">${title}</a></h3>
+      <div class="sub">${subtitle}</div>
+      <div class="specs">
+        ${thk? `<span class="pill">${thk}</span>`:''}
+        ${wear? `<span class="pill">${wear}</span>`:''}
+        ${width? `<span class="pill">${width}</span>`:''}
+        <span class="pill">${p["Tipo de Núcleo (SPC/WPC)"]||"SPC"}</span>
+        <span class="pill">${(p["Bajo Manto Integrado (Sí/No)"]||"Sí")} pad ${(p["Material del Bajo Manto (IXPE/EVA)"]||"")}</span>
+      </div>
+      ${priceHtml}
+      <div class="cta">
+        <a class="btn btn-ghost" href="${href}">View details</a>
+        <a class="btn btn-primary" href="javascript:void(0)" onclick="window.open(`https://wa.me/${window.WA_NUMBER}?text=${encodeURIComponent('Hi, I want an estimate for SKU '+(p['SKU']||''))}`, '_blank')" target="_blank" rel="noopener">Get estimate</a>
+      </div>
+    </div>
+  </article>`;
+}
+
+function applyFilters(list){
+  const cf = (fColor.value||"").toLowerCase();
+  const tn = (fTone.value||"").toLowerCase();
+  const thkMin = parseFloat(fThkMin.value) || 0;
+  const wearMin = parseFloat(fWearMin.value) || 0;
+  return list.filter(p=>{
+    const fam = (p["Familia de Color (Gray/Brown/Beige)"]||"").toLowerCase();
+    const tone = (p["Tono (Light/Medium/Dark)"]||"").toLowerCase();
+    const thk = parseFloat(p["Espesor Total (mm)"]) || 0;
+    const wear = parseFloat(p["Capa de Desgaste (mil)"]) || 0;
+    if(cf && fam !== cf) return false;
+    if(tn && tone !== tn) return false;
+    if(thkMin && thk < thkMin) return false;
+    if(wearMin && wear < wearMin) return false;
+    return true;
+  });
+}
+
+function applySort(list){
+  const v = sortSel.value;
+  const copy = [...list];
+  if(v==="price-asc"){
+    copy.sort((a,b)=>(parseFloat(a["Precio por Pie² (USD)"])||1e9)-(parseFloat(b["Precio por Pie² (USD)"])||1e9));
+  }else if(v==="price-desc"){
+    copy.sort((a,b)=>(parseFloat(b["Precio por Pie² (USD)"])||-1)-(parseFloat(a["Precio por Pie² (USD)"])||-1));
+  }else if(v==="rating-desc"){
+    copy.sort((a,b)=>(parseFloat(b["Rating (1-5)"])||0)-(parseFloat(a["Rating (1-5)"])||0));
+  }
+  return copy;
+}
+
+function render(){ let list = applyFilters(PRODUCTS); list = applySort(list); grid.innerHTML = list.map(card).join(""); }
+[sortSel,fColor,fTone,fThkMin,fWearMin].forEach(el=>el.addEventListener('change', render));
+document.getElementById('clearFilters').addEventListener('click', ()=>{ fColor.value=""; fTone.value=""; fThkMin.value=""; fWearMin.value=""; sortSel.value="relevance"; render(); });
+render();
+</script>
+
+</body>
+</html>

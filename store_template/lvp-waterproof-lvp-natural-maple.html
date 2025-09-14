@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Natural Maple | B&S Floor Supply</title>
+<meta name="description" content="Maple LVP flooring with embossed finish. Durable, waterproof, and easy to install. Perfect for Florida homes and offices.">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--burgundy:#5A2A2E; --gold:#CDA349; --beige:#F5EBDD; --gray:#D9D9D9; --white:#FFFFFF; --ink:#1d1d1f;
+    --container:1180px; --gap:clamp(14px,2.4vw,28px); --radius:16px; --shadow:0 10px 30px rgba(0,0,0,.12)}
+  *{box-sizing:border-box} html,body{margin:0;background:#fff;color:var(--ink);font-family:Poppins,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55}
+  a{text-decoration:none;color:inherit} img{max-width:100%;display:block}
+  .container{width:min(var(--container),92%);margin-inline:auto}
+  header.top{border-bottom:1px solid #eee;background:#fff;position:sticky;top:0;z-index:30}
+  .top .wrap{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:10px 0}
+  .brand{font-family:Montserrat,sans-serif;font-weight:800;color:var(--burgundy)}
+  .store{display:flex;align-items:center;gap:8px;color:#444}
+  .store select{border:1px solid #ddd;border-radius:10px;padding:6px 10px;font:inherit}
+  .page{display:grid;grid-template-columns:1.15fr .85fr;gap:var(--gap);padding:clamp(18px,4vw,28px) 0}
+  @media (max-width: 980px){ .page{grid-template-columns:1fr} }
+  .gallery{display:grid;grid-template-columns:1fr;gap:12px}
+  .hero{aspect-ratio:16/10;background:#f3f3f3 center/cover no-repeat;border:1px solid #eee;border-radius:12px;position:relative}
+  .thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  .thumb{aspect-ratio:16/10;background:#f3f3f3 center/cover no-repeat;border:2px solid transparent;border-radius:8px;cursor:pointer}
+  .thumb.active{border-color:#CDA349}
+  .info h1{font-family:Montserrat,sans-serif;font-weight:800;margin:0 0 4px;color:#5A2A2E;font-size:clamp(24px,3vw,36px)}
+  .sku{color:#666;font-size:.92rem;margin-top:4px}
+  .summary{margin:10px 0;color:#444}
+  .badges{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+  .pill{border:1px solid #eadfcd;border-radius:999px;padding:.25rem .55rem;font-size:.85rem;background:#fff;color:#3b3b3b}
+  .order{border:1px solid #eadfcd;border-radius:16px;padding:16px;background:#fff;box-shadow:0 10px 30px rgba(0,0,0,.12);position:sticky;top:80px;height:max-content}
+  .price{display:flex;gap:10px;align-items:baseline} .price b{font-size:1.3rem} .muted{color:#666}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+  select,input{width:100%;padding:.55rem .65rem;border:1px solid #ddd;border-radius:10px;font:inherit}
+  .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.7rem 1rem;border-radius:999px;font-weight:600;border:2px solid transparent;cursor:pointer}
+  .btn-primary{background:#5A2A2E;color:#fff;border-color:#5A2A2E} .btn-primary:hover{filter:brightness(.93)}
+  .btn-ghost{background:transparent;border-color:#CDA349;color:#5A2A2E} .btn-ghost:hover{background:#F5EBDD}
+  .cta{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+  .specs{margin-top:22px} .specs h2{font-family:Montserrat,sans-serif;color:#5A2A2E;margin:0 0 10px;font-size:1.2rem}
+  .grid{display:grid;gap:12px;grid-template-columns:repeat(3,1fr)} @media(max-width:900px){ .grid{grid-template-columns:1fr 1fr} } @media(max-width:600px){ .grid{grid-template-columns:1fr} }
+  .card{background:#fff;border:1px solid #eadfcd;border-radius:12px;padding:12px} .card .k{color:#7a7a7a;font-size:.85rem} .card .v{font-weight:600}
+  .sec{padding:clamp(28px,6vw,54px) 0;border-top:1px solid #eee} .sec h3{font-family:Montserrat,sans-serif;color:#5A2A2E;margin:0 0 6px}
+  .benefits{display:grid;gap:14px;grid-template-columns:repeat(3,1fr)} @media(max-width:900px){.benefits{grid-template-columns:1fr 1fr}} @media(max-width:600px){.benefits{grid-template-columns:1fr}}
+  .benefit{background:#F5EBDD;border:1px solid #eadfcd;border-radius:12px;padding:14px}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:16px}
+  .modal .panel{background:#fff;width:min(560px,96%);border-radius:16px;padding:18px;border:1px solid #eadfcd;box-shadow:0 10px 30px rgba(0,0,0,.12)}
+  .modal h4{margin:0 0 8px;color:#5A2A2E;font-family:Montserrat,sans-serif}
+  .mgrid{display:grid;gap:10px} .close{float:right;cursor:pointer;color:#8a8a8a}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="container wrap">
+    <div class="brand">B&amp;S Floor Supply</div>
+    <div class="store">
+      <span>See availability:</span>
+      <select id="store">
+        <option value="orlando" selected>Orlando, FL</option>
+        <option value="kissimmee">Kissimmee, FL</option>
+        <option value="stcloud">St. Cloud, FL</option>
+      </select>
+    </div>
+  </div>
+</header>
+
+<main class="container page">
+
+  <section class="gallery">
+    <div id="hero" class="hero" style="background-image:url('https://lh3.googleusercontent.com/p/AF1QipPWvHVwaxPlFnCjID1A1obLTsr7xsGBHjYNfOxP=w243-h174-n-k-no-nu')"></div>
+    <div class="thumbs" id="thumbs">
+      <div class='thumb active' style="background-image:url('https://lh3.googleusercontent.com/p/AF1QipPWvHVwaxPlFnCjID1A1obLTsr7xsGBHjYNfOxP=w243-h174-n-k-no-nu')" data-src="https://lh3.googleusercontent.com/p/AF1QipPWvHVwaxPlFnCjID1A1obLTsr7xsGBHjYNfOxP=w243-h174-n-k-no-nu"></div><div class='thumb' style="background-image:url('https://lh3.googleusercontent.com/p/AF1QipNqziUkrLtGs3epkyw26gW0iObNXKR1oiY9Gknx=w243-h174-n-k-no-nu')" data-src="https://lh3.googleusercontent.com/p/AF1QipNqziUkrLtGs3epkyw26gW0iObNXKR1oiY9Gknx=w243-h174-n-k-no-nu"></div><div class='thumb' style="background-image:url('https://lh3.googleusercontent.com/p/AF1QipNfysdJQwyB1uwKpuOaS-hUrfCZ0xJtjo7fykJZ=w243-h174-n-k-no-nu')" data-src="https://lh3.googleusercontent.com/p/AF1QipNfysdJQwyB1uwKpuOaS-hUrfCZ0xJtjo7fykJZ=w243-h174-n-k-no-nu"></div>
+    </div>
+  </section>
+
+  <section class="info">
+    <h1 id="p-title">Natural Maple</h1>
+    <div class="sku">SKU: <span id="sku"></span> · Brand: <span id="brand">INTERTEK</span></div>
+    <p class="summary">Waterproof LVP with WPC core and attached pad. Easy click install.</p>
+    <div class="badges">
+      <span class='pill'>Waterproof</span><span class='pill'>WPC Core</span><span class='pill'>Attached Pad (IXPE)</span>
+    </div>
+
+    <aside class="order" aria-label="Order panel">
+      <div class="price">
+        <b id="priceSqft">$1.69</b> <span class="muted">/sqft</span>
+      </div>
+      <div class="muted" id="priceBox">≈ $nan / box</div>
+
+      <div class="row">
+        <label>Quantity (boxes)
+          <input id="qty" type="number" min="1" value="6">
+        </label>
+        <label>Pickup / Delivery
+          <select id="delivery">
+            <option>Pickup at Orlando</option>
+            <option>Pickup at Kissimmee</option>
+            <option>Pickup at St. Cloud</option>
+            <option>Local delivery (quote)</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="muted">Availability: <span id="inv">In Stock</span> · Lead time: <span id="lead">2 days</span></div>
+
+      <div class="cta">
+        <a class="btn btn-primary" id="waBtn" href="https://wa.me/16892968515?text=Hello, I am interested in the Waterproof LVP flooring collection. Please send me more details." target="_blank" rel="noopener">Order via WhatsApp</a>
+        <button class="btn btn-ghost" id="emailBtn" type="button" onclick="document.getElementById('modal').style.display='flex'">Order via Email</button>
+        
+      </div>
+    </aside>
+
+    <div class="specs">
+      <h2>Key specifications</h2>
+      <div class="grid">
+        <div class="card"><div class="k">Plank size</div><div class="v">7.0 in × 48.0 in</div></div>
+        <div class="card"><div class="k">Total thickness</div><div class="v">5.5 mm</div></div>
+        <div class="card"><div class="k">Wear layer</div><div class="v">1 mil</div></div>
+        <div class="card"><div class="k">Core</div><div class="v">WPC</div></div>
+        <div class="card"><div class="k">Attached underlayment</div><div class="v">IXPE</div></div>
+        <div class="card"><div class="k">Coverage per box</div><div class="v">nan sqft</div></div>
+      </div>
+    </div>
+
+  </section>
+</main>
+
+<section class="sec">
+  <div class="container">
+    <h3>Why install with B&S</h3>
+    <div class="benefits">
+      <div class="benefit"><strong>Comfort</strong><br>Attached pad for sound and comfort; easy click install.</div>
+      <div class="benefit"><strong>Safety</strong><br>Stable SPC core, level installation and slip-resistant options.</div>
+      <div class="benefit"><strong>Cozy look</strong><br>Realistic wood textures (EIR) with warm, modern tones.</div>
+    </div>
+  </div>
+</section>
+
+<div class="modal" id="modal">
+  <div class="panel">
+    <span class="close" onclick="document.getElementById('modal').style.display='none'">✕</span>
+    <h4>Order via Email</h4>
+    <form class="mgrid" action="/send-order" method="post">
+      <input type="hidden" name="sku" value="">
+      <label>Full name <input name="name" required></label>
+      <label>Email <input name="email" type="email" required></label>
+      <label>Phone <input name="phone" type="tel" required></label>
+      <label>City <input name="city" placeholder="Orlando / Kissimmee / St. Cloud"></label>
+      <label>Quantity (boxes) <input name="qty" type="number" min="1" value="6" required></label>
+      <label>Notes <textarea name="notes" rows="3" placeholder="Delivery address or pickup store, preferred dates…"></textarea></label>
+      <button class="btn btn-primary" type="submit">Send order</button>
+    </form>
+  </div>
+</div>
+
+<script>
+document.getElementById("thumbs").addEventListener("click", e=>{const t=e.target.closest(".thumb");if(!t)return;document.querySelectorAll(".thumb").forEach(x=>x.classList.remove("active"));t.classList.add("active");document.getElementById("hero").style.backgroundImage=`url('${t.dataset.src}')`;});
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Natural Maple",
+  "sku": "",
+  "brand": {
+    "@type": "Brand",
+    "name": "INTERTEK"
+  },
+  "image": "https://lh3.googleusercontent.com/p/AF1QipPWvHVwaxPlFnCjID1A1obLTsr7xsGBHjYNfOxP=w243-h174-n-k-no-nu",
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "USD",
+    "price": "1.69",
+    "availability": "https://schema.org/InStock",
+    "url": ""
+  }
+}
+</script>
+</body>
+</html>
