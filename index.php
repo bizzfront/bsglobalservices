@@ -1,3 +1,8 @@
+<?php
+$base = '';
+$active = 'home';
+$contact_source = 'website_home';
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -20,7 +25,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="<?=$base?>style.css" />
 
   <!-- JSON-LD LocalBusiness -->
   <script type="application/ld+json">
@@ -51,35 +56,7 @@
 </head>
 
 <body>
-   
-  <!-- Top bilingual bar -->
-  <div id="topbar" class="topbar">
-    <div class="container wrap">
-      <div id="topbar-text">Available in English & Spanish · También atendemos en español</div>
-      <div class="lang-toggle" aria-label="Language switch">
-        <button class="lang-btn active" id="lang-en">EN</button>
-        <button class="lang-btn" id="lang-es">ES</button>
-      </div>
-    </div>
-  </div>
-
-    <!-- Header -->
-    <header class="site-header" aria-label="Main">
-      <div class="container nav">
-        <a href="#" class="brand" aria-label="B&S Floor Supply">
-        <span class="logo-bs logo-bs--full" role="img" aria-label="B&S Floor Supply logo"></span>
-      </a>
-        <nav aria-label="Primary">
-        <button class="burger" aria-label="Toggle menu" aria-controls="menu" aria-expanded="false" id="burger">
-          <span></span><span></span><span></span>
-        </button>
-          <div id="menu" class="menu" role="menu">
-            <a href="services/flooring-install/" role="menuitem">Flooring Install</a>
-            <a href="store/" role="menuitem">Store</a>
-          </div>
-        </nav>
-      </div>
-    </header>
+<?php include $base.'includes/header.php'; ?>
 
   <!-- Hero with form -->
   <main id="main" class="container hero">
@@ -114,7 +91,7 @@
 
     <!-- Contact form (hero) -->
     <aside>
-      <form class="form" id="lead-form-hero" action="lead.php" method="POST" aria-labelledby="contact-hero">
+      <form class="form" id="lead-form-hero" action="<?=$base?>lead.php" method="POST" aria-labelledby="contact-hero">
         <h3 style="margin-top:0" data-i18n="form_title">Get your free estimate</h3>
         <div class="row">
           <div>
@@ -247,88 +224,10 @@
   </section>
 
   <!-- Use cases (beige + translucent image) -->
-  <section id="portfolio" class="sec--light sec--image" style="--bg:url('https://images.unsplash.com/photo-1501183638710-841dd1904471?q=80&w=1600&auto=format&fit=crop')">
-    <div class="container">
-      <div class="sec-head">
-        <div>
-          <div class="eyebrow" data-i18n="ey_cases">Where LVP shines</div>
-          <h2 data-i18n="h_cases">Portfolio / Proyects</h2>
-        </div>
-        <a href="#contact" class="pill" data-i18n="pill_quote">Get a quote</a>
-      </div>
-      <div class="usecases">
-        <article class="use">
-          <img src="images/projects/1_1.png" alt="Living room with natural maple tone flooring" />
-          <!--<div class="body">
-            <strong data-i18n="u1_t">Living rooms</strong>
-            <p data-i18n="u1_d">Warm, modern look with durable, family-proof surfaces.</p>
-          </div>-->
-        </article>
-        <article class="use">
-          <img src="images/projects/4_1.png" alt="Bedroom with soft gray flooring" />
-          <!--<div class="body">
-            <strong data-i18n="u2_t">Bedrooms</strong>
-            <p data-i18n="u2_d">Cozy feel, quiet underfoot, easy daily care.</p>
-          </div>-->
-        </article>
-        <article class="use">
-          <img src="images/projects/5_1.png" alt="Bathroom with waterproof flooring" />
-          <!--<div class="body">
-            <strong data-i18n="u3_t">Bathrooms & kitchens</strong>
-            <p data-i18n="u3_d">Waterproof surfaces that handle humidity with style.</p>
-          </div>-->
-        </article>
-        <article class="use">
-          <img src="images/projects/6_1.png" alt="Bathroom with waterproof flooring" />
-          <!--<div class="body">
-            <strong data-i18n="u3_t">Bathrooms & kitchens</strong>
-            <p data-i18n="u3_d">Waterproof surfaces that handle humidity with style.</p>
-          </div>-->
-        </article>
-        <article class="use">
-          <img src="images/projects/7_1.png" alt="Bathroom with waterproof flooring" />
-          <!--<div class="body">
-            <strong data-i18n="u3_t">Bathrooms & kitchens</strong>
-            <p data-i18n="u3_d">Waterproof surfaces that handle humidity with style.</p>
-          </div>-->
-        </article>
-        <article class="use">
-          <img src="images/projects/8_1.png" alt="Bathroom with waterproof flooring" />
-          <!--<div class="body">
-            <strong data-i18n="u3_t">Bathrooms & kitchens</strong>
-            <p data-i18n="u3_d">Waterproof surfaces that handle humidity with style.</p>
-          </div>-->
-        </article>
-      </div>
-    </div>
-  </section>
+<?php include $base.'includes/portfolio.php'; ?>
 
   <!-- Testimonials (dark inverse) -->
-  <section id="reviews" class="sec--dark">
-    <div class="container">
-      <div class="sec-head">
-        <div>
-          <div class="eyebrow" style="color:#F5EBDD" data-i18n="ey_reviews">What clients say</div>
-          <h2 data-i18n="h_reviews">Reviews & results</h2>
-        </div>
-        <a href="#contact" class="pill" data-i18n="pill_quote">Ask for references</a>
-      </div>
-      <div class="twrap">
-        <figure class="t">
-          <figcaption data-i18n="r1">“Fast and spotless. Our living room looks brand new.”</figcaption>
-          <div class="who"><div class="avatar" aria-hidden="true"></div><div><strong>A.S.</strong><br><small>Orlando, FL</small></div></div>
-        </figure>
-        <figure class="t">
-          <figcaption data-i18n="r2">“They explained options clearly and finished ahead of schedule.”</figcaption>
-          <div class="who"><div class="avatar"></div><div><strong>M.R.</strong><br><small>Kissimmee, FL</small></div></div>
-        </figure>
-        <figure class="t">
-          <figcaption data-i18n="r3">“Great value. Waterproof LVP is perfect for our kids & dog.”</figcaption>
-          <div class="who"><div class="avatar"></div><div><strong>J.D.</strong><br><small>Winter Park, FL</small></div></div>
-        </figure>
-      </div>
-    </div>
-  </section>
+<?php include $base.'includes/reviews.php'; ?>
 
   <!-- FAQ -->
   <section id="faq" class="sec--white">
@@ -356,111 +255,10 @@
   </section>
 
   <!-- Contact / CTA (beige) -->
-  <section id="contact" class="sec--light">
-    <div class="container">
-      <div class="sec-head">
-        <div>
-          <div class="eyebrow" data-i18n="ey_contact">Let’s get your estimate</div>
-          <h2 data-i18n="h_contact">Contact & free estimate</h2>
-        </div>
-        <a href="https://wa.me/16892968515?text=Hi%20B%26S%20Floor%20Supply%2C%20I%27d%20like%20a%20free%20estimate." class="pill" id="cta-wa-pill" target="_blank" rel="noopener" data-i18n="cta_whatsapp">Chat on WhatsApp</a>
-      </div>
-      <div class="contact">
-        <!-- Form bottom -->
-        <form class="form" id="lead-form-bottom" action="lead.php" method="POST" aria-labelledby="contact-bottom">
-          <div class="row">
-            <div>
-              <label for="name-bottom" data-i18n="form_name">Full name</label>
-              <input id="name-bottom" name="name" placeholder="Your name" maxlength="255" required />
-            </div>
-            <div>
-              <label for="phone-bottom" data-i18n="form_phone">Phone / WhatsApp</label>
-              <input id="phone-bottom" name="phone" placeholder="+1 (689) 296-8515" maxlength="255" required />
-            </div>
-          </div>
-          <div class="row">
-            <div>
-              <label for="email-bottom">Email</label>
-              <input id="email-bottom" type="email" name="email" placeholder="info@globalservices.com" maxlength="255" required />
-            </div>
-            <div>
-              <label for="service-bottom" data-i18n="form_service">Service</label>
-              <select id="service-bottom" name="service">
-                <option value="lvp" data-i18n="opt_lvp">Waterproof LVP – supply & install</option>
-                <option value="install" data-i18n="opt_install">Installation only (Laminate / Vinyl / Hardwood)</option>
-                <option value="other" data-i18n="opt_other">Other flooring</option>
-              </select>
-            </div>
-          </div>
-          <div class="row-1">
-            <div>
-              <label for="message-bottom" data-i18n="form_details">Project details</label>
-              <textarea id="message-bottom" name="message" placeholder="Area size, rooms, preferred tone…" maxlength="255" required></textarea>
-            </div>
-          </div>
-          <input type="hidden" name="form_name" value="B&S – Web Lead (bottom)" />
-          <input type="hidden" name="source" value="website_home" />
-          <p class="note" data-i18n="form_note">By sending, you agree to be contacted via WhatsApp, phone or email.</p>
-          <div class="hero-cta">
-            <button type="submit" class="btn btn-primary" id="send-btn-bottom" data-i18n="cta_send">Send request</button>
-            <a class="btn btn-ghost" href="https://wa.me/16892968515?text=Hi%20B%26S%20Floor%20Supply%2C%20I%20need%20a%20quote." target="_blank" rel="noopener" id="cta-wa-form" data-i18n="cta_whatsapp">WhatsApp now</a>
-          </div>
-          <p id="form-status-bottom" class="note hide" aria-live="polite"></p>
-        </form>
-
-        <!-- Info -->
-        <aside class="card">
-          <h3 data-i18n="info_t">Contact info</h3>
-          <p><strong>Phone (WhatsApp):</strong> <a href="https://wa.me/16892968515" target="_blank" rel="noopener">+1 (689) 296-8515</a></p>
-          <p><strong>Alt. phone:</strong> +1 (407) 225-1284</p>
-          <p><strong>Email:</strong> <a href="mailto:info@globalservices.com">info@globalservices.com</a></p>
-          <p><strong>Service area:</strong> Orlando, FL</p>
-          <div class="hero-cta">
-            <a href="https://instagram.com/bsfloorsupply" class="btn btn-ghost" target="_blank" rel="noopener">Instagram</a>
-            <a href="https://facebook.com/BSGlobalServices" class="btn btn-ghost" target="_blank" rel="noopener">Facebook</a>
-          </div>
-          <hr />
-          <p><small id="info_es">Prefer español? <em>También atendemos en español.</em></small></p>
-        </aside>
-      </div>
-    </div>
-  </section>
+<?php include $base.'includes/contact.php'; ?>
 
   <!-- Footer -->
-  <footer id="footer">
-    <div class="container fgrid">
-      <div>
-        <div class="brand" style="margin-bottom:.6rem">
-          <span class="logo-bs logo-bs--white" role="img" aria-label="B&S Floor Supply logo"></span>
-          <!--<span>B&S Floor Supply</span>-->
-        </div>
-        <p id="footer_pitch">Waterproof LVP — plus installation of laminate, vinyl and hardwood. Bilingual team. Fast, neat, reliable.</p>
-      </div>
-      <div>
-        <h4 style="margin-top:0" data-i18n="foot_nav">Explore</h4>
-        <nav>
-          <a href="#benefits" data-i18n="nav_benefits">Benefits</a><br/>
-          <a href="#materials" data-i18n="nav_types">Flooring Types</a><br/>
-          <a href="#popular" data-i18n="nav_popular">Popular LVP</a><br/>
-          <a href="#portfolio" data-i18n="nav_use">Portfolio / Proyects</a><br/>
-          <a href="#reviews" data-i18n="nav_reviews">Reviews</a><br/>
-          <a href="#faq" data-i18n="nav_faq">FAQ</a><br/>
-          <a href="/terms.html">Terms & Conditions</a>
-        </nav>
-      </div>
-      <div>
-        <h4 style="margin-top:0" data-i18n="foot_contact">Get in touch</h4>
-        <p>WhatsApp: <a href="https://wa.me/16892968515" target="_blank" rel="noopener">+1 (689) 296-8515</a></p>
-        <p>Alt. phone: +1 (407) 225-1284</p>
-        <p>Email: <a href="mailto:info@globalservices.com">info@globalservices.com</a></p>
-        <p>Orlando, Florida</p>
-        <p><a href="https://instagram.com/bsfloorsupply" target="_blank" rel="noopener">Instagram</a> · <a href="https://facebook.com/BSGlobalServices" target="_blank" rel="noopener">Facebook</a></p>
-      </div>
-    </div>
-    <div class="container ft">
-      © <span id="year"></span> B&S Floor Supply. All rights reserved.
-    </div>
-  </footer>
+<?php include $base.'includes/footer.php'; ?>
 <div class="bg-slider" style="--bg-opacity:.50">
       <div class="slide active" style="background-image:url('images/sliders/index.jpg')"></div>
     </div>
