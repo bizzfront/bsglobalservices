@@ -38,7 +38,7 @@ window.SLOT_MINUTES=60;
     <!-- Lead / Catalog -->
     <div class="panel">
       <h2 style="margin:0 0 8px;color:#5A2A2E;font-family:Montserrat,sans-serif">Request Catalog / Estimate</h2>
-      <form id="leadForm">
+      <form id="leadForm" action="../lead.php" method="post">
         <label>
           Full name*
           <input name="name" required autocomplete="name" />
@@ -63,7 +63,7 @@ window.SLOT_MINUTES=60;
         </label>
         <label class="row">
           Interest
-          <select name="interest">
+          <select name="service" id="interest">
             <option value="catalog">Send me the catalog (PDF)</option>
             <option value="estimate">I want a quick estimate</option>
             <option value="both">Catalog + Estimate</option>
@@ -71,7 +71,7 @@ window.SLOT_MINUTES=60;
         </label>
         <label class="row">
           Notes (optional)
-          <textarea name="notes" rows="3" placeholder="Square footage, timeline, preferred color…"></textarea>
+          <textarea name="message" rows="3" placeholder="Square footage, timeline, preferred color…"></textarea>
         </label>
 
         <div class="row consent">
@@ -85,6 +85,8 @@ window.SLOT_MINUTES=60;
         </div>
 
         <div class="row note" id="leadNote" style="display:none;margin-top:10px"></div>
+        <input type="hidden" name="form_name" value="register-lead" />
+        <input type="hidden" name="source" value="register" />
       </form>
       <span class="badge">We won't spam you</span>
     </div>
@@ -92,7 +94,7 @@ window.SLOT_MINUTES=60;
     <!-- Scheduler -->
     <div class="panel">
       <h2 style="margin:0 0 8px;color:#5A2A2E;font-family:Montserrat,sans-serif">Schedule an Appointment</h2>
-      <form id="schedForm">
+      <form id="schedForm" action="../lead.php" method="post">
         <label>
           Appointment type
           <select name="appt_type" id="apptType">
@@ -124,6 +126,14 @@ window.SLOT_MINUTES=60;
 
         
         <input type="hidden" name="time" id="time" required />
+        <input type="hidden" name="name" id="schedName" />
+        <input type="hidden" name="email" id="schedEmail" />
+        <input type="hidden" name="phone" id="schedPhone" />
+        <input type="hidden" name="city" id="schedCity" />
+        <input type="hidden" name="service" value="schedule" />
+        <input type="hidden" name="form_name" value="register-schedule" />
+        <input type="hidden" name="source" value="register" />
+        <input type="hidden" name="message" id="schedMessage" />
 
 
         <label class="row">
@@ -152,6 +162,17 @@ window.SLOT_MINUTES=60;
   const leadForm = document.getElementById('leadForm');
   const waLeadBtn = document.getElementById('waLeadBtn');
   const leadNote = document.getElementById('leadNote');
+  const schedForm = document.getElementById('schedForm');
+
+  ['name','email','phone','city'].forEach(fn=>{
+    const lf = leadForm.querySelector(`[name="${fn}"]`);
+    const sf = schedForm.querySelector(`[name="${fn}"]`);
+    if(lf && sf){
+      const sync = ()=>{ sf.value = lf.value; };
+      lf.addEventListener('input', sync);
+      sync();
+    }
+  });
 
   function buildLeadWA(){
     const data = new FormData(leadForm);
@@ -159,8 +180,8 @@ window.SLOT_MINUTES=60;
     const email = (data.get('email')||'').toString().trim();
     const phone = (data.get('phone')||'').toString().trim();
     const city = (data.get('city')||'').toString().trim();
-    const interest = (data.get('interest')||'catalog').toString();
-    const notes = (data.get('notes')||'').toString().trim();
+    const interest = (data.get('service')||'catalog').toString();
+    const notes = (data.get('message')||'').toString().trim();
     const msg = `Hi! I'd like ${interest.replace('both','the catalog and a quick estimate')}.
 Name: ${name}
 Email: ${email}
@@ -176,22 +197,13 @@ Notes: ${notes}`;
   leadForm.addEventListener('submit', function(ev){
     ev.preventDefault();
     const data = new FormData(leadForm);
-    if(window.FORMSPREE_ID){
-      fetch(`https://formspree.io/f/${window.FORMSPREE_ID}`, {method:'POST', headers:{'Accept':'application/json'}, body:data})
-        .then(_=>{ leadNote.style.display='block'; leadNote.textContent='Thanks! We received your request.'; leadForm.reset(); buildLeadWA(); })
-        .catch(_=>{ leadNote.style.display='block'; leadNote.textContent='Could not submit. Please try again or use WhatsApp.'; });
-    }else if(window.EMAIL_TO){
-      const subject = encodeURIComponent('Catalog / Estimate request — B&S Floor Supply');
-      const body = encodeURIComponent(Array.from(data.entries()).map(([k,v])=>`${k}: ${v}`).join('\n'));
-      window.location.href = `mailto:${window.EMAIL_TO}?subject=${subject}&body=${body}`;
-      leadNote.style.display='block'; leadNote.textContent='We are opening your email app. If it does not open, please use WhatsApp.';
-    }else{
-      leadNote.style.display='block'; leadNote.textContent='No email target configured. Please set EMAIL_TO in config.';
-    }
+    fetch('../lead.php', {method:'POST', body:data})
+      .then(r=>r.json())
+      .then(_=>{ leadNote.style.display='block'; leadNote.textContent='Thanks! We received your request.'; leadForm.reset(); buildLeadWA(); })
+      .catch(_=>{ leadNote.style.display='block'; leadNote.textContent='Could not submit. Please try again or use WhatsApp.'; });
   });
 
   // Scheduler behavior
-  const schedForm = document.getElementById('schedForm');
   const dateEl = document.getElementById('date');
   const slotsEl = document.getElementById('slots');
   const timeEl = document.getElementById('time');
@@ -267,6 +279,11 @@ Notes: ${notes}`;
     if(!data.get('date') || !data.get('time')){
       schedNote.style.display='block'; schedNote.textContent='Please select date and time.'; return;
     }
+    if(!data.get('name') || (!data.get('email') && !data.get('phone'))){
+      schedNote.style.display='block'; schedNote.textContent='Please complete your contact info in the first form.'; return;
+    }
+    const msgFull = `Appointment type: ${data.get('appt_type')||''}\nLocation: ${data.get('location')||''}\nDate: ${data.get('date')||''}\nTime: ${data.get('time')||''}\nDuration: ${data.get('duration')||''} min\nNotes: ${(data.get('notes')||'')}`;
+    data.set('message', msgFull);
     // Build ICS (calendar file) for convenience
     const dt = new Date(data.get('date')+'T'+data.get('time')+':00');
     const durMin = parseInt(data.get('duration')||'60',10);
@@ -289,19 +306,10 @@ Notes: ${notes}`;
     a.href = url; a.download = 'bs-appointment.ics'; a.click();
     setTimeout(()=>URL.revokeObjectURL(url), 2000);
 
-    if(window.FORMSPREE_ID){
-      fetch(`https://formspree.io/f/${window.FORMSPREE_ID}`, {method:'POST', headers:{'Accept':'application/json'}, body:data})
-        .then(_=>{ schedNote.style.display='block'; schedNote.textContent='Appointment sent. Check your calendar file (ICS).'; })
-        .catch(_=>{ schedNote.style.display='block'; schedNote.textContent='Could not send. Please try again or use WhatsApp.'; });
-    }else if(window.EMAIL_TO){
-      const subject = encodeURIComponent('New appointment — B&S Floor Supply');
-      const body = encodeURIComponent(Array.from(data.entries()).map(([k,v])=>`${k}: ${v}`).join('\n'));
-      window.location.href = `mailto:${window.EMAIL_TO}?subject=${subject}&body=${body}`;
-      schedNote.style.display='block'; schedNote.textContent='We are opening your email app. ICS file downloaded.';
-    }else{
-      schedNote.style.display='block'; schedNote.textContent='No email target configured. Please set EMAIL_TO in config.';
-    }
-  });
+    fetch('../lead.php', {method:'POST', body:data})
+      .then(r=>r.json())
+      .then(_=>{ schedNote.style.display='block'; schedNote.textContent='Appointment sent. Check your calendar file (ICS).'; })
+      .catch(_=>{ schedNote.style.display='block'; schedNote.textContent='Could not send. Please try again or use WhatsApp.'; });
 })();
 </script>
 
