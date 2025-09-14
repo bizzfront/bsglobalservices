@@ -33,6 +33,11 @@ $active = $active ?? '';
         <?php else: ?>
           <a href="<?=$base?>store/" role="menuitem">Store</a>
         <?php endif; ?>
+        <?php if ($active === 'register'): ?>
+          <a href="#" role="menuitem">Catalog &amp; Schedule</a>
+        <?php else: ?>
+          <a href="<?=$base?>register/" role="menuitem">Catalog &amp; Schedule</a>
+        <?php endif; ?>
         <a href="<?=$base?>store/cart.php" role="menuitem">Cart (<span id="cart-count">0</span>)</a>
       </div>
     </nav>

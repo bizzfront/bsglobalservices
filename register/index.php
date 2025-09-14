@@ -1,3 +1,7 @@
+<?php
+$base = '../';
+$active = 'register';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,14 +10,12 @@
 <title>B&S Floor Supply — Catalog & Schedule</title>
 <meta name="description" content="Request the Waterproof LVP catalog, a quick estimate, or schedule an appointment with B&S Floor Supply.">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="<?=$base?>style.css" />
 <style>
   :root{--burgundy:#5A2A2E;--gold:#CDA349;--beige:#F5EBDD;--gray:#D9D9D9;--white:#FFFFFF;--ink:#1d1d1f;--shadow:0 10px 30px rgba(0,0,0,.12)}
   *{box-sizing:border-box}
   html,body{margin:0;background:#fff;color:var(--ink);font-family:Poppins,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55}
   .wrap{width:min(1000px,92%);margin-inline:auto}
-  header{border-bottom:1px solid #eee;background:#fff;position:sticky;top:0;z-index:5}
-  header .h{display:flex;justify-content:space-between;align-items:center;padding:12px 0}
-  .brand{font-family:Montserrat,sans-serif;font-weight:800;color:var(--burgundy)}
   .hero{background:linear-gradient(180deg,#F5EBDD 0,#fff 100%);border-bottom:1px solid #eadfcd}
   .hero .wrap{padding:clamp(28px,7vw,72px) 0}
   h1{font-family:Montserrat,sans-serif;font-weight:800;color:var(--burgundy);margin:0 0 8px;font-size:clamp(26px,3.6vw,44px)}
@@ -35,7 +37,6 @@
   .consent{display:flex;align-items:flex-start;gap:10px}
   .consent input{margin-top:4px}
   .note{background:#fff8ea;border:1px solid #f0e0b9;color:#5a4a1f;padding:10px;border-radius:12px;font-size:.9rem}
-  footer{padding:24px 0;color:#777;border-top:1px solid #eee;margin-top:28px}
 
   /* Scheduler */
   .slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
@@ -58,11 +59,7 @@ window.SLOT_MINUTES=60;
 </script>
 </head>
 <body>
-<header>
-  <div class="wrap h">
-    <div class="brand">B&amp;S Floor Supply</div>
-  </div>
-</header>
+<?php include $base.'includes/header.php'; ?>
 
 <section class="hero">
   <div class="wrap">
@@ -186,9 +183,8 @@ window.SLOT_MINUTES=60;
   </div>
 </main>
 
-<footer class="wrap">
-  © B&amp;S Floor Supply — Waterproof LVP Specialists
-</footer>
+<?php include $base.'includes/reviews.php'; ?>
+<?php include $base.'includes/footer.php'; ?>
 
 <script>
 (function(){
