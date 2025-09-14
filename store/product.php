@@ -44,51 +44,55 @@ $contact_source = 'website_store';
         <span class="pill"><?= htmlspecialchars($product['name']) ?></span>
     </div>
     <h1></h1>
-    <div class="slider">
-      <div>
-        <?php foreach($selected as $i => $img): ?>
-          <img src="../<?= $img ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="<?= $i===0 ? 'active' : '' ?>">
-        <?php endforeach; ?>
-        <button class="prev" type="button">Prev</button>
-        <button class="next" type="button">Next</button>
-        <?php if(!empty($product['promo'])): ?>
-          <div class="store-promo"><span><?= htmlspecialchars($product['promo']) ?></span></div>
-        <?php endif; ?>
+    <div class="product-top">
+      <div class="slider">
+        <div>
+          <?php foreach($selected as $i => $img): ?>
+            <img src="../<?= $img ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="<?= $i===0 ? 'active' : '' ?>">
+          <?php endforeach; ?>
+          <button class="prev" type="button">Prev</button>
+          <button class="next" type="button">Next</button>
+          <?php if(!empty($product['promo'])): ?>
+            <div class="store-promo"><span><?= htmlspecialchars($product['promo']) ?></span></div>
+          <?php endif; ?>
+        </div>
       </div>
-    </div>
-    <?php
-      $priceSqft = isset($product['price_sqft']) && $product['price_sqft'] !== null ? '$'.number_format($product['price_sqft'],2) : '';
-      $priceBoxNum = $product['price_box'] ?? null;
-      if ($priceBoxNum === null && isset($product['price_sqft'], $product['sqft_per_box'])) {
-        $priceBoxNum = $product['price_sqft'] * $product['sqft_per_box'];
-      }
-      $priceBox = $priceBoxNum !== null ? '$'.number_format($priceBoxNum,2) : '';
-    ?>
-    <div class="store-price">
-      <?php if($priceSqft): ?>
-        <div><b><?= $priceSqft ?></b><span class="store-per">/sqft</span></div>
-      <?php else: ?>
-        <div><b>Call for price</b></div>
-      <?php endif; ?>
-      <?php if($priceBox): ?>
-        <div><span class="store-per">≈ <?= $priceBox ?> / box</span></div>
-      <?php endif; ?>
-    </div>
+      <div class="product-cart">
+        <?php
+          $priceSqft = isset($product['price_sqft']) && $product['price_sqft'] !== null ? '$'.number_format($product['price_sqft'],2) : '';
+          $priceBoxNum = $product['price_box'] ?? null;
+          if ($priceBoxNum === null && isset($product['price_sqft'], $product['sqft_per_box'])) {
+            $priceBoxNum = $product['price_sqft'] * $product['sqft_per_box'];
+          }
+          $priceBox = $priceBoxNum !== null ? '$'.number_format($priceBoxNum,2) : '';
+        ?>
+        <div class="store-price">
+          <?php if($priceSqft): ?>
+            <div><b><?= $priceSqft ?></b><span class="store-per">/sqft</span></div>
+          <?php else: ?>
+            <div><b>Call for price</b></div>
+          <?php endif; ?>
+          <?php if($priceBox): ?>
+            <div><span class="store-per">≈ <?= $priceBox ?> / box</span></div>
+          <?php endif; ?>
+        </div>
 
-    <div id="calc" class="calc" style="margin:1rem 0;">
-      <h3>Material calculator</h3>
-      <div class="row">
-        <label>Length (ft)<input type="number" id="calcLen" step="0.1"></label>
-        <label>Width (ft)<input type="number" id="calcWid" step="0.1"></label>
+        <div id="calc" class="calc" style="margin:1rem 0;">
+          <h3>Material calculator</h3>
+          <div class="row">
+            <label>Length (ft)<input type="number" id="calcLen" step="0.1"></label>
+            <label>Width (ft)<input type="number" id="calcWid" step="0.1"></label>
+          </div>
+          <div class="row">
+            <span>or</span>
+          </div>
+          <div class="row">
+            <label>Boxes<input type="number" id="calcBoxes" min="1" value="1"></label>
+          </div>
+          <p id="calcSummary" class="note"></p>
+          <button type="button" id="addToCart" class="btn btn-primary">Add to cart</button>
+        </div>
       </div>
-      <div class="row">
-        <span>or</span>
-      </div>
-      <div class="row">
-        <label>Boxes<input type="number" id="calcBoxes" min="1" value="1"></label>
-      </div>
-      <p id="calcSummary" class="note"></p>
-      <button type="button" id="addToCart" class="btn btn-primary">Add to cart</button>
     </div>
 
     <div class="tabs">
