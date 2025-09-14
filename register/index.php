@@ -11,41 +11,6 @@ $active = 'register';
 <meta name="description" content="Request the Waterproof LVP catalog, a quick estimate, or schedule an appointment with B&S Floor Supply.">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?=$base?>style.css" />
-<style>
-  :root{--burgundy:#5A2A2E;--gold:#CDA349;--beige:#F5EBDD;--gray:#D9D9D9;--white:#FFFFFF;--ink:#1d1d1f;--shadow:0 10px 30px rgba(0,0,0,.12)}
-  *{box-sizing:border-box}
-  html,body{margin:0;background:#fff;color:var(--ink);font-family:Poppins,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55}
-  .wrap{width:min(1000px,92%);margin-inline:auto}
-  .hero{background:linear-gradient(180deg,#F5EBDD 0,#fff 100%);border-bottom:1px solid #eadfcd}
-  .hero .wrap{padding:clamp(28px,7vw,72px) 0}
-  h1{font-family:Montserrat,sans-serif;font-weight:800;color:var(--burgundy);margin:0 0 8px;font-size:clamp(26px,3.6vw,44px)}
-  p.sub{margin:0;color:#444}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:-24px}
-  @media(max-width:960px){.grid{grid-template-columns:1fr}}
-  .panel{background:#fff;border:1px solid #eadfcd;border-radius:18px;box-shadow:var(--shadow);padding:18px}
-  form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  @media(max-width:760px){ form{grid-template-columns:1fr} }
-  label{display:flex;flex-direction:column;font-size:.95rem;color:#333;gap:6px}
-  input,select,textarea{padding:.7rem .8rem;border:1px solid #ddd;border-radius:12px;font:inherit}
-  .row{grid-column:1/-1}
-  .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.8rem 1.1rem;border-radius:999px;font-weight:700;border:2px solid transparent;cursor:pointer}
-  .btn-primary{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
-  .btn-primary:hover{filter:brightness(.93)}
-  .btn-ghost{background:transparent;border-color:var(--gold);color:var(--burgundy)}
-  .btn-ghost:hover{background:var(--beige)}
-  .help{font-size:.85rem;color:#666}
-  .consent{display:flex;align-items:flex-start;gap:10px}
-  .consent input{margin-top:4px}
-  .note{background:#fff8ea;border:1px solid #f0e0b9;color:#5a4a1f;padding:10px;border-radius:12px;font-size:.9rem}
-
-  /* Scheduler */
-  .slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
-  @media(max-width:540px){.slots{grid-template-columns:repeat(2,1fr)}}
-  .slot{border:1px solid #eadfcd;border-radius:12px;padding:.6rem .7rem;text-align:center;cursor:pointer;background:#fff}
-  .slot[aria-pressed="true"]{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
-  .slot[disabled]{opacity:.45;cursor:not-allowed}
-  .badge{display:inline-block;border:1px solid #eadfcd;border-radius:999px;padding:.2rem .6rem;margin-top:6px;font-size:.8rem}
-</style>
 <!-- Config central -->
 <script>
 window.WA_NUMBER="16892968515";             // WhatsApp de B&S (solo dígitos)
@@ -58,7 +23,7 @@ window.BUSINESS_END=17;   // 5 PM
 window.SLOT_MINUTES=60;
 </script>
 </head>
-<body>
+<body class="register-page">
 <?php include $base.'includes/header.php'; ?>
 
 <section class="hero">
