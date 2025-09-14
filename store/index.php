@@ -58,9 +58,9 @@ $contact_source = 'website_store';
 
   <main>
     <div class="store-bar">
-      <div class="store-chip">Waterproof</div>
+      <!--<div class="store-chip">Waterproof</div>
       <div class="store-chip">SPC Core</div>
-      <div class="store-chip">Attached Pad</div>
+      <div class="store-chip">Attached Pad</div>-->
       <div class="store-sort">
         <label for="sortSel" class="muted" style="margin-right:6px;">Sort</label>
         <select id="sortSel">
