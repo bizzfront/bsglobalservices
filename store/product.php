@@ -78,8 +78,8 @@ $contact_source = 'website_store';
         </div>
 
         <div id="calc" class="calc">
-          <h3>Material calculator</h3>
-          <form id="calcForm">
+          <h3 style="color: var(--burgundy);">Material calculator</h3>
+          <form id="calcForm" class="form">
             <label>
               Length (ft)
               <input type="number" id="calcLen" step="0.1">
