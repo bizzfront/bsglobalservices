@@ -14,14 +14,14 @@ $contact_source = 'website_store';
 </head>
 <body>
 <?php include $base.'includes/header.php'; ?>
-<main class="container" style="padding-bottom:3vw;">
-  <h1>Your cart</h1>
+<main class="container" style="padding-bottom:3vw; padding-top:3vw;">
+  <h2 style="color:var(--burgundy);">Your cart</h2>
   <div class="cart-layout">
     <div class="cart-items">
       <div id="cart-items"></div>
       <p id="cart-empty" class="note">Your cart is empty.</p>
     </div>
-    <form id="cart-form" action="<?=$base?>lead.php" method="POST" class="cart-form">
+    <form id="cart-form" action="<?=$base?>lead.php" method="POST" class="form cart-form">
       <div class="row">
         <div>
           <label for="name-cart">Full name</label>
