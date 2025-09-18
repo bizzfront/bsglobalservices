@@ -38,7 +38,7 @@ $active = $active ?? '';
         <?php else: ?>
           <a href="<?=$base?>register/" role="menuitem">Catalog &amp; Schedule</a>
         <?php endif; ?>
-        <a href="<?=$base?>store/cart.php" role="menuitem">Cart (<span id="cart-count">0</span>)</a>
+        <a id="cart-link" href="<?=$base?>store/cart.php" role="menuitem" hidden>Cart (<span id="cart-count">0</span>)</a>
       </div>
     </nav>
   </div>
@@ -46,8 +46,11 @@ $active = $active ?? '';
 <script src="<?=$base?>store/cart.js"></script>
 <script>
   function updateCartCount(){
+    const count = cart.getCount();
     const el = document.getElementById('cart-count');
-    if(el) el.textContent = cart.getCount();
+    if(el) el.textContent = count;
+    const link = document.getElementById('cart-link');
+    if(link) link.hidden = count <= 0;
   }
   document.addEventListener('cartchange', updateCartCount);
   updateCartCount();

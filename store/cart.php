@@ -62,6 +62,7 @@ $contact_source = 'website_store';
 <?php include $base.'includes/footer.php'; ?>
 <script>
 const PRODUCTS = <?= json_encode($products) ?>;
+let previousCount = cart.getItems().length;
 function formatCurrency(value){
   if(!Number.isFinite(value) || value <= 0){
     return '';
@@ -80,6 +81,12 @@ function renderCart(){
     if(summary){
       summary.textContent = '';
     }
+    if(previousCount > 0){
+      previousCount = 0;
+      window.location.href = 'index.php';
+      return;
+    }
+    previousCount = 0;
     return;
   }
   empty.style.display = 'none';
@@ -126,6 +133,7 @@ function renderCart(){
     }, 0);
     summary.textContent = `Subtotal (${items.length} item${items.length !== 1 ? 's' : ''}): ${formatCurrency(total) || 'Call for price'}`;
   }
+  previousCount = items.length;
   container.querySelectorAll('.qty').forEach(input=>{
     input.addEventListener('change', ()=>{
       const wrapper = input.closest('.cart-item');
