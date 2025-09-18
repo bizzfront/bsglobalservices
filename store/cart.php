@@ -18,7 +18,11 @@ $contact_source = 'website_store';
   <h2 style="color:var(--burgundy);">Your cart</h2>
   <div class="cart-layout">
     <div class="cart-items">
-      <div id="cart-items"></div>
+      <div class="cart-items-head">
+        <h3>Shopping cart</h3>
+        <div id="cart-summary" class="cart-summary"></div>
+      </div>
+      <div id="cart-items" class="cart-items-list"></div>
       <p id="cart-empty" class="note">Your cart is empty.</p>
     </div>
     <form id="cart-form" action="<?=$base?>lead.php" method="POST" class="form cart-form">
@@ -58,13 +62,24 @@ $contact_source = 'website_store';
 <?php include $base.'includes/footer.php'; ?>
 <script>
 const PRODUCTS = <?= json_encode($products) ?>;
+function formatCurrency(value){
+  if(!Number.isFinite(value) || value <= 0){
+    return '';
+  }
+  return `$${value.toFixed(2)}`;
+}
+
 function renderCart(){
   const items = cart.getItems();
   const container = document.getElementById('cart-items');
   const empty = document.getElementById('cart-empty');
+  const summary = document.getElementById('cart-summary');
   if(items.length === 0){
     container.innerHTML = '';
     empty.style.display = 'block';
+    if(summary){
+      summary.textContent = '';
+    }
     return;
   }
   empty.style.display = 'none';
@@ -72,13 +87,45 @@ function renderCart(){
     const p = PRODUCTS.find(pr=>pr.sku===it.sku) || {};
     const pricePerBox = p.price_box || (p.price_sqft && p.sqft_per_box ? p.price_sqft * p.sqft_per_box : 0);
     const subtotal = pricePerBox * it.quantity;
+    const priceEach = formatCurrency(pricePerBox);
+    const priceSqft = p.price_sqft ? `${formatCurrency(p.price_sqft)} / sqft` : '';
+    const coverage = p.sqft_per_box ? `${p.sqft_per_box} sqft / box` : '';
+    const callForPrice = !priceEach ? '<span class="cart-item-call">Call for price</span>' : '';
+    const image = p.hoverImage ? `../${p.hoverImage}` : '';
     return `<div class="cart-item" data-sku="${it.sku}">
-      <span>${p.name || it.sku}</span>
-      <input type="number" class="qty" min="1" value="${it.quantity}">
-      <span class="sub">$${subtotal.toFixed(2)}</span>
-      <button type="button" class="remove">Remove</button>
+      <div class="cart-item-media">${image ? `<img src="${image}" alt="${(p.name || it.sku).replace(/"/g,'&quot;')}">` : ''}</div>
+      <div class="cart-item-details">
+        <div class="cart-item-title">${p.name || it.sku}</div>
+        <div class="cart-item-meta">
+          ${p.brand ? `<span>${p.brand}</span>` : ''}
+          ${p.collection ? `<span>${p.collection}</span>` : ''}
+          ${coverage ? `<span>${coverage}</span>` : ''}
+        </div>
+        <div class="cart-item-secondary">
+          ${priceSqft ? `<span>${priceSqft}</span>` : ''}
+          ${callForPrice}
+        </div>
+        <div class="cart-item-actions">
+          <label class="cart-item-qty">Qty
+            <input type="number" class="qty" min="1" value="${it.quantity}">
+          </label>
+          <button type="button" class="remove">Remove</button>
+        </div>
+      </div>
+      <div class="cart-item-pricing">
+        ${priceEach ? `<div class="cart-item-price">${priceEach}</div>` : ''}
+        <div class="cart-item-subtotal">Subtotal: ${formatCurrency(subtotal) || '—'}</div>
+      </div>
     </div>`;
   }).join('');
+  if(summary){
+    const total = items.reduce((sum, it)=>{
+      const p = PRODUCTS.find(pr=>pr.sku===it.sku) || {};
+      const pricePerBox = p.price_box || (p.price_sqft && p.sqft_per_box ? p.price_sqft * p.sqft_per_box : 0);
+      return sum + (pricePerBox * it.quantity);
+    }, 0);
+    summary.textContent = `Subtotal (${items.length} item${items.length !== 1 ? 's' : ''}): ${formatCurrency(total) || 'Call for price'}`;
+  }
   container.querySelectorAll('.qty').forEach(input=>{
     input.addEventListener('change', ()=>{
       const sku = input.parentElement.getAttribute('data-sku');
