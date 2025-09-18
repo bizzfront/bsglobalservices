@@ -1,7 +1,7 @@
 <?php
 $products = json_decode(file_get_contents(__DIR__.'/../products.json'), true);
 $base = '../';
-$active = 'store';
+$active = 'cart';
 $contact_source = 'website_store';
 ?>
 <!DOCTYPE html>
