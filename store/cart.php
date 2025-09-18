@@ -128,14 +128,18 @@ function renderCart(){
   }
   container.querySelectorAll('.qty').forEach(input=>{
     input.addEventListener('change', ()=>{
-      const sku = input.parentElement.getAttribute('data-sku');
+      const wrapper = input.closest('.cart-item');
+      const sku = wrapper?.dataset.sku;
+      if(!sku) return;
       cart.setItem(sku, parseInt(input.value) || 1);
       renderCart();
     });
   });
   container.querySelectorAll('.remove').forEach(btn=>{
     btn.addEventListener('click', ()=>{
-      const sku = btn.parentElement.getAttribute('data-sku');
+      const wrapper = btn.closest('.cart-item');
+      const sku = wrapper?.dataset.sku;
+      if(!sku) return;
       cart.removeItem(sku);
       renderCart();
     });
