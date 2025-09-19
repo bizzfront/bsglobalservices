@@ -1,1 +1,2 @@
-.env
+# Environment files
+# (tracked to simplify IIS deployment configuration)
