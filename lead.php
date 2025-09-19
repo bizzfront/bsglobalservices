@@ -79,40 +79,67 @@ if ($phone !== '' && !preg_match('/^[0-9 +()-]{7,20}$/', $phone)) {
     exit;
 }*/
 
-$servername = getenv('DB_HOST');
-$username = getenv('DB_USER');
-$password = getenv('DB_PASS');
-$dbname = getenv('DB_NAME');
+$dbHost = getenv('DB_HOST') ?: 'localhost';
+$dbPort = getenv('DB_PORT') ?: '5432';
+$dbName = getenv('DB_NAME') ?: 'bizz';
+$dbUser = getenv('DB_USER') ?: 'postgres';
+$dbPass = getenv('DB_PASS') ?: 'masterroot';
 
-$conn = @new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    echo json_encode(['code' => '02', 'data' => 'A error occurred while connecting to the database. Please try again later.']);
+$formNameDb = $formName !== '' ? $formName : 'Formulario sin nombre';
+$formPayload = [
+    'name' => $name,
+    'email' => $email,
+    'phone' => $phone,
+    'zip' => $zip,
+    'service' => $service,
+    'address' => $address,
+    'service_detail' => $service_detail,
+    'message' => $message,
+    'form_name' => $formName,
+    'source' => $source,
+    'city' => $city,
+    'session_id' => $sessionID,
+    'cart' => is_array($cartItems) ? $cartItems : ($cartRaw !== '' ? $cartRaw : null),
+    'submitted_at' => gmdate('c'),
+    'ip' => $_SERVER['REMOTE_ADDR'] ?? null,
+    'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null,
+];
+
+$formPayloadJson = json_encode($formPayload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+if ($formPayloadJson === false) {
+    echo json_encode(['code' => '02', 'data' => 'A error occurred while processing the form data. Please try again later.']);
     exit;
 }
 
-$stmt = $conn->prepare('INSERT INTO website_requests (name, email, phone, service, message, form_name, source, status, city) VALUES (?, ?, ?, ?, ?, ?, ?,\'Pending\', ?)');
-if (!$stmt) {
-    echo json_encode(['code' => '02', 'data' => 'A error occurred while preparing the query. Please try again later.']);
-    $conn->close();
-    exit;
-}
+try {
+    $dsn = sprintf('pgsql:host=%s;port=%s;dbname=%s', $dbHost, $dbPort, $dbName);
+    $pdo = new PDO($dsn, $dbUser, $dbPass, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ]);
 
-$stmt->bind_param('ssssssss', $name, $email, $phone, $service, $message, $formName, $source, $city);
-if (!$stmt->execute()) {
+    $stmt = $pdo->prepare('INSERT INTO data_formularios (nombre_formulario, area_datos_recolectados) VALUES (:nombre_formulario, :area_datos_recolectados)');
+    $stmt->bindValue(':nombre_formulario', $formNameDb, PDO::PARAM_STR);
+    $stmt->bindValue(':area_datos_recolectados', $formPayloadJson, PDO::PARAM_STR);
+    $stmt->execute();
+} catch (Exception $e) {
     echo json_encode(['code' => '02', 'data' => 'A error occurred while sending the form. Please try again later.']);
-    $stmt->close();
-    $conn->close();
     exit;
 }
-$stmt->close();
-$conn->close();
+
+unset($pdo, $stmt);
 
 $subject = 'New Request. Service: ' . $service . ' | Email: ' . $email . ' | Date: ' . date('d/m/Y') . ' | Time: ' . date('H:i:s');
 $subjectCopy = 'B&S Interior Design. Thanks for your request. ' . $service;
 
 $replyTo = preg_replace('/[\r\n]+/', '', $email);
-$from = getenv('MAIL_FROM') ?: 'info@bsglobalservices.com';
-$to = getenv('MAIL_TO') ?: 'info@bsglobalservices.com';
+$from = getenv('MAIL_FROM') ?: 'info@bsfloorsupply.com';
+$to = getenv('MAIL_TO') ?: 'info@bsfloorsupply.com';
+
+$osFamily = defined('PHP_OS_FAMILY') ? PHP_OS_FAMILY : PHP_OS;
+if (stripos($osFamily, 'Windows') === 0) {
+    @ini_set('sendmail_from', $from);
+}
 
 ob_start();
 include __DIR__ . '/email-template.php';
