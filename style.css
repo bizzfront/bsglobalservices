@@ -334,6 +334,7 @@
     .store-hero p{margin:0;color:#555}
 
     .store-layout{display:grid;grid-template-columns:280px 1fr;gap:var(--gap);padding:clamp(14px,3vw,22px) 0}
+    .store-layout.store-layout--single{grid-template-columns:1fr}
     @media (max-width:980px){.store-layout{grid-template-columns:1fr} .store-filters{position:relative !important;}}
 
     .store-filters{border:1px solid #eadfcd;border-radius:16px;padding:16px;background:#fff;box-shadow:var(--shadow);position:sticky;top:74px;height:max-content}

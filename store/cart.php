@@ -110,11 +110,20 @@ function renderCart(){
     const p = PRODUCTS.find(pr=>pr.sku===it.sku) || {};
     const unit = (p.measurement_unit || (p.product_type === 'molding' ? 'lf' : 'sqft')).toLowerCase();
     const unitLabel = unit === 'lf' ? 'lf' : unit === 'piece' ? 'piece' : 'sqft';
-    const coverageValue = p.coverage_per_box ?? p.sqft_per_box;
     const pricePerUnit = Number(p.price_per_unit ?? p.price_sqft);
-    const pricePerBoxValue = Number(p.price_box ?? (pricePerUnit && coverageValue ? pricePerUnit * coverageValue : 0));
-    const subtotal = pricePerBoxValue * it.quantity;
-    const priceEach = formatCurrency(pricePerBoxValue);
+    const lengthValue = Number(p.length_ft);
+    const piecesPerBoxValue = Number(p.pieces_per_box);
+    let coverageValue = Number(p.coverage_per_box ?? p.sqft_per_box);
+    if(!Number.isFinite(coverageValue) || coverageValue <= 0){
+      if(Number.isFinite(lengthValue) && lengthValue > 0 && Number.isFinite(piecesPerBoxValue) && piecesPerBoxValue > 0){
+        coverageValue = lengthValue * piecesPerBoxValue;
+      }else{
+        coverageValue = null;
+      }
+    }
+    const pricePerBoxValue = (coverageValue && pricePerUnit) ? coverageValue * pricePerUnit : null;
+    const subtotal = (pricePerBoxValue || 0) * it.quantity;
+    const priceEach = pricePerBoxValue != null ? formatCurrency(pricePerBoxValue) : '';
     const priceUnit = pricePerUnit ? `${formatCurrency(pricePerUnit)} / ${unitLabel}` : '';
     const coverage = coverageValue != null ? `${formatUnits(coverageValue)} ${unitLabel} / box` : '';
     const callForPrice = !priceEach ? '<span class="cart-item-call">Call for price</span>' : '';
@@ -149,10 +158,19 @@ function renderCart(){
   if(summary){
     const total = items.reduce((sum, it)=>{
       const p = PRODUCTS.find(pr=>pr.sku===it.sku) || {};
-      const coverageValue = p.coverage_per_box ?? p.sqft_per_box;
       const pricePerUnit = Number(p.price_per_unit ?? p.price_sqft);
-      const pricePerBoxValue = Number(p.price_box ?? (pricePerUnit && coverageValue ? pricePerUnit * coverageValue : 0));
-      return sum + (pricePerBoxValue * it.quantity);
+      const lengthValue = Number(p.length_ft);
+      const piecesPerBoxValue = Number(p.pieces_per_box);
+      let coverageValue = Number(p.coverage_per_box ?? p.sqft_per_box);
+      if(!Number.isFinite(coverageValue) || coverageValue <= 0){
+        if(Number.isFinite(lengthValue) && lengthValue > 0 && Number.isFinite(piecesPerBoxValue) && piecesPerBoxValue > 0){
+          coverageValue = lengthValue * piecesPerBoxValue;
+        }else{
+          coverageValue = null;
+        }
+      }
+      const pricePerBoxValue = (coverageValue && pricePerUnit) ? coverageValue * pricePerUnit : null;
+      return sum + ((pricePerBoxValue || 0) * it.quantity);
     }, 0);
     summary.textContent = `Subtotal (${items.length} item${items.length !== 1 ? 's' : ''}): ${formatCurrency(total) || 'Call for price'}`;
   }
