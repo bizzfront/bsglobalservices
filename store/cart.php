@@ -1,5 +1,11 @@
 <?php
-$products = json_decode(file_get_contents(__DIR__.'/../products.json'), true);
+function load_store_products(): array {
+  $floorings = json_decode(@file_get_contents(__DIR__.'/../floorings.json'), true) ?: [];
+  $moldings = json_decode(@file_get_contents(__DIR__.'/../moldings.json'), true) ?: [];
+  return array_merge($floorings, $moldings);
+}
+
+$products = load_store_products();
 $base = '../';
 $active = 'cart';
 $contact_source = 'website_store';
@@ -61,13 +67,23 @@ $contact_source = 'website_store';
 </main>
 <?php include $base.'includes/footer.php'; ?>
 <script>
-const PRODUCTS = <?= json_encode($products) ?>;
+const PRODUCTS = <?= json_encode(array_values($products)) ?>;
 let previousCount = cart.getItems().length;
 function formatCurrency(value){
+  value = Number(value);
   if(!Number.isFinite(value) || value <= 0){
     return '';
   }
   return `$${value.toFixed(2)}`;
+}
+
+function formatUnits(value){
+  const num = Number(value);
+  if(!Number.isFinite(num)) return value ?? '';
+  if(Math.abs(num) >= 1000 && Number.isInteger(num)){
+    return num.toLocaleString();
+  }
+  return Number.isInteger(num) ? num.toString() : num.toLocaleString(undefined, {maximumFractionDigits: 2});
 }
 
 function renderCart(){
@@ -92,11 +108,15 @@ function renderCart(){
   empty.style.display = 'none';
   container.innerHTML = items.map(it=>{
     const p = PRODUCTS.find(pr=>pr.sku===it.sku) || {};
-    const pricePerBox = p.price_box || (p.price_sqft && p.sqft_per_box ? p.price_sqft * p.sqft_per_box : 0);
-    const subtotal = pricePerBox * it.quantity;
-    const priceEach = formatCurrency(pricePerBox);
-    const priceSqft = p.price_sqft ? `${formatCurrency(p.price_sqft)} / sqft` : '';
-    const coverage = p.sqft_per_box ? `${p.sqft_per_box} sqft / box` : '';
+    const unit = (p.measurement_unit || (p.product_type === 'molding' ? 'lf' : 'sqft')).toLowerCase();
+    const unitLabel = unit === 'lf' ? 'lf' : unit === 'piece' ? 'piece' : 'sqft';
+    const coverageValue = p.coverage_per_box ?? p.sqft_per_box;
+    const pricePerUnit = Number(p.price_per_unit ?? p.price_sqft);
+    const pricePerBoxValue = Number(p.price_box ?? (pricePerUnit && coverageValue ? pricePerUnit * coverageValue : 0));
+    const subtotal = pricePerBoxValue * it.quantity;
+    const priceEach = formatCurrency(pricePerBoxValue);
+    const priceUnit = pricePerUnit ? `${formatCurrency(pricePerUnit)} / ${unitLabel}` : '';
+    const coverage = coverageValue != null ? `${formatUnits(coverageValue)} ${unitLabel} / box` : '';
     const callForPrice = !priceEach ? '<span class="cart-item-call">Call for price</span>' : '';
     const image = p.hoverImage ? `../${p.hoverImage}` : '';
     return `<div class="cart-item" data-sku="${it.sku}">
@@ -106,10 +126,11 @@ function renderCart(){
         <div class="cart-item-meta">
           ${p.brand ? `<span>${p.brand}</span>` : ''}
           ${p.collection ? `<span>${p.collection}</span>` : ''}
+          ${p.category ? `<span>${p.category}</span>` : ''}
           ${coverage ? `<span>${coverage}</span>` : ''}
         </div>
         <div class="cart-item-secondary">
-          ${priceSqft ? `<span>${priceSqft}</span>` : ''}
+          ${priceUnit ? `<span>${priceUnit}</span>` : ''}
           ${callForPrice}
         </div>
         <div class="cart-item-actions">
@@ -128,8 +149,10 @@ function renderCart(){
   if(summary){
     const total = items.reduce((sum, it)=>{
       const p = PRODUCTS.find(pr=>pr.sku===it.sku) || {};
-      const pricePerBox = p.price_box || (p.price_sqft && p.sqft_per_box ? p.price_sqft * p.sqft_per_box : 0);
-      return sum + (pricePerBox * it.quantity);
+      const coverageValue = p.coverage_per_box ?? p.sqft_per_box;
+      const pricePerUnit = Number(p.price_per_unit ?? p.price_sqft);
+      const pricePerBoxValue = Number(p.price_box ?? (pricePerUnit && coverageValue ? pricePerUnit * coverageValue : 0));
+      return sum + (pricePerBoxValue * it.quantity);
     }, 0);
     summary.textContent = `Subtotal (${items.length} item${items.length !== 1 ? 's' : ''}): ${formatCurrency(total) || 'Call for price'}`;
   }

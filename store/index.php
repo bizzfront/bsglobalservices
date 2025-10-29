@@ -1,8 +1,25 @@
 <?php
-$products = json_decode(file_get_contents(__DIR__.'/../products.json'), true);
+function load_store_products(): array {
+  $floorings = json_decode(@file_get_contents(__DIR__.'/../floorings.json'), true) ?: [];
+  $moldings = json_decode(@file_get_contents(__DIR__.'/../moldings.json'), true) ?: [];
+  return array_merge($floorings, $moldings);
+}
+
+$allProducts = load_store_products();
+$type = $_GET['type'] ?? 'flooring';
+if (!in_array($type, ['flooring', 'molding'], true)) {
+  $type = 'flooring';
+}
+$products = array_values(array_filter($allProducts, function ($product) use ($type) {
+  return ($product['product_type'] ?? 'flooring') === $type;
+}));
 $base = '../';
 $active = 'store';
 $contact_source = 'website_store';
+$heroTitle = $type === 'molding' ? 'Store — Moldings' : 'Store — Waterproof LVP';
+$heroSubtitle = $type === 'molding'
+  ? 'Baseboards, casings, trims & more'
+  : 'SPC/WPC core · Attached pad · Easy click install';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,12 +34,17 @@ $contact_source = 'website_store';
 
 <section class="store-hero">
   <div class="container wrap">
-    <h1>Store — Waterproof LVP</h1>
-    <p>SPC/WPC core · Attached pad · Easy click install</p>
+    <h1><?= htmlspecialchars($heroTitle) ?></h1>
+    <p><?= htmlspecialchars($heroSubtitle) ?></p>
+    <div class="store-type-switch" style="margin-top:1rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+      <a class="btn <?= $type === 'flooring' ? 'btn-primary' : 'btn-ghost' ?>" href="?type=flooring">Flooring</a>
+      <a class="btn <?= $type === 'molding' ? 'btn-primary' : 'btn-ghost' ?>" href="?type=molding">Moldings</a>
+    </div>
   </div>
 </section>
 
 <div class="container store-layout">
+  <?php if ($type === 'flooring'): ?>
   <aside class="store-filters" aria-label="Filters">
     <h3>Filter</h3>
     <div class="f-sec">
@@ -55,6 +77,7 @@ $contact_source = 'website_store';
       <button class="btn btn-ghost" id="clearFilters" type="button">Clear all</button>
     </div>
   </aside>
+  <?php endif; ?>
 
   <main>
     <div class="store-bar">
@@ -80,18 +103,33 @@ $contact_source = 'website_store';
 <?php include $base.'includes/footer.php'; ?>
 
 <script>
-const PRODUCTS = <?= json_encode($products) ?>;
+const PRODUCTS = <?= json_encode(array_values($products)) ?>;
+const CURRENT_TYPE = <?= json_encode($type) ?>;
 
 function card(p){
   const inStock = (p.inventory_status || '').toLowerCase() === 'in stock';
-  const priceSqft = p.price_sqft != null ? `$${p.price_sqft.toFixed(2)}` : '';
-  const pb = p.price_box != null ? p.price_box : (p.price_sqft != null && p.sqft_per_box != null ? p.price_sqft * p.sqft_per_box : null);
-  const priceBox = pb != null ? `$${pb.toFixed(2)}` : '';
+  const unit = (p.measurement_unit || '').toLowerCase() || (p.product_type === 'molding' ? 'lf' : 'sqft');
+  const unitLabel = unit === 'lf' ? '/lf' : unit === 'piece' ? '/piece' : '/sqft';
+  const unitName = unit === 'lf' ? 'lf' : unit === 'piece' ? 'pieces' : 'sqft';
+  const formatNumber = (value)=>{
+    const num = Number(value);
+    if(!Number.isFinite(num)) return value ?? '';
+    if(Math.abs(num) >= 1000 && num % 1 === 0){
+      return num.toLocaleString();
+    }
+    return num % 1 === 0 ? num.toString() : num.toLocaleString(undefined, {maximumFractionDigits: 2});
+  };
+  const priceUnitValue = p.price_per_unit ?? p.price_sqft;
+  const priceUnit = priceUnitValue != null ? `$${Number(priceUnitValue).toFixed(2)}` : '';
+  const coverage = p.coverage_per_box ?? p.sqft_per_box;
+  const pb = p.price_box != null ? p.price_box : (priceUnitValue != null && coverage != null ? priceUnitValue * coverage : null);
+  const priceBox = pb != null ? `$${Number(pb).toFixed(2)}` : '';
   const width = (p.width_in && p.length_in) ? `${p.width_in}×${p.length_in} in` : '';
   const thk = p.thickness_mm ? `${p.thickness_mm} mm` : '';
   const wear = p.wear_layer_mil ? `${p.wear_layer_mil} mil wear` : '';
   const href = `product.php?sku=${encodeURIComponent(p.sku)}`;
-  let priceHtml = priceSqft ? `<div class="store-price"><b>${priceSqft}</b><span class="store-per">/sqft</span></div>` : `<div class="store-price"><b>Call for price</b></div>`;
+  const coverageLabel = coverage != null ? `${formatNumber(coverage)} ${unitName} / box` : '';
+  let priceHtml = priceUnit ? `<div class="store-price"><b>${priceUnit}</b><span class="store-per">${unitLabel}</span></div>` : `<div class="store-price"><b>Call for price</b></div>`;
   if(priceBox){ priceHtml += `<div class="store-price"><span class="store-per">≈ ${priceBox} / box</span></div>`; }
   const badge = inStock ? '<span class="store-badge">In stock</span>' : '<span class="store-badge store-out">Backorder</span>';
   const img = p.image ? `../${p.image}` : '';
@@ -102,13 +140,14 @@ function card(p){
     </a>
     <div class="store-pad">
       <h3 class="store-title"><a href="${href}">${p.name}</a></h3>
-      <div class="store-sub">${p.collection || ''}</div>
+      <div class="store-sub">${p.collection || p.category || ''}</div>
       <div class="store-specs">
         ${thk? `<span class="store-pill">${thk}</span>`:''}
         ${wear? `<span class="store-pill">${wear}</span>`:''}
         ${width? `<span class="store-pill">${width}</span>`:''}
-        <span class="store-pill">${p.core || ''}</span>
-        <span class="store-pill">${p.pad ? p.pad+' pad '+(p.pad_material||'') : ''}</span>
+        ${p.core ? `<span class="store-pill">${p.core}</span>`:''}
+        ${p.pad ? `<span class="store-pill">${p.pad} pad ${(p.pad_material||'').trim()}</span>`:''}
+        ${coverageLabel ? `<span class="store-pill">${coverageLabel}</span>`:''}
       </div>
       ${priceHtml}
       <div class="store-cta">
@@ -121,6 +160,7 @@ function card(p){
 }
 
 function applyFilters(list){
+  if(CURRENT_TYPE !== 'flooring') return list;
   const cf = (document.getElementById('fColor').value||'').toLowerCase();
   const tn = (document.getElementById('fTone').value||'').toLowerCase();
   const thkMin = parseFloat(document.getElementById('fThkMin').value) || 0;
@@ -142,9 +182,17 @@ function applySort(list){
   const v = document.getElementById('sortSel').value;
   const copy = [...list];
   if(v==='price-asc'){
-    copy.sort((a,b)=>(a.price_sqft??1e9)-(b.price_sqft??1e9));
+    copy.sort((a,b)=>{
+      const au = a.price_per_unit ?? a.price_sqft ?? 1e9;
+      const bu = b.price_per_unit ?? b.price_sqft ?? 1e9;
+      return au - bu;
+    });
   }else if(v==='price-desc'){
-    copy.sort((a,b) => (b.price_sqft??-1)-(a.price_sqft??-1));
+    copy.sort((a,b) => {
+      const au = a.price_per_unit ?? a.price_sqft ?? -1;
+      const bu = b.price_per_unit ?? b.price_sqft ?? -1;
+      return bu - au;
+    });
   }else if(v==='rating-desc'){
     copy.sort((a,b)=>(b.rating??0)-(a.rating??0));
   }
@@ -165,11 +213,12 @@ function render(){
 }
 
 ['sortSel','fColor','fTone','fThkMin','fWearMin'].forEach(id=>{
-  document.getElementById(id).addEventListener('change', render);
+  document.getElementById(id)?.addEventListener('change', render);
 });
-document.getElementById('clearFilters').addEventListener('click', ()=>{
-  ['fColor','fTone','fThkMin','fWearMin'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('sortSel').value='relevance';
+document.getElementById('clearFilters')?.addEventListener('click', ()=>{
+  ['fColor','fTone','fThkMin','fWearMin'].forEach(id=>{ const el = document.getElementById(id); if(el) el.value=''; });
+  const sortSel = document.getElementById('sortSel');
+  if(sortSel) sortSel.value='relevance';
   render();
 });
 render();

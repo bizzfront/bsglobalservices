@@ -361,7 +361,7 @@ $contact_source = 'website_home';
       });
     }
 
-    fetch('products.json')
+    fetch('floorings.json')
       .then(res=>res.json())
       .then(products=>{
         const carousel = document.getElementById('popular-carousel');
