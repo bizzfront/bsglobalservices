@@ -1,9 +1,5 @@
 <?php
-function load_store_products(): array {
-  $floorings = json_decode(@file_get_contents(__DIR__.'/../floorings.json'), true) ?: [];
-  $moldings = json_decode(@file_get_contents(__DIR__.'/../moldings.json'), true) ?: [];
-  return array_merge($floorings, $moldings);
-}
+require_once __DIR__.'/utils.php';
 
 $products = load_store_products();
 $sku = $_GET['sku'] ?? '';
@@ -42,10 +38,12 @@ $unitLabels = [
   'lf' => 'linear feet',
   'piece' => 'pieces'
 ];
+$packageLabelSingular = $product['package_label'] ?? ($isFlooring ? 'box' : 'package');
+$packageLabelPlural = $product['package_label_plural'] ?? ($isFlooring ? 'boxes' : 'packages');
 $unitLabel = $unitLabels[$measurementUnit] ?? $measurementUnit;
 $unitSuffix = $measurementUnit === 'lf' ? '/lf' : ($measurementUnit === 'piece' ? '/piece' : '/sqft');
-$pricePerUnitValue = $product['price_per_unit'] ?? $product['price_sqft'] ?? null;
-$coveragePerBoxValue = $product['coverage_per_box'] ?? $product['sqft_per_box'] ?? null;
+$pricePerUnitValue = $product['computed_price_per_unit'] ?? $product['price_per_unit'] ?? $product['price_sqft'] ?? null;
+$coveragePerBoxValue = $product['computed_coverage_per_package'] ?? $product['coverage_per_box'] ?? $product['sqft_per_box'] ?? null;
 $lengthFtValue = isset($product['length_ft']) ? (float)$product['length_ft'] : null;
 $piecesPerBoxValue = isset($product['pieces_per_box']) ? (float)$product['pieces_per_box'] : null;
 if($coveragePerBoxValue === null && $lengthFtValue && $piecesPerBoxValue){
@@ -54,10 +52,15 @@ if($coveragePerBoxValue === null && $lengthFtValue && $piecesPerBoxValue){
 if($coveragePerBoxValue !== null){
   $coveragePerBoxValue = (float)$coveragePerBoxValue;
 }
-$priceBoxNum = ($pricePerUnitValue !== null && $coveragePerBoxValue) ? $pricePerUnitValue * $coveragePerBoxValue : null;
+$pricePackageNum = $product['computed_price_per_package'] ?? (($pricePerUnitValue !== null && $coveragePerBoxValue) ? $pricePerUnitValue * $coveragePerBoxValue : null);
 $pricePerUnit = $pricePerUnitValue !== null ? '$'.number_format((float)$pricePerUnitValue, 2) : '';
-$priceBox = $priceBoxNum !== null ? '$'.number_format((float)$priceBoxNum, 2) : '';
-$coveragePerBoxLabel = $coveragePerBoxValue ? $coveragePerBoxValue . ' ' . ($unitLabels[$measurementUnit] ?? $measurementUnit) . ' / box' : '';
+$pricePackage = $pricePackageNum !== null ? '$'.number_format((float)$pricePackageNum, 2) : '';
+$formatNumber = static function($value) {
+  if($value === null) return '';
+  $formatted = number_format((float)$value, 2, '.', '');
+  return rtrim(rtrim($formatted, '0'), '.');
+};
+$coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue) . ' ' . ($unitLabels[$measurementUnit] ?? $measurementUnit) . ' / ' . $packageLabelSingular : '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -100,8 +103,8 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $coveragePerBoxValue . ' ' . ($uni
           <?php else: ?>
             <div><b>Call for price</b></div>
           <?php endif; ?>
-          <?php if($priceBox): ?>
-            <div><span class="store-per">≈ <?= $priceBox ?> / box</span></div>
+          <?php if($pricePackage): ?>
+            <div><span class="store-per">≈ <?= $pricePackage ?> / <?= htmlspecialchars($packageLabelSingular) ?></span></div>
           <?php endif; ?>
           <?php if($coveragePerBoxLabel): ?>
             <div><span class="store-per"><?= htmlspecialchars($coveragePerBoxLabel) ?></span></div>
@@ -129,7 +132,7 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $coveragePerBoxValue . ' ' . ($uni
               <div class="full or">or</div>
             <?php endif; ?>
             <label class="full">
-              Boxes
+              <?= htmlspecialchars(ucfirst($packageLabelPlural)) ?>
               <input type="number" id="calcBoxes" min="1" value="1">
             </label>
             <p id="calcSummary" class="note full"></p>
@@ -214,8 +217,11 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $coveragePerBoxValue . ' ' . ($uni
     const PRODUCT_TYPE = <?= json_encode($productType) ?>;
     const MEASUREMENT_UNIT = <?= json_encode($measurementUnit) ?>;
     const UNIT_LABEL = <?= json_encode($unitLabel) ?>;
-    const COVERAGE_PER_BOX = <?= json_encode($coveragePerBoxValue) ?>;
+    const PACKAGE_LABEL = <?= json_encode($packageLabelSingular) ?>;
+    const PACKAGE_LABEL_PLURAL = <?= json_encode($packageLabelPlural) ?>;
+    const COVERAGE_PER_PACKAGE = <?= json_encode($coveragePerBoxValue) ?>;
     const PRICE_PER_UNIT = <?= json_encode($pricePerUnitValue) ?>;
+    const PRICE_PER_PACKAGE = <?= json_encode($pricePackageNum) ?>;
     const LENGTH_FT = <?= json_encode($product['length_ft'] ?? null) ?>;
     const PIECES_PER_BOX = <?= json_encode($product['pieces_per_box'] ?? null) ?>;
     function formatUnits(value){
@@ -232,12 +238,12 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $coveragePerBoxValue . ' ' . ($uni
       const pricePerUnitNum = Number(PRICE_PER_UNIT) || 0;
       const lengthPerPiece = Number(LENGTH_FT) || 0;
       const piecesPerBox = Number(PIECES_PER_BOX) || 0;
-      let coveragePerBox = Number(COVERAGE_PER_BOX);
-      if(!Number.isFinite(coveragePerBox) || coveragePerBox <= 0){
+      let coveragePerPackage = Number(COVERAGE_PER_PACKAGE);
+      if(!Number.isFinite(coveragePerPackage) || coveragePerPackage <= 0){
         if(lengthPerPiece > 0 && piecesPerBox > 0){
-          coveragePerBox = lengthPerPiece * piecesPerBox;
+          coveragePerPackage = lengthPerPiece * piecesPerBox;
         }else{
-          coveragePerBox = 0;
+          coveragePerPackage = 0;
         }
       }
       if(PRODUCT_TYPE === 'flooring'){
@@ -245,8 +251,8 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $coveragePerBoxValue . ' ' . ($uni
         const wid = parseFloat(document.getElementById('calcWid')?.value);
         if(len && wid){
           const sqft = len * wid;
-          if(COVERAGE_PER_BOX){
-            boxes = Math.ceil(sqft / COVERAGE_PER_BOX);
+          if(COVERAGE_PER_PACKAGE){
+            boxes = Math.ceil(sqft / COVERAGE_PER_PACKAGE);
             document.getElementById('calcBoxes').value = boxes;
           }
           unitsNeeded = sqft;
@@ -258,27 +264,28 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $coveragePerBoxValue . ' ' . ($uni
           if(piecesPerBox > 0 && piecesNeeded){
             boxes = Math.ceil(piecesNeeded / piecesPerBox);
             document.getElementById('calcBoxes').value = boxes;
-          }else if(coveragePerBox > 0){
-            boxes = Math.ceil(unitsInput / coveragePerBox);
+          }else if(coveragePerPackage > 0){
+            boxes = Math.ceil(unitsInput / coveragePerPackage);
             document.getElementById('calcBoxes').value = boxes;
           }
           unitsNeeded = unitsInput;
         }else if(boxes){
           if(piecesPerBox > 0 && lengthPerPiece > 0){
             unitsNeeded = boxes * piecesPerBox * lengthPerPiece;
-          }else if(coveragePerBox > 0){
-            unitsNeeded = boxes * coveragePerBox;
+          }else if(coveragePerPackage > 0){
+            unitsNeeded = boxes * coveragePerPackage;
           }
         }
       }
-      if(!unitsNeeded && boxes && coveragePerBox > 0){
-        unitsNeeded = boxes * coveragePerBox;
+      if(!unitsNeeded && boxes && coveragePerPackage > 0){
+        unitsNeeded = boxes * coveragePerPackage;
       }
-      const pricePerBox = coveragePerBox > 0 && pricePerUnitNum > 0 ? coveragePerBox * pricePerUnitNum : 0;
-      const totalPrice = unitsNeeded && pricePerUnitNum > 0 ? unitsNeeded * pricePerUnitNum : (boxes && pricePerBox ? boxes * pricePerBox : 0);
+      const pricePerPackage = Number(PRICE_PER_PACKAGE) || (coveragePerPackage > 0 && pricePerUnitNum > 0 ? coveragePerPackage * pricePerUnitNum : 0);
+      const totalPrice = unitsNeeded && pricePerUnitNum > 0 ? unitsNeeded * pricePerUnitNum : (boxes && pricePerPackage ? boxes * pricePerPackage : 0);
       const summaryParts = [];
       if(boxes){
-        summaryParts.push(`${boxes} box(es)`);
+        const pkgLabel = boxes === 1 ? (PACKAGE_LABEL || 'box') : (PACKAGE_LABEL_PLURAL || ((PACKAGE_LABEL || 'box') + 'es'));
+        summaryParts.push(`${boxes} ${pkgLabel}`);
       }
       if(unitsNeeded){
         summaryParts.push(`${formatUnits(unitsNeeded)} ${UNIT_LABEL}`);
