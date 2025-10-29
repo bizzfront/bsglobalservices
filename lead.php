@@ -118,12 +118,13 @@ try {
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
     ]);
 
-    $stmt = $pdo->prepare('INSERT INTO data_formularios (nombre_formulario, area_datos_recolectados) VALUES (:nombre_formulario, :area_datos_recolectados)');
+    $stmt = $pdo->prepare('INSERT INTO bizz.data_formularios (nombre_formulario, area_datos_recolectados) VALUES (:nombre_formulario, :area_datos_recolectados)');
     $stmt->bindValue(':nombre_formulario', $formNameDb, PDO::PARAM_STR);
     $stmt->bindValue(':area_datos_recolectados', $formPayloadJson, PDO::PARAM_STR);
     $stmt->execute();
 } catch (Exception $e) {
-    echo json_encode(['code' => '02', 'data' => 'A error occurred while sending the form. Please try again later.']);
+    $error = $e->getMessage();
+    echo json_encode(['code' => '02', 'data' => 'A error occurred while saving the form. Please try again later - '+$error+'' ] );
     exit;
 }
 
