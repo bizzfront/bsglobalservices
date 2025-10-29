@@ -1,9 +1,15 @@
 <?php
-$products = json_decode(file_get_contents(__DIR__.'/../products.json'), true);
+function load_store_products(): array {
+  $floorings = json_decode(@file_get_contents(__DIR__.'/../floorings.json'), true) ?: [];
+  $moldings = json_decode(@file_get_contents(__DIR__.'/../moldings.json'), true) ?: [];
+  return array_merge($floorings, $moldings);
+}
+
+$products = load_store_products();
 $sku = $_GET['sku'] ?? '';
 $product = null;
 foreach ($products as $p) {
-  if ($p['sku'] === $sku) {
+  if (($p['sku'] ?? '') === $sku) {
     $product = $p;
     break;
   }
@@ -13,17 +19,37 @@ if (!$product) {
   echo 'Product not found';
   exit;
 }
-$baseDir = dirname(dirname($product['image']));
-$basePath = __DIR__ . '/../' . $baseDir;
-$images = array_merge(glob($basePath.'/*.png'), glob($basePath.'/*/*.png'));
-$images = array_map(function($p){return str_replace(__DIR__.'/../','',$p);}, $images);
-$selected = array_unique([$product['image'], $product['hoverImage']]);
+$imagePaths = array_filter([$product['image'] ?? '', $product['hoverImage'] ?? '']);
+$baseDir = $imagePaths ? dirname(dirname($imagePaths[0])) : null;
+$basePath = $baseDir ? __DIR__ . '/../' . $baseDir : null;
+$images = [];
+if ($basePath && is_dir($basePath)) {
+  $images = array_merge(glob($basePath.'/*.png') ?: [], glob($basePath.'/*/*.png') ?: []);
+  $images = array_map(function($p){return str_replace(__DIR__.'/../','',$p);}, $images);
+}
+$selected = array_unique(array_filter([$product['image'] ?? '', $product['hoverImage'] ?? '']));
 $others = array_diff($images, $selected);
 shuffle($others);
 $selected = array_merge($selected, array_slice($others, 0, max(0, 4 - count($selected))));
 $base = '../';
 $active = 'store';
 $contact_source = 'website_store';
+$productType = $product['product_type'] ?? 'flooring';
+$isFlooring = $productType === 'flooring';
+$measurementUnit = strtolower($product['measurement_unit'] ?? ($isFlooring ? 'sqft' : 'lf'));
+$unitLabels = [
+  'sqft' => 'sqft',
+  'lf' => 'linear feet',
+  'piece' => 'pieces'
+];
+$unitLabel = $unitLabels[$measurementUnit] ?? $measurementUnit;
+$unitSuffix = $measurementUnit === 'lf' ? '/lf' : ($measurementUnit === 'piece' ? '/piece' : '/sqft');
+$pricePerUnitValue = $product['price_per_unit'] ?? $product['price_sqft'] ?? null;
+$coveragePerBoxValue = $product['coverage_per_box'] ?? $product['sqft_per_box'] ?? null;
+$priceBoxNum = $product['price_box'] ?? ($pricePerUnitValue !== null && $coveragePerBoxValue ? $pricePerUnitValue * $coveragePerBoxValue : null);
+$pricePerUnit = $pricePerUnitValue !== null ? '$'.number_format((float)$pricePerUnitValue, 2) : '';
+$priceBox = $priceBoxNum !== null ? '$'.number_format((float)$priceBoxNum, 2) : '';
+$coveragePerBoxLabel = $coveragePerBoxValue ? $coveragePerBoxValue . ' ' . ($unitLabels[$measurementUnit] ?? $measurementUnit) . ' / box' : '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,36 +85,41 @@ $contact_source = 'website_store';
       </div>
       <div class="product-cart">
         <?php
-          $priceSqft = isset($product['price_sqft']) && $product['price_sqft'] !== null ? '$'.number_format($product['price_sqft'],2) : '';
-          $priceBoxNum = $product['price_box'] ?? null;
-          if ($priceBoxNum === null && isset($product['price_sqft'], $product['sqft_per_box'])) {
-            $priceBoxNum = $product['price_sqft'] * $product['sqft_per_box'];
-          }
-          $priceBox = $priceBoxNum !== null ? '$'.number_format($priceBoxNum,2) : '';
         ?>
         <div class="store-price">
-          <?php if($priceSqft): ?>
-            <div><b><?= $priceSqft ?></b><span class="store-per">/sqft</span></div>
+          <?php if($pricePerUnit): ?>
+            <div><b><?= $pricePerUnit ?></b><span class="store-per"><?= htmlspecialchars($unitSuffix) ?></span></div>
           <?php else: ?>
             <div><b>Call for price</b></div>
           <?php endif; ?>
           <?php if($priceBox): ?>
             <div><span class="store-per">≈ <?= $priceBox ?> / box</span></div>
           <?php endif; ?>
+          <?php if($coveragePerBoxLabel): ?>
+            <div><span class="store-per"><?= htmlspecialchars($coveragePerBoxLabel) ?></span></div>
+          <?php endif; ?>
         </div>
 
         <div id="calc" class="calc">
           <h3 style="color: var(--burgundy);">Material calculator</h3>
           <form id="calcForm" class="form">
-            <label>
-              Length (ft)
-              <input type="number" id="calcLen" step="0.1">
-            </label>
-            <label>
-              Width (ft)
-              <input type="number" id="calcWid" step="0.1">
-            </label>
-            <div class="full or">or</div>
+            <?php if($isFlooring): ?>
+              <label>
+                Length (ft)
+                <input type="number" id="calcLen" step="0.1" min="0">
+              </label>
+              <label>
+                Width (ft)
+                <input type="number" id="calcWid" step="0.1" min="0">
+              </label>
+              <div class="full or">or</div>
+            <?php else: ?>
+              <label class="full">
+                <?= htmlspecialchars(ucfirst($unitLabel)) ?> needed
+                <input type="number" id="calcUnits" step="0.1" min="0">
+              </label>
+              <div class="full or">or</div>
+            <?php endif; ?>
             <label class="full">
               Boxes
               <input type="number" id="calcBoxes" min="1" value="1">
@@ -118,14 +149,25 @@ $contact_source = 'website_store';
     </div>
     <div id="specs" class="tab-content">
       <ul>
-        <?php if($product['thickness_mm']): ?><li><strong>Thickness:</strong> <?= $product['thickness_mm'] ?> mm</li><?php endif; ?>
-        <?php if($product['wear_layer_mil']): ?><li><strong>Wear layer:</strong> <?= $product['wear_layer_mil'] ?> mil</li><?php endif; ?>
-        <?php if($product['width_in'] && $product['length_in']): ?><li><strong>Plank size:</strong> <?= $product['width_in'] ?>×<?= $product['length_in'] ?> in</li><?php endif; ?>
-        <?php if($product['core']): ?><li><strong>Core:</strong> <?= htmlspecialchars($product['core']) ?></li><?php endif; ?>
-        <?php if($product['pad']): ?><li><strong>Pad:</strong> <?= htmlspecialchars($product['pad']) ?> <?= htmlspecialchars($product['pad_material'] ?? '') ?></li><?php endif; ?>
-        <?php if($product['installation']): ?><li><strong>Installation:</strong> <?= htmlspecialchars($product['installation']) ?></li><?php endif; ?>
-        <?php if($product['waterproof']): ?><li><strong>Waterproof:</strong> <?= htmlspecialchars($product['waterproof']) ?></li><?php endif; ?>
-        <?php if($product['scratch_resistant']): ?><li><strong>Scratch resistant:</strong> <?= htmlspecialchars($product['scratch_resistant']) ?></li><?php endif; ?>
+        <?php if($isFlooring): ?>
+          <?php if($product['thickness_mm']): ?><li><strong>Thickness:</strong> <?= $product['thickness_mm'] ?> mm</li><?php endif; ?>
+          <?php if($product['wear_layer_mil']): ?><li><strong>Wear layer:</strong> <?= $product['wear_layer_mil'] ?> mil</li><?php endif; ?>
+          <?php if($product['width_in'] && $product['length_in']): ?><li><strong>Plank size:</strong> <?= $product['width_in'] ?>×<?= $product['length_in'] ?> in</li><?php endif; ?>
+          <?php if($product['core']): ?><li><strong>Core:</strong> <?= htmlspecialchars($product['core']) ?></li><?php endif; ?>
+          <?php if($product['pad']): ?><li><strong>Pad:</strong> <?= htmlspecialchars($product['pad']) ?> <?= htmlspecialchars($product['pad_material'] ?? '') ?></li><?php endif; ?>
+          <?php if($product['installation']): ?><li><strong>Installation:</strong> <?= htmlspecialchars($product['installation']) ?></li><?php endif; ?>
+          <?php if($product['waterproof']): ?><li><strong>Waterproof:</strong> <?= htmlspecialchars($product['waterproof']) ?></li><?php endif; ?>
+          <?php if($product['scratch_resistant']): ?><li><strong>Scratch resistant:</strong> <?= htmlspecialchars($product['scratch_resistant']) ?></li><?php endif; ?>
+        <?php else: ?>
+          <?php if($product['category']): ?><li><strong>Category:</strong> <?= htmlspecialchars($product['category']) ?></li><?php endif; ?>
+          <?php if($product['nominal_size']): ?><li><strong>Nominal size:</strong> <?= htmlspecialchars($product['nominal_size']) ?></li><?php endif; ?>
+          <?php if($product['actual_size']): ?><li><strong>Actual size:</strong> <?= htmlspecialchars($product['actual_size']) ?></li><?php endif; ?>
+          <?php if($product['length_ft']): ?><li><strong>Length per piece:</strong> <?= $product['length_ft'] ?> ft</li><?php endif; ?>
+          <?php if($product['pieces_per_box']): ?><li><strong>Pieces per box:</strong> <?= $product['pieces_per_box'] ?></li><?php endif; ?>
+          <?php if($coveragePerBoxValue): ?><li><strong>Coverage per box:</strong> <?= $coveragePerBoxLabel ?></li><?php endif; ?>
+          <?php if($product['packaging_notes']): ?><li><strong>Packaging:</strong> <?= htmlspecialchars($product['packaging_notes']) ?></li><?php endif; ?>
+          <?php if($product['comments']): ?><li><strong>Comments:</strong> <?= htmlspecialchars($product['comments']) ?></li><?php endif; ?>
+        <?php endif; ?>
       </ul>
     </div>
     <div class="hero-cta" style="margin-top:1rem;">
@@ -145,6 +187,7 @@ $contact_source = 'website_store';
     const imgs = document.querySelectorAll('.slider img');
     let idx = 0;
     function showSlide(n){
+      if(!imgs.length) return;
       imgs[idx].classList.remove('active');
       idx = (n + imgs.length) % imgs.length;
       imgs[idx].classList.add('active');
@@ -160,24 +203,64 @@ $contact_source = 'website_store';
       });
     });
     const SKU = <?= json_encode($product['sku']) ?>;
-    const SQFT_PER_BOX = <?= json_encode($product['sqft_per_box'] ?? null) ?>;
-    const PRICE_SQFT = <?= json_encode($product['price_sqft']) ?>;
-    const PRICE_BOX = <?= json_encode($product['price_box']) ?>;
-    function updateCalc(){
-      const len = parseFloat(document.getElementById('calcLen').value);
-      const wid = parseFloat(document.getElementById('calcWid').value);
-      let boxes = parseInt(document.getElementById('calcBoxes').value) || 0;
-      if(len && wid && SQFT_PER_BOX){
-        const sqft = len * wid;
-        boxes = Math.ceil(sqft / SQFT_PER_BOX);
-        document.getElementById('calcBoxes').value = boxes;
+    const PRODUCT_TYPE = <?= json_encode($productType) ?>;
+    const MEASUREMENT_UNIT = <?= json_encode($measurementUnit) ?>;
+    const UNIT_LABEL = <?= json_encode($unitLabel) ?>;
+    const COVERAGE_PER_BOX = <?= json_encode($coveragePerBoxValue) ?>;
+    const PRICE_PER_UNIT = <?= json_encode($pricePerUnitValue) ?>;
+    const PRICE_BOX = <?= json_encode($priceBoxNum) ?>;
+    function formatUnits(value){
+      const num = Number(value);
+      if(!Number.isFinite(num)) return '';
+      if(Math.abs(num) >= 1000 && Number.isInteger(num)){
+        return num.toLocaleString();
       }
-      const pricePerBox = PRICE_BOX || (PRICE_SQFT && SQFT_PER_BOX ? PRICE_SQFT * SQFT_PER_BOX : 0);
-      const summary = boxes ? `${boxes} box(es)` + (pricePerBox ? ` — $${(boxes*pricePerBox).toFixed(2)}` : '') : '';
+      return num.toLocaleString(undefined, {maximumFractionDigits: 2});
+    }
+    function updateCalc(){
+      let boxes = parseInt(document.getElementById('calcBoxes')?.value) || 0;
+      let unitsNeeded = null;
+      if(PRODUCT_TYPE === 'flooring'){
+        const len = parseFloat(document.getElementById('calcLen')?.value);
+        const wid = parseFloat(document.getElementById('calcWid')?.value);
+        if(len && wid){
+          const sqft = len * wid;
+          if(COVERAGE_PER_BOX){
+            boxes = Math.ceil(sqft / COVERAGE_PER_BOX);
+            document.getElementById('calcBoxes').value = boxes;
+          }
+          unitsNeeded = sqft;
+        }
+      }else{
+        const unitsInput = parseFloat(document.getElementById('calcUnits')?.value);
+        if(unitsInput){
+          if(COVERAGE_PER_BOX){
+            boxes = Math.ceil(unitsInput / COVERAGE_PER_BOX);
+            document.getElementById('calcBoxes').value = boxes;
+          }
+          unitsNeeded = unitsInput;
+        }else if(boxes && COVERAGE_PER_BOX){
+          unitsNeeded = boxes * COVERAGE_PER_BOX;
+        }
+      }
+      if(!unitsNeeded && boxes && COVERAGE_PER_BOX){
+        unitsNeeded = boxes * COVERAGE_PER_BOX;
+      }
+      const pricePerBox = PRICE_BOX || (PRICE_PER_UNIT && COVERAGE_PER_BOX ? PRICE_PER_UNIT * COVERAGE_PER_BOX : 0);
+      let summary = '';
+      if(boxes){
+        summary = `${boxes} box(es)`;
+        if(unitsNeeded){
+          summary += ` — ${formatUnits(unitsNeeded)} ${UNIT_LABEL}`;
+        }
+        if(pricePerBox){
+          summary += ` — $${(boxes*pricePerBox).toFixed(2)}`;
+        }
+      }
       document.getElementById('calcSummary').textContent = summary;
       return boxes;
     }
-    ['calcLen','calcWid','calcBoxes'].forEach(id=>document.getElementById(id)?.addEventListener('input', updateCalc));
+    ['calcLen','calcWid','calcBoxes','calcUnits'].forEach(id=>document.getElementById(id)?.addEventListener('input', updateCalc));
     document.getElementById('addToCart')?.addEventListener('click', ()=>{
       const boxes = updateCalc();
       if(boxes>0) cart.addItem(SKU, boxes);
