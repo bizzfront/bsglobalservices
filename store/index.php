@@ -1,9 +1,5 @@
 <?php
-function load_store_products(): array {
-  $floorings = json_decode(@file_get_contents(__DIR__.'/../floorings.json'), true) ?: [];
-  $moldings = json_decode(@file_get_contents(__DIR__.'/../moldings.json'), true) ?: [];
-  return array_merge($floorings, $moldings);
-}
+require_once __DIR__.'/utils.php';
 
 $allProducts = load_store_products();
 $type = $_GET['type'] ?? 'flooring';
@@ -119,11 +115,11 @@ function card(p){
     }
     return num % 1 === 0 ? num.toString() : num.toLocaleString(undefined, {maximumFractionDigits: 2});
   };
-  const priceUnitValue = p.price_per_unit ?? p.price_sqft;
+  const priceUnitValue = p.computed_price_per_unit ?? p.price_per_unit ?? p.price_sqft;
   const priceUnit = priceUnitValue != null ? `$${Number(priceUnitValue).toFixed(2)}` : '';
   const lengthFt = Number(p.length_ft);
   const piecesPerBox = Number(p.pieces_per_box);
-  let coverage = p.coverage_per_box ?? p.sqft_per_box;
+  let coverage = p.computed_coverage_per_package ?? p.coverage_per_box ?? p.sqft_per_box;
   if(coverage == null || !Number.isFinite(Number(coverage)) || Number(coverage) <= 0){
     if(Number.isFinite(lengthFt) && lengthFt > 0 && Number.isFinite(piecesPerBox) && piecesPerBox > 0){
       coverage = lengthFt * piecesPerBox;
@@ -134,15 +130,16 @@ function card(p){
   if(coverage != null){
     coverage = Number(coverage);
   }
-  const pb = priceUnitValue != null && coverage != null ? priceUnitValue * coverage : null;
-  const priceBox = pb != null ? `$${Number(pb).toFixed(2)}` : '';
+  const pricePackageValue = p.computed_price_per_package ?? (priceUnitValue != null && coverage != null ? priceUnitValue * coverage : null);
+  const pricePackage = pricePackageValue != null ? `$${Number(pricePackageValue).toFixed(2)}` : '';
   const width = (p.width_in && p.length_in) ? `${p.width_in}×${p.length_in} in` : '';
   const thk = p.thickness_mm ? `${p.thickness_mm} mm` : '';
   const wear = p.wear_layer_mil ? `${p.wear_layer_mil} mil wear` : '';
   const href = `product.php?sku=${encodeURIComponent(p.sku)}`;
-  const coverageLabel = coverage != null ? `${formatNumber(coverage)} ${unitName} / box` : '';
+  const packageLabel = p.package_label ?? 'box';
+  const coverageLabel = coverage != null ? `${formatNumber(coverage)} ${unitName} / ${packageLabel}` : '';
   let priceHtml = priceUnit ? `<div class="store-price"><b>${priceUnit}</b><span class="store-per">${unitLabel}</span></div>` : `<div class="store-price"><b>Call for price</b></div>`;
-  if(priceBox){ priceHtml += `<div class="store-price"><span class="store-per">≈ ${priceBox} / box</span></div>`; }
+  if(pricePackage){ priceHtml += `<div class="store-price"><span class="store-per">≈ ${pricePackage} / ${packageLabel}</span></div>`; }
   const badge = inStock ? '<span class="store-badge">In stock</span>' : '<span class="store-badge store-out">Backorder</span>';
   const img = p.image ? `../${p.image}` : '';
   return `
@@ -195,14 +192,14 @@ function applySort(list){
   const copy = [...list];
   if(v==='price-asc'){
     copy.sort((a,b)=>{
-      const au = a.price_per_unit ?? a.price_sqft ?? 1e9;
-      const bu = b.price_per_unit ?? b.price_sqft ?? 1e9;
+      const au = a.computed_price_per_unit ?? a.price_per_unit ?? a.price_sqft ?? 1e9;
+      const bu = b.computed_price_per_unit ?? b.price_per_unit ?? b.price_sqft ?? 1e9;
       return au - bu;
     });
   }else if(v==='price-desc'){
     copy.sort((a,b) => {
-      const au = a.price_per_unit ?? a.price_sqft ?? -1;
-      const bu = b.price_per_unit ?? b.price_sqft ?? -1;
+      const au = a.computed_price_per_unit ?? a.price_per_unit ?? a.price_sqft ?? -1;
+      const bu = b.computed_price_per_unit ?? b.price_per_unit ?? b.price_sqft ?? -1;
       return bu - au;
     });
   }else if(v==='rating-desc'){
