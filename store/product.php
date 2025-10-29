@@ -46,7 +46,15 @@ $unitLabel = $unitLabels[$measurementUnit] ?? $measurementUnit;
 $unitSuffix = $measurementUnit === 'lf' ? '/lf' : ($measurementUnit === 'piece' ? '/piece' : '/sqft');
 $pricePerUnitValue = $product['price_per_unit'] ?? $product['price_sqft'] ?? null;
 $coveragePerBoxValue = $product['coverage_per_box'] ?? $product['sqft_per_box'] ?? null;
-$priceBoxNum = $product['price_box'] ?? ($pricePerUnitValue !== null && $coveragePerBoxValue ? $pricePerUnitValue * $coveragePerBoxValue : null);
+$lengthFtValue = isset($product['length_ft']) ? (float)$product['length_ft'] : null;
+$piecesPerBoxValue = isset($product['pieces_per_box']) ? (float)$product['pieces_per_box'] : null;
+if($coveragePerBoxValue === null && $lengthFtValue && $piecesPerBoxValue){
+  $coveragePerBoxValue = $lengthFtValue * $piecesPerBoxValue;
+}
+if($coveragePerBoxValue !== null){
+  $coveragePerBoxValue = (float)$coveragePerBoxValue;
+}
+$priceBoxNum = ($pricePerUnitValue !== null && $coveragePerBoxValue) ? $pricePerUnitValue * $coveragePerBoxValue : null;
 $pricePerUnit = $pricePerUnitValue !== null ? '$'.number_format((float)$pricePerUnitValue, 2) : '';
 $priceBox = $priceBoxNum !== null ? '$'.number_format((float)$priceBoxNum, 2) : '';
 $coveragePerBoxLabel = $coveragePerBoxValue ? $coveragePerBoxValue . ' ' . ($unitLabels[$measurementUnit] ?? $measurementUnit) . ' / box' : '';
@@ -208,7 +216,8 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $coveragePerBoxValue . ' ' . ($uni
     const UNIT_LABEL = <?= json_encode($unitLabel) ?>;
     const COVERAGE_PER_BOX = <?= json_encode($coveragePerBoxValue) ?>;
     const PRICE_PER_UNIT = <?= json_encode($pricePerUnitValue) ?>;
-    const PRICE_BOX = <?= json_encode($priceBoxNum) ?>;
+    const LENGTH_FT = <?= json_encode($product['length_ft'] ?? null) ?>;
+    const PIECES_PER_BOX = <?= json_encode($product['pieces_per_box'] ?? null) ?>;
     function formatUnits(value){
       const num = Number(value);
       if(!Number.isFinite(num)) return '';
@@ -220,6 +229,17 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $coveragePerBoxValue . ' ' . ($uni
     function updateCalc(){
       let boxes = parseInt(document.getElementById('calcBoxes')?.value) || 0;
       let unitsNeeded = null;
+      const pricePerUnitNum = Number(PRICE_PER_UNIT) || 0;
+      const lengthPerPiece = Number(LENGTH_FT) || 0;
+      const piecesPerBox = Number(PIECES_PER_BOX) || 0;
+      let coveragePerBox = Number(COVERAGE_PER_BOX);
+      if(!Number.isFinite(coveragePerBox) || coveragePerBox <= 0){
+        if(lengthPerPiece > 0 && piecesPerBox > 0){
+          coveragePerBox = lengthPerPiece * piecesPerBox;
+        }else{
+          coveragePerBox = 0;
+        }
+      }
       if(PRODUCT_TYPE === 'flooring'){
         const len = parseFloat(document.getElementById('calcLen')?.value);
         const wid = parseFloat(document.getElementById('calcWid')?.value);
@@ -234,30 +254,39 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $coveragePerBoxValue . ' ' . ($uni
       }else{
         const unitsInput = parseFloat(document.getElementById('calcUnits')?.value);
         if(unitsInput){
-          if(COVERAGE_PER_BOX){
-            boxes = Math.ceil(unitsInput / COVERAGE_PER_BOX);
+          const piecesNeeded = lengthPerPiece > 0 ? unitsInput / lengthPerPiece : null;
+          if(piecesPerBox > 0 && piecesNeeded){
+            boxes = Math.ceil(piecesNeeded / piecesPerBox);
+            document.getElementById('calcBoxes').value = boxes;
+          }else if(coveragePerBox > 0){
+            boxes = Math.ceil(unitsInput / coveragePerBox);
             document.getElementById('calcBoxes').value = boxes;
           }
           unitsNeeded = unitsInput;
-        }else if(boxes && COVERAGE_PER_BOX){
-          unitsNeeded = boxes * COVERAGE_PER_BOX;
+        }else if(boxes){
+          if(piecesPerBox > 0 && lengthPerPiece > 0){
+            unitsNeeded = boxes * piecesPerBox * lengthPerPiece;
+          }else if(coveragePerBox > 0){
+            unitsNeeded = boxes * coveragePerBox;
+          }
         }
       }
-      if(!unitsNeeded && boxes && COVERAGE_PER_BOX){
-        unitsNeeded = boxes * COVERAGE_PER_BOX;
+      if(!unitsNeeded && boxes && coveragePerBox > 0){
+        unitsNeeded = boxes * coveragePerBox;
       }
-      const pricePerBox = PRICE_BOX || (PRICE_PER_UNIT && COVERAGE_PER_BOX ? PRICE_PER_UNIT * COVERAGE_PER_BOX : 0);
-      let summary = '';
+      const pricePerBox = coveragePerBox > 0 && pricePerUnitNum > 0 ? coveragePerBox * pricePerUnitNum : 0;
+      const totalPrice = unitsNeeded && pricePerUnitNum > 0 ? unitsNeeded * pricePerUnitNum : (boxes && pricePerBox ? boxes * pricePerBox : 0);
+      const summaryParts = [];
       if(boxes){
-        summary = `${boxes} box(es)`;
-        if(unitsNeeded){
-          summary += ` — ${formatUnits(unitsNeeded)} ${UNIT_LABEL}`;
-        }
-        if(pricePerBox){
-          summary += ` — $${(boxes*pricePerBox).toFixed(2)}`;
-        }
+        summaryParts.push(`${boxes} box(es)`);
       }
-      document.getElementById('calcSummary').textContent = summary;
+      if(unitsNeeded){
+        summaryParts.push(`${formatUnits(unitsNeeded)} ${UNIT_LABEL}`);
+      }
+      if(totalPrice){
+        summaryParts.push(`$${totalPrice.toFixed(2)}`);
+      }
+      document.getElementById('calcSummary').textContent = summaryParts.join(' — ');
       return boxes;
     }
     ['calcLen','calcWid','calcBoxes','calcUnits'].forEach(id=>document.getElementById(id)?.addEventListener('input', updateCalc));
