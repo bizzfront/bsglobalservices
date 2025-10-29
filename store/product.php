@@ -53,8 +53,10 @@ if($coveragePerBoxValue !== null){
   $coveragePerBoxValue = (float)$coveragePerBoxValue;
 }
 $pricePackageNum = $product['computed_price_per_package'] ?? (($pricePerUnitValue !== null && $coveragePerBoxValue) ? $pricePerUnitValue * $coveragePerBoxValue : null);
-$pricePerUnit = $pricePerUnitValue !== null ? '$'.number_format((float)$pricePerUnitValue, 2) : '';
-$pricePackage = $pricePackageNum !== null ? '$'.number_format((float)$pricePackageNum, 2) : '';
+$pricePerUnitDisplayValue = $pricePerUnitValue !== null ? round((float)$pricePerUnitValue, 2) : null;
+$pricePackageDisplayValue = $pricePackageNum !== null ? round((float)$pricePackageNum, 2) : null;
+$pricePerUnit = $pricePerUnitDisplayValue !== null ? '$'.number_format($pricePerUnitDisplayValue, 2) : '';
+$pricePackage = $pricePackageDisplayValue !== null ? '$'.number_format($pricePackageDisplayValue, 2) : '';
 $formatNumber = static function($value) {
   if($value === null) return '';
   $formatted = number_format((float)$value, 2, '.', '');
@@ -221,7 +223,9 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue
     const PACKAGE_LABEL_PLURAL = <?= json_encode($packageLabelPlural) ?>;
     const COVERAGE_PER_PACKAGE = <?= json_encode($coveragePerBoxValue) ?>;
     const PRICE_PER_UNIT = <?= json_encode($pricePerUnitValue) ?>;
+    const PRICE_PER_UNIT_DISPLAY = <?= json_encode($pricePerUnitDisplayValue) ?>;
     const PRICE_PER_PACKAGE = <?= json_encode($pricePackageNum) ?>;
+    const PRICE_PER_PACKAGE_DISPLAY = <?= json_encode($pricePackageDisplayValue) ?>;
     const LENGTH_FT = <?= json_encode($product['length_ft'] ?? null) ?>;
     const PIECES_PER_BOX = <?= json_encode($product['pieces_per_box'] ?? null) ?>;
     function formatUnits(value){
@@ -235,7 +239,8 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue
     function updateCalc(){
       let boxes = parseInt(document.getElementById('calcBoxes')?.value) || 0;
       let unitsNeeded = null;
-      const pricePerUnitNum = Number(PRICE_PER_UNIT) || 0;
+      const pricePerUnitDisplay = Number(PRICE_PER_UNIT_DISPLAY);
+      const pricePerUnitNum = Number.isFinite(pricePerUnitDisplay) ? pricePerUnitDisplay : (Number(PRICE_PER_UNIT) || 0);
       const lengthPerPiece = Number(LENGTH_FT) || 0;
       const piecesPerBox = Number(PIECES_PER_BOX) || 0;
       let coveragePerPackage = Number(COVERAGE_PER_PACKAGE);
@@ -280,7 +285,10 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue
       if(!unitsNeeded && boxes && coveragePerPackage > 0){
         unitsNeeded = boxes * coveragePerPackage;
       }
-      const pricePerPackage = Number(PRICE_PER_PACKAGE) || (coveragePerPackage > 0 && pricePerUnitNum > 0 ? coveragePerPackage * pricePerUnitNum : 0);
+      const pricePerPackageDisplay = Number(PRICE_PER_PACKAGE_DISPLAY);
+      const pricePerPackage = Number.isFinite(pricePerPackageDisplay)
+        ? pricePerPackageDisplay
+        : (Number(PRICE_PER_PACKAGE) || (coveragePerPackage > 0 && pricePerUnitNum > 0 ? coveragePerPackage * pricePerUnitNum : 0));
       const totalPrice = unitsNeeded && pricePerUnitNum > 0 ? unitsNeeded * pricePerUnitNum : (boxes && pricePerPackage ? boxes * pricePerPackage : 0);
       const summaryParts = [];
       if(boxes){
