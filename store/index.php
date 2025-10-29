@@ -43,7 +43,7 @@ $heroSubtitle = $type === 'molding'
   </div>
 </section>
 
-<div class="container store-layout">
+<div class="container store-layout <?= $type === 'molding' ? 'store-layout--single' : '' ?>">
   <?php if ($type === 'flooring'): ?>
   <aside class="store-filters" aria-label="Filters">
     <h3>Filter</h3>
@@ -121,8 +121,20 @@ function card(p){
   };
   const priceUnitValue = p.price_per_unit ?? p.price_sqft;
   const priceUnit = priceUnitValue != null ? `$${Number(priceUnitValue).toFixed(2)}` : '';
-  const coverage = p.coverage_per_box ?? p.sqft_per_box;
-  const pb = p.price_box != null ? p.price_box : (priceUnitValue != null && coverage != null ? priceUnitValue * coverage : null);
+  const lengthFt = Number(p.length_ft);
+  const piecesPerBox = Number(p.pieces_per_box);
+  let coverage = p.coverage_per_box ?? p.sqft_per_box;
+  if(coverage == null || !Number.isFinite(Number(coverage)) || Number(coverage) <= 0){
+    if(Number.isFinite(lengthFt) && lengthFt > 0 && Number.isFinite(piecesPerBox) && piecesPerBox > 0){
+      coverage = lengthFt * piecesPerBox;
+    }else{
+      coverage = null;
+    }
+  }
+  if(coverage != null){
+    coverage = Number(coverage);
+  }
+  const pb = priceUnitValue != null && coverage != null ? priceUnitValue * coverage : null;
   const priceBox = pb != null ? `$${Number(pb).toFixed(2)}` : '';
   const width = (p.width_in && p.length_in) ? `${p.width_in}×${p.length_in} in` : '';
   const thk = p.thickness_mm ? `${p.thickness_mm} mm` : '';
