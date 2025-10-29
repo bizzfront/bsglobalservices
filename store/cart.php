@@ -1,9 +1,5 @@
 <?php
-function load_store_products(): array {
-  $floorings = json_decode(@file_get_contents(__DIR__.'/../floorings.json'), true) ?: [];
-  $moldings = json_decode(@file_get_contents(__DIR__.'/../moldings.json'), true) ?: [];
-  return array_merge($floorings, $moldings);
-}
+require_once __DIR__.'/utils.php';
 
 $products = load_store_products();
 $base = '../';
@@ -110,10 +106,11 @@ function renderCart(){
     const p = PRODUCTS.find(pr=>pr.sku===it.sku) || {};
     const unit = (p.measurement_unit || (p.product_type === 'molding' ? 'lf' : 'sqft')).toLowerCase();
     const unitLabel = unit === 'lf' ? 'lf' : unit === 'piece' ? 'piece' : 'sqft';
-    const pricePerUnit = Number(p.price_per_unit ?? p.price_sqft);
+    const packageLabel = p.package_label ?? 'box';
+    const pricePerUnit = Number(p.computed_price_per_unit ?? p.price_per_unit ?? p.price_sqft);
     const lengthValue = Number(p.length_ft);
     const piecesPerBoxValue = Number(p.pieces_per_box);
-    let coverageValue = Number(p.coverage_per_box ?? p.sqft_per_box);
+    let coverageValue = Number(p.computed_coverage_per_package ?? p.coverage_per_box ?? p.sqft_per_box);
     if(!Number.isFinite(coverageValue) || coverageValue <= 0){
       if(Number.isFinite(lengthValue) && lengthValue > 0 && Number.isFinite(piecesPerBoxValue) && piecesPerBoxValue > 0){
         coverageValue = lengthValue * piecesPerBoxValue;
@@ -121,11 +118,11 @@ function renderCart(){
         coverageValue = null;
       }
     }
-    const pricePerBoxValue = (coverageValue && pricePerUnit) ? coverageValue * pricePerUnit : null;
-    const subtotal = (pricePerBoxValue || 0) * it.quantity;
-    const priceEach = pricePerBoxValue != null ? formatCurrency(pricePerBoxValue) : '';
+    const pricePerPackageValue = p.computed_price_per_package ?? ((coverageValue && pricePerUnit) ? coverageValue * pricePerUnit : null);
+    const subtotal = (pricePerPackageValue || 0) * it.quantity;
+    const priceEach = pricePerPackageValue != null ? formatCurrency(pricePerPackageValue) : '';
     const priceUnit = pricePerUnit ? `${formatCurrency(pricePerUnit)} / ${unitLabel}` : '';
-    const coverage = coverageValue != null ? `${formatUnits(coverageValue)} ${unitLabel} / box` : '';
+    const coverage = coverageValue != null ? `${formatUnits(coverageValue)} ${unitLabel} / ${packageLabel}` : '';
     const callForPrice = !priceEach ? '<span class="cart-item-call">Call for price</span>' : '';
     const image = p.hoverImage ? `../${p.hoverImage}` : '';
     return `<div class="cart-item" data-sku="${it.sku}">
@@ -158,10 +155,10 @@ function renderCart(){
   if(summary){
     const total = items.reduce((sum, it)=>{
       const p = PRODUCTS.find(pr=>pr.sku===it.sku) || {};
-      const pricePerUnit = Number(p.price_per_unit ?? p.price_sqft);
+      const pricePerUnit = Number(p.computed_price_per_unit ?? p.price_per_unit ?? p.price_sqft);
       const lengthValue = Number(p.length_ft);
       const piecesPerBoxValue = Number(p.pieces_per_box);
-      let coverageValue = Number(p.coverage_per_box ?? p.sqft_per_box);
+      let coverageValue = Number(p.computed_coverage_per_package ?? p.coverage_per_box ?? p.sqft_per_box);
       if(!Number.isFinite(coverageValue) || coverageValue <= 0){
         if(Number.isFinite(lengthValue) && lengthValue > 0 && Number.isFinite(piecesPerBoxValue) && piecesPerBoxValue > 0){
           coverageValue = lengthValue * piecesPerBoxValue;
@@ -169,8 +166,8 @@ function renderCart(){
           coverageValue = null;
         }
       }
-      const pricePerBoxValue = (coverageValue && pricePerUnit) ? coverageValue * pricePerUnit : null;
-      return sum + ((pricePerBoxValue || 0) * it.quantity);
+      const pricePerPackageValue = p.computed_price_per_package ?? ((coverageValue && pricePerUnit) ? coverageValue * pricePerUnit : null);
+      return sum + ((pricePerPackageValue || 0) * it.quantity);
     }, 0);
     summary.textContent = `Subtotal (${items.length} item${items.length !== 1 ? 's' : ''}): ${formatCurrency(total) || 'Call for price'}`;
   }
