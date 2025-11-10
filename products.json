@@ -27,7 +27,9 @@
             "margen_final": "0.27",
             "instalacin": "2.00",
             "image": "images/Vinyl_LVP/crystal/cube/index.png",
-            "hoverImage": "images/Vinyl_LVP/crystal/cube/index_texture.png"
+            "hoverImage": "images/Vinyl_LVP/crystal/cube/index_texture.png",
+            "short_desc": "\ud83d\udca7 Waterproof; \ud83d\udee1 Slip Resistant; \u2fe2 22 mil Wear Layer; \u2600 UV Coating; \ud83d\udd07 IXPE Pad; \ud83d\udd27\ud83e\udde9 Click Lock; \ud83e\uddfd Easy to Clean; \ud83d\udd25 Fire Retardant",
+            "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
         },
         {
             "collection": "Savannah",
@@ -57,7 +59,9 @@
             "margen_final": "0.30",
             "instalacin": "2.00",
             "image": "images/Vinyl_LVP/Savannah/cube/index.png",
-            "hoverImage": "images/Vinyl_LVP/Savannah/cube/index_texture.png"
+            "hoverImage": "images/Vinyl_LVP/Savannah/cube/index_texture.png",
+            "short_desc": "\ud83d\udca7 Waterproof; \ud83d\udee1 Slip Resistant; \u2fe2 22 mil Wear Layer; \u2600 UV Coating; \ud83d\udd07 IXPE Pad; \ud83d\udd27\ud83e\udde9 Click Lock; \ud83e\uddfd Easy to Clean; \ud83d\udd25 Fire Retardant",
+            "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
         },
         {
             "collection": "Max",
@@ -87,7 +91,9 @@
             "margen_final": "00.35",
             "instalacin": "2.00",
             "image": "images/Vinyl_LVP/Max/cube/index.png",
-            "hoverImage": "images/Vinyl_LVP/Max/cube/index_texture.png"
+            "hoverImage": "images/Vinyl_LVP/Max/cube/index_texture.png",
+            "short_desc": "\ud83d\udca7 Waterproof; \ud83d\udee1 Slip Resistant; \u2fe2 22 mil Wear Layer; \u2600 UV Coating; \ud83d\udd07 IXPE Pad; \ud83d\udd27\ud83e\udde9 Click Lock; \ud83e\uddfd Easy to Clean; \ud83d\udd25 Fire Retardant",
+            "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
         },
         {
             "collection": "SarahC",
@@ -117,7 +123,9 @@
             "margen_final": "0.35",
             "instalacin": "2.00",
             "image": "images/Vinyl_LVP/SarahC/cube/index.png",
-            "hoverImage": "images/Vinyl_LVP/SarahC/cube/index_texture.png"
+            "hoverImage": "images/Vinyl_LVP/SarahC/cube/index_texture.png",
+            "short_desc": "\ud83d\udca7 Waterproof; \ud83d\udee1 Slip Resistant; \u2fe2 22 mil Wear Layer; \u2600 UV Coating; \ud83d\udd07 IXPE Pad; \ud83d\udd27\ud83e\udde9 Click Lock; \ud83e\uddfd Easy to Clean; \ud83d\udd25 Fire Retardant",
+            "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
         },
         {
             "collection": "Hemmo",
@@ -147,7 +155,9 @@
             "margen_final": "0.13",
             "instalacin": "2.00",
             "image": "images/Vinyl_LVP/Hemmo/cube/index.png",
-            "hoverImage": "images/Vinyl_LVP/Hemmo/cube/index_texture.png"
+            "hoverImage": "images/Vinyl_LVP/Hemmo/cube/index_texture.png",
+            "short_desc": "\ud83d\udca7 Waterproof; \ud83d\udee1 Slip Resistant; \u2fe2 22 mil Wear Layer; \u2600 UV Coating; \ud83d\udd07 IXPE Pad; \ud83d\udd27\ud83e\udde9 Click Lock; \ud83e\uddfd Easy to Clean; \ud83d\udd25 Fire Retardant",
+            "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
         },
         {
             "collection": "Peaks",
@@ -177,8 +187,10 @@
             "margen_final": "0.15",
             "instalacin": "2.00",
             "image": "images/Vinyl_LVP/Hemmo/cube/index.png",
-            "hoverImage": "images/Vinyl_LVP/Hemmo/cube/index_texture.png"
-        },
+            "hoverImage": "images/Vinyl_LVP/Hemmo/cube/index_texture.png",
+            "short_desc": "\ud83d\udca7 Waterproof; \ud83d\udee1 Slip Resistant; \u2fe2 22 mil Wear Layer; \u2600 UV Coating; \ud83d\udd07 IXPE Pad; \ud83d\udd27\ud83e\udde9 Click Lock; \ud83e\uddfd Easy to Clean; \ud83d\udd25 Fire Retardant",
+            "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
+          },
         {
             "collection": "UltraNoor",
             "thickness_mm": "5.5",
@@ -207,7 +219,9 @@
             "margen_final": "0.25",
             "instalacin": "2.00",
             "image": "images/Vinyl_LVP/UltraNoor/cube/index.png",
-            "hoverImage": "images/Vinyl_LVP/UltraNoor/cube/index_texture.png"
+            "hoverImage": "images/Vinyl_LVP/UltraNoor/cube/index_texture.png",
+            "short_desc": "\ud83d\udca7 Waterproof; \ud83d\udee1 Slip Resistant; \u2fe2 22 mil Wear Layer; \u2600 UV Coating; \ud83d\udd07 IXPE Pad; \ud83d\udd27\ud83e\udde9 Click Lock; \ud83e\uddfd Easy to Clean; \ud83d\udd25 Fire Retardant",
+            "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
         },
         {
             "collection": "Ozz",
@@ -237,7 +251,9 @@
             "margen_final": "0.16",
             "instalacin": "2.00",
             "image": "images/Vinyl_LVP/Ozz1/cube/index.png",
-            "hoverImage": "images/Vinyl_LVP/Ozz1/cube/index_texture.png"
+            "hoverImage": "images/Vinyl_LVP/Ozz1/cube/index_texture.png",
+            "short_desc": "\ud83d\udca7 Waterproof; \ud83d\udee1 Slip Resistant; \u2fe2 22 mil Wear Layer; \u2600 UV Coating; \ud83d\udd07 IXPE Pad; \ud83d\udd27\ud83e\udde9 Click Lock; \ud83e\uddfd Easy to Clean; \ud83d\udd25 Fire Retardant",
+            "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
         },
         {
             "collection": "Ozz",
@@ -267,7 +283,9 @@
             "margen_final": "0.46",
             "instalacin": "2.00",
             "image": "images/Vinyl_LVP/Ozz2/cube/index.png",
-            "hoverImage": "images/Vinyl_LVP/Ozz2/cube/index_texture.png"
+            "hoverImage": "images/Vinyl_LVP/Ozz2/cube/index_texture.png",
+            "short_desc": "\ud83d\udca7 Waterproof; \ud83d\udee1 Slip Resistant; \u2fe2 22 mil Wear Layer; \u2600 UV Coating; \ud83d\udd07 IXPE Pad; \ud83d\udd27\ud83e\udde9 Click Lock; \ud83e\uddfd Easy to Clean; \ud83d\udd25 Fire Retardant",
+            "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
         },
         {
             "collection": "Jenna",
@@ -297,7 +315,9 @@
             "margen_final": "0.19",
             "instalacin": "2.00",
             "image": "images/Vinyl_LVP/Jenna/cube/index.png",
-            "hoverImage": "images/Vinyl_LVP/Jenna/cube/index_texture.png"
+            "hoverImage": "images/Vinyl_LVP/Jenna/cube/index_texture.png",
+            "short_desc": "\ud83d\udca7 Waterproof; \ud83d\udee1 Slip Resistant; \u2fe2 22 mil Wear Layer; \u2600 UV Coating; \ud83d\udd07 IXPE Pad; \ud83d\udd27\ud83e\udde9 Click Lock; \ud83e\uddfd Easy to Clean; \ud83d\udd25 Fire Retardant",
+            "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
         },
         {
             "collection": "UltraSunshine",
@@ -327,7 +347,9 @@
             "margen_final": "0.20",
             "instalacin": "2.00",
             "image": "images/Vinyl_LVP/UltraSunshine/cube/index.png",
-            "hoverImage": "images/Vinyl_LVP/UltraSunshine/cube/index_texture.png"
+            "hoverImage": "images/Vinyl_LVP/UltraSunshine/cube/index_texture.png",
+            "short_desc": "\ud83d\udca7 Waterproof; \ud83d\udee1 Slip Resistant; \u2fe2 22 mil Wear Layer; \u2600 UV Coating; \ud83d\udd07 IXPE Pad; \ud83d\udd27\ud83e\udde9 Click Lock; \ud83e\uddfd Easy to Clean; \ud83d\udd25 Fire Retardant",
+            "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
         },
         {
             "collection": "UltraAdisa",
@@ -357,6 +379,8 @@
             "margen_final": "0.21",
             "instalacin": "2.00",
             "image": "images/Vinyl_LVP/UltraAdisa/cube/index.png",
-            "hoverImage": "images/Vinyl_LVP/UltraAdisa/cube/index_texture.png"
+            "hoverImage": "images/Vinyl_LVP/UltraAdisa/cube/index_texture.png",
+            "short_desc": "\ud83d\udca7 Waterproof; \ud83d\udee1 Slip Resistant; \u2fe2 22 mil Wear Layer; \u2600 UV Coating; \ud83d\udd07 IXPE Pad; \ud83d\udd27\ud83e\udde9 Click Lock; \ud83e\uddfd Easy to Clean; \ud83d\udd25 Fire Retardant",
+            "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
         }
     ]
