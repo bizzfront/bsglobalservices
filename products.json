@@ -1,5 +1,7 @@
 [
         {
+                                "sku": "crystal",
+            "name": "Crystal",
             "collection": "crystal",
             "thickness_mm": "4.7",
             "wearlayer_mil": "12",
@@ -32,6 +34,8 @@
             "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
         },
         {
+                      "sku": "Savannah",
+            "name": "Savannah",
             "collection": "Savannah",
             "thickness_mm": "5",
             "wearlayer_mil": "8",
@@ -64,6 +68,8 @@
             "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
         },
         {
+                      "sku": "Max",
+            "name": "Max",
             "collection": "Max",
             "thickness_mm": "5",
             "wearlayer_mil": "12",
@@ -96,6 +102,8 @@
             "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
         },
         {
+                      "sku": "SarahC",
+            "name": "Sarah C",
             "collection": "SarahC",
             "thickness_mm": "5",
             "wearlayer_mil": "12",
@@ -128,6 +136,8 @@
             "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
         },
         {
+                      "sku": "hemmo",
+            "name": "Hemmo",
             "collection": "Hemmo",
             "thickness_mm": "5",
             "wearlayer_mil": "20",
@@ -160,6 +170,8 @@
             "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
         },
         {
+                      "sku": "peaks",
+            "name": "Peaks",
             "collection": "Peaks",
             "thickness_mm": "5.5",
             "wearlayer_mil": "20",
@@ -192,6 +204,8 @@
             "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
           },
         {
+                      "sku": "ultra_noor",
+            "name": "Ultra Noor",
             "collection": "UltraNoor",
             "thickness_mm": "5.5",
             "wearlayer_mil": "22",
@@ -224,6 +238,8 @@
             "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
         },
         {
+                      "sku": "ozz_1",
+            "name": "Ozz",
             "collection": "Ozz",
             "thickness_mm": "6",
             "wearlayer_mil": "22",
@@ -256,6 +272,8 @@
             "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
         },
         {
+                      "sku": "ozz_2",
+            "name": "Ozz",
             "collection": "Ozz",
             "thickness_mm": "6.5",
             "wearlayer_mil": "22",
@@ -288,6 +306,8 @@
             "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
         },
         {
+                      "sku": "jenna",
+            "name": "Jenna",
             "collection": "Jenna",
             "thickness_mm": "8",
             "wearlayer_mil": "20",
@@ -320,6 +340,8 @@
             "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
         },
         {
+                      "sku": "UltraSunshine",
+            "name": "Ultra Sunshine",
             "collection": "UltraSunshine",
             "thickness_mm": "8",
             "wearlayer_mil": "28",
@@ -352,6 +374,8 @@
             "long_desc": "Premium waterproof LVP flooring with deep embossed texture and 22 mil wear layer. Easy click lock installation, acoustic IXPE pad for comfort, UV protection, and fire-retardant safety rating. Ideal for homes, rentals, and light commercial use."
         },
         {
+            "sku": "UltraAdisa",
+            "name": "Ultra Adisa",
             "collection": "UltraAdisa",
             "thickness_mm": "8",
             "wearlayer_mil": "28",
