@@ -1,4 +1,31 @@
 <?php
+function parse_store_numeric($value): ?float
+{
+    if (is_numeric($value)) {
+        return (float) $value;
+    }
+
+    if (is_string($value)) {
+        $normalized = trim($value);
+        if ($normalized === '') {
+            return null;
+        }
+
+        $normalized = str_replace(['$', '€', ',', ' '], '', $normalized);
+        $normalized = str_replace('%', '', $normalized);
+        // Remove all dots except the last one to support values like "2.499.90".
+        $normalized = preg_replace('/\.(?=.*\.)/', '', $normalized);
+
+        if ($normalized === '' || !is_numeric($normalized)) {
+            return null;
+        }
+
+        return (float) $normalized;
+    }
+
+    return null;
+}
+
 function enrich_store_product(array $product): array
 {
     $type = $product['product_type'] ?? 'flooring';
@@ -36,32 +63,59 @@ function enrich_store_product(array $product): array
             $product['price_per_unit'] = $product['computed_price_per_unit'];
         }
     } else {
-        $price = null;
-        if (isset($product['computed_price_per_unit'])) {
-            $price = (float) $product['computed_price_per_unit'];
-        } elseif (isset($product['price_per_unit'])) {
-            $price = (float) $product['price_per_unit'];
-        } elseif (isset($product['price_sqft'])) {
-            $price = (float) $product['price_sqft'];
+        $components = [
+            'truck_load_1216_pallets',
+            'precio_de_carga',
+            'storage_por_sqft_depende_del_mes',
+            'transporte_mano_de_obra_por_sqft',
+            'margen_final',
+        ];
+        $price = 0.0;
+        $hasComponent = false;
+        foreach ($components as $key) {
+            if (!array_key_exists($key, $product)) {
+                continue;
+            }
+            $value = parse_store_numeric($product[$key]);
+            if ($value === null) {
+                continue;
+            }
+            $price += $value;
+            $hasComponent = true;
         }
-        if ($price !== null) {
-            $product['computed_price_per_unit'] = $price;
-            $product['price_per_unit'] = $price;
+
+        if ($hasComponent) {
+            $product['computed_price_per_unit'] = round($price, 4);
+            $product['price_per_unit'] = $product['computed_price_per_unit'];
+        } else {
+            $existing = null;
+            if (isset($product['computed_price_per_unit'])) {
+                $existing = (float) $product['computed_price_per_unit'];
+            } elseif (isset($product['price_per_unit'])) {
+                $existing = (float) $product['price_per_unit'];
+            } elseif (isset($product['price_sqft'])) {
+                $existing = (float) $product['price_sqft'];
+            }
+            if ($existing !== null) {
+                $product['computed_price_per_unit'] = $existing;
+                $product['price_per_unit'] = $existing;
+            }
         }
     }
 
-    $coverage = $product['coverage_per_box'] ?? $product['sqft_per_box'] ?? null;
-    if (!is_numeric($coverage) || (float) $coverage <= 0) {
+    $coverage = $product['box_sf'] ?? $product['coverage_per_box'] ?? $product['sqft_per_box'] ?? null;
+    $coverageValue = parse_store_numeric($coverage);
+    if ($coverageValue === null || $coverageValue <= 0) {
         $length = isset($product['length_ft']) ? (float) $product['length_ft'] : null;
         $pieces = isset($product['pieces_per_box']) ? (float) $product['pieces_per_box'] : null;
         if ($length && $pieces) {
-            $coverage = $length * $pieces;
+            $coverageValue = $length * $pieces;
         } else {
-            $coverage = null;
+            $coverageValue = null;
         }
     }
-    if ($coverage !== null) {
-        $product['computed_coverage_per_package'] = (float) $coverage;
+    if ($coverageValue !== null) {
+        $product['computed_coverage_per_package'] = (float) $coverageValue;
         if (!isset($product['coverage_per_box'])) {
             $product['coverage_per_box'] = $product['computed_coverage_per_package'];
         }
