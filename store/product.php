@@ -128,6 +128,10 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue
                 Width (ft)
                 <input type="number" id="calcWid" step="0.1" min="0">
               </label>
+              <label class="full">
+                Square footage (sqft)
+                <input type="number" id="calcSqft" step="0.1" min="0">
+              </label>
               <div class="full or">or</div>
             <?php else: ?>
               <label class="full">
@@ -239,9 +243,26 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue
       }
       return num.toLocaleString(undefined, {maximumFractionDigits: 2});
     }
-    function updateCalc(){
-      let boxes = parseInt(document.getElementById('calcBoxes')?.value) || 0;
-      let unitsNeeded = null;
+    function formatInputValue(value){
+      const num = Number(value);
+      if(!Number.isFinite(num) || num <= 0) return '';
+      const rounded = Math.round(num * 100) / 100;
+      return Number.isInteger(rounded) ? String(rounded) : rounded.toString();
+    }
+    function updateCalc(source){
+      const boxesInput = document.getElementById('calcBoxes');
+      const sqftInput = document.getElementById('calcSqft');
+      const lenInput = document.getElementById('calcLen');
+      const widInput = document.getElementById('calcWid');
+      const unitsInputEl = document.getElementById('calcUnits');
+      let boxes = parseInt(boxesInput?.value, 10);
+      if(!Number.isFinite(boxes) || boxes < 0){
+        boxes = 0;
+      }
+      if(source === 'calcBoxes'){
+        boxes = Math.max(1, Math.round(boxes));
+        if(boxesInput) boxesInput.value = boxes > 0 ? boxes : '';
+      }
       const pricePerUnitDisplay = Number(PRICE_PER_UNIT_DISPLAY);
       const pricePerUnitNum = Number.isFinite(pricePerUnitDisplay) ? pricePerUnitDisplay : (Number(PRICE_PER_UNIT) || 0);
       const lengthPerPiece = Number(LENGTH_FT) || 0;
@@ -254,30 +275,64 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue
           coveragePerPackage = 0;
         }
       }
+      let unitsNeeded = null;
       if(PRODUCT_TYPE === 'flooring'){
-        const len = parseFloat(document.getElementById('calcLen')?.value);
-        const wid = parseFloat(document.getElementById('calcWid')?.value);
-        if(len && wid){
-          const sqft = len * wid;
-          if(COVERAGE_PER_PACKAGE){
-            boxes = Math.ceil(sqft / COVERAGE_PER_PACKAGE);
-            document.getElementById('calcBoxes').value = boxes;
+        const len = parseFloat(lenInput?.value);
+        const wid = parseFloat(widInput?.value);
+        const manualSqft = parseFloat(sqftInput?.value);
+        let sqft = Number.isFinite(manualSqft) && manualSqft > 0 ? manualSqft : 0;
+        if(Number.isFinite(len) && len > 0 && Number.isFinite(wid) && wid > 0){
+          sqft = len * wid;
+          if(sqftInput){
+            const formatted = formatInputValue(sqft);
+            if(formatted !== '') sqftInput.value = formatted; else sqftInput.value = '';
           }
-          unitsNeeded = sqft;
+        }else if(source === 'calcBoxes' && coveragePerPackage > 0 && boxes > 0){
+          sqft = boxes * coveragePerPackage;
+          if(sqftInput){
+            const formatted = formatInputValue(sqft);
+            sqftInput.value = formatted || '';
+          }
+        }else if(Number.isFinite(manualSqft) && manualSqft > 0){
+          sqft = manualSqft;
+        }else if(sqftInput && source !== 'calcSqft' && source !== 'calcLen' && source !== 'calcWid'){
+          sqftInput.value = '';
         }
+        if(coveragePerPackage > 0){
+          if(source === 'calcBoxes'){
+            if(boxes > 0){
+              const sqftFromBoxes = boxes * coveragePerPackage;
+              if(sqftInput){
+                const formattedSqft = formatInputValue(sqftFromBoxes);
+                sqftInput.value = formattedSqft || '';
+              }
+              sqft = sqftFromBoxes;
+            }
+          }else if(sqft > 0){
+            boxes = Math.max(1, Math.ceil(sqft / coveragePerPackage));
+            if(boxesInput) boxesInput.value = boxes;
+          }else if(boxes > 0){
+            const sqftFromBoxes = boxes * coveragePerPackage;
+            if(sqftInput){
+              const formattedSqft = formatInputValue(sqftFromBoxes);
+              sqftInput.value = formattedSqft || '';
+            }
+            sqft = sqftFromBoxes;
+          }
+        }
+        unitsNeeded = sqft > 0 ? sqft : null;
       }else{
-        const unitsInput = parseFloat(document.getElementById('calcUnits')?.value);
-        if(unitsInput){
+        const unitsInput = parseFloat(unitsInputEl?.value);
+        if(Number.isFinite(unitsInput) && unitsInput > 0){
           const piecesNeeded = lengthPerPiece > 0 ? unitsInput / lengthPerPiece : null;
           if(piecesPerBox > 0 && piecesNeeded){
-            boxes = Math.ceil(piecesNeeded / piecesPerBox);
-            document.getElementById('calcBoxes').value = boxes;
+            boxes = Math.max(1, Math.ceil(piecesNeeded / piecesPerBox));
           }else if(coveragePerPackage > 0){
-            boxes = Math.ceil(unitsInput / coveragePerPackage);
-            document.getElementById('calcBoxes').value = boxes;
+            boxes = Math.max(1, Math.ceil(unitsInput / coveragePerPackage));
           }
+          if(boxesInput && boxes > 0) boxesInput.value = boxes;
           unitsNeeded = unitsInput;
-        }else if(boxes){
+        }else if(boxes > 0){
           if(piecesPerBox > 0 && lengthPerPiece > 0){
             unitsNeeded = boxes * piecesPerBox * lengthPerPiece;
           }else if(coveragePerPackage > 0){
@@ -285,29 +340,35 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue
           }
         }
       }
-      if(!unitsNeeded && boxes && coveragePerPackage > 0){
+      if(unitsNeeded === null && boxes > 0 && coveragePerPackage > 0){
         unitsNeeded = boxes * coveragePerPackage;
       }
       const pricePerPackageDisplay = Number(PRICE_PER_PACKAGE_DISPLAY);
-      const pricePerPackage = Number.isFinite(pricePerPackageDisplay)
+      let pricePerPackage = Number.isFinite(pricePerPackageDisplay) && pricePerPackageDisplay > 0
         ? pricePerPackageDisplay
-        : (Number(PRICE_PER_PACKAGE) || (coveragePerPackage > 0 && pricePerUnitNum > 0 ? coveragePerPackage * pricePerUnitNum : 0));
-      const totalPrice = unitsNeeded && pricePerUnitNum > 0 ? unitsNeeded * pricePerUnitNum : (boxes && pricePerPackage ? boxes * pricePerPackage : 0);
+        : Number(PRICE_PER_PACKAGE);
+      if(!Number.isFinite(pricePerPackage) || pricePerPackage <= 0){
+        pricePerPackage = coveragePerPackage > 0 && pricePerUnitNum > 0 ? coveragePerPackage * pricePerUnitNum : 0;
+      }
+      const totalPrice = boxes > 0 && pricePerPackage > 0 ? boxes * pricePerPackage : 0;
       const summaryParts = [];
-      if(boxes){
+      if(boxes > 0){
         const pkgLabel = boxes === 1 ? (PACKAGE_LABEL || 'box') : (PACKAGE_LABEL_PLURAL || ((PACKAGE_LABEL || 'box') + 'es'));
         summaryParts.push(`${boxes} ${pkgLabel}`);
       }
       if(unitsNeeded){
         summaryParts.push(`${formatUnits(unitsNeeded)} ${UNIT_LABEL}`);
       }
-      if(totalPrice){
+      if(totalPrice > 0){
         summaryParts.push(`$${totalPrice.toFixed(2)}`);
       }
       document.getElementById('calcSummary').textContent = summaryParts.join(' — ');
       return boxes;
     }
-    ['calcLen','calcWid','calcBoxes','calcUnits'].forEach(id=>document.getElementById(id)?.addEventListener('input', updateCalc));
+    ['calcLen','calcWid','calcSqft','calcBoxes','calcUnits'].forEach(id=>{
+      const el = document.getElementById(id);
+      if(el) el.addEventListener('input', ()=>updateCalc(id));
+    });
     document.getElementById('addToCart')?.addEventListener('click', ()=>{
       const boxes = updateCalc();
       if(boxes>0) cart.addItem(SKU, boxes);
