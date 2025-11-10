@@ -45,7 +45,6 @@ $packageLabelSingular = $product['package_label'] ?? ($isFlooring ? 'box' : 'pac
 $packageLabelPlural = $product['package_label_plural'] ?? ($isFlooring ? 'boxes' : 'packages');
 $unitLabel = $unitLabels[$measurementUnit] ?? $measurementUnit;
 $unitSuffix = $measurementUnit === 'lf' ? '/lf' : ($measurementUnit === 'piece' ? '/piece' : '/sqft');
-$pricePerUnitValue = $product['computed_price_per_unit'] ?? $product['price_per_unit'] ?? $product['price_sqft'] ?? null;
 $coveragePerBoxValue = $product['computed_coverage_per_package'] ?? $product['coverage_per_box'] ?? $product['sqft_per_box'] ?? null;
 $lengthFtValue = isset($product['length_ft']) ? (float)$product['length_ft'] : null;
 $piecesPerBoxValue = isset($product['pieces_per_box']) ? (float)$product['pieces_per_box'] : null;
@@ -55,11 +54,52 @@ if($coveragePerBoxValue === null && $lengthFtValue && $piecesPerBoxValue){
 if($coveragePerBoxValue !== null){
   $coveragePerBoxValue = (float)$coveragePerBoxValue;
 }
-$pricePackageNum = $product['computed_price_per_package'] ?? (($pricePerUnitValue !== null && $coveragePerBoxValue) ? $pricePerUnitValue * $coveragePerBoxValue : null);
-$pricePerUnitDisplayValue = $pricePerUnitValue !== null ? round((float)$pricePerUnitValue, 2) : null;
-$pricePackageDisplayValue = $pricePackageNum !== null ? round((float)$pricePackageNum, 2) : null;
-$pricePerUnit = $pricePerUnitDisplayValue !== null ? '$'.number_format($pricePerUnitDisplayValue, 2) : '';
-$pricePackage = $pricePackageDisplayValue !== null ? '$'.number_format($pricePackageDisplayValue, 2) : '';
+$formatCurrency = static function($value) {
+  if($value === null){
+    return '';
+  }
+  return '$'.number_format((float)$value, 2);
+};
+$priceModes = [];
+$stockUnitValue = isset($product['computed_price_per_unit_stock']) ? (float)$product['computed_price_per_unit_stock'] : ($product['product_type'] === 'flooring' ? null : ($product['computed_price_per_unit'] ?? $product['price_per_unit'] ?? $product['price_sqft'] ?? null));
+if($stockUnitValue !== null){
+  $stockPackageValue = isset($product['computed_price_per_package_stock']) ? (float)$product['computed_price_per_package_stock'] : (($coveragePerBoxValue && $stockUnitValue !== null) ? $stockUnitValue * $coveragePerBoxValue : null);
+  $priceModes['stock'] = [
+    'label' => 'In stock',
+    'unit' => (float)$stockUnitValue,
+    'package' => $stockPackageValue !== null ? (float)$stockPackageValue : null,
+  ];
+}
+$backorderUnitValue = isset($product['computed_price_per_unit_backorder']) ? (float)$product['computed_price_per_unit_backorder'] : null;
+if($backorderUnitValue !== null){
+  $backorderPackageValue = isset($product['computed_price_per_package_backorder']) ? (float)$product['computed_price_per_package_backorder'] : (($coveragePerBoxValue && $backorderUnitValue !== null) ? $backorderUnitValue * $coveragePerBoxValue : null);
+  $priceModes['backorder'] = [
+    'label' => 'Backorder',
+    'unit' => (float)$backorderUnitValue,
+    'package' => $backorderPackageValue !== null ? (float)$backorderPackageValue : null,
+  ];
+}
+if(!$priceModes){
+  $fallbackUnit = $product['computed_price_per_unit'] ?? $product['price_per_unit'] ?? $product['price_sqft'] ?? null;
+  if($fallbackUnit !== null){
+    $fallbackPackage = $product['computed_price_per_package'] ?? (($coveragePerBoxValue && $fallbackUnit !== null) ? (float)$fallbackUnit * $coveragePerBoxValue : null);
+    $priceModes['stock'] = [
+      'label' => $isFlooring ? 'In stock' : 'Standard',
+      'unit' => (float)$fallbackUnit,
+      'package' => $fallbackPackage !== null ? (float)$fallbackPackage : null,
+    ];
+  }
+}
+$defaultPriceMode = isset($priceModes['stock']) ? 'stock' : (isset($priceModes['backorder']) ? 'backorder' : (array_key_first($priceModes) ?: 'stock'));
+$firstMode = $priceModes[$defaultPriceMode] ?? (array_values($priceModes)[0] ?? ['unit' => null, 'package' => null, 'label' => '']);
+$priceModesData = [];
+foreach($priceModes as $key => $data){
+  $priceModesData[$key] = [
+    'label' => $data['label'],
+    'unitValue' => $data['unit'],
+    'packageValue' => $data['package'],
+  ];
+}
 $formatNumber = static function($value) {
   if($value === null) return '';
   $formatted = number_format((float)$value, 2, '.', '');
@@ -102,19 +142,40 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue
       <div class="product-cart">
         <?php
         ?>
-        <div class="store-price">
-          <?php if($pricePerUnit): ?>
-            <div><b><?= $pricePerUnit ?></b><span class="store-per"><?= htmlspecialchars($unitSuffix) ?></span></div>
-          <?php else: ?>
-            <div><b>Call for price</b></div>
-          <?php endif; ?>
-          <?php if($pricePackage): ?>
-            <div><span class="store-per">≈ <?= $pricePackage ?> / <?= htmlspecialchars($packageLabelSingular) ?></span></div>
-          <?php endif; ?>
-          <?php if($coveragePerBoxLabel): ?>
-            <div><span class="store-per"><?= htmlspecialchars($coveragePerBoxLabel) ?></span></div>
-          <?php endif; ?>
-        </div>
+        <?php if($isFlooring && count($priceModes) > 1): ?>
+          <div class="store-price-options" id="priceOptions">
+            <?php foreach($priceModes as $modeKey => $modeData): ?>
+              <label class="store-price-option">
+                <input type="radio" name="price_mode" value="<?= htmlspecialchars($modeKey) ?>" <?= $modeKey === $defaultPriceMode ? 'checked' : '' ?>>
+                <div>
+                  <span class="store-price-option-label"><?= htmlspecialchars($modeData['label']) ?></span>
+                  <?php if($modeData['unit'] !== null): ?>
+                    <span class="store-price-option-main"><b><?= $formatCurrency($modeData['unit']) ?></b><span class="store-per"><?= htmlspecialchars($unitSuffix) ?></span></span>
+                  <?php else: ?>
+                    <span class="store-price-option-main"><b>Call for price</b></span>
+                  <?php endif; ?>
+                  <?php if($modeData['package'] !== null): ?>
+                    <span class="store-price-option-sub">≈ <?= $formatCurrency($modeData['package']) ?> / <?= htmlspecialchars($packageLabelSingular) ?></span>
+                  <?php endif; ?>
+                </div>
+              </label>
+            <?php endforeach; ?>
+          </div>
+        <?php else: ?>
+          <div class="store-price">
+            <?php if($firstMode['unit'] !== null): ?>
+              <div><b><?= $formatCurrency($firstMode['unit']) ?></b><span class="store-per"><?= htmlspecialchars($unitSuffix) ?></span></div>
+            <?php else: ?>
+              <div><b>Call for price</b></div>
+            <?php endif; ?>
+            <?php if($firstMode['package'] !== null): ?>
+              <div><span class="store-per">≈ <?= $formatCurrency($firstMode['package']) ?> / <?= htmlspecialchars($packageLabelSingular) ?></span></div>
+            <?php endif; ?>
+          </div>
+        <?php endif; ?>
+        <?php if($coveragePerBoxLabel): ?>
+          <div class="store-price-note"><span class="store-per"><?= htmlspecialchars($coveragePerBoxLabel) ?></span></div>
+        <?php endif; ?>
 
         <div id="calc" class="calc">
           <h3 style="color: var(--burgundy);">Material calculator</h3>
@@ -229,12 +290,17 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue
     const PACKAGE_LABEL = <?= json_encode($packageLabelSingular) ?>;
     const PACKAGE_LABEL_PLURAL = <?= json_encode($packageLabelPlural) ?>;
     const COVERAGE_PER_PACKAGE = <?= json_encode($coveragePerBoxValue) ?>;
-    const PRICE_PER_UNIT = <?= json_encode($pricePerUnitValue) ?>;
-    const PRICE_PER_UNIT_DISPLAY = <?= json_encode($pricePerUnitDisplayValue) ?>;
-    const PRICE_PER_PACKAGE = <?= json_encode($pricePackageNum) ?>;
-    const PRICE_PER_PACKAGE_DISPLAY = <?= json_encode($pricePackageDisplayValue) ?>;
+    const PRICE_MODES = <?= json_encode($priceModesData) ?>;
+    const PRICE_MODE_KEYS = Object.keys(PRICE_MODES);
+    let currentPriceMode = <?= json_encode($defaultPriceMode) ?>;
+    if(!PRICE_MODES[currentPriceMode]){
+      currentPriceMode = PRICE_MODE_KEYS.length ? PRICE_MODE_KEYS[0] : 'stock';
+    }
     const LENGTH_FT = <?= json_encode($product['length_ft'] ?? null) ?>;
     const PIECES_PER_BOX = <?= json_encode($product['pieces_per_box'] ?? null) ?>;
+    function getActivePriceMode(){
+      return PRICE_MODES[currentPriceMode] || {};
+    }
     function formatUnits(value){
       const num = Number(value);
       if(!Number.isFinite(num)) return '';
@@ -263,8 +329,8 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue
         boxes = Math.max(1, Math.round(boxes));
         if(boxesInput) boxesInput.value = boxes > 0 ? boxes : '';
       }
-      const pricePerUnitDisplay = Number(PRICE_PER_UNIT_DISPLAY);
-      const pricePerUnitNum = Number.isFinite(pricePerUnitDisplay) ? pricePerUnitDisplay : (Number(PRICE_PER_UNIT) || 0);
+      const activePrice = getActivePriceMode();
+      const pricePerUnitNum = Number(activePrice.unitValue);
       const lengthPerPiece = Number(LENGTH_FT) || 0;
       const piecesPerBox = Number(PIECES_PER_BOX) || 0;
       let coveragePerPackage = Number(COVERAGE_PER_PACKAGE);
@@ -343,12 +409,10 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue
       if(unitsNeeded === null && boxes > 0 && coveragePerPackage > 0){
         unitsNeeded = boxes * coveragePerPackage;
       }
-      const pricePerPackageDisplay = Number(PRICE_PER_PACKAGE_DISPLAY);
-      let pricePerPackage = Number.isFinite(pricePerPackageDisplay) && pricePerPackageDisplay > 0
-        ? pricePerPackageDisplay
-        : Number(PRICE_PER_PACKAGE);
+      let pricePerPackage = Number(activePrice.packageValue);
       if(!Number.isFinite(pricePerPackage) || pricePerPackage <= 0){
-        pricePerPackage = coveragePerPackage > 0 && pricePerUnitNum > 0 ? coveragePerPackage * pricePerUnitNum : 0;
+        const pricePerUnit = Number.isFinite(pricePerUnitNum) ? pricePerUnitNum : 0;
+        pricePerPackage = coveragePerPackage > 0 && pricePerUnit > 0 ? coveragePerPackage * pricePerUnit : 0;
       }
       const totalPrice = boxes > 0 && pricePerPackage > 0 ? boxes * pricePerPackage : 0;
       const summaryParts = [];
@@ -358,6 +422,10 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue
       }
       if(unitsNeeded){
         summaryParts.push(`${formatUnits(unitsNeeded)} ${UNIT_LABEL}`);
+      }
+      const priceModeLabel = activePrice.label || (currentPriceMode === 'backorder' ? 'Backorder' : 'In stock');
+      if(priceModeLabel && PRICE_MODE_KEYS.length > 1){
+        summaryParts.push(priceModeLabel);
       }
       if(totalPrice > 0){
         summaryParts.push(`$${totalPrice.toFixed(2)}`);
@@ -369,9 +437,21 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue
       const el = document.getElementById(id);
       if(el) el.addEventListener('input', ()=>updateCalc(id));
     });
+    document.querySelectorAll('input[name="price_mode"]').forEach(input=>{
+      input.addEventListener('change', ()=>{
+        if(input.checked){
+          currentPriceMode = input.value;
+          updateCalc();
+        }
+      });
+    });
     document.getElementById('addToCart')?.addEventListener('click', ()=>{
       const boxes = updateCalc();
-      if(boxes>0) cart.addItem(SKU, boxes);
+      if(boxes>0){
+        const selectedMode = document.querySelector('input[name="price_mode"]:checked');
+        const priceType = selectedMode ? selectedMode.value : currentPriceMode;
+        cart.addItem(SKU, boxes, priceType || 'stock');
+      }
     });
     updateCalc();
     function trackEvent(name, params){
