@@ -73,6 +73,37 @@ function formatCurrency(value){
   return `$${value.toFixed(2)}`;
 }
 
+function resolveUnitPrice(product, priceType){
+  let raw = priceType === 'backorder'
+    ? product.computed_price_per_unit_backorder
+    : (product.computed_price_per_unit_stock ?? product.computed_price_per_unit);
+  if(raw == null){
+    raw = product.price_per_unit ?? product.price_sqft;
+  }
+  const num = Number(raw);
+  return Number.isFinite(num) ? num : null;
+}
+
+function resolvePackagePrice(product, priceType, coverage){
+  let raw = priceType === 'backorder'
+    ? product.computed_price_per_package_backorder
+    : (product.computed_price_per_package_stock ?? product.computed_price_per_package);
+  let num = Number(raw);
+  if(!Number.isFinite(num) || num <= 0){
+    const unit = resolveUnitPrice(product, priceType);
+    if(Number.isFinite(unit) && Number.isFinite(coverage) && coverage > 0){
+      num = unit * coverage;
+    }else{
+      return null;
+    }
+  }
+  return Number(num);
+}
+
+function getPriceTypeLabel(priceType){
+  return priceType === 'backorder' ? 'Backorder (special order)' : 'In stock';
+}
+
 function formatUnits(value){
   const num = Number(value);
   if(!Number.isFinite(num)) return value ?? '';
@@ -104,10 +135,10 @@ function renderCart(){
   empty.style.display = 'none';
   container.innerHTML = items.map(it=>{
     const p = PRODUCTS.find(pr=>pr.sku===it.sku) || {};
+    const priceType = it.priceType === 'backorder' ? 'backorder' : 'stock';
     const unit = (p.measurement_unit || (p.product_type === 'molding' ? 'lf' : 'sqft')).toLowerCase();
     const unitLabel = unit === 'lf' ? 'lf' : unit === 'piece' ? 'piece' : 'sqft';
     const packageLabel = p.package_label ?? 'box';
-    const pricePerUnit = Number(p.computed_price_per_unit ?? p.price_per_unit ?? p.price_sqft);
     const lengthValue = Number(p.length_ft);
     const piecesPerBoxValue = Number(p.pieces_per_box);
     let coverageValue = Number(p.computed_coverage_per_package ?? p.coverage_per_box ?? p.sqft_per_box);
@@ -118,14 +149,16 @@ function renderCart(){
         coverageValue = null;
       }
     }
-    const pricePerPackageValue = p.computed_price_per_package ?? ((coverageValue && pricePerUnit) ? coverageValue * pricePerUnit : null);
+    const pricePerUnitValue = resolveUnitPrice(p, priceType);
+    const pricePerPackageValue = resolvePackagePrice(p, priceType, coverageValue);
     const subtotal = (pricePerPackageValue || 0) * it.quantity;
     const priceEach = pricePerPackageValue != null ? formatCurrency(pricePerPackageValue) : '';
-    const priceUnit = pricePerUnit ? `${formatCurrency(pricePerUnit)} / ${unitLabel}` : '';
+    const priceUnit = pricePerUnitValue ? `${formatCurrency(pricePerUnitValue)} / ${unitLabel}` : '';
     const coverage = coverageValue != null ? `${formatUnits(coverageValue)} ${unitLabel} / ${packageLabel}` : '';
     const callForPrice = !priceEach ? '<span class="cart-item-call">Call for price</span>' : '';
     const image = p.hoverImage ? `../${p.hoverImage}` : '';
-    return `<div class="cart-item" data-sku="${it.sku}">
+    const priceTypeLabel = getPriceTypeLabel(priceType);
+    return `<div class="cart-item" data-sku="${it.sku}" data-price-type="${priceType}">
       <div class="cart-item-media">${image ? `<img src="${image}" alt="${(p.name || it.sku).replace(/"/g,'&quot;')}">` : ''}</div>
       <div class="cart-item-details">
         <div class="cart-item-title">${p.name || it.sku}</div>
@@ -134,6 +167,7 @@ function renderCart(){
           ${p.collection ? `<span>${p.collection}</span>` : ''}
           ${p.category ? `<span>${p.category}</span>` : ''}
           ${coverage ? `<span>${coverage}</span>` : ''}
+          ${priceTypeLabel ? `<span>${priceTypeLabel}</span>` : ''}
         </div>
         <div class="cart-item-secondary">
           ${priceUnit ? `<span>${priceUnit}</span>` : ''}
@@ -155,7 +189,7 @@ function renderCart(){
   if(summary){
     const total = items.reduce((sum, it)=>{
       const p = PRODUCTS.find(pr=>pr.sku===it.sku) || {};
-      const pricePerUnit = Number(p.computed_price_per_unit ?? p.price_per_unit ?? p.price_sqft);
+      const priceType = it.priceType === 'backorder' ? 'backorder' : 'stock';
       const lengthValue = Number(p.length_ft);
       const piecesPerBoxValue = Number(p.pieces_per_box);
       let coverageValue = Number(p.computed_coverage_per_package ?? p.coverage_per_box ?? p.sqft_per_box);
@@ -166,7 +200,7 @@ function renderCart(){
           coverageValue = null;
         }
       }
-      const pricePerPackageValue = p.computed_price_per_package ?? ((coverageValue && pricePerUnit) ? coverageValue * pricePerUnit : null);
+      const pricePerPackageValue = resolvePackagePrice(p, priceType, coverageValue);
       return sum + ((pricePerPackageValue || 0) * it.quantity);
     }, 0);
     summary.textContent = `Subtotal (${items.length} item${items.length !== 1 ? 's' : ''}): ${formatCurrency(total) || 'Call for price'}`;
@@ -176,8 +210,9 @@ function renderCart(){
     input.addEventListener('change', ()=>{
       const wrapper = input.closest('.cart-item');
       const sku = wrapper?.dataset.sku;
+      const priceType = wrapper?.dataset.priceType;
       if(!sku) return;
-      cart.setItem(sku, parseInt(input.value) || 1);
+      cart.setItem(sku, parseInt(input.value) || 1, priceType);
       renderCart();
     });
   });
@@ -185,8 +220,9 @@ function renderCart(){
     btn.addEventListener('click', ()=>{
       const wrapper = btn.closest('.cart-item');
       const sku = wrapper?.dataset.sku;
+      const priceType = wrapper?.dataset.priceType;
       if(!sku) return;
-      cart.removeItem(sku);
+      cart.removeItem(sku, priceType);
       renderCart();
     });
   });
@@ -207,7 +243,8 @@ document.getElementById('cart-form')?.addEventListener('submit', async e=>{
   form.cart.value = JSON.stringify(items);
   const summary = items.map(it=>{
     const p = PRODUCTS.find(pr=>pr.sku===it.sku) || {};
-    return `${p.name || it.sku} x ${it.quantity}`;
+    const label = getPriceTypeLabel(it.priceType);
+    return `${p.name || it.sku} x ${it.quantity}${label ? ` (${label})` : ''}`;
   }).join(', ');
   const msg = document.getElementById('message-cart');
   msg.value = `Order request: ${summary}\n` + (msg.value || '');

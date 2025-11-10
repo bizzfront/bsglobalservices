@@ -363,6 +363,14 @@
     .store-price{display:flex;gap:10px;align-items:baseline;margin:6px 0 8px}
     .store-price b{font-size:1.1rem}
     .store-price .store-per{color:#777}
+    .store-price-options{display:flex;flex-direction:column;gap:8px;margin:6px 0 8px}
+    .store-price-option{display:flex;gap:10px;align-items:flex-start;border:1px solid #eadfcd;border-radius:12px;padding:10px 12px;background:#fff}
+    .store-price-option input{margin-top:4px}
+    .store-price-option div{display:flex;flex-direction:column;gap:2px}
+    .store-price-option-label{font-weight:600;color:#5A2A2E;font-size:.9rem}
+    .store-price-option-main{display:flex;gap:6px;align-items:baseline;font-size:1rem}
+    .store-price-option-sub{color:#777;font-size:.85rem}
+    .store-price-note{margin:4px 0 10px;color:#777;font-size:.9rem}
       .store-cta{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding:0 14px 14px}
 
       .cart-layout{display:flex;flex-direction:column;gap:1.5rem}

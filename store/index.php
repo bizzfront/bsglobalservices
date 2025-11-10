@@ -101,9 +101,15 @@ $heroSubtitle = $type === 'molding'
 <script>
 const PRODUCTS = <?= json_encode(array_values($products)) ?>;
 const CURRENT_TYPE = <?= json_encode($type) ?>;
+const getSortPrice = (product)=>{
+  const raw = product?.computed_price_per_unit_stock ?? product?.computed_price_per_unit ?? product?.price_per_unit ?? product?.price_sqft;
+  const num = Number(raw);
+  return Number.isFinite(num) ? num : null;
+};
 
 function card(p){
   const inStock = (p.inventory_status || '').toLowerCase() === 'in stock';
+  const isFlooring = (p.product_type || 'flooring') === 'flooring';
   const unit = (p.measurement_unit || '').toLowerCase() || (p.product_type === 'molding' ? 'lf' : 'sqft');
   const unitLabel = unit === 'lf' ? '/lf' : unit === 'piece' ? '/piece' : '/sqft';
   const unitName = unit === 'lf' ? 'lf' : unit === 'piece' ? 'pieces' : 'sqft';
@@ -115,8 +121,10 @@ function card(p){
     }
     return num % 1 === 0 ? num.toString() : num.toLocaleString(undefined, {maximumFractionDigits: 2});
   };
-  const priceUnitValue = p.computed_price_per_unit ?? p.price_per_unit ?? p.price_sqft;
-  const priceUnit = priceUnitValue != null ? `$${Number(priceUnitValue).toFixed(2)}` : '';
+  const toNumber = (value)=>{
+    const num = Number(value);
+    return Number.isFinite(num) ? num : null;
+  };
   const lengthFt = Number(p.length_ft);
   const piecesPerBox = Number(p.pieces_per_box);
   let coverage = p.computed_coverage_per_package ?? p.coverage_per_box ?? p.sqft_per_box;
@@ -130,16 +138,57 @@ function card(p){
   if(coverage != null){
     coverage = Number(coverage);
   }
-  const pricePackageValue = p.computed_price_per_package ?? (priceUnitValue != null && coverage != null ? priceUnitValue * coverage : null);
-  const pricePackage = pricePackageValue != null ? `$${Number(pricePackageValue).toFixed(2)}` : '';
+  const stockPriceUnitValue = toNumber(p.computed_price_per_unit_stock ?? p.computed_price_per_unit ?? p.price_per_unit ?? p.price_sqft);
+  const backorderPriceUnitValue = toNumber(p.computed_price_per_unit_backorder);
+  const pricePackageStockValue = toNumber(p.computed_price_per_package_stock ?? (stockPriceUnitValue != null && coverage != null ? stockPriceUnitValue * coverage : null));
+  const pricePackageBackorderValue = toNumber(p.computed_price_per_package_backorder ?? (backorderPriceUnitValue != null && coverage != null ? backorderPriceUnitValue * coverage : null));
   const width = (p.width_in && p.length_in) ? `${p.width_in}×${p.length_in} in` : '';
   const thk = p.thickness_mm ? `${p.thickness_mm} mm` : '';
   const wear = p.wear_layer_mil ? `${p.wear_layer_mil} mil wear` : '';
   const href = `product.php?sku=${encodeURIComponent(p.sku)}`;
   const packageLabel = p.package_label ?? 'box';
   const coverageLabel = coverage != null ? `${formatNumber(coverage)} ${unitName} / ${packageLabel}` : '';
-  let priceHtml = priceUnit ? `<div class="store-price"><b>${priceUnit}</b><span class="store-per">${unitLabel}</span></div>` : `<div class="store-price"><b>Call for price</b></div>`;
-  if(pricePackage){ priceHtml += `<div class="store-price"><span class="store-per">≈ ${pricePackage} / ${packageLabel}</span></div>`; }
+  const formatPrice = (value)=> value != null ? `$${value.toFixed(2)}` : '';
+  const priceOptions = [];
+  if(stockPriceUnitValue != null){
+    priceOptions.push({
+      type: 'stock',
+      label: 'In stock',
+      unit: stockPriceUnitValue,
+      package: pricePackageStockValue,
+      checked: true
+    });
+  }
+  if(backorderPriceUnitValue != null){
+    priceOptions.push({
+      type: 'backorder',
+      label: 'Backorder',
+      unit: backorderPriceUnitValue,
+      package: pricePackageBackorderValue,
+      checked: stockPriceUnitValue == null
+    });
+  }
+  const renderOption = (option)=>{
+    const unitHtml = option.unit != null
+      ? `<span class="store-price-option-main"><b>${formatPrice(option.unit)}</b><span class="store-per">${unitLabel}</span></span>`
+      : `<span class="store-price-option-main"><b>Call for price</b></span>`;
+    const packageHtml = option.package != null
+      ? `<span class="store-price-option-sub">≈ ${formatPrice(option.package)} / ${packageLabel}</span>`
+      : '';
+    return `<label class="store-price-option"><input type="radio" name="price-${p.sku}" value="${option.type}" ${option.checked ? 'checked' : ''}><div><span class="store-price-option-label">${option.label}</span>${unitHtml}${packageHtml}</div></label>`;
+  };
+  let priceHtml = '';
+  if(isFlooring && priceOptions.length > 1){
+    priceHtml = `<div class="store-price-options">${priceOptions.map(renderOption).join('')}</div>`;
+  }else if(priceOptions.length){
+    const option = priceOptions[0];
+    const unitDisplay = option.unit != null
+      ? `<b>${formatPrice(option.unit)}</b><span class="store-per">${unitLabel}</span>`
+      : '<b>Call for price</b>';
+    priceHtml = `<div class="store-price"><div>${unitDisplay}</div>${option.package != null ? `<div><span class="store-per">≈ ${formatPrice(option.package)} / ${packageLabel}</span></div>` : ''}</div>`;
+  }else{
+    priceHtml = `<div class="store-price"><b>Call for price</b></div>`;
+  }
   const badge = inStock ? '<span class="store-badge">In stock</span>' : '<span class="store-badge store-out">Backorder</span>';
   const img = p.image ? `../${p.image}` : '';
   return `
@@ -192,15 +241,15 @@ function applySort(list){
   const copy = [...list];
   if(v==='price-asc'){
     copy.sort((a,b)=>{
-      const au = a.computed_price_per_unit ?? a.price_per_unit ?? a.price_sqft ?? 1e9;
-      const bu = b.computed_price_per_unit ?? b.price_per_unit ?? b.price_sqft ?? 1e9;
-      return au - bu;
+      const au = getSortPrice(a);
+      const bu = getSortPrice(b);
+      return (au ?? 1e9) - (bu ?? 1e9);
     });
   }else if(v==='price-desc'){
     copy.sort((a,b) => {
-      const au = a.computed_price_per_unit ?? a.price_per_unit ?? a.price_sqft ?? -1;
-      const bu = b.computed_price_per_unit ?? b.price_per_unit ?? b.price_sqft ?? -1;
-      return bu - au;
+      const au = getSortPrice(a);
+      const bu = getSortPrice(b);
+      return (bu ?? -1) - (au ?? -1);
     });
   }else if(v==='rating-desc'){
     copy.sort((a,b)=>(b.rating??0)-(a.rating??0));
@@ -216,7 +265,10 @@ function render(){
   grid.querySelectorAll('.add-cart').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       const qty = parseInt(btn.parentElement.querySelector('.qty').value) || 1;
-      cart.addItem(btn.dataset.sku, qty);
+      const cardEl = btn.closest('.store-card');
+      const selectedPrice = cardEl?.querySelector('.store-price-option input:checked');
+      const priceType = selectedPrice ? selectedPrice.value : 'stock';
+      cart.addItem(btn.dataset.sku, qty, priceType);
     });
   });
 }
