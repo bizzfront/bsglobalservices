@@ -209,7 +209,11 @@ function card(p){
       </div>
       ${priceHtml}
       <div class="store-cta">
-        <input type="number" class="qty" min="1" value="1" aria-label="Quantity">
+        <div style="display:inline-block; width:100%; padding:0;">
+          <div style="display:inline-block; width:auto;">Boxes</div>
+          <div style="display:inline-block; width:50%;"><input type="number" class="qty" min="1" value="1" aria-label="Quantity"></div>
+        </div>
+        
         <button class="btn btn-primary add-cart" data-sku="${p.sku}" type="button">Add to cart</button>
         <a class="btn btn-ghost" href="${href}">View details</a>
       </div>
