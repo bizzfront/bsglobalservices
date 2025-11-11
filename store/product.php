@@ -115,7 +115,7 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue
   <title><?= htmlspecialchars($product['name']) ?> — B&S Floor Supply</title>
   <link rel="stylesheet" href="<?=$base?>style.css" />
 </head>
-<body>
+<body class="store-product">
 <?php include $base.'includes/header.php'; ?>
   <main class="container" style="padding-bottom:3vw;">
     <div class="sec-head">
