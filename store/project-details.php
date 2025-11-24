@@ -328,7 +328,7 @@ $active = 'cart';
               </div>
             </label>
             <label class="service-card consent-card">
-              <input type="checkbox" name="consent_whatsapp" />
+              <input type="checkbox" name="consent_whatsapp" required />
               <span class="service-card-check" aria-hidden="true"></span>
               <div class="service-card-body">
                 <div class="service-card-title">Project updates</div>
@@ -337,7 +337,7 @@ $active = 'cart';
             </label>
           </div>
           <div class="submit-row">
-            <button type="submit" class="btn btn-primary round">Send my project &amp; request quote</button>
+            <button type="submit" class="btn btn-primary round" id="project-submit" disabled>Send my project &amp; request quote</button>
             <button type="button" class="btn-text" onclick="window.location.href='cart.php'">Back to cart</button>
             <div class="form-helper">You’ll see a confirmation screen after sending this form.</div>
           </div>
@@ -348,6 +348,7 @@ $active = 'cart';
         <input type="hidden" name="form_name" value="B&S – Project checkout" />
         <input type="hidden" name="source" value="website_store" />
         <input type="hidden" name="cart" id="project-cart-field" />
+        <input type="hidden" name="cart_totals" id="project-cart-totals" />
       </form>
     </section>
 
@@ -400,7 +401,8 @@ if(!project.items || !project.items.length){
   window.location.href = 'cart.php';
 }
 
-document.getElementById('project-cart-field').value = JSON.stringify(project);
+document.getElementById('project-cart-field').value = JSON.stringify(project.items || []);
+document.getElementById('project-cart-totals').value = JSON.stringify(project.totals || {});
 
 const itemsContainer = document.getElementById('summary-items');
 const totals = project.totals || {material:0, install:0, delivery:0, total:0};
@@ -473,6 +475,22 @@ function composeMessage(form){
   if(fd.get('delivery_notes')) lines.push(`Delivery notes: ${fd.get('delivery_notes')}`);
   if(fd.get('area_size')) lines.push(`Area / LF: ${fd.get('area_size')}`);
   if(fd.get('rooms')) lines.push(`Rooms / zones: ${fd.get('rooms')}`);
+  lines.push('Consents:');
+  lines.push(`- Custom quote acknowledgment: ${fd.get('consent_custom_quote') ? 'Yes' : 'No'}`);
+  lines.push(`- Project updates via WhatsApp/email: ${fd.get('consent_whatsapp') ? 'Yes' : 'No'}`);
+  lines.push('');
+  lines.push('Items:');
+  if(Array.isArray(project.items)){
+    project.items.forEach((it, idx)=>{
+      const p = it.product || {};
+      const unit = p.measurementUnit === 'lf' ? 'lf' : p.measurementUnit === 'piece' ? 'piece' : 'sq ft';
+      const pkgLabel = p.packageLabelPlural || p.packageLabel || 'boxes';
+      const qtyLabel = `${it.quantity || 0} ${pkgLabel}`;
+      const coverage = p.packageCoverage ? ` (~${formatUnits((it.quantity || 0) * p.packageCoverage)} ${unit})` : '';
+      const priceTypeLabel = it.priceType === 'backorder' ? 'Order-in' : 'In stock';
+      lines.push(`${idx + 1}. ${p.name || it.sku || 'Product'} — ${qtyLabel}${coverage} | ${priceTypeLabel}`);
+    });
+  }
   const notes = fd.get('message') || '';
   lines.push('Project notes:');
   lines.push(notes);
@@ -480,6 +498,28 @@ function composeMessage(form){
   lines.push(`Cart: ${project.items?.length || 0} items, estimated ${formatCurrency(totals.total)}`);
   return lines.filter(Boolean).join('\n');
 }
+
+function updateConsentState(){
+  const consent1 = document.querySelector('input[name="consent_custom_quote"]');
+  const consent2 = document.querySelector('input[name="consent_whatsapp"]');
+  const submitBtn = document.getElementById('project-submit');
+  const status = document.getElementById('project-status');
+  const enabled = consent1?.checked && consent2?.checked;
+  if(submitBtn){
+    submitBtn.disabled = !enabled;
+  }
+  if(status){
+    status.textContent = enabled ? '' : 'Please confirm both consents to send your request.';
+  }
+}
+
+['consent_custom_quote','consent_whatsapp'].forEach(name=>{
+  const el = document.querySelector(`input[name="${name}"]`);
+  if(el){
+    el.addEventListener('change', updateConsentState);
+  }
+});
+updateConsentState();
 
 document.getElementById('project-form')?.addEventListener('submit', async (e)=>{
   e.preventDefault();
