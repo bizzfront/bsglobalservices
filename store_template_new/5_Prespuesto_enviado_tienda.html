@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>B&S Floor Supply – Project received</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --bs-bg: #f5f2ec;
+      --bs-card-bg: #ffffff;
+      --bs-border: #e0ddd6;
+      --bs-text-main: #2b2623;
+      --bs-text-muted: #7a7168;
+      --bs-primary: #4a1f1c;   /* Burgundy */
+      --bs-primary-soft: #6a3931;
+      --bs-accent: #c9a646;   /* Gold */
+      --bs-accent-soft: #e3cf8a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bs-bg);
+      color: var(--bs-text-main);
+    }
+
+    a {
+      color: var(--bs-primary);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page-wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    header.thankyou-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .breadcrumb {
+      font-size: 0.85rem;
+      color: var(--bs-text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .breadcrumb a {
+      color: var(--bs-text-muted);
+    }
+
+    .thankyou-title-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.75rem;
+      align-items: flex-end;
+    }
+
+    h1 {
+      font-size: 1.7rem;
+      margin: 0;
+      color: var(--bs-primary);
+    }
+
+    .thankyou-subtitle {
+      font-size: 0.95rem;
+      color: var(--bs-text-muted);
+      margin-top: 0.4rem;
+    }
+
+    .thankyou-meta {
+      font-size: 0.85rem;
+      color: var(--bs-text-muted);
+      text-align: right;
+    }
+
+    /* Card principal */
+    .thankyou-card {
+      background: var(--bs-card-bg);
+      border-radius: 1rem;
+      border: 1px solid var(--bs-border);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.04);
+      padding: 1.5rem 1.5rem 1.6rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(260px, 1.1fr);
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+
+    .thankyou-main {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .check-icon-wrap {
+      width: 52px;
+      height: 52px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #ffffff, #d9f1d8);
+      border: 1px solid #c3e4c1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1d6b2b;
+      font-size: 1.6rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .thankyou-lead {
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .project-ref {
+      font-size: 0.9rem;
+      color: var(--bs-text-muted);
+    }
+
+    .project-ref strong {
+      color: var(--bs-primary);
+    }
+
+    .next-steps {
+      margin-top: 0.25rem;
+      padding: 0.8rem 0.9rem;
+      border-radius: 0.75rem;
+      background: #fdf9f0;
+      border: 1px dashed var(--bs-accent-soft);
+      font-size: 0.86rem;
+      color: var(--bs-text-main);
+    }
+
+    .next-steps-title {
+      font-weight: 600;
+      color: var(--bs-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .next-steps ol {
+      margin: 0.15rem 0 0;
+      padding-left: 1.1rem;
+    }
+
+    .next-steps li {
+      margin-bottom: 0.1rem;
+    }
+
+    .cta-row {
+      margin-top: 0.9rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    .btn-primary {
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, var(--bs-primary), var(--bs-primary-soft));
+      color: #fff;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.95;
+    }
+
+    .btn-outline {
+      border-radius: 999px;
+      border: 1px solid var(--bs-border);
+      background: #faf7f2;
+      color: var(--bs-text-main);
+      padding: 0.55rem 1rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .thankyou-help {
+      font-size: 0.85rem;
+      color: var(--bs-text-muted);
+    }
+
+    .thankyou-help a {
+      font-weight: 500;
+    }
+
+    /* Sidebar resumen */
+    .thankyou-summary {
+      border-radius: 0.85rem;
+      border: 1px solid var(--bs-border);
+      background: #fdfbf7;
+      padding: 0.85rem 0.9rem 0.95rem;
+      font-size: 0.88rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .summary-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+      align-items: baseline;
+    }
+
+    .summary-title {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--bs-primary);
+    }
+
+    .summary-badge {
+      font-size: 0.75rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      background: #e4edf8;
+      border: 1px solid #c2d3f0;
+      color: #304c7b;
+    }
+
+    .summary-items {
+      border-top: 1px dashed var(--bs-border);
+      padding-top: 0.35rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      max-height: 170px;
+      overflow: auto;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.3rem;
+    }
+
+    .summary-item-title {
+      font-weight: 500;
+    }
+
+    .summary-item-meta {
+      font-size: 0.78rem;
+      color: var(--bs-text-muted);
+    }
+
+    .summary-item-right {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.35rem;
+      align-items: baseline;
+    }
+
+    .summary-label {
+      color: var(--bs-text-muted);
+    }
+
+    .summary-value {
+      font-weight: 500;
+    }
+
+    .summary-total {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--bs-primary);
+      margin-top: 0.1rem;
+    }
+
+    .summary-note {
+      font-size: 0.78rem;
+      color: var(--bs-text-muted);
+      line-height: 1.4;
+    }
+
+    .summary-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.3rem;
+    }
+
+    .btn-ghost {
+      border-radius: 999px;
+      border: 1px solid var(--bs-border);
+      background: #f9f7f2;
+      font-size: 0.8rem;
+      padding: 0.25rem 0.7rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      color: var(--bs-text-main);
+    }
+
+    .btn-ghost:hover {
+      background: #f0ebe1;
+    }
+
+    .btn-ghost span.icon {
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .thankyou-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+      .btn-primary,
+      .btn-outline,
+      .btn-ghost {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <header class="thankyou-header">
+      <div class="breadcrumb">
+        <a href="#">Home</a> &gt; <a href="#">Store</a> &gt; <a href="#">Project</a> &gt; Received
+      </div>
+      <div class="thankyou-title-row">
+        <div>
+          <h1>Thank you – we’ve received your project</h1>
+          <p class="thankyou-subtitle">
+            Our team will review your selection and contact you to confirm final pricing and installation options.
+          </p>
+        </div>
+        <div class="thankyou-meta">
+          You’ll hear from B&amp;S Floor Supply soon
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="thankyou-card" aria-label="Project confirmation">
+        <!-- Columna izquierda: mensaje principal -->
+        <div class="thankyou-main">
+          <div class="check-icon-wrap" aria-hidden="true">✓</div>
+
+          <p class="thankyou-lead">
+            Your project details and selected products have been sent to our team.
+            We’ll review stock, delivery, and installation scheduling, then send you a custom quote.
+          </p>
+
+          <div class="project-ref">
+            Project reference: <strong>#BS-PRJ-2025-001</strong><br />
+            We’ll use this reference in our messages and documents.
+          </div>
+
+          <div class="next-steps">
+            <div class="next-steps-title">What happens next?</div>
+            <ol>
+              <li>We verify product availability and confirm stock / backorder times.</li>
+              <li>We review your project location and services (installation, delivery).</li>
+              <li>We send you a clear quote by WhatsApp and email, with next steps.</li>
+            </ol>
+          </div>
+
+          <div class="cta-row">
+            <button class="btn-primary" type="button" onclick="window.location.href='/store.html';">
+              Back to store
+            </button>
+            <button class="btn-outline" type="button" onclick="window.location.href='/';">
+              Go to home
+            </button>
+          </div>
+
+          <p class="thankyou-help">
+            Want to share photos or ask something now?  
+            <a href="#" data-action="open-whatsapp">Chat with us on WhatsApp</a>.
+          </p>
+        </div>
+
+        <!-- Columna derecha: resumen compacto -->
+        <aside class="thankyou-summary" aria-label="Project summary">
+          <div class="summary-header">
+            <div class="summary-title">Project snapshot</div>
+            <span class="summary-badge">Quote in process</span>
+          </div>
+
+          <div class="summary-items" id="thankyou-summary-items">
+            <!-- Ejemplos – el dev puede rellenar esto dinámicamente -->
+            <div class="summary-item">
+              <div>
+                <div class="summary-item-title">Strip Natural – Heemo</div>
+                <div class="summary-item-meta">Floor · 650 sq ft · Backorder</div>
+              </div>
+              <div class="summary-item-right">
+                <div>$1,189.50</div>
+                <div class="summary-item-meta">$1.83 / sq ft</div>
+              </div>
+            </div>
+
+            <div class="summary-item">
+              <div>
+                <div class="summary-item-title">Quarter Round – Strip Natural</div>
+                <div class="summary-item-meta">Molding · 200 lf · In stock</div>
+              </div>
+              <div class="summary-item-right">
+                <div>$180.00</div>
+                <div class="summary-item-meta">$0.90 / lf</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-row">
+            <div class="summary-label">Materials subtotal</div>
+            <div class="summary-value">$1,369.50</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-label">Installation (selected)</div>
+            <div class="summary-value">$1,625.00</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-label">Delivery (estimated)</div>
+            <div class="summary-value">$120.00</div>
+          </div>
+          <div class="summary-total">
+            Estimated total: $3,114.50
+          </div>
+
+          <p class="summary-note">
+            This is your current estimate based on the information you provided.
+            Final values will be confirmed by our team before any payment or scheduling.
+          </p>
+
+          <div class="summary-actions">
+            <button class="btn-ghost" type="button" data-action="print-summary">
+              <span class="icon">🖨</span> Print
+            </button>
+            <button class="btn-ghost" type="button" data-action="download-summary-pdf">
+              <span class="icon">⬇️</span> Download PDF
+            </button>
+            <button class="btn-ghost" type="button" data-action="share-summary">
+              <span class="icon">🔗</span> Share
+            </button>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Print summary (or full page)
+    document.querySelectorAll('[data-action="print-summary"]').forEach(btn => {
+      btn.addEventListener('click', () => window.print());
+    });
+
+    // Download summary as PDF (placeholder for dev)
+    document.querySelectorAll('[data-action="download-summary-pdf"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        alert("PDF download for this project summary will be implemented by the developer.");
+      });
+    });
+
+    // Share summary (link or Web Share API)
+    document.querySelectorAll('[data-action="share-summary"]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const shareUrl = window.location.href;
+        const message = `B&S Floor Supply – Project summary:\n${shareUrl}`;
+
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: "B&S Floor Supply – Project summary",
+              text: "Here is my project summary from B&S Floor Supply.",
+              url: shareUrl
+            });
+          } catch (e) {
+            console.warn("Share canceled or not available", e);
+          }
+        } else if (navigator.clipboard) {
+          await navigator.clipboard.writeText(message);
+          alert("Project link copied to clipboard.");
+        } else {
+          alert("Share not supported on this browser. Copy the URL manually.");
+        }
+      });
+    });
+
+    // Open WhatsApp chat (placeholder – dev should set real number)
+    document.querySelectorAll('[data-action="open-whatsapp"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const phone = "+16892968515"; // Replace with actual B&S WhatsApp number
+        const text = encodeURIComponent("Hi! I just submitted my project on your website and would like to talk about my quote.");
+        const url = `https://wa.me/${phone.replace(/\D/g, '')}?text=${text}`;
+        window.open(url, '_blank');
+      });
+    });
+
+    // Nota: el dev puede rellenar dinámicamente #thankyou-summary-items y totales
+    // usando datos guardados en localStorage o devueltos por el backend.
+    /*
+    const projectData = JSON.parse(localStorage.getItem('bs_project') || '{}');
+    // Renderizar items, subtotales y referencia real de proyecto aquí.
+    */
+  </script>
+</body>
+</html>

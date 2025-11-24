@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>B&S Floor Supply · Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="Shop waterproof SPC and LVP floors, matching moldings and trims with in-stock and order-in options for Orlando and Meadow Woods."
+  />
+
+  <style>
+    :root {
+      --bg-page: #f5f1eb;
+      --bg-card: #ffffff;
+      --bg-soft: #faf4ec;
+      --bg-header: #ffffff;
+      --border-soft: rgba(0, 0, 0, 0.06);
+      --text-main: #2b201c;
+      --text-muted: #7a6a62;
+      --accent: #7a2630;
+      --accent-soft: #f6e6e7;
+      --accent-strong: #5a1620;
+      --shadow-soft: 0 14px 30px rgba(0, 0, 0, 0.08);
+      --shadow-card: 0 10px 22px rgba(0, 0, 0, 0.06);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-pill: 999px;
+      --promo-bg: linear-gradient(135deg, #5a1620, #c69b64);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: var(--bg-page);
+      color: var(--text-main);
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    /* HEADER */
+
+    .top-promo {
+      background: #201216;
+      color: #f8ece9;
+      font-size: 0.8rem;
+      padding: 6px 10px;
+      text-align: center;
+    }
+
+    .top-promo strong {
+      color: #ffdcb0;
+    }
+
+    header.site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--bg-header);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+      box-shadow: 0 10px 18px rgba(0, 0, 0, 0.04);
+    }
+
+    .header-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .logo-block {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: #5a1620;
+      color: #fdf5f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .logo-title {
+      font-size: 0.98rem;
+      font-weight: 650;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .logo-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .header-nav {
+      display: flex;
+      gap: 12px;
+      font-size: 0.85rem;
+    }
+
+    .header-nav a {
+      padding: 5px 10px;
+      border-radius: 999px;
+      color: #5c4a45;
+    }
+
+    .header-nav a.is-active {
+      background: #f4e7de;
+      color: #5a1620;
+      font-weight: 600;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-btn {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #ffffff;
+      cursor: pointer;
+      color: #5a1620;
+    }
+
+    .header-btn.whatsapp {
+      border-color: #22c35e;
+      color: #0b8a3d;
+      background: #e7f9ee;
+    }
+
+    /* MAIN LAYOUT */
+
+    main.store-main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .breadcrumb {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .breadcrumb a {
+      color: var(--text-muted);
+      text-decoration: underline;
+    }
+
+    .store-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .store-hero-main {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(0, 0, 0, 0.03);
+    }
+
+    .store-hero-title {
+      font-size: 1.35rem;
+      font-weight: 650;
+      margin-bottom: 6px;
+    }
+
+    .store-hero-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .store-hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .hero-pill {
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      background: #f4e7dd;
+      color: #5d463c;
+    }
+
+    .store-hero-cats {
+      margin-top: 4px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .cat-chip {
+      border-radius: 999px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      background: #faf4ee;
+      color: #5c4942;
+      cursor: pointer;
+    }
+
+    .cat-chip.active {
+      background: #5a1620;
+      color: #fdf4f2;
+      border-color: #5a1620;
+      box-shadow: 0 8px 20px rgba(90, 22, 32, 0.35);
+    }
+
+    .store-hero-side {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+      box-shadow: var(--shadow-soft);
+      background-image: var(--promo-bg);
+      color: #fdf3eb;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .store-hero-side::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle at 0 0,
+        rgba(255, 255, 255, 0.2),
+        transparent 60%
+      );
+      pointer-events: none;
+    }
+
+    .store-hero-side-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      height: 100%;
+    }
+
+    .store-hero-side-title {
+      font-size: 1.05rem;
+      font-weight: 650;
+    }
+
+    .store-hero-side-text {
+      font-size: 0.82rem;
+    }
+
+    .store-hero-side-tag {
+      font-size: 0.78rem;
+      padding: 5px 10px;
+      border-radius: var(--radius-pill);
+      background: rgba(0, 0, 0, 0.2);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .store-hero-side-note {
+      font-size: 0.75rem;
+      opacity: 0.9;
+    }
+
+    /* TOOLBAR & FILTERS */
+
+    .store-toolbar {
+      margin-bottom: 12px;
+      background: transparent;
+    }
+
+    .store-toolbar-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .toolbar-left,
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-select {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: #fff;
+      padding: 4px 10px;
+      font-size: 0.8rem;
+      color: #5a4a44;
+    }
+
+    .toolbar-label {
+      font-size: 0.78rem;
+    }
+
+    .toolbar-filters-btn {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: #fff;
+      padding: 4px 8px;
+      font-size: 0.78rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    /* LAYOUT: FILTERS + GRID */
+
+    .store-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    aside.filters-panel {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 12px 12px 14px;
+      box-shadow: var(--shadow-card);
+      border: 1px solid rgba(0, 0, 0, 0.03);
+      align-self: flex-start;
+    }
+
+    .filters-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .filter-block {
+      margin-bottom: 10px;
+      border-top: 1px solid rgba(0, 0, 0, 0.04);
+      padding-top: 8px;
+    }
+
+    .filter-block-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .filter-option {
+      display: flex;
+      align-items: center;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .filter-option input {
+      margin-right: 6px;
+    }
+
+    .filter-range {
+      margin-top: 4px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .filter-range input[type="range"] {
+      width: 100%;
+    }
+
+    .filters-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+      gap: 8px;
+    }
+
+    .btn-reset {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      padding: 4px 8px;
+      font-size: 0.75rem;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .help-box {
+      margin-top: 10px;
+      background: #f8f1e7;
+      border-radius: var(--radius-md);
+      padding: 8px 10px;
+      font-size: 0.78rem;
+      color: var(--text-main);
+    }
+
+    .help-box-title {
+      font-weight: 600;
+      margin-bottom: 2px;
+      font-size: 0.8rem;
+    }
+
+    .help-box button {
+      margin-top: 6px;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: #22c35e;
+      color: #fff;
+      padding: 4px 8px;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    /* STORE CONTENT & GRID */
+
+    .store-content {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .promo-banner {
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .promo-black {
+      background: #281116;
+      color: #fcece7;
+    }
+
+    .promo-bulk {
+      background: #f6eee0;
+      color: #5a4630;
+    }
+
+    .promo-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .promo-text {
+      font-size: 0.8rem;
+    }
+
+    .promo-note {
+      font-size: 0.72rem;
+      opacity: 0.9;
+    }
+
+    .promo-link {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      background: transparent;
+      color: inherit;
+      padding: 4px 8px;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .promo-bulk .promo-link {
+      border-color: #c39d5f;
+      color: #7a4c0c;
+    }
+
+    .product-grid-section {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 11px 12px 12px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .product-grid-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .product-grid-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .product-grid-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 10px;
+    }
+
+    .product-card {
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, #fdf7f0, #f6eee4);
+      padding: 10px 10px 10px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-image {
+      height: 110px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 0 0, #ffffff, #e7d5c4);
+      margin-bottom: 8px;
+    }
+
+    .product-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .product-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .product-price {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--accent-strong);
+      margin-bottom: 4px;
+    }
+
+    .product-price span[data-role="price-main"] {
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .availability-stack {
+      font-size: 0.75rem;
+      margin-bottom: 4px;
+    }
+
+    .tag-line {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 2px;
+    }
+
+    .tag-line span:first-child {
+      font-size: 0.7rem;
+    }
+
+    .tag-primary span:last-child {
+      color: #15553a;
+    }
+
+    .tag-secondary span:last-child {
+      color: #7a4c0c;
+    }
+
+    .badge-row {
+      margin-top: 4px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      font-size: 0.75rem;
+    }
+
+    .badge {
+      border-radius: 999px;
+      padding: 2px 7px;
+      background: #fff2f2;
+      color: #8b0020;
+      border: 1px solid #f1c2c7;
+    }
+
+    .badge-bulk {
+      background: #f3e9d3;
+      color: #7a4c0c;
+      border-color: #e0cfb3;
+    }
+
+    .badge-stock {
+      background: #e0f4ea;
+      color: #195b37;
+      border-color: #b7e0c8;
+    }
+
+    .badge-backorder {
+      background: #fdf3de;
+      color: #7a4d13;
+      border-color: #f0d9aa;
+    }
+
+    .badge-warning {
+      background: #ffe8d1;
+      color: #8b4b12;
+      border-color: #f1c09b;
+    }
+
+    .badge-neutral {
+      background: #f0e6dd;
+      color: #5a4a45;
+      border-color: #e0d4c6;
+    }
+
+    .product-actions {
+      margin-top: 8px;
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--accent-strong);
+      padding: 4px 9px;
+      background: #ffffff;
+      font-size: 0.78rem;
+      color: var(--accent-strong);
+      cursor: pointer;
+    }
+
+    .btn-outline:hover {
+      background: #fef2f4;
+    }
+
+    .section-heading {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-main);
+    }
+
+    .section-heading span.muted {
+      font-weight: 400;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+    }
+
+    /* SEO TEXT BLOCK */
+
+    .seo-block {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border-radius: var(--radius-lg);
+      background: #f6eee4;
+      font-size: 0.8rem;
+      color: #4e3c32;
+    }
+
+    .seo-block h2 {
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+
+    .seo-block p + p {
+      margin-top: 4px;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 960px) {
+      .store-hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .store-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      aside.filters-panel {
+        order: 2;
+      }
+
+      .store-content {
+        order: 1;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+
+      .store-toolbar-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-promo">
+    <strong>BLACK FRIDAY:</strong> Extra –$0.10/sq ft on selected in-stock floors ·
+    –$0.05/sq ft over 1,000 sq ft on eligible projects.
+  </div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-block">
+        <div class="logo-mark">B&S</div>
+        <div class="logo-text">
+          <div class="logo-title">B&S FLOOR SUPPLY</div>
+          <div class="logo-sub">Floors · Moldings · Installation</div>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <a href="/">Home</a>
+        <a href="/store" class="is-active">Store</a>
+        <a href="/installation">Installation</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button class="header-btn" type="button">
+          Cart (0)
+        </button>
+        <button
+          class="header-btn whatsapp"
+          type="button"
+          onclick="window.open('https://wa.me/16892968515','_blank')"
+        >
+          WhatsApp · Free estimate
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="store-main">
+    <div class="breadcrumb">
+      <a href="/">Home</a> · <span>Store</span>
+    </div>
+
+    <!-- HERO -->
+    <section class="store-hero">
+      <div class="store-hero-main">
+        <div class="store-hero-title">Shop floors and matching trim</div>
+        <div class="store-hero-sub">
+          Waterproof LVP & SPC floors and moldings for projects in Meadow Woods, Orlando
+          and across Florida. All prices are per sq ft (floors) or per lf (moldings),
+          with in-stock and order-in options.
+        </div>
+        <div class="store-hero-tags">
+          <span class="hero-pill">Waterproof SPC & LVP</span>
+          <span class="hero-pill">Matching moldings & trims</span>
+          <span class="hero-pill">Delivery & installation options</span>
+        </div>
+        <div class="store-hero-cats">
+          <button
+            type="button"
+            class="cat-chip active"
+            data-category-chip="floors"
+          >
+            Floors
+          </button>
+          <button
+            type="button"
+            class="cat-chip"
+            data-category-chip="moldings"
+          >
+            Moldings & trims
+          </button>
+        </div>
+      </div>
+
+      <aside class="store-hero-side">
+        <div class="store-hero-side-inner">
+          <div>
+            <div class="store-hero-side-title">From real prices to real projects</div>
+            <p class="store-hero-side-text">
+              Use the store to explore products and approximate your budget.
+              We’ll confirm stock, delivery and installation in your quote.
+            </p>
+          </div>
+          <div>
+            <div class="store-hero-side-tag">
+              <span>●</span>
+              <span>Over 1,000 sq ft? Extra –$0.05/sq ft on eligible floors.</span>
+            </div>
+            <p class="store-hero-side-note">
+              Discounts apply after reviewing your project details and availability.
+            </p>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- TOOLBAR -->
+    <section class="store-toolbar">
+      <div class="store-toolbar-inner">
+        <div class="toolbar-left">
+          <span class="toolbar-label">Category:</span>
+          <select id="categorySelect" class="toolbar-select">
+            <option value="floors">Floors</option>
+            <option value="moldings">Moldings & trims</option>
+          </select>
+
+          <label class="filter-option">
+            <input
+              type="radio"
+              name="categoryFilter"
+              value="floors"
+              checked
+            />
+            Floors
+          </label>
+          <label class="filter-option">
+            <input type="radio" name="categoryFilter" value="moldings" />
+            Moldings & trims
+          </label>
+        </div>
+
+        <div class="toolbar-right">
+          <span class="toolbar-label">Sort by:</span>
+          <select class="toolbar-select">
+            <option>Recommended</option>
+            <option>Price · Low to high</option>
+            <option>Price · High to low</option>
+            <option>New arrivals</option>
+          </select>
+
+          <button class="toolbar-filters-btn" type="button">
+            Filters
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- LAYOUT: FILTERS + GRID -->
+    <div class="store-layout">
+      <!-- FILTERS -->
+      <aside class="filters-panel">
+        <div class="filters-title">Filters</div>
+
+        <!-- Floors filters -->
+        <div id="floorsFilters">
+          <div class="filter-block">
+            <div class="filter-block-title">Availability</div>
+            <label class="filter-option">
+              <input type="checkbox" /> In stock
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" /> Order-In (3–7 days)
+            </label>
+          </div>
+
+          <div class="filter-block">
+            <div class="filter-block-title">Color &amp; Tone</div>
+            <label class="filter-option">
+              <input type="checkbox" /> Light Natural
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" /> Gray
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" /> Warm Brown
+            </label>
+          </div>
+
+          <div class="filter-block">
+            <div class="filter-block-title">Thickness</div>
+            <label class="filter-option">
+              <input type="checkbox" /> 5.0 mm
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" /> 5.5 mm
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" /> 6.5 mm
+            </label>
+          </div>
+
+          <div class="filter-block">
+            <div class="filter-block-title">Plank width</div>
+            <label class="filter-option">
+              <input type="checkbox" /> 7"
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" /> 9"
+            </label>
+          </div>
+
+          <div class="filter-block">
+            <div class="filter-block-title">Price per sq ft</div>
+            <div class="filter-range">
+              <input type="range" min="1.5" max="3.5" step="0.1" />
+              $1.50 – $3.50+
+            </div>
+          </div>
+        </div>
+
+        <!-- Moldings filters -->
+        <div id="moldingsFilters" style="display: none">
+          <div class="filter-block">
+            <div class="filter-block-title">Molding type</div>
+            <label class="filter-option">
+              <input type="checkbox" /> Quarter Round
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" /> T-Molding
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" /> Reducer
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" /> Stair Nose
+            </label>
+          </div>
+
+          <div class="filter-block">
+            <div class="filter-block-title">Color match</div>
+            <label class="filter-option">
+              <input type="checkbox" /> Strip Natural
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" /> Ribbon Grey
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" /> Peanut
+            </label>
+          </div>
+
+          <div class="filter-block">
+            <div class="filter-block-title">Length / piece size</div>
+            <label class="filter-option">
+              <input type="checkbox" /> 94"
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" /> 96"
+            </label>
+          </div>
+
+          <div class="filter-block">
+            <div class="filter-block-title">Price per piece</div>
+            <div class="filter-range">
+              <input type="range" min="4" max="14" step="0.5" />
+              $4 – $14+
+            </div>
+          </div>
+        </div>
+
+        <div class="filters-footer">
+          <button class="btn-reset" type="button">Reset all filters</button>
+          <span style="font-size: 0.72rem; color: var(--text-muted)"
+            >Filters are indicative. Final price is confirmed in your quote.</span
+          >
+        </div>
+
+        <div class="help-box">
+          <div class="help-box-title">Need help choosing?</div>
+          <p>
+            Send us your room photo and we’ll suggest LVP floors and moldings
+            that match your style.
+          </p>
+          <button
+            type="button"
+            onclick="window.open('https://wa.me/16892968515','_blank')"
+          >
+            WhatsApp support
+          </button>
+        </div>
+      </aside>
+
+      <!-- STORE CONTENT -->
+      <section class="store-content">
+        <!-- Promo banners -->
+        <div class="promo-banner promo-black">
+          <div>
+            <div class="promo-title">BLACK FRIDAY EVENT</div>
+            <div class="promo-text">
+              Save –$0.10/sq ft on all in-stock waterproof floors.
+            </div>
+            <div class="promo-note">
+              Automatically applied. Cannot be combined with sqft-based bulk
+              discounts.
+            </div>
+          </div>
+          <button class="promo-link" type="button">
+            Shop Black Friday floors
+          </button>
+        </div>
+
+        <div class="promo-banner promo-bulk">
+          <div>
+            <div class="promo-title">Large projects welcome</div>
+            <div class="promo-text">
+              Get –$0.05/sq ft when you order 1,000+ sq ft of eligible floors.
+            </div>
+            <div class="promo-note">
+              We always apply the best available discount to your quote.
+            </div>
+          </div>
+          <button class="promo-link" type="button">
+            See floors for 1,000+ sq ft
+          </button>
+        </div>
+
+        <!-- Floors grid -->
+        <div
+          class="section-heading"
+          data-section-heading="floors"
+        >
+          <span>Floors – Waterproof LVP & SPC</span>
+          <span class="muted">Per sq ft · In-stock & order-in options</span>
+        </div>
+
+        <section class="product-grid-section" id="floorsGrid">
+          <div class="product-grid-header">
+            <div class="product-grid-title">Featured SPC floors</div>
+            <div class="product-grid-sub">Examples · final availability and price will be confirmed in your quote.</div>
+          </div>
+
+          <div class="product-grid">
+            <!-- Product floor 1 -->
+            <article
+              class="product-card"
+              data-product-id="LVP-STRIPNAT-01"
+              data-product-type="floor"
+            >
+              <div class="product-image"></div>
+              <div class="product-name">Strip Natural – Heemo Collection</div>
+              <div class="product-sub">
+                Light Natural · SPC Waterproof LVP · 7" x 48"
+              </div>
+              <div class="product-price">
+                <span data-role="price-main">$1.79</span>
+                <span data-role="price-unit">/ sq ft</span>
+              </div>
+
+              <div
+                class="availability-stack"
+                data-role="availability"
+              >
+                <div class="tag-line tag-primary">
+                  <span>✓</span>
+                  <span>In stock – 250 sq ft ready</span>
+                </div>
+                <div class="tag-line tag-secondary">
+                  <span>✓</span>
+                  <span>Order-In – 3 to 7 days</span>
+                </div>
+              </div>
+
+              <div class="badge-row" data-role="badges">
+                <span class="badge">Black Friday –$0.10/sq ft</span>
+                <span class="badge badge-bulk">Bulk discount available</span>
+              </div>
+
+              <div class="product-actions">
+                <button class="btn-outline" type="button">
+                  View details
+                </button>
+              </div>
+            </article>
+
+            <!-- Product floor 2 -->
+            <article
+              class="product-card"
+              data-product-id="LVP-RIBBONGREY-01"
+              data-product-type="floor"
+            >
+              <div class="product-image"></div>
+              <div class="product-name">Ribbon Grey – Heemo Collection</div>
+              <div class="product-sub">
+                Cool Gray · SPC Waterproof LVP · 7" x 48"
+              </div>
+              <div class="product-price">
+                <span data-role="price-main">$1.89</span>
+                <span data-role="price-unit">/ sq ft</span>
+              </div>
+
+              <div
+                class="availability-stack"
+                data-role="availability"
+              >
+                <div class="tag-line tag-primary">
+                  <span>✓</span>
+                  <span>In stock – 180 sq ft ready</span>
+                </div>
+                <div class="tag-line tag-secondary">
+                  <span>✓</span>
+                  <span>Order-In – 3 to 7 days</span>
+                </div>
+              </div>
+
+              <div class="badge-row" data-role="badges">
+                <span class="badge">Black Friday –$0.10/sq ft</span>
+                <span class="badge badge-bulk">Bulk discount available</span>
+              </div>
+
+              <div class="product-actions">
+                <button class="btn-outline" type="button">
+                  View details
+                </button>
+              </div>
+            </article>
+
+            <!-- Product floor 3 -->
+            <article
+              class="product-card"
+              data-product-id="LVP-PEANUT-01"
+              data-product-type="floor"
+            >
+              <div class="product-image"></div>
+              <div class="product-name">Peanut – Heemo Collection</div>
+              <div class="product-sub">
+                Warm Brown · SPC Waterproof LVP · 7" x 48"
+              </div>
+              <div class="product-price">
+                <span data-role="price-main">$1.99</span>
+                <span data-role="price-unit">/ sq ft</span>
+              </div>
+
+              <div
+                class="availability-stack"
+                data-role="availability"
+              >
+                <div class="tag-line tag-primary">
+                  <span>✓</span>
+                  <span>Order-In – 3 to 7 days</span>
+                </div>
+                <div class="tag-line tag-secondary">
+                  <span>✓</span>
+                  <span>In stock – not available</span>
+                </div>
+              </div>
+
+              <div class="badge-row" data-role="badges">
+                <span class="badge badge-bulk">Bulk discount available</span>
+              </div>
+
+              <div class="product-actions">
+                <button class="btn-outline" type="button">
+                  View details
+                </button>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Moldings grid -->
+        <div
+          class="section-heading"
+          data-section-heading="moldings"
+        >
+          <span>Moldings &amp; Trim – Matching finishes</span>
+          <span class="muted">Per lf / piece · For a professional finish</span>
+        </div>
+
+        <section class="product-grid-section" id="moldingsGrid">
+          <div class="product-grid-header">
+            <div class="product-grid-title">Featured moldings</div>
+            <div class="product-grid-sub">
+              Quarter rounds, T-moldings, reducers and stair noses that match our LVP
+              floors.
+            </div>
+          </div>
+
+          <div class="product-grid">
+            <!-- Molding 1 -->
+            <article
+              class="product-card"
+              data-product-id="MOLD-QR-STRIPNAT-01"
+              data-product-type="molding"
+            >
+              <div class="product-image"></div>
+              <div class="product-name">Quarter Round – Strip Natural</div>
+              <div class="product-sub">Perimeter finish · 94" piece</div>
+              <div class="product-price">
+                <span data-role="price-main">$6.99</span>
+                <span data-role="price-unit">/ piece</span>
+              </div>
+
+              <div
+                class="availability-stack"
+                data-role="availability"
+              >
+                <div class="tag-line tag-primary">
+                  <span>✓</span>
+                  <span>In stock – 40 pieces ready</span>
+                </div>
+                <div class="tag-line tag-secondary">
+                  <span>✓</span>
+                  <span>Order-In – 3 to 7 days</span>
+                </div>
+              </div>
+
+              <div class="badge-row" data-role="badges">
+                <span class="badge badge-bulk">Bundle &amp; save with floors</span>
+              </div>
+
+              <div class="product-actions">
+                <button class="btn-outline" type="button">
+                  View details
+                </button>
+              </div>
+            </article>
+
+            <!-- Molding 2 -->
+            <article
+              class="product-card"
+              data-product-id="MOLD-TM-RIBBONGREY-01"
+              data-product-type="molding"
+            >
+              <div class="product-image"></div>
+              <div class="product-name">T-Molding – Ribbon Grey</div>
+              <div class="product-sub">Transition trim · 94" piece</div>
+              <div class="product-price">
+                <span data-role="price-main">$7.49</span>
+                <span data-role="price-unit">/ piece</span>
+              </div>
+
+              <div
+                class="availability-stack"
+                data-role="availability"
+              >
+                <div class="tag-line tag-primary">
+                  <span>✓</span>
+                  <span>Order-In – 3 to 7 days</span>
+                </div>
+                <div class="tag-line tag-secondary">
+                  <span>✓</span>
+                  <span>In stock – not available</span>
+                </div>
+              </div>
+
+              <div class="badge-row" data-role="badges">
+                <span class="badge badge-bulk">Bundle &amp; save with floors</span>
+              </div>
+
+              <div class="product-actions">
+                <button class="btn-outline" type="button">
+                  View details
+                </button>
+              </div>
+            </article>
+
+            <!-- Molding 3 -->
+            <article
+              class="product-card"
+              data-product-id="MOLD-SN-PEANUT-01"
+              data-product-type="molding"
+            >
+              <div class="product-image"></div>
+              <div class="product-name">Stair Nose – Peanut</div>
+              <div class="product-sub">Stair edge · 94" piece</div>
+              <div class="product-price">
+                <span data-role="price-main">$11.99</span>
+                <span data-role="price-unit">/ piece</span>
+              </div>
+
+              <div
+                class="availability-stack"
+                data-role="availability"
+              >
+                <div class="tag-line tag-primary">
+                  <span>✓</span>
+                  <span>Order-In – 3 to 7 days</span>
+                </div>
+                <div class="tag-line tag-secondary">
+                  <span>✓</span>
+                  <span>In stock – not available</span>
+                </div>
+              </div>
+
+              <div class="badge-row" data-role="badges">
+                <span class="badge badge-bulk">Bundle &amp; save with floors</span>
+              </div>
+
+              <div class="product-actions">
+                <button class="btn-outline" type="button">
+                  View details
+                </button>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- SEO TEXT -->
+        <div class="seo-block">
+          <h2>Waterproof floors and matching moldings for Florida projects</h2>
+          <p>
+            Waterproof SPC and LVP floors are a practical choice for homes and
+            rental properties in Florida: they handle humidity, pets and daily
+            traffic better than many traditional materials.
+          </p>
+          <p>
+            Matching moldings and trim help your project look finished and
+            professional. Quarter rounds, T-moldings, reducers and stair noses
+            are available in colors that match our main LVP collections.
+          </p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // toggle category (chips + select + filters + grids)
+    const categorySelect = document.getElementById('categorySelect');
+    const categoryRadios = document.querySelectorAll('input[name="categoryFilter"]');
+    const floorsFilters = document.getElementById('floorsFilters');
+    const moldingsFilters = document.getElementById('moldingsFilters');
+    const floorsGrid = document.getElementById('floorsGrid');
+    const moldingsGrid = document.getElementById('moldingsGrid');
+    const chips = document.querySelectorAll('[data-category-chip]');
+    const headings = document.querySelectorAll('[data-section-heading]');
+
+    function setCategory(cat) {
+      // update select
+      if (categorySelect.value !== cat) categorySelect.value = cat;
+
+      // update radios
+      categoryRadios.forEach(r => {
+        r.checked = (r.value === cat);
+      });
+
+      // update chips
+      chips.forEach(chip => {
+        chip.classList.toggle('active', chip.dataset.categoryChip === cat);
+      });
+
+      // show/hide filters
+      if (cat === 'floors') {
+        floorsFilters.style.display = '';
+        moldingsFilters.style.display = 'none';
+      } else {
+        floorsFilters.style.display = 'none';
+        moldingsFilters.style.display = '';
+      }
+
+      // show/hide grids
+      if (cat === 'floors') {
+        floorsGrid.style.opacity = '1';
+        moldingsGrid.style.opacity = '0.5';
+      } else {
+        floorsGrid.style.opacity = '0.5';
+        moldingsGrid.style.opacity = '1';
+      }
+
+      // headings: también ajustamos opacidad
+      headings.forEach(h => {
+        h.style.opacity = (h.dataset.sectionHeading === cat) ? '1' : '0.7';
+      });
+    }
+
+    categorySelect.addEventListener('change', (e) => {
+      setCategory(e.target.value);
+    });
+
+    categoryRadios.forEach(r => {
+      r.addEventListener('change', (e) => {
+        if (e.target.checked) setCategory(e.target.value);
+      });
+    });
+
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const cat = chip.dataset.categoryChip;
+        if (cat === 'floors' || cat === 'moldings') {
+          setCategory(cat);
+        }
+      });
+    });
+
+    // === Dynamic data hooks for prices, availability & badges ===
+    // products: array of objects from backend with:
+    // { productId, productType: "floor" | "molding",
+    //   pricing: { finalPriceStockPerSqft?, finalPriceBackorderPerSqft?, finalPriceStockPerLf?, finalPriceBackorderPerLf? },
+    //   availability: { mode: "stock_only" | "backorder_only" | "stock_and_backorder", stockAvailableSqft?, stockAvailableLf? },
+    //   badges: [{ id, type, label, tone, priority, visibleOn }]
+    // }
+    function renderBadgesIntoCard(badges, cardEl) {
+      const container = cardEl.querySelector('[data-role="badges"]');
+      if (!container) return;
+
+      const filtered = (badges || [])
+        .filter(b => !b.visibleOn || b.visibleOn.includes('listing'))
+        .sort((a, b) => (b.priority || 0) - (a.priority || 0))
+        .slice(0, 2); // máximo 2 badges en portada
+
+      container.innerHTML = filtered.map(badge => {
+        let extraClass = '';
+        if (badge.tone === 'stock') extraClass = ' badge-stock';
+        else if (badge.tone === 'backorder') extraClass = ' badge-backorder';
+        else if (badge.tone === 'warning') extraClass = ' badge-warning';
+        else if (badge.tone === 'neutral') extraClass = ' badge-neutral';
+        else if (badge.tone === 'discount') extraClass = ' badge-bulk';
+
+        return `
+          <span class="badge${extraClass}">
+            ${badge.label}
+          </span>
+        `;
+      }).join('');
+    }
+
+    function renderAvailability(availability, productType, cardEl) {
+      const container = cardEl.querySelector('[data-role="availability"]');
+      if (!container || !availability) return;
+
+      const mode = availability.mode || 'stock_only';
+      let primary = '';
+      let secondary = '';
+
+      if (productType === 'floor') {
+        const qty = availability.stockAvailableSqft;
+        if (mode === 'stock_only') {
+          primary = `In stock${qty ? ' – ' + qty + ' sq ft ready' : ''}`;
+        } else if (mode === 'backorder_only') {
+          primary = 'Order-In – 3 to 7 days';
+        } else if (mode === 'stock_and_backorder') {
+          primary = `In stock${qty ? ' – ' + qty + ' sq ft ready' : ''}`;
+          secondary = 'Order-In – 3 to 7 days';
+        }
+      } else {
+        const qty = availability.stockAvailableLf;
+        if (mode === 'stock_only') {
+          primary = `In stock${qty ? ' – ' + qty + ' lf ready' : ''}`;
+        } else if (mode === 'backorder_only') {
+          primary = 'Order-In – 3 to 7 days';
+        } else if (mode === 'stock_and_backorder') {
+          primary = `In stock${qty ? ' – ' + qty + ' lf ready' : ''}`;
+          secondary = 'Order-In – 3 to 7 days';
+        }
+      }
+
+      let html = '';
+      if (primary) {
+        html += `
+          <div class="tag-line tag-primary">
+            <span>✓</span>
+            <span>${primary}</span>
+          </div>
+        `;
+      }
+      if (secondary) {
+        html += `
+          <div class="tag-line tag-secondary">
+            <span>✓</span>
+            <span>${secondary}</span>
+          </div>
+        `;
+      }
+      container.innerHTML = html;
+    }
+
+    function hydrateStoreCards(products) {
+      if (!Array.isArray(products)) return;
+
+      products.forEach(p => {
+        const card = document.querySelector(
+          '.product-card[data-product-id="' + p.productId + '"]'
+        );
+        if (!card) return;
+
+        const priceEl = card.querySelector('[data-role="price-main"]');
+        const unitEl = card.querySelector('[data-role="price-unit"]');
+
+        let mainPrice = null;
+        let unitLabel = '';
+
+        if (p.productType === 'floor') {
+          if (p.availability && p.availability.mode === 'backorder_only') {
+            mainPrice = p.pricing?.finalPriceBackorderPerSqft;
+          } else {
+            mainPrice = p.pricing?.finalPriceStockPerSqft;
+          }
+          unitLabel = '/ sq ft';
+        } else {
+          if (p.availability && p.availability.mode === 'backorder_only') {
+            mainPrice = p.pricing?.finalPriceBackorderPerLf;
+          } else {
+            mainPrice = p.pricing?.finalPriceStockPerLf;
+          }
+          unitLabel = '/ lf';
+        }
+
+        if (typeof mainPrice === 'number' && priceEl) {
+          priceEl.textContent = '$' + mainPrice.toFixed(2);
+        }
+        if (unitEl) {
+          unitEl.textContent = unitLabel;
+        }
+
+        if (p.availability) {
+          renderAvailability(p.availability, p.productType, card);
+        }
+        if (p.badges) {
+          renderBadgesIntoCard(p.badges, card);
+        }
+      });
+    }
+
+    // Si el backend expone window.BS_PRODUCTS, hidratamos las cards automáticamente
+    if (window.BS_PRODUCTS && Array.isArray(window.BS_PRODUCTS)) {
+      hydrateStoreCards(window.BS_PRODUCTS);
+    }
+
+    // init categoría (visual)
+    setCategory('floors');
+  </script>
+</body>
+</html>

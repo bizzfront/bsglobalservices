@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>B&S Floor Supply – Project Details / Quote Request</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --bs-bg: #f5f2ec;
+      --bs-card-bg: #ffffff;
+      --bs-border: #e0ddd6;
+      --bs-text-main: #2b2623;
+      --bs-text-muted: #7a7168;
+      --bs-primary: #4a1f1c;   /* Burgundy */
+      --bs-primary-soft: #6a3931;
+      --bs-accent: #c9a646;   /* Gold */
+      --bs-accent-soft: #e3cf8a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bs-bg);
+      color: var(--bs-text-main);
+    }
+
+    a {
+      color: var(--bs-primary);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    header.checkout-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .breadcrumb {
+      font-size: 0.85rem;
+      color: var(--bs-text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .breadcrumb a {
+      color: var(--bs-text-muted);
+    }
+
+    .checkout-title-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 0.75rem;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      margin: 0;
+      color: var(--bs-primary);
+    }
+
+    .checkout-subtitle {
+      font-size: 0.95rem;
+      color: var(--bs-text-muted);
+      margin-top: 0.35rem;
+    }
+
+    .checkout-meta {
+      font-size: 0.85rem;
+      color: var(--bs-text-muted);
+      text-align: right;
+    }
+
+    .checkout-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(280px, 1fr);
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+
+    /* FORM CARD */
+    .checkout-form-card {
+      background: var(--bs-card-bg);
+      border-radius: 0.9rem;
+      border: 1px solid var(--bs-border);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
+      padding: 1.25rem 1.25rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .section-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--bs-primary);
+      margin: 0 0 0.15rem;
+    }
+
+    .section-subtitle {
+      font-size: 0.85rem;
+      color: var(--bs-text-muted);
+      margin: 0;
+    }
+
+    .fieldset {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem 1rem;
+      margin-top: 0.75rem;
+    }
+
+    .fieldset.full {
+      grid-template-columns: 1fr;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .form-label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--bs-text-main);
+    }
+
+    .form-label span.required {
+      color: #b0303c;
+      margin-left: 0.1rem;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      padding: 0.5rem 0.65rem;
+      border-radius: 0.55rem;
+      border: 1px solid var(--bs-border);
+      font-size: 0.9rem;
+      font-family: inherit;
+      background: #fdfbf7;
+      color: var(--bs-text-main);
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--bs-primary-soft);
+      box-shadow: 0 0 0 1px rgba(74, 31, 28, 0.07);
+      background: #ffffff;
+    }
+
+    .form-helper {
+      font-size: 0.78rem;
+      color: var(--bs-text-muted);
+    }
+
+    .inline-radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      font-size: 0.88rem;
+    }
+
+    .inline-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      cursor: pointer;
+    }
+
+    .inline-radio input {
+      accent-color: var(--bs-primary);
+    }
+
+    .toggle-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .toggle-option {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.88rem;
+      color: var(--bs-text-main);
+    }
+
+    .toggle-option input {
+      accent-color: var(--bs-primary);
+    }
+
+    .disclaimer-box {
+      margin-top: 0.75rem;
+      padding: 0.7rem 0.8rem;
+      border-radius: 0.6rem;
+      background: #fdf9f0;
+      border: 1px dashed var(--bs-accent-soft);
+      font-size: 0.82rem;
+      color: var(--bs-text-main);
+    }
+
+    .disclaimer-box strong {
+      color: var(--bs-primary);
+    }
+
+    .consent-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+      font-size: 0.82rem;
+      color: var(--bs-text-main);
+    }
+
+    .consent-option {
+      display: inline-flex;
+      gap: 0.3rem;
+      align-items: flex-start;
+    }
+
+    .consent-option input {
+      margin-top: 0.15rem;
+      accent-color: var(--bs-primary);
+    }
+
+    .submit-row {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    .btn-primary {
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, var(--bs-primary), var(--bs-primary-soft));
+      color: #fff;
+      padding: 0.6rem 1.1rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.95;
+    }
+
+    .btn-text {
+      border: none;
+      background: none;
+      color: var(--bs-text-muted);
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0;
+    }
+
+    /* Sidebar: resumen */
+    .checkout-sidebar {
+      position: relative;
+    }
+
+    .summary-card {
+      position: sticky;
+      top: 1rem;
+      padding: 1rem;
+      background: var(--bs-card-bg);
+      border-radius: 0.9rem;
+      border: 1px solid var(--bs-border);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      font-size: 0.9rem;
+    }
+
+    .summary-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+      align-items: baseline;
+    }
+
+    .summary-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--bs-primary);
+    }
+
+    .summary-edit {
+      font-size: 0.8rem;
+    }
+
+    .summary-list {
+      border-top: 1px dashed var(--bs-border);
+      padding-top: 0.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      max-height: 220px;
+      overflow: auto;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.35rem;
+    }
+
+    .summary-item-title {
+      font-weight: 500;
+    }
+
+    .summary-item-meta {
+      font-size: 0.8rem;
+      color: var(--bs-text-muted);
+    }
+
+    .summary-item-right {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .summary-subtotals {
+      border-top: 1px dashed var(--bs-border);
+      padding-top: 0.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.35rem;
+      align-items: baseline;
+    }
+
+    .summary-label {
+      color: var(--bs-text-muted);
+    }
+
+    .summary-value {
+      font-weight: 500;
+    }
+
+    .summary-total {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--bs-primary);
+      margin-top: 0.2rem;
+    }
+
+    .summary-note {
+      font-size: 0.8rem;
+      color: var(--bs-text-muted);
+      line-height: 1.4;
+    }
+
+    .summary-contact-note {
+      font-size: 0.8rem;
+      color: var(--bs-text-muted);
+    }
+
+    .summary-contact-note strong {
+      color: var(--bs-primary);
+    }
+
+    @media (max-width: 880px) {
+      .checkout-layout {
+        grid-template-columns: 1fr;
+      }
+      .summary-card {
+        position: static;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .fieldset {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+      .checkout-layout {
+        grid-template-columns: 1fr;
+      }
+      .summary-card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+      }
+      .btn-primary,
+      .btn-text {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <header class="checkout-header">
+      <div class="breadcrumb">
+        <a href="#">Home</a> &gt; <a href="#">Store</a> &gt; <a href="#">Cart</a> &gt; Project details
+      </div>
+      <div class="checkout-title-row">
+        <div>
+          <h1>Project details &amp; quote request</h1>
+          <p class="checkout-subtitle">
+            Share your contact and project details so we can confirm stock, scheduling and final pricing.
+          </p>
+        </div>
+        <div class="checkout-meta">
+          Custom quote · No online payment · B&amp;S team will contact you
+        </div>
+      </div>
+    </header>
+
+    <main class="checkout-layout">
+      <!-- Columna izquierda: formulario -->
+      <section aria-label="Project details form">
+        <form class="checkout-form-card" id="project-details-form" data-action="submit-project">
+          <!-- 1. Datos del cliente -->
+          <section>
+            <h2 class="section-title">1. Your contact information</h2>
+            <p class="section-subtitle">
+              We’ll use this information to send your quote and coordinate your project.
+            </p>
+
+            <div class="fieldset">
+              <div class="form-field">
+                <label class="form-label" for="fullName">
+                  Full name <span class="required">*</span>
+                </label>
+                <input id="fullName" name="fullName" type="text" class="form-input" required />
+              </div>
+
+              <div class="form-field">
+                <label class="form-label" for="email">
+                  Email <span class="required">*</span>
+                </label>
+                <input id="email" name="email" type="email" class="form-input" required />
+                <div class="form-helper">
+                  We’ll send your quote and any documents here.
+                </div>
+              </div>
+
+              <div class="form-field">
+                <label class="form-label" for="phone">
+                  WhatsApp / mobile <span class="required">*</span>
+                </label>
+                <input id="phone" name="phone" type="tel" class="form-input" required />
+                <div class="form-helper">
+                  This is our main channel for updates and questions.
+                </div>
+              </div>
+
+              <div class="form-field">
+                <label class="form-label">You are:</label>
+                <div class="inline-radio-group">
+                  <label class="inline-radio">
+                    <input type="radio" name="clientType" value="homeowner" checked />
+                    Homeowner
+                  </label>
+                  <label class="inline-radio">
+                    <input type="radio" name="clientType" value="contractor" />
+                    Contractor / installer
+                  </label>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 2. Datos del proyecto -->
+          <section>
+            <h2 class="section-title">2. Project location &amp; space</h2>
+            <p class="section-subtitle">
+              Tell us where the project will be installed and what type of space it is.
+            </p>
+
+            <div class="fieldset full">
+              <div class="form-field">
+                <label class="form-label" for="projectAddress">
+                  Project address (city, area, ZIP) <span class="required">*</span>
+                </label>
+                <input id="projectAddress" name="projectAddress" type="text" class="form-input" required />
+                <div class="form-helper">
+                  Example: "Meadow Woods, Orlando FL 32824"
+                </div>
+              </div>
+            </div>
+
+            <div class="fieldset">
+              <div class="form-field">
+                <label class="form-label" for="spaceType">
+                  Space type
+                </label>
+                <select id="spaceType" name="spaceType" class="form-select">
+                  <option value="">Select an option</option>
+                  <option value="apartment">Apartment</option>
+                  <option value="single-family">Single-family home</option>
+                  <option value="townhouse">Townhouse</option>
+                  <option value="commercial">Commercial / retail</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label class="form-label" for="floorLevel">
+                  Floor level
+                </label>
+                <select id="floorLevel" name="floorLevel" class="form-select">
+                  <option value="">Select</option>
+                  <option value="ground">Ground floor</option>
+                  <option value="second">Second floor</option>
+                  <option value="third-plus">Third floor or higher</option>
+                  <option value="multi-level">Multiple levels</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="fieldset">
+              <div class="form-field">
+                <label class="form-label" for="projectType">
+                  Project type
+                </label>
+                <select id="projectType" name="projectType" class="form-select">
+                  <option value="">Select</option>
+                  <option value="new">New construction</option>
+                  <option value="remodel">Remodel / replacement</option>
+                  <option value="extension">Extension / addition</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label class="form-label" for="preferredDate">
+                  Preferred start date
+                </label>
+                <input id="preferredDate" name="preferredDate" type="date" class="form-input" />
+                <div class="form-helper">
+                  Optional – we’ll confirm availability.
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 3. Servicios y contexto -->
+          <section>
+            <h2 class="section-title">3. Services &amp; project details</h2>
+            <p class="section-subtitle">
+              Confirm which services you want and share anything important about your project.
+            </p>
+
+            <div class="fieldset full">
+              <div class="form-field">
+                <span class="form-label">Services requested</span>
+                <div class="toggle-group">
+                  <label class="toggle-option">
+                    <input type="checkbox" name="serviceInstallFloors" checked />
+                    Floor installation (based on selected sq ft in your cart)
+                  </label>
+                  <label class="toggle-option">
+                    <input type="checkbox" name="serviceInstallMolding" />
+                    Molding / trim installation (based on selected lf)
+                  </label>
+                  <label class="toggle-option">
+                    <input type="checkbox" name="serviceDelivery" checked />
+                    Material delivery from our storage to your project location
+                  </label>
+                </div>
+                <div class="form-helper">
+                  If you only need materials (no installation), uncheck the options above.
+                </div>
+              </div>
+            </div>
+
+            <div class="fieldset full">
+              <div class="form-field">
+                <label class="form-label" for="projectNotes">
+                  Tell us more about your project
+                </label>
+                <textarea id="projectNotes" name="projectNotes" rows="4" class="form-textarea"
+                  placeholder="For example: rooms included, existing floor type, pets at home, stairs, special conditions, etc."></textarea>
+              </div>
+            </div>
+          </section>
+
+          <!-- 4. Consentimientos -->
+          <section>
+            <h2 class="section-title">4. Confirmation &amp; consent</h2>
+
+            <div class="disclaimer-box">
+              <strong>This is not an online checkout.</strong><br />
+              You’re sending a quote request. Our team will review product availability, your project
+              details and scheduling options, then send you a custom proposal.
+            </div>
+
+            <div class="consent-group">
+              <label class="consent-option">
+                <input type="checkbox" name="consentCustomQuote" required />
+                <span>
+                  I understand this is a custom quote and that final pricing will be confirmed by
+                  B&amp;S Floor Supply based on stock, delivery zone and installation details.
+                </span>
+              </label>
+
+              <label class="consent-option">
+                <input type="checkbox" name="consentWhatsapp" />
+                <span>
+                  I agree to receive updates and questions about this project via WhatsApp and email.
+                </span>
+              </label>
+            </div>
+
+            <div class="submit-row">
+              <button type="submit" class="btn-primary">
+                Send my project &amp; request quote
+              </button>
+              <button type="button" class="btn-text" onclick="window.history.back();">
+                Back to cart
+              </button>
+              <div class="form-helper">
+                You’ll see a confirmation screen after sending this form.
+              </div>
+            </div>
+          </section>
+        </form>
+      </section>
+
+      <!-- Columna derecha: resumen de productos -->
+      <aside class="checkout-sidebar" aria-label="Cart summary">
+        <div class="summary-card">
+          <div class="summary-header">
+            <div class="summary-title">Your project selection</div>
+            <div class="summary-edit">
+              <a href="#">Edit cart</a>
+            </div>
+          </div>
+
+          <!-- Lista de items (ejemplo; el dev la llenará dinámicamente) -->
+          <div class="summary-list" id="summary-items">
+            <div class="summary-item">
+              <div>
+                <div class="summary-item-title">Strip Natural – Heemo</div>
+                <div class="summary-item-meta">Floor · 650 sq ft · Backorder</div>
+              </div>
+              <div class="summary-item-right">
+                <div>$1,189.50</div>
+                <div class="summary-item-meta">$1.83 / sq ft</div>
+              </div>
+            </div>
+
+            <div class="summary-item">
+              <div>
+                <div class="summary-item-title">Quarter Round – Strip Natural</div>
+                <div class="summary-item-meta">Molding · 200 lf · In stock</div>
+              </div>
+              <div class="summary-item-right">
+                <div>$180.00</div>
+                <div class="summary-item-meta">$0.90 / lf</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subtotales (ejemplo) -->
+          <div class="summary-subtotals">
+            <div class="summary-row">
+              <div class="summary-label">Materials subtotal</div>
+              <div class="summary-value">$1,369.50</div>
+            </div>
+            <div class="summary-row">
+              <div class="summary-label">Installation (selected)</div>
+              <div class="summary-value">$1,625.00</div>
+            </div>
+            <div class="summary-row">
+              <div class="summary-label">Delivery (estimated)</div>
+              <div class="summary-value">$120.00</div>
+            </div>
+            <div class="summary-total">
+              Estimated total: $3,114.50
+            </div>
+          </div>
+
+          <p class="summary-note">
+            This estimate is based on your current selection. Final pricing may adjust after
+            verifying actual quantities, site conditions and delivery zone.
+          </p>
+
+          <p class="summary-contact-note">
+            <strong>We will contact you</strong> using the phone and email you provide in this form.
+          </p>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script>
+    // Hook básico para el envío del formulario.
+    // El dev debe reemplazar esto por la integración real con backend/Bizzlink.
+    const form = document.getElementById('project-details-form');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Aquí se podrían recoger los datos del formulario
+      // y los items de carrito desde localStorage o una API.
+      const formData = new FormData(form);
+      const payload = Object.fromEntries(formData.entries());
+
+      console.log('Project payload (to be sent to backend/Bizzlink):', payload);
+
+      // Placeholder: simular éxito y redirigir a thank you
+      window.location.href = '/project-thank-you.html';
+    });
+
+    // Si quieres rellenar el resumen desde el carrito (ej. localStorage),
+    // el dev puede hacer algo como:
+    /*
+    const cartData = JSON.parse(localStorage.getItem('bs_cart') || '[]');
+    // Luego renderizar dinamicamente #summary-items y los subtotales.
+    */
+  </script>
+</body>
+</html>
