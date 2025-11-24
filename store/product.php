@@ -33,6 +33,8 @@ $selected = array_merge($selected, array_slice($others, 0, max(0, 4 - count($sel
 $base = '../';
 $active = 'store';
 $contact_source = 'website_store';
+$normalizedProducts = array_map('normalize_store_product', $products);
+$flooringProducts = array_values(array_filter($normalizedProducts, fn($p)=>($p['productType'] ?? 'flooring') === 'flooring'));
 $productType = $product['product_type'] ?? 'flooring';
 $isFlooring = $productType === 'flooring';
 $measurementUnit = strtolower($product['measurement_unit'] ?? ($isFlooring ? 'sqft' : 'lf'));
@@ -129,6 +131,20 @@ $installRateLabel = $installRateValue !== null
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title><?= htmlspecialchars($product['name']) ?> — B&S Floor Supply</title>
   <link rel="stylesheet" href="<?=$base?>style.css" />
+  <style>
+    .calc-flooring-helper { margin-top:12px; border:1px solid #e6dcd9; background:#fbf7f5; border-radius:12px; padding:12px; box-shadow:0 8px 20px rgba(0,0,0,0.06); position:relative; }
+    .calc-helper-header { display:flex; flex-direction:column; gap:4px; margin-bottom:10px; }
+    .calc-helper-title { font-weight:700; color:#5a1620; }
+    .calc-helper-sub { color:#6a605e; font-size:0.92rem; }
+    .calc-helper-list { display:flex; flex-direction:column; gap:8px; }
+    .calc-helper-item { width:100%; text-align:left; border:1px solid #e6dcd9; background:#fff; border-radius:10px; padding:10px 12px; display:flex; justify-content:space-between; gap:10px; align-items:center; cursor:pointer; transition:border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease; }
+    .calc-helper-item:hover { border-color:#c3b6b2; box-shadow:0 8px 16px rgba(89,19,32,0.10); }
+    .calc-helper-item:disabled { opacity:0.6; cursor:not-allowed; box-shadow:none; }
+    .calc-helper-name { font-weight:600; color:#2f2523; }
+    .calc-helper-meta { color:#6a605e; font-size:0.9rem; }
+    .calc-helper-action { color:#5a1620; font-weight:700; white-space:nowrap; }
+    .calc-helper-empty { color:#6a605e; font-size:0.95rem; text-align:left; }
+  </style>
 </head>
 <body class="store-product">
 <?php include $base.'includes/header.php'; ?>
@@ -242,6 +258,7 @@ $installRateLabel = $installRateValue !== null
               <?= htmlspecialchars(ucfirst($packageLabelPlural)) ?>
               <input type="number" id="calcBoxes" min="1" value="1" <?= $hasInventoryAvailable ? 'max="'.(int)$stockAvailableValue.'"' : '' ?>>
             </label>
+            <div id="flooringHelper" class="calc-flooring-helper" aria-live="polite"></div>
           <?php endif; ?>
 
           <div class="calc-options">
@@ -385,6 +402,7 @@ $installRateLabel = $installRateValue !== null
     const COVERAGE_PER_PACKAGE = <?= json_encode($coveragePerBoxValue) ?>;
     const NORMALIZED_PRODUCT = <?= json_encode($normalizedProduct) ?>;
     const STORE_CONFIG = <?= json_encode($storeConfig) ?>;
+    const FLOORING_PRODUCTS = PRODUCT_TYPE === 'molding' ? <?= json_encode($flooringProducts) ?> : [];
     const PRICE_MODES = <?= json_encode($priceModesData) ?>;
     const PRICE_MODE_KEYS = Object.keys(PRICE_MODES);
     const MAX_PURCHASE_QTY = Number(NORMALIZED_PRODUCT?.availability?.maxPurchaseQuantity ?? null);
@@ -434,6 +452,51 @@ $installRateLabel = $installRateValue !== null
       if(!Number.isFinite(num) || num <= 0) return '';
       const rounded = Math.round(num * 100) / 100;
       return Number.isInteger(rounded) ? String(rounded) : rounded.toString();
+    }
+    const FLOORING_MAP = new Map((FLOORING_PRODUCTS || []).map(p=>[p.sku, p]));
+    function buildFlooringHelperData(){
+      if(PRODUCT_TYPE !== 'molding') return [];
+      return cart.getItems().map(item=>{
+        const product = FLOORING_MAP.get(item.sku);
+        if(!product) return null;
+        const coverage = Number(product.packageCoverage);
+        const qty = Number(item.quantity);
+        if(!Number.isFinite(coverage) || coverage <= 0 || !Number.isFinite(qty) || qty <= 0) return null;
+        const sqft = coverage * qty;
+        const suggestedLf = Math.round(sqft * 0.3 * 100) / 100;
+        return {product, sqft, suggestedLf, quantity: qty};
+      }).filter(Boolean);
+    }
+    function renderFlooringHelper(){
+      const helper = document.getElementById('flooringHelper');
+      if(!helper || PRODUCT_TYPE !== 'molding') return;
+      const data = buildFlooringHelperData();
+      if(!data.length){
+        helper.innerHTML = '<div class="calc-helper-empty">Agrega un piso al carrito para calcular moldings al 30%.</div>';
+        return;
+      }
+      const itemsHtml = data.map(d=>{
+        const lfText = Number.isFinite(d.suggestedLf) ? `${formatUnits(d.suggestedLf)} lf` : '—';
+        const sqftText = `${formatUnits(d.sqft)} sqft`;
+        const boxesText = `${formatUnits(d.quantity)} ${PACKAGE_LABEL_PLURAL || 'boxes'}`;
+        const lfValue = Number.isFinite(d.suggestedLf) && d.suggestedLf > 0 ? d.suggestedLf : '';
+        const disabled = lfValue === '' ? 'disabled' : '';
+        return `<button type="button" class="calc-helper-item" data-lf="${lfValue}" ${disabled}><div><div class="calc-helper-name">${d.product.name}</div><div class="calc-helper-meta">${boxesText} · ${sqftText} · 30% = ${lfText}</div></div><span class="calc-helper-action">Usar</span></button>`;
+      }).join('');
+      helper.innerHTML = `<div class="calc-helper-header"><div class="calc-helper-title">Vincula tus pisos</div><div class="calc-helper-sub">Selecciona un piso y rellenamos automáticamente el 30% en lf.</div></div><div class="calc-helper-list">${itemsHtml}</div>`;
+      helper.querySelectorAll('.calc-helper-item').forEach(btn=>{
+        if(btn.disabled) return;
+        btn.addEventListener('click', ()=>{
+          const lf = Number(btn.dataset.lf);
+          if(!Number.isFinite(lf) || lf <= 0) return;
+          const unitsInput = document.getElementById('calcUnits');
+          if(unitsInput){
+            unitsInput.value = formatInputValue(lf) || '';
+            unitsInput.dispatchEvent(new Event('input', {bubbles:true}));
+            updateCalc('calcUnits');
+          }
+        });
+      });
     }
       let calcMode = 'dims';
       let lastComputedBoxes = 0;
@@ -694,10 +757,20 @@ $installRateLabel = $installRateValue !== null
         };
         saveDeliveryPreferences(deliveryPreferences);
         cart.addItem(SKU, boxes, priceType || 'stock', {install: installSelected});
+        if(PRODUCT_TYPE === 'flooring'){
+          const goToMolding = window.confirm('¿Quieres añadir moldings para este piso? Te llevaremos a la sección de moldings.');
+          if(goToMolding){
+            window.location.href = 'index.php?type=molding';
+          }
+        }
       }
     });
     syncDeliveryControls();
     updateCalc();
+    if(PRODUCT_TYPE === 'molding'){
+      renderFlooringHelper();
+      document.addEventListener('cartchange', renderFlooringHelper);
+    }
     function trackEvent(name, params){
       if (window.gtag) gtag('event', name, params || {});
       window.dataLayer && window.dataLayer.push({event: name, ...params});
