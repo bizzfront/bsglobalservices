@@ -78,6 +78,9 @@ $active = 'cart';
     .consent-group { display:flex; flex-direction:column; gap:0.4rem; margin-top:0.5rem; font-size:0.82rem; color:var(--bs-text-main); }
     .consent-option { display:inline-flex; gap:0.3rem; align-items:flex-start; }
     .consent-option input { margin-top:0.1rem; accent-color:var(--bs-primary); }
+    .consent-card-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:0.8rem; margin-top:0.6rem; }
+    .consent-card .service-card-body { gap:0.35rem; }
+    .consent-card .service-card-desc { font-size:0.88rem; }
     .submit-row { margin-top:0.8rem; display:flex; flex-wrap:wrap; gap:0.6rem; align-items:center; }
     .btn-primary.round { border-radius:999px; padding:0.65rem 1.1rem; font-weight:650; }
     .btn-text { border:none; background:none; color:var(--bs-text-muted); font-size:0.85rem; cursor:pointer; text-decoration:underline; padding:0; }
@@ -315,9 +318,23 @@ $active = 'cart';
 
         <section>
           <h2 class="section-title">6. Consent &amp; confirmation</h2>
-          <div class="consent-group">
-            <label class="consent-option"><input type="checkbox" name="consent_custom_quote" required /> <span>I understand this is a custom quote and pricing will be confirmed by B&amp;S Floor Supply based on stock, delivery zone and installation details.</span></label>
-            <label class="consent-option"><input type="checkbox" name="consent_whatsapp" /> <span>I agree to receive updates and questions about this project via WhatsApp and email.</span></label>
+          <div class="consent-card-grid" role="group" aria-label="Consents">
+            <label class="service-card consent-card">
+              <input type="checkbox" name="consent_custom_quote" required />
+              <span class="service-card-check" aria-hidden="true"></span>
+              <div class="service-card-body">
+                <div class="service-card-title">Custom quote acknowledgment</div>
+                <div class="service-card-desc">Pricing will be confirmed by B&amp;S Floor Supply based on stock, delivery zone and installation details.</div>
+              </div>
+            </label>
+            <label class="service-card consent-card">
+              <input type="checkbox" name="consent_whatsapp" />
+              <span class="service-card-check" aria-hidden="true"></span>
+              <div class="service-card-body">
+                <div class="service-card-title">Project updates</div>
+                <div class="service-card-desc">I agree to receive updates and questions about this project via WhatsApp and email.</div>
+              </div>
+            </label>
           </div>
           <div class="submit-row">
             <button type="submit" class="btn btn-primary round">Send my project &amp; request quote</button>
@@ -421,6 +438,15 @@ document.getElementById('summary-total').textContent = `Estimated total: ${forma
 const summaryNote = document.getElementById('summary-note');
 if(summaryNote && STORE_CONFIG.install?.notes){
   summaryNote.textContent = STORE_CONFIG.install.notes;
+}
+
+const deliveryPreferenceInputs = document.querySelectorAll('input[name="delivery_preference"]');
+if(deliveryPreferenceInputs.length){
+  const pickupSelected = project?.deliveryPreferences?.includeDelivery === false || project?.deliveryZone === 'pick-up';
+  const defaultValue = pickupSelected ? 'pickup' : 'delivery';
+  deliveryPreferenceInputs.forEach(input=>{
+    input.checked = input.value === defaultValue;
+  });
 }
 
 function composeMessage(form){
