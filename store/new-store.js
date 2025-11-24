@@ -159,6 +159,14 @@
         cart.addItem(sku, qty, (product?.pricing?.activePriceType || product?.availability?.activePriceType || 'stock'));
         btn.textContent = 'Added';
         setTimeout(()=>{btn.textContent='Add to project';}, 1200);
+        if(CURRENT_TYPE === 'flooring'){
+          const goToMolding = window.confirm('¿Quieres añadir moldings para este piso? Te llevaremos a la sección de moldings.');
+          if(goToMolding){
+            const url = new URL(window.location.href);
+            url.searchParams.set('type', 'molding');
+            window.location.href = url.toString();
+          }
+        }
       });
     });
   }
