@@ -37,7 +37,11 @@ $contact_source = 'website_store';
     .cart-service-card--install { cursor:pointer; }
     .cart-service-card--delivery { align-items:flex-start; }
     .cart-service-card--delivery .cart-service-card__control { flex:1; display:flex; flex-direction:column; gap:6px; align-items:flex-start; }
-    .cart-service-card--delivery select { width:100%; min-width:180px; }
+    .cart-service-card--delivery .cart-service-card__title { color:#5a1620; }
+    .cart-service-card--delivery .cart-service-card__desc { color:#6a605e; font-size:0.9rem; }
+    .cart-service-card--delivery .cart-service-card__select { width:100%; }
+    .cart-service-card--delivery select { width:100%; min-width:180px; padding:10px; border-radius:10px; border:1px solid #d2c8c1; }
+    .cart-service-card--delivery .summary-toggle { gap:10px; }
     .badge { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; font-size:0.78rem; font-weight:650; background:#f3e7dc; color:#5c3a28; }
     .badge.stock { background:#eef9f0; color:#2d7a42; }
     .badge.backorder { background:#f6e6e7; color:#5a1620; }
@@ -48,8 +52,15 @@ $contact_source = 'website_store';
     .summary-row strong { color:#5a1620; }
     .summary-divider { border-top:1px solid #e5dbd3; margin:10px 0; }
     .summary-note { color:#7a6a62; font-size:0.88rem; line-height:1.4; margin-bottom:8px; }
-    .summary-toggle { display:flex; gap:8px; align-items:flex-start; color:#4b4240; }
-    .summary-toggle input { margin-top:3px; }
+    .summary-toggle { display:flex; gap:10px; align-items:center; color:#4b4240; padding:10px 12px; border:1px solid #e6dcd9; border-radius:12px; background:#fff; cursor:pointer; transition:border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease; }
+    .summary-toggle:hover { border-color:#c3b6b2; box-shadow:0 8px 16px rgba(89,19,32,0.08); }
+    .summary-toggle:focus-within { outline:2px solid #591320; outline-offset:2px; }
+    .summary-toggle input { appearance:none; width:18px; height:18px; border:1px solid #c9beba; border-radius:6px; display:grid; place-items:center; background:#fff; flex-shrink:0; }
+    .summary-toggle input:checked { background:#591320; border-color:#591320; box-shadow:0 3px 8px rgba(89,19,32,0.15); }
+    .summary-toggle input:checked::after { content:""; width:8px; height:8px; display:block; border-radius:2px; background:#fff; }
+    .summary-toggle__content { display:flex; flex-direction:column; gap:2px; }
+    .summary-toggle__title { font-weight:650; color:#2f2523; }
+    .summary-toggle__desc { font-size:0.9rem; color:#6a605e; line-height:1.35; }
     .cart-empty { padding:16px; text-align:center; color:#6a605e; }
     .cart-actions .price-note { color:#7a6a62; font-size:0.84rem; margin-top:2px; display:block; }
     .cart-footer-actions { display:flex; gap:8px; flex-wrap:wrap; }
@@ -101,13 +112,23 @@ $contact_source = 'website_store';
         </div>
         <p class="summary-note" id="summary-note">Final quote may adjust based on exact measurements, delivery zone and scheduling.</p>
         <div class="summary-divider"></div>
-        <div class="cart-summary-title" style="font-size:0.98rem;">Delivery & zone</div>
-        <label class="summary-toggle" for="delivery-toggle">
-          <input type="checkbox" id="delivery-toggle" checked />
-          <span>I’d like B&S to handle delivery for this project.</span>
-        </label>
-        <select id="delivery-zone" class="cart-actions-select" style="width:100%; margin:8px 0 6px; padding:10px; border-radius:10px; border:1px solid #d2c8c1;"></select>
-        <p class="summary-note" id="delivery-note"></p>
+        <div class="cart-service-card cart-service-card--delivery" role="group" aria-labelledby="delivery-title">
+          <div class="cart-service-card__control">
+            <div class="cart-service-card__title" id="delivery-title">Delivery & zone</div>
+            <div class="cart-service-card__desc">Choose delivery or warehouse pick-up for this project.</div>
+            <label class="summary-toggle" for="delivery-toggle">
+              <input type="checkbox" id="delivery-toggle" checked />
+              <div class="summary-toggle__content">
+                <div class="summary-toggle__title">Include delivery</div>
+                <div class="summary-toggle__desc">We’ll arrange drop-off for this project. Uncheck if you prefer warehouse pick-up.</div>
+              </div>
+            </label>
+            <div class="cart-service-card__select">
+              <select id="delivery-zone" class="cart-actions-select"></select>
+            </div>
+            <p class="summary-note" id="delivery-note" style="margin:2px 0 0 0;"></p>
+          </div>
+        </div>
         <div class="cart-footer-actions">
           <button type="button" id="go-project" class="btn btn-primary" style="flex:1;">Continue to project details</button>
           <button type="button" class="btn btn-ghost" style="flex:1;" onclick="window.location.href='index.php'">Back to store</button>
