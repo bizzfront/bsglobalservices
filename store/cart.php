@@ -164,7 +164,7 @@ function formatUnits(value){
   return num.toLocaleString(undefined, {maximumFractionDigits: 2});
 }
 function getDefaultDeliveryZone(){
-  const zones = (STORE_CONFIG.delivery?.zones || []).filter(z=>z.id !== 'pick-up');
+  const zones = STORE_CONFIG.delivery?.zones || [];
   return zones[0]?.id || null;
 }
 function loadDeliveryPreferences(){
@@ -185,22 +185,16 @@ let deliveryPreferences = loadDeliveryPreferences();
 function getProduct(sku){
   return PRODUCTS.find(p=>p.sku===sku) || null;
 }
-function getDeliveryZones(priceType, product){
-  const zones = product.delivery?.zones || STORE_CONFIG?.delivery?.zones || [];
-  if(priceType === 'backorder') return zones.filter(z=>z.id !== 'pick-up');
-  const pickupOnly = zones.filter(z=>z.id === 'pick-up');
-  return pickupOnly.length ? pickupOnly : zones.filter(z=>z.id !== 'pick-up');
+function getAvailableDeliveryZones(){
+  return STORE_CONFIG?.delivery?.zones || [];
 }
-function resolveDeliveryZone(item, zones){
-  if(!zones?.length) return null;
-  if(!deliveryPreferences.includeDelivery){
+function resolveProjectDeliveryZone(){
+  const zones = getAvailableDeliveryZones();
+  if(!zones.length) return null;
+  if(deliveryPreferences.includeDelivery === false){
     const pickup = zones.find(z=>z.id === 'pick-up');
-    return pickup ? pickup.id : null;
+    if(pickup) return pickup.id;
   }
-  if(item.priceType === 'stock'){
-    return zones.find(z=>z.id === 'pick-up')?.id || zones[0].id;
-  }
-  if(item.deliveryZone && zones.some(z=>z.id === item.deliveryZone)) return item.deliveryZone;
   if(deliveryPreferences.zone && zones.some(z=>z.id === deliveryPreferences.zone)) return deliveryPreferences.zone;
   return zones[0].id;
 }
@@ -231,17 +225,16 @@ function computeDelivery(zoneId, zones){
 function serializeProject(items){
   const enriched = [];
   let totals = {material:0, install:0, delivery:0, total:0};
+  const deliveryZones = getAvailableDeliveryZones();
+  const deliveryZone = resolveProjectDeliveryZone();
+  const deliveryFee = deliveryPreferences.includeDelivery === false ? 0 : computeDelivery(deliveryZone, deliveryZones);
   for(const item of items){
     const product = getProduct(item.sku);
     if(!product) continue;
     const pricing = computePricing(item, product);
-    const deliveryZones = getDeliveryZones(pricing.priceType, product);
-    const deliveryZone = resolveDeliveryZone({...item, priceType: pricing.priceType}, deliveryZones);
     const install = computeInstall(item, product, pricing.coverage);
-    const delivery = computeDelivery(deliveryZone, deliveryZones);
     totals.material += pricing.subtotal;
     totals.install += install;
-    totals.delivery += delivery;
     enriched.push({
       ...item,
       priceType: pricing.priceType,
@@ -249,20 +242,21 @@ function serializeProject(items){
       packagePrice: pricing.packagePrice,
       subtotal: pricing.subtotal,
       install,
-      delivery,
+      delivery: deliveryFee,
       deliveryZone,
       deliveryZones,
       product
     });
   }
+  totals.delivery = deliveryFee;
   totals.total = totals.material + totals.install + totals.delivery;
-  return {items: enriched, totals, createdAt: Date.now(), deliveryPreferences};
+  return {items: enriched, totals, createdAt: Date.now(), deliveryPreferences: {...deliveryPreferences, zone: deliveryZone}, deliveryZone};
 }
 function refreshDeliveryControls(){
   const toggle = document.getElementById('delivery-toggle');
   const select = document.getElementById('delivery-zone');
   const note = document.getElementById('delivery-note');
-  const zones = (STORE_CONFIG.delivery?.zones || []).filter(z=>z.id !== 'pick-up');
+  const zones = getAvailableDeliveryZones();
   if(toggle){
     toggle.checked = deliveryPreferences.includeDelivery !== false;
   }
@@ -303,7 +297,6 @@ function renderCart(){
   const project = serializeProject(items);
   localStorage.setItem(PROJECT_KEY, JSON.stringify(project));
   document.getElementById('cart-field').value = JSON.stringify(project);
-  let needsRefresh = false;
   container.innerHTML = project.items.map(it=>{
     const p = it.product;
     const unit = p.measurementUnit === 'lf' ? 'lf' : p.measurementUnit === 'piece' ? 'piece' : 'sqft';
@@ -314,12 +307,6 @@ function renderCart(){
     const installRate = p.services?.installRate ?? (p.productType === 'molding' ? STORE_CONFIG?.install?.defaultMoldingRate : STORE_CONFIG?.install?.defaultFlooringRate);
     const installUnitLabel = p.measurementUnit === 'lf' ? 'lf' : (p.measurementUnit === 'piece' ? 'piece' : 'sq ft');
     const installRateLabel = installRate ? ` (${formatCurrency(installRate)} / ${installUnitLabel})` : '';
-    const deliveryZones = it.deliveryZones || [];
-    const deliveryZone = resolveDeliveryZone(it, deliveryZones);
-    if(deliveryZone && deliveryZone !== it.deliveryZone){
-      needsRefresh = true;
-      cart.setItem(it.sku, it.quantity, it.priceType, {install: it.install, deliveryZone});
-    }
     return `
       <article class="cart-item" data-sku="${it.sku}" data-price-type="${it.priceType}">
         <div>${image ? `<img src="${image}" alt="${p.name}">` : ''}</div>
@@ -347,29 +334,13 @@ function renderCart(){
                   <input type="checkbox" class="install-toggle" ${it.install ? 'checked' : ''} aria-label="Toggle installation">
                 </div>
               </div>
-              <div class="cart-service-card cart-service-card--delivery">
-                <div class="cart-service-card__text">
-                  <div class="cart-service-card__title">Delivery</div>
-                  <div class="cart-service-card__desc">${it.priceType === 'stock' ? 'Pick-up required for in-stock items.' : 'Choose your delivery zone.'}</div>
-                </div>
-                <div class="cart-service-card__control">
-                  <select class="delivery-select">
-                    ${deliveryZones.map(z=>`<option value="${z.id}" ${deliveryZone===z.id?'selected':''}>${z.label}${z.fee!=null ? ' — '+formatCurrency(z.fee) : ''}</option>`).join('')}
-                  </select>
-                  <span class="price-note">${it.priceType === 'stock' ? 'Pick-up required for in-stock items' : 'Choose your delivery zone'}</span>
-                </div>
-              </div>
             </div>
           </div>
-          <div class="cart-item-meta">Subtotal: ${formatCurrency(it.subtotal)} | Install: ${formatCurrency(it.install)} | Delivery: ${formatCurrency(it.delivery)}</div>
+          <div class="cart-item-meta">Subtotal: ${formatCurrency(it.subtotal)} | Install: ${formatCurrency(it.install)}</div>
         </div>
       </article>
     `;
   }).join('');
-
-  if(needsRefresh){
-    return renderCart();
-  }
 
   document.getElementById('summary-material').textContent = formatCurrency(project.totals.material);
   document.getElementById('summary-install').textContent = formatCurrency(project.totals.install);
@@ -385,9 +356,8 @@ function renderCart(){
       const sku = article?.dataset?.sku;
       const priceType = article?.dataset?.priceType;
       const install = article?.querySelector('.install-toggle')?.checked;
-      const deliveryZone = article?.querySelector('.delivery-select')?.value;
       if(!sku) return;
-      cart.setItem(sku, parseInt(input.value)||1, priceType, {install, deliveryZone});
+      cart.setItem(sku, parseInt(input.value)||1, priceType, {install});
       renderCart();
     });
   });
@@ -397,8 +367,7 @@ function renderCart(){
       const sku = article?.dataset?.sku;
       const priceType = article?.dataset?.priceType;
       const qty = parseInt(article?.querySelector('.qty')?.value)||1;
-      const deliveryZone = article?.querySelector('.delivery-select')?.value;
-      cart.setItem(sku, qty, priceType, {install: input.checked, deliveryZone});
+      cart.setItem(sku, qty, priceType, {install: input.checked});
       renderCart();
     });
   });
@@ -415,17 +384,6 @@ function renderCart(){
         evt.preventDefault();
         card.click();
       }
-    });
-  });
-  container.querySelectorAll('.delivery-select').forEach(sel=>{
-    sel.addEventListener('change', ()=>{
-      const article = sel.closest('.cart-item');
-      const sku = article?.dataset?.sku;
-      const priceType = article?.dataset?.priceType;
-      const qty = parseInt(article?.querySelector('.qty')?.value)||1;
-      const install = article?.querySelector('.install-toggle')?.checked;
-      cart.setItem(sku, qty, priceType, {install, deliveryZone: sel.value});
-      renderCart();
     });
   });
   container.querySelectorAll('.remove').forEach(btn=>{
@@ -445,6 +403,12 @@ document.getElementById('go-project')?.addEventListener('click', ()=>{
 
 document.getElementById('delivery-toggle')?.addEventListener('change', (e)=>{
   deliveryPreferences = {...deliveryPreferences, includeDelivery: e.target.checked};
+  if(!e.target.checked){
+    const pickup = getAvailableDeliveryZones().find(z=>z.id === 'pick-up');
+    if(pickup){
+      deliveryPreferences = {...deliveryPreferences, zone: pickup.id};
+    }
+  }
   saveDeliveryPreferences(deliveryPreferences);
   renderCart();
 });

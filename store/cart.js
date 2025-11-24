@@ -18,8 +18,7 @@
         sku,
         quantity,
         priceType: normalizePriceType(raw.priceType),
-        install: !!raw.install,
-        deliveryZone: typeof raw.deliveryZone === 'string' ? raw.deliveryZone : null
+        install: !!raw.install
       });
     }
     return sanitized;
@@ -57,14 +56,12 @@
       if(item){
         item.quantity += qty;
         if(typeof opts.install === 'boolean') item.install = opts.install;
-        if(typeof opts.deliveryZone === 'string') item.deliveryZone = opts.deliveryZone;
       }else{
         cart.items.push({
           sku,
           quantity: qty,
           priceType: normalizedType,
-          install: !!opts.install,
-          deliveryZone: typeof opts.deliveryZone === 'string' ? opts.deliveryZone : null
+          install: !!opts.install
         });
       }
       cart.createdAt = Date.now();
@@ -80,14 +77,12 @@
       if(item){
         item.quantity = qty;
         if(typeof opts.install === 'boolean') item.install = opts.install;
-        if(typeof opts.deliveryZone === 'string') item.deliveryZone = opts.deliveryZone;
       }else{
         cart.items.push({
           sku,
           quantity: qty,
           priceType: normalizedType,
-          install: !!opts.install,
-          deliveryZone: typeof opts.deliveryZone === 'string' ? opts.deliveryZone : null
+          install: !!opts.install
         });
       }
       cart.createdAt = Date.now();
