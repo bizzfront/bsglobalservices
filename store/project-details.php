@@ -60,9 +60,19 @@ $active = 'cart';
     .inline-radio-group { display:flex; flex-wrap:wrap; gap:0.75rem; font-size:0.88rem; }
     .inline-radio { display:inline-flex; align-items:center; gap:0.35rem; cursor:pointer; }
     .inline-radio input { accent-color: var(--bs-primary); }
-    .toggle-group { display:flex; flex-direction:column; gap:0.35rem; }
-    .toggle-option { display:flex; align-items:center; gap:0.4rem; font-size:0.9rem; color:var(--bs-text-main); }
-    .toggle-option input { accent-color: var(--bs-primary); }
+    .service-card-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:0.8rem; margin-top:0.4rem; }
+    .service-card { position:relative; display:flex; gap:0.55rem; align-items:flex-start; padding:0.85rem 0.95rem; border-radius:0.85rem; border:1px solid var(--bs-border); background:#fff; cursor:pointer; transition:border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease; }
+    .service-card:hover { border-color: var(--bs-primary-soft); box-shadow:0 10px 20px rgba(74,31,28,0.08); }
+    .service-card input { position:absolute; opacity:0; pointer-events:none; }
+    .service-card-check { width:18px; height:18px; border:1px solid #c9beba; border-radius:6px; background:#fdfbf7; display:grid; place-items:center; flex-shrink:0; transition:border-color 0.2s ease, background-color 0.2s ease; }
+    .service-card-check::after { content:""; width:8px; height:8px; border-radius:2px; background:#fff; opacity:0; transition:opacity 0.2s ease; }
+    .service-card-body { display:flex; flex-direction:column; gap:0.25rem; min-width:0; }
+    .service-card-title { font-weight:700; color:var(--bs-text-main); font-size:0.95rem; }
+    .service-card-desc { font-size:0.85rem; color:var(--bs-text-muted); line-height:1.35; }
+    .service-card input:checked + .service-card-check { background:var(--bs-primary); border-color:var(--bs-primary); }
+    .service-card input:checked + .service-card-check::after { opacity:1; }
+    .service-card input:checked ~ .service-card-body .service-card-title { color:var(--bs-primary); }
+    .service-card input:focus-visible + .service-card-check { outline:2px solid var(--bs-primary); outline-offset:2px; }
     .disclaimer-box { margin-top:0.75rem; padding:0.7rem 0.8rem; border-radius:0.6rem; background:#fdf9f0; border:1px dashed var(--bs-accent-soft); font-size:0.82rem; color:var(--bs-text-main); }
     .disclaimer-box strong { color:var(--bs-primary); }
     .consent-group { display:flex; flex-direction:column; gap:0.4rem; margin-top:0.5rem; font-size:0.82rem; color:var(--bs-text-main); }
@@ -199,12 +209,47 @@ $active = 'cart';
           <h2 class="section-title">3. Services &amp; timing</h2>
           <p class="section-subtitle">Select the services you need and when you’d like to start.</p>
           <div class="fieldset full">
-            <div class="toggle-group" role="group" aria-label="Requested services">
-              <label class="toggle-option"><input type="checkbox" name="service_supply" checked />Material supply</label>
-              <label class="toggle-option"><input type="checkbox" name="service_install" />Installation</label>
-              <label class="toggle-option"><input type="checkbox" name="service_removal" />Removal of existing floor</label>
-              <label class="toggle-option"><input type="checkbox" name="service_prep" />Floor preparation / leveling</label>
-              <label class="toggle-option"><input type="checkbox" name="service_baseboards" />Baseboards / transitions</label>
+            <div class="service-card-grid" role="group" aria-label="Requested services">
+              <label class="service-card">
+                <input type="checkbox" name="service_supply" checked />
+                <span class="service-card-check" aria-hidden="true"></span>
+                <div class="service-card-body">
+                  <div class="service-card-title">Material supply</div>
+                  <div class="service-card-desc">Reserve flooring, trims and adhesives from our stock.</div>
+                </div>
+              </label>
+              <label class="service-card">
+                <input type="checkbox" name="service_install" />
+                <span class="service-card-check" aria-hidden="true"></span>
+                <div class="service-card-body">
+                  <div class="service-card-title">Installation</div>
+                  <div class="service-card-desc">Schedule B&amp;S installers to handle the full installation.</div>
+                </div>
+              </label>
+              <label class="service-card">
+                <input type="checkbox" name="service_removal" />
+                <span class="service-card-check" aria-hidden="true"></span>
+                <div class="service-card-body">
+                  <div class="service-card-title">Removal of existing floor</div>
+                  <div class="service-card-desc">We can remove and dispose of existing flooring materials.</div>
+                </div>
+              </label>
+              <label class="service-card">
+                <input type="checkbox" name="service_prep" />
+                <span class="service-card-check" aria-hidden="true"></span>
+                <div class="service-card-body">
+                  <div class="service-card-title">Floor preparation / leveling</div>
+                  <div class="service-card-desc">Surface prep, leveling or moisture barrier as needed.</div>
+                </div>
+              </label>
+              <label class="service-card">
+                <input type="checkbox" name="service_baseboards" />
+                <span class="service-card-check" aria-hidden="true"></span>
+                <div class="service-card-body">
+                  <div class="service-card-title">Baseboards / transitions</div>
+                  <div class="service-card-desc">Include matching baseboards, trims or transition pieces.</div>
+                </div>
+              </label>
             </div>
           </div>
           <div class="fieldset">
