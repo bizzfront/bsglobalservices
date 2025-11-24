@@ -247,13 +247,13 @@ $installRateLabel = $installRateValue !== null
           <div class="calc-options">
             <h4>Optional services</h4>
             <label class="calc-checkbox">
-              <input type="checkbox" id="calcInstall">
               <span>Include installation estimate<?= $installRateLabel ? ' ('.$installRateLabel.')' : '' ?></span>
+              <input type="checkbox" id="calcInstall">
             </label>
             <?php if($isFlooring): ?>
               <label class="calc-checkbox">
-                <input type="checkbox" id="calcIncludeDelivery">
                 <span>Include delivery</span>
+                <input type="checkbox" id="calcIncludeDelivery">
               </label>
               <div id="calcDeliveryWrap" class="calc-delivery" style="display:none;">
                 <label>

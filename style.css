@@ -327,7 +327,7 @@
     .calc-action:hover{background:#6b1a2a}
     .calc-options{margin-top:12px;padding-top:12px;border-top:1px solid #ece7e4}
     .calc-options h4{margin-bottom:8px;color:#4a3c38;font-size:1rem}
-    .calc-checkbox{display:flex;gap:8px;align-items:center;justify-content:space-between;font-size:.95rem;color:#333;margin-bottom:8px}
+    .calc-checkbox{display:flex;gap:8px;align-items:center;justify-content:space-between;font-size:.95rem;color:#333;margin-bottom:8px;white-space:nowrap}
     .calc-checkbox span{flex:1;text-align:left}
     .calc-checkbox input{width:auto;margin:0;margin-left:8px;flex-shrink:0}
     .calc select,.calc input[type=number]{padding:.65rem .75rem;border:1px solid #ddd;border-radius:12px;font:inherit;background:#fff}
