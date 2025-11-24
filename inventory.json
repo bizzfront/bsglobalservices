@@ -10,9 +10,21 @@
       "moldingRate": 1.25
     },
     "deliveryZones": [
-      { "id": "orlando", "label": "Orlando / Kissimmee", "fee": 120 },
-      { "id": "meadow", "label": "Meadow Woods / Lake Nona", "fee": 95 },
-      { "id": "pick-up", "label": "Warehouse pick-up", "fee": 0 }
+      {
+        "id": "orlando",
+        "label": "Orlando / Kissimmee",
+        "fee": 120
+      },
+      {
+        "id": "meadow",
+        "label": "Meadow Woods / Lake Nona",
+        "fee": 95
+      },
+      {
+        "id": "pick-up",
+        "label": "Warehouse pick-up",
+        "fee": 0
+      }
     ]
   },
   "crystal": {
@@ -20,12 +32,28 @@
     "stockAvailable": 280,
     "allowBackorder": true,
     "backorderLeadTimeDays": 18,
-    "install": { "flooringRate": 2.6 },
-    "notes": ["High-turn floor kept ready for fast installs"],
+    "install": {
+      "flooringRate": 2.6
+    },
+    "notes": [
+      "High-turn floor kept ready for fast installs"
+    ],
     "deliveryZones": [
-      { "id": "orlando", "label": "Orlando / Kissimmee", "fee": 105 },
-      { "id": "meadow", "label": "Meadow Woods / Lake Nona", "fee": 90 },
-      { "id": "pick-up", "label": "Warehouse pick-up", "fee": 0 }
+      {
+        "id": "orlando",
+        "label": "Orlando / Kissimmee",
+        "fee": 105
+      },
+      {
+        "id": "meadow",
+        "label": "Meadow Woods / Lake Nona",
+        "fee": 90
+      },
+      {
+        "id": "pick-up",
+        "label": "Warehouse pick-up",
+        "fee": 0
+      }
     ]
   },
   "berlin": {
@@ -33,20 +61,64 @@
     "stockAvailable": 150,
     "allowBackorder": true,
     "backorderLeadTimeDays": 14,
-    "notes": ["Bulk orders auto switch to backorder pricing"],
-    "install": { "flooringRate": 2.45 }
+    "notes": [
+      "Bulk orders auto switch to backorder pricing"
+    ],
+    "install": {
+      "flooringRate": 2.45
+    }
   },
   "board-cedar-white-primed-1x4-12ft-1x4in": {
     "mode": "stock",
     "stockAvailable": 900,
     "allowBackorder": true,
     "backorderLeadTimeDays": 10,
-    "install": { "moldingRate": 1.35 },
-    "notes": ["Trim line paired with Venice floor"],
+    "install": {
+      "moldingRate": 1.35
+    },
+    "notes": [
+      "Trim line paired with Venice floor"
+    ],
     "deliveryZones": [
-      { "id": "orlando", "label": "Orlando / Kissimmee", "fee": 80 },
-      { "id": "meadow", "label": "Meadow Woods / Lake Nona", "fee": 70 },
-      { "id": "pick-up", "label": "Warehouse pick-up", "fee": 0 }
+      {
+        "id": "orlando",
+        "label": "Orlando / Kissimmee",
+        "fee": 80
+      },
+      {
+        "id": "meadow",
+        "label": "Meadow Woods / Lake Nona",
+        "fee": 70
+      },
+      {
+        "id": "pick-up",
+        "label": "Warehouse pick-up",
+        "fee": 0
+      }
     ]
+  },
+  "savannah": {
+    "mode": "stock",
+    "stockAvailable": 140,
+    "allowBackorder": true,
+    "backorderLeadTimeDays": 9
+  },
+  "hemmo": {
+    "mode": "stock",
+    "stockAvailable": 210,
+    "allowBackorder": true,
+    "backorderLeadTimeDays": 12
+  },
+  "peaks": {
+    "mode": "backorder",
+    "stockAvailable": 0,
+    "allowBackorder": true,
+    "backorderLeadTimeDays": 15
+  },
+  "ultra_noor": {
+    "mode": "backorder",
+    "stockAvailable": 0,
+    "allowBackorder": true,
+    "backorderLeadTimeDays": 7
   }
 }
