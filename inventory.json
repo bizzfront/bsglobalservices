@@ -1,7 +1,7 @@
 {
   "__defaults": {
-    "mode": "stock",
-    "stockAvailable": 500,
+    "mode": "backorder",
+    "stockAvailable": 0,
     "allowBackorder": true,
     "backorderLeadTimeDays": 21,
     "backorderNote": "Special order ships once it arrives at our warehouse.",
