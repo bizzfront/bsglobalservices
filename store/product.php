@@ -115,6 +115,12 @@ $formatNumber = static function($value) {
 $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue) . ' ' . ($unitLabels[$measurementUnit] ?? $measurementUnit) . ' / ' . $packageLabelSingular : '';
 $normalizedProduct = normalize_store_product($product);
 $storeConfig = load_store_config();
+$installRateValue = $normalizedProduct['services']['installRate'] ?? ($isFlooring
+  ? ($storeConfig['install']['defaultFlooringRate'] ?? null)
+  : ($storeConfig['install']['defaultMoldingRate'] ?? null));
+$installRateLabel = $installRateValue !== null
+  ? $formatCurrency($installRateValue) . ' / ' . ($isFlooring ? 'sq ft' : $unitLabel)
+  : null;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -190,48 +196,101 @@ $storeConfig = load_store_config();
         <?php endif; ?>
 
         <div id="calc" class="calc">
-          <h3 style="color: var(--burgundy);">Material calculator</h3>
-          <form id="calcForm" class="form">
-            <?php if($isFlooring): ?>
-              <label>
-                Length (ft)
-                <input type="number" id="calcLen" step="0.1" min="0">
-              </label>
-              <label>
-                Width (ft)
-                <input type="number" id="calcWid" step="0.1" min="0">
-              </label>
+          <h3 class="calc-title" style="color: var(--burgundy);">Calculate your floor</h3>
+          <p class="calc-subtitle">Estimate material and optional services for this product.</p>
+          <?php if($isFlooring): ?>
+            <div class="calc-mode-toggle">
+              <button type="button" class="calc-mode-btn active" data-calc-mode="dims">I know my room dimensions</button>
+              <button type="button" class="calc-mode-btn" data-calc-mode="sqft">I already know my total sq ft</button>
+            </div>
+
+            <div class="calc-mode calc-mode-dims" data-mode="dims">
+              <div class="calc-field-row">
+                <label>
+                  Length
+                  <div class="calc-input-wrap">
+                    <input type="number" id="calcLen" step="0.1" min="0" placeholder="e.g. 20">
+                    <span class="calc-unit">ft</span>
+                  </div>
+                </label>
+                <label>
+                  Width
+                  <div class="calc-input-wrap">
+                    <input type="number" id="calcWid" step="0.1" min="0" placeholder="e.g. 12">
+                    <span class="calc-unit">ft</span>
+                  </div>
+                </label>
+              </div>
+              <button type="button" class="calc-action" id="calcFromDims">Calculate area</button>
+            </div>
+
+            <div class="calc-mode calc-mode-sqft" data-mode="sqft" style="display:none;">
               <label class="full">
                 Square footage (sqft)
-                <input type="number" id="calcSqft" step="0.1" min="0">
+                <div class="calc-input-wrap">
+                  <input type="number" id="calcSqft" step="0.1" min="0" placeholder="e.g. 240">
+                  <span class="calc-unit">sq ft</span>
+                </div>
               </label>
-              <div class="full or">or</div>
-            <?php else: ?>
-              <label class="full">
-                <?= htmlspecialchars(ucfirst($unitLabel)) ?> needed
-                <input type="number" id="calcUnits" step="0.1" min="0">
-              </label>
-              <div class="full or">or</div>
-            <?php endif; ?>
+            </div>
+          <?php else: ?>
+            <label class="full">
+              <?= htmlspecialchars(ucfirst($unitLabel)) ?> needed
+              <input type="number" id="calcUnits" step="0.1" min="0">
+            </label>
             <label class="full">
               <?= htmlspecialchars(ucfirst($packageLabelPlural)) ?>
               <input type="number" id="calcBoxes" min="1" value="1" <?= $hasInventoryAvailable ? 'max="'.(int)$stockAvailableValue.'"' : '' ?>>
             </label>
-            <div class="full" style="display:flex; align-items:center; gap:10px; margin-top:6px;">
-              <input type="checkbox" id="calcInstall"> <span>Add installation (uses project rates)</span>
-            </div>
-            <label class="full">
-              Delivery / pick-up
-              <select id="calcDelivery">
-                <?php foreach(($normalizedProduct['delivery']['zones'] ?? ($storeConfig['delivery']['zones'] ?? [])) as $zone): ?>
-                  <option value="<?= htmlspecialchars($zone['id'] ?? '') ?>"><?= htmlspecialchars(($zone['label'] ?? 'Zone').' '.(isset($zone['fee']) ? ' — $'.number_format((float)$zone['fee'], 2) : '')) ?></option>
-                <?php endforeach; ?>
-              </select>
+          <?php endif; ?>
+
+          <div class="calc-options">
+            <h4>Optional services</h4>
+            <label class="calc-checkbox">
+              <input type="checkbox" id="calcInstall">
+              <span>Include installation estimate<?= $installRateLabel ? ' ('.$installRateLabel.')' : '' ?></span>
             </label>
-            <p id="calcSummary" class="note full"></p>
-            <p id="calcAlert" class="note full" style="color: var(--burgundy); font-weight:600;"></p>
-            <button type="button" id="addToCart" class="btn btn-primary full">Add to cart</button>
-          </form>
+            <?php if($isFlooring): ?>
+              <label class="calc-checkbox">
+                <input type="checkbox" id="calcIncludeDelivery">
+                <span>Include delivery</span>
+              </label>
+              <div id="calcDeliveryWrap" class="calc-delivery" style="display:none;">
+                <label>
+                  Delivery zone
+                  <select id="calcDelivery">
+                    <?php foreach(($normalizedProduct['delivery']['zones'] ?? ($storeConfig['delivery']['zones'] ?? [])) as $zone): ?>
+                      <option value="<?= htmlspecialchars($zone['id'] ?? '') ?>"><?= htmlspecialchars(($zone['label'] ?? 'Zone').' '.(isset($zone['fee']) ? ' — $'.number_format((float)$zone['fee'], 2) : '')) ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                </label>
+              </div>
+            <?php else: ?>
+              <label class="full">
+                Delivery / pick-up
+                <select id="calcDelivery">
+                  <?php foreach(($normalizedProduct['delivery']['zones'] ?? ($storeConfig['delivery']['zones'] ?? [])) as $zone): ?>
+                    <option value="<?= htmlspecialchars($zone['id'] ?? '') ?>"><?= htmlspecialchars(($zone['label'] ?? 'Zone').' '.(isset($zone['fee']) ? ' — $'.number_format((float)$zone['fee'], 2) : '')) ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </label>
+            <?php endif; ?>
+          </div>
+
+          <div class="calc-summary">
+            <h4>Estimate summary</h4>
+            <div class="calc-summary-line"><span>Area:</span><span id="calcSummaryArea">—</span></div>
+            <div class="calc-summary-line"><span><?= htmlspecialchars(ucfirst($packageLabelPlural)) ?> needed:</span><span id="calcSummaryBoxes">—</span></div>
+            <div class="calc-summary-line"><span>Condition:</span><span id="calcSummaryCondition">—</span></div>
+            <div class="calc-summary-line"><span>Material:</span><span id="calcSummaryMaterial">—</span></div>
+            <div class="calc-summary-line"><span>Installation:</span><span id="calcSummaryInstall">—</span></div>
+            <div class="calc-summary-line"><span>Delivery:</span><span id="calcSummaryDelivery">—</span></div>
+            <div class="calc-summary-total"><span>Estimated total:</span><span id="calcSummaryTotal">—</span></div>
+            <p class="calc-note" id="calcSummaryNote">This is an estimate. Final quote may adjust based on project details and promotions.</p>
+            <p id="calcAlert" class="calc-note calc-alert"></p>
+          </div>
+
+          <button type="button" id="addToCart" class="btn btn-primary full" style="margin-top:10px;">Add to cart</button>
         </div>
       </div>
     </div>
@@ -344,21 +403,33 @@ $storeConfig = load_store_config();
       const rounded = Math.round(num * 100) / 100;
       return Number.isInteger(rounded) ? String(rounded) : rounded.toString();
     }
+    let calcMode = 'dims';
+    let lastComputedBoxes = 0;
+    function updateDeliveryVisibility(){
+      const deliveryWrap = document.getElementById('calcDeliveryWrap');
+      const deliveryToggle = document.getElementById('calcIncludeDelivery');
+      if(deliveryWrap){
+        deliveryWrap.style.display = deliveryToggle?.checked ? '' : 'none';
+      }
+    }
     function updateCalc(source){
       const boxesInput = document.getElementById('calcBoxes');
       const sqftInput = document.getElementById('calcSqft');
       const lenInput = document.getElementById('calcLen');
       const widInput = document.getElementById('calcWid');
       const unitsInputEl = document.getElementById('calcUnits');
+      const deliveryToggle = document.getElementById('calcIncludeDelivery');
+      const deliverySelect = document.getElementById('calcDelivery');
       const alertEl = document.getElementById('calcAlert');
-      let boxes = parseInt(boxesInput?.value, 10);
+      let boxes = boxesInput ? parseInt(boxesInput.value, 10) : 0;
       let requestedBoxes = boxes;
       if(!Number.isFinite(boxes) || boxes < 0){
         boxes = 0;
+        requestedBoxes = 0;
       }
-      if(source === 'calcBoxes'){
+      if(boxesInput && source === 'calcBoxes'){
         boxes = Math.max(1, Math.round(boxes));
-        if(boxesInput) boxesInput.value = boxes > 0 ? boxes : '';
+        boxesInput.value = boxes > 0 ? boxes : '';
         requestedBoxes = boxes;
       }
       const maxQty = Number.isFinite(MAX_PURCHASE_QTY) && MAX_PURCHASE_QTY > 0 ? Math.floor(MAX_PURCHASE_QTY) : null;
@@ -376,49 +447,27 @@ $storeConfig = load_store_config();
       }
       let unitsNeeded = null;
       if(PRODUCT_TYPE === 'flooring'){
-        const len = parseFloat(lenInput?.value);
-        const wid = parseFloat(widInput?.value);
+        let sqft = 0;
         const manualSqft = parseFloat(sqftInput?.value);
-        let sqft = Number.isFinite(manualSqft) && manualSqft > 0 ? manualSqft : 0;
-        if(Number.isFinite(len) && len > 0 && Number.isFinite(wid) && wid > 0){
-          sqft = len * wid;
-          if(sqftInput){
-            const formatted = formatInputValue(sqft);
-            if(formatted !== '') sqftInput.value = formatted; else sqftInput.value = '';
+        if(calcMode === 'sqft'){
+          if(Number.isFinite(manualSqft) && manualSqft > 0){
+            sqft = manualSqft;
           }
-        }else if(source === 'calcBoxes' && coveragePerPackage > 0 && boxes > 0){
-          sqft = boxes * coveragePerPackage;
-          if(sqftInput){
-            const formatted = formatInputValue(sqft);
-            sqftInput.value = formatted || '';
-          }
-        }else if(Number.isFinite(manualSqft) && manualSqft > 0){
-          sqft = manualSqft;
-        }else if(sqftInput && source !== 'calcSqft' && source !== 'calcLen' && source !== 'calcWid'){
-          sqftInput.value = '';
-        }
-        if(coveragePerPackage > 0){
-          if(source === 'calcBoxes'){
-            if(boxes > 0){
-              const sqftFromBoxes = boxes * coveragePerPackage;
-              if(sqftInput){
-                const formattedSqft = formatInputValue(sqftFromBoxes);
-                sqftInput.value = formattedSqft || '';
-              }
-              sqft = sqftFromBoxes;
-            }
-          }else if(sqft > 0){
-            boxes = Math.max(1, Math.ceil(sqft / coveragePerPackage));
-            requestedBoxes = boxes;
-            if(boxesInput) boxesInput.value = boxes;
-          }else if(boxes > 0){
-            const sqftFromBoxes = boxes * coveragePerPackage;
+        }else{
+          const len = parseFloat(lenInput?.value);
+          const wid = parseFloat(widInput?.value);
+          if(Number.isFinite(len) && len > 0 && Number.isFinite(wid) && wid > 0){
+            sqft = len * wid;
             if(sqftInput){
-              const formattedSqft = formatInputValue(sqftFromBoxes);
-              sqftInput.value = formattedSqft || '';
+              const formatted = formatInputValue(sqft);
+              sqftInput.value = formatted !== '' ? formatted : '';
             }
-            sqft = sqftFromBoxes;
+          }else if(Number.isFinite(manualSqft) && manualSqft > 0){
+            sqft = manualSqft;
           }
+        }
+        if(coveragePerPackage > 0 && sqft > 0){
+          boxes = Math.max(1, Math.ceil(sqft / coveragePerPackage));
         }
         unitsNeeded = sqft > 0 ? sqft : null;
       }else{
@@ -430,8 +479,8 @@ $storeConfig = load_store_config();
           }else if(coveragePerPackage > 0){
             boxes = Math.max(1, Math.ceil(unitsInput / coveragePerPackage));
           }
-          if(boxesInput && boxes > 0) boxesInput.value = boxes;
           requestedBoxes = boxes;
+          if(boxesInput && boxes > 0) boxesInput.value = boxes;
           unitsNeeded = unitsInput;
         }else if(boxes > 0){
           if(piecesPerBox > 0 && lengthPerPiece > 0){
@@ -449,7 +498,6 @@ $storeConfig = load_store_config();
       }
       if(maxQty && boxes > maxQty){
         boxes = maxQty;
-        if(boxesInput) boxesInput.value = boxes;
         if(PRODUCT_TYPE === 'flooring' && coveragePerPackage > 0){
           const cappedUnits = boxes * coveragePerPackage;
           if(sqftInput){
@@ -457,6 +505,9 @@ $storeConfig = load_store_config();
             sqftInput.value = formattedSqft || '';
           }
           unitsNeeded = cappedUnits;
+        }
+        if(boxesInput){
+          boxesInput.value = boxes;
         }
       }
       let pricePerPackage = Number(activePrice.packageValue);
@@ -466,7 +517,8 @@ $storeConfig = load_store_config();
       }
       const totalPrice = boxes > 0 && pricePerPackage > 0 ? boxes * pricePerPackage : 0;
       const installSelected = document.getElementById('calcInstall')?.checked;
-      const deliveryZone = document.getElementById('calcDelivery')?.value;
+      const deliveryEnabled = PRODUCT_TYPE === 'flooring' ? (deliveryToggle?.checked ?? false) : true;
+      const deliveryZone = deliveryEnabled ? document.getElementById('calcDelivery')?.value : null;
       let installTotal = 0;
       const installRate = PRODUCT_TYPE === 'molding'
         ? (NORMALIZED_PRODUCT?.services?.installRate ?? STORE_CONFIG?.install?.defaultMoldingRate)
@@ -486,31 +538,15 @@ $storeConfig = load_store_config();
         }
       }
       const grandTotal = totalPrice + installTotal + deliveryTotal;
-      const summaryParts = [];
-      if(boxes > 0){
-        const pkgLabel = boxes === 1 ? (PACKAGE_LABEL || 'box') : (PACKAGE_LABEL_PLURAL || ((PACKAGE_LABEL || 'box') + 'es'));
-        summaryParts.push(`${boxes} ${pkgLabel}`);
-      }
-      if(unitsNeeded){
-        summaryParts.push(`${formatUnits(unitsNeeded)} ${UNIT_LABEL}`);
-      }
+      const areaText = unitsNeeded ? `${formatUnits(unitsNeeded)} ${UNIT_LABEL}` : '—';
+      document.getElementById('calcSummaryArea').textContent = areaText;
+      document.getElementById('calcSummaryBoxes').textContent = boxes > 0 ? formatUnits(boxes) : '—';
       const priceModeLabel = activePrice.label || (currentPriceMode === 'backorder' ? 'Backorder' : 'In stock');
-      if(priceModeLabel && PRICE_MODE_KEYS.length > 1){
-        summaryParts.push(priceModeLabel);
-      }
-      if(totalPrice > 0){
-        summaryParts.push(`$${totalPrice.toFixed(2)}`);
-      }
-      if(installTotal > 0){
-        summaryParts.push(`Install $${installTotal.toFixed(2)}`);
-      }
-      if(deliveryZone){
-        summaryParts.push(`Delivery $${deliveryTotal.toFixed(2)}`);
-      }
-      if(grandTotal > totalPrice){
-        summaryParts.push(`Est. total $${grandTotal.toFixed(2)}`);
-      }
-      document.getElementById('calcSummary').textContent = summaryParts.join(' — ');
+      document.getElementById('calcSummaryCondition').textContent = priceModeLabel || '—';
+      document.getElementById('calcSummaryMaterial').textContent = totalPrice > 0 ? `$${totalPrice.toFixed(2)}` : '—';
+      document.getElementById('calcSummaryInstall').textContent = installTotal > 0 ? `$${installTotal.toFixed(2)}` : '—';
+      document.getElementById('calcSummaryDelivery').textContent = deliveryTotal > 0 ? `$${deliveryTotal.toFixed(2)}` : (deliveryEnabled ? '$0.00' : '—');
+      document.getElementById('calcSummaryTotal').textContent = grandTotal > 0 ? `$${grandTotal.toFixed(2)}` : '—';
       const exceededStock = IS_STOCK_MODE && Number.isFinite(STOCK_AVAILABLE) && Number.isFinite(requestedBoxes) && requestedBoxes > STOCK_AVAILABLE;
       if(alertEl){
         if(exceededStock){
@@ -521,9 +557,23 @@ $storeConfig = load_store_config();
           alertEl.textContent = '';
         }
       }
+      lastComputedBoxes = boxes;
       return boxes;
     }
-    ['calcLen','calcWid','calcSqft','calcBoxes','calcUnits'].forEach(id=>{
+    document.querySelectorAll('[data-calc-mode]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const mode = btn.dataset.calcMode;
+        if(!mode) return;
+        calcMode = mode;
+        document.querySelectorAll('.calc-mode-btn').forEach(el=>el.classList.toggle('active', el === btn));
+        document.querySelectorAll('.calc-mode').forEach(el=>{
+          el.style.display = el.dataset.mode === mode ? '' : 'none';
+        });
+        updateCalc();
+      });
+    });
+    document.getElementById('calcFromDims')?.addEventListener('click', ()=>updateCalc('calcFromDims'));
+    ['calcLen','calcWid','calcSqft','calcUnits','calcBoxes'].forEach(id=>{
       const el = document.getElementById(id);
       if(el){
         el.addEventListener('input', ()=>updateCalc(id));
@@ -533,6 +583,7 @@ $storeConfig = load_store_config();
       }
     });
     document.getElementById('calcInstall')?.addEventListener('change', ()=>updateCalc());
+    document.getElementById('calcIncludeDelivery')?.addEventListener('change', ()=>{updateDeliveryVisibility(); updateCalc();});
     document.getElementById('calcDelivery')?.addEventListener('change', ()=>updateCalc());
     document.querySelectorAll('input[name="price_mode"]').forEach(input=>{
       input.addEventListener('change', ()=>{
@@ -548,10 +599,11 @@ $storeConfig = load_store_config();
         const selectedMode = document.querySelector('input[name="price_mode"]:checked');
         const priceType = selectedMode ? selectedMode.value : currentPriceMode;
         const installSelected = document.getElementById('calcInstall')?.checked;
-        const deliveryZone = document.getElementById('calcDelivery')?.value || null;
+        const deliveryZone = (PRODUCT_TYPE === 'flooring' && !(document.getElementById('calcIncludeDelivery')?.checked)) ? null : (document.getElementById('calcDelivery')?.value || null);
         cart.addItem(SKU, boxes, priceType || 'stock', {install: installSelected, deliveryZone});
       }
     });
+    updateDeliveryVisibility();
     updateCalc();
     function trackEvent(name, params){
       if (window.gtag) gtag('event', name, params || {});
