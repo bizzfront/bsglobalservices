@@ -23,9 +23,21 @@ $contact_source = 'website_store';
     .cart-item:last-child { border-bottom:none; }
     .cart-item img { width:96px; height:96px; object-fit:cover; border-radius:12px; background:#f6f2ec; }
     .cart-item-meta { display:flex; flex-wrap:wrap; gap:6px; color:#6a605e; font-size:0.9rem; }
-    .cart-actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; }
+    .cart-actions { display:flex; flex-direction:column; gap:12px; margin-top:6px; }
     .cart-actions input, .cart-actions select { padding:8px 10px; border-radius:10px; border:1px solid #d2c8c1; background:#fff; }
     .cart-actions label { display:flex; flex-direction:column; gap:4px; color:#4b4240; font-weight:600; font-size:0.9rem; }
+    .cart-service-cards { display:flex; flex-direction:column; gap:10px; }
+    .cart-service-card { display:flex; justify-content:space-between; gap:12px; align-items:center; padding:12px; border:1px solid #e6dcd9; border-radius:12px; background:#fff; transition:border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease; }
+    .cart-service-card:hover { border-color:#c3b6b2; box-shadow:0 8px 16px rgba(89,19,32,0.08); }
+    .cart-service-card.selected { border-color:#591320; box-shadow:0 10px 20px rgba(89,19,32,0.14); background:#fbf7f5; }
+    .cart-service-card__text { display:flex; flex-direction:column; gap:4px; color:#4b4240; }
+    .cart-service-card__title { font-weight:700; color:#2f2523; }
+    .cart-service-card__desc { color:#6a605e; font-size:0.88rem; }
+    .cart-service-card__action input { width:20px; height:20px; }
+    .cart-service-card--install { cursor:pointer; }
+    .cart-service-card--delivery { align-items:flex-start; }
+    .cart-service-card--delivery .cart-service-card__control { flex:1; display:flex; flex-direction:column; gap:6px; align-items:flex-start; }
+    .cart-service-card--delivery select { width:100%; min-width:180px; }
     .badge { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; font-size:0.78rem; font-weight:650; background:#f3e7dc; color:#5c3a28; }
     .badge.stock { background:#eef9f0; color:#2d7a42; }
     .badge.backorder { background:#f6e6e7; color:#5a1620; }
@@ -41,7 +53,7 @@ $contact_source = 'website_store';
     .cart-form label { display:block; margin-top:10px; font-weight:600; color:#4b4240; }
     .cart-form input, .cart-form textarea, .cart-form select { width:100%; padding:10px; border:1px solid #d2c8c1; border-radius:10px; margin-top:4px; }
     .cart-empty { padding:16px; text-align:center; color:#6a605e; }
-    .cart-actions .price-note { color:#7a6a62; font-size:0.84rem; margin-top:2px; }
+    .cart-actions .price-note { color:#7a6a62; font-size:0.84rem; margin-top:2px; display:block; }
     .cart-footer-actions { display:flex; gap:8px; flex-wrap:wrap; }
     @media (max-width: 1024px){
       .cart-board { grid-template-columns: 1fr; }
@@ -299,6 +311,9 @@ function renderCart(){
     const image = p.images?.[0] ? `../${p.images[0]}` : '';
     const priceLabel = it.packagePrice ? `${formatCurrency(it.packagePrice)} / ${p.packageLabel || 'box'}` : 'Call for price';
     const priceTypeLabel = it.priceType === 'backorder' ? 'Order-in' : 'In stock';
+    const installRate = p.services?.installRate ?? (p.productType === 'molding' ? STORE_CONFIG?.install?.defaultMoldingRate : STORE_CONFIG?.install?.defaultFlooringRate);
+    const installUnitLabel = p.measurementUnit === 'lf' ? 'lf' : (p.measurementUnit === 'piece' ? 'piece' : 'sq ft');
+    const installRateLabel = installRate ? ` (${formatCurrency(installRate)} / ${installUnitLabel})` : '';
     const deliveryZones = it.deliveryZones || [];
     const deliveryZone = resolveDeliveryZone(it, deliveryZones);
     if(deliveryZone && deliveryZone !== it.deliveryZone){
@@ -319,19 +334,32 @@ function renderCart(){
           </div>
           <div class="cart-item-meta" style="margin:6px 0;">${priceLabel}</div>
           <div class="cart-actions">
-            <label>Qty
+            <label class="cart-qty-control">Qty
               <input type="number" class="qty" min="1" value="${it.quantity}">
             </label>
-            <label>Install
-              <input type="checkbox" class="install-toggle" ${it.install ? 'checked' : ''}>
-              <span class="price-note">${it.install ? 'Added' : 'Optional'} installation</span>
-            </label>
-            <label>Delivery
-              <select class="delivery-select">
-                ${deliveryZones.map(z=>`<option value="${z.id}" ${deliveryZone===z.id?'selected':''}>${z.label}${z.fee!=null ? ' — '+formatCurrency(z.fee) : ''}</option>`).join('')}
-              </select>
-              <span class="price-note">${it.priceType === 'stock' ? 'Pick-up required for in-stock items' : 'Choose your delivery zone'}</span>
-            </label>
+            <div class="cart-service-cards">
+              <div class="cart-service-card cart-service-card--install ${it.install ? 'selected' : ''}" role="button" tabindex="0" aria-pressed="${it.install ? 'true' : 'false'}">
+                <div class="cart-service-card__text">
+                  <div class="cart-service-card__title">Installation${installRateLabel}</div>
+                  <div class="cart-service-card__desc">${it.install ? 'Installation added to this item.' : 'Add an installation estimate based on your area.'}</div>
+                </div>
+                <div class="cart-service-card__action">
+                  <input type="checkbox" class="install-toggle" ${it.install ? 'checked' : ''} aria-label="Toggle installation">
+                </div>
+              </div>
+              <div class="cart-service-card cart-service-card--delivery">
+                <div class="cart-service-card__text">
+                  <div class="cart-service-card__title">Delivery</div>
+                  <div class="cart-service-card__desc">${it.priceType === 'stock' ? 'Pick-up required for in-stock items.' : 'Choose your delivery zone.'}</div>
+                </div>
+                <div class="cart-service-card__control">
+                  <select class="delivery-select">
+                    ${deliveryZones.map(z=>`<option value="${z.id}" ${deliveryZone===z.id?'selected':''}>${z.label}${z.fee!=null ? ' — '+formatCurrency(z.fee) : ''}</option>`).join('')}
+                  </select>
+                  <span class="price-note">${it.priceType === 'stock' ? 'Pick-up required for in-stock items' : 'Choose your delivery zone'}</span>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="cart-item-meta">Subtotal: ${formatCurrency(it.subtotal)} | Install: ${formatCurrency(it.install)} | Delivery: ${formatCurrency(it.delivery)}</div>
         </div>
@@ -372,6 +400,21 @@ function renderCart(){
       const deliveryZone = article?.querySelector('.delivery-select')?.value;
       cart.setItem(sku, qty, priceType, {install: input.checked, deliveryZone});
       renderCart();
+    });
+  });
+  container.querySelectorAll('.cart-service-card--install').forEach(card=>{
+    card.addEventListener('click', (evt)=>{
+      if(evt.target.closest('input,select,button,label')) return;
+      const checkbox = card.querySelector('.install-toggle');
+      if(!checkbox) return;
+      checkbox.checked = !checkbox.checked;
+      checkbox.dispatchEvent(new Event('change', {bubbles:true}));
+    });
+    card.addEventListener('keydown', (evt)=>{
+      if(evt.key === 'Enter' || evt.key === ' '){
+        evt.preventDefault();
+        card.click();
+      }
     });
   });
   container.querySelectorAll('.delivery-select').forEach(sel=>{
