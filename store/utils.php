@@ -193,12 +193,25 @@ function enrich_store_product(array $product): array
     ];
 
     $inventory = $product['inventory'] ?? [];
+    $stockAvailable = isset($inventory['stockAvailable']) ? parse_store_numeric($inventory['stockAvailable']) : null;
+    $stockAvailable = $stockAvailable !== null ? max(0, (float) $stockAvailable) : null;
+    $hasInventory = $stockAvailable !== null && $stockAvailable > 0;
+    $availabilityMode = $hasInventory ? 'stock' : 'backorder';
+    $activePriceType = $availabilityMode === 'stock' && $stockPrice !== null ? 'stock' : ($backorderPrice !== null ? 'backorder' : $availabilityMode);
+
+    $product['pricing']['activePriceType'] = $activePriceType;
+    $product['pricing']['activePricePerUnit'] = $activePriceType === 'stock' ? $stockPrice : $backorderPrice;
+    $product['pricing']['activePricePerPackage'] = $activePriceType === 'stock'
+        ? ($product['computed_price_per_package_stock'] ?? null)
+        : ($product['computed_price_per_package_backorder'] ?? null);
     $product['availability'] = [
-        'mode' => $inventory['mode'] ?? 'stock',
-        'stockAvailable' => $inventory['stockAvailable'] ?? null,
+        'mode' => $availabilityMode,
+        'stockAvailable' => $stockAvailable,
         'allowBackorder' => $inventory['allowBackorder'] ?? true,
         'backorderLeadTimeDays' => $inventory['backorderLeadTimeDays'] ?? null,
         'notes' => $inventory['notes'] ?? [],
+        'maxPurchaseQuantity' => $hasInventory ? $stockAvailable : null,
+        'activePriceType' => $activePriceType,
     ];
 
     $installDefaults = load_store_config()['install'] ?? [];
@@ -248,6 +261,11 @@ function normalize_store_product(array $product): array
 
     $stockPrice = $product['pricing']['finalPriceStockPerUnit'] ?? null;
     $backorderPrice = $product['pricing']['finalPriceBackorderPerUnit'] ?? null;
+    $activePriceType = $product['pricing']['activePriceType'] ?? ($product['availability']['activePriceType'] ?? ($product['availability']['mode'] ?? 'stock'));
+    $activePricePerUnit = $product['pricing']['activePricePerUnit'] ?? null;
+    $activePricePerPackage = $product['pricing']['activePricePerPackage'] ?? null;
+    $stockAvailable = $product['availability']['stockAvailable'] ?? null;
+    $maxPurchaseQuantity = $product['availability']['maxPurchaseQuantity'] ?? null;
 
     return [
         'sku' => $product['sku'] ?? '',
@@ -274,10 +292,18 @@ function normalize_store_product(array $product): array
         'pricing' => [
             'finalPriceStockPerUnit' => $stockPrice !== null ? (float) $stockPrice : null,
             'finalPriceBackorderPerUnit' => $backorderPrice !== null ? (float) $backorderPrice : null,
+            'activePriceType' => $activePriceType,
+            'activePricePerUnit' => $activePricePerUnit !== null ? (float) $activePricePerUnit : null,
+            'activePricePerPackage' => $activePricePerPackage !== null ? (float) $activePricePerPackage : null,
             'pricePerPackageStock' => isset($product['computed_price_per_package_stock']) ? (float) $product['computed_price_per_package_stock'] : (isset($packageCoverage, $stockPrice) ? (float) $stockPrice * $packageCoverage : null),
             'pricePerPackageBackorder' => isset($product['computed_price_per_package_backorder']) ? (float) $product['computed_price_per_package_backorder'] : (isset($packageCoverage, $backorderPrice) ? (float) $backorderPrice * $packageCoverage : null),
         ],
-        'availability' => $product['availability'] ?? [],
+        'availability' => array_merge($product['availability'] ?? [], [
+            'stockAvailable' => $stockAvailable !== null ? (float) $stockAvailable : null,
+            'maxPurchaseQuantity' => $maxPurchaseQuantity !== null ? (float) $maxPurchaseQuantity : null,
+            'mode' => $activePriceType === 'backorder' ? 'backorder' : ($product['availability']['mode'] ?? 'stock'),
+            'activePriceType' => $activePriceType,
+        ]),
         'services' => $product['services'] ?? [],
         'delivery' => $product['delivery'] ?? ['zones' => $config['delivery']['zones'] ?? []],
         'badges' => $product['badges'] ?? [],
