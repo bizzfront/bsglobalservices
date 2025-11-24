@@ -17,8 +17,9 @@
 
   function renderCard(p){
     const unit = p.measurementUnit === 'lf' ? 'lf' : p.measurementUnit === 'piece' ? 'piece' : 'sqft';
-    const badgeLabel = p.availability?.mode === 'stock' ? (STORE_CONFIG?.ui?.badges?.stock || 'In stock') : (STORE_CONFIG?.ui?.badges?.backorder || 'Order-in');
-    const badgeClass = p.availability?.mode === 'stock' ? '' : 'backorder';
+    const priceType = p.pricing?.activePriceType || p.availability?.activePriceType || p.availability?.mode;
+    const badgeLabel = priceType === 'stock' ? (STORE_CONFIG?.ui?.badges?.stock || 'In stock') : (STORE_CONFIG?.ui?.badges?.backorder || 'Order-in');
+    const badgeClass = priceType === 'stock' ? '' : 'backorder';
     const stockPrice = p.pricing?.finalPriceStockPerUnit;
     const backorderPrice = p.pricing?.finalPriceBackorderPerUnit;
     const pkgLabel = p.packageLabel || 'box';
@@ -27,10 +28,10 @@
     const img = p.images?.[0] ? `../${p.images[0]}` : '';
 
     let priceHtml = '';
-    if(stockPrice != null){
+    if(priceType === 'stock' && stockPrice != null){
       priceHtml += `<div class="store-price-line"><span class="store-badge-new">Stock</span><b>${formatCurrency(stockPrice)}</b><span>/${unit}</span></div>`;
     }
-    if(backorderPrice != null){
+    if(priceType === 'backorder' && backorderPrice != null){
       priceHtml += `<div class="store-price-line"><span class="store-badge-new">Order-in</span><b>${formatCurrency(backorderPrice)}</b><span>/${unit}</span></div>`;
     }
 
@@ -54,7 +55,7 @@
           <div class="store-cta-row">
             <label style="display:flex; align-items:center; gap:6px;">
               <span style="font-size:0.9rem; color:#6a605e;">${p.packageLabelPlural || 'Qty'}</span>
-              <input type="number" class="qty" min="1" value="1">
+              <input type="number" class="qty" min="1" value="1" ${p.availability?.maxPurchaseQuantity ? `max="${p.availability.maxPurchaseQuantity}"` : ''}>
             </label>
             <button class="btn btn-primary add-cart" type="button">Add to project</button>
             <a class="btn btn-ghost" href="${href}">View details</a>
@@ -92,7 +93,7 @@
   }
 
   function getSortPrice(p){
-    const raw = p.pricing?.finalPriceStockPerUnit ?? p.pricing?.finalPriceBackorderPerUnit;
+    const raw = p.pricing?.activePricePerUnit ?? p.pricing?.finalPriceStockPerUnit ?? p.pricing?.finalPriceBackorderPerUnit;
     const num = Number(raw);
     return Number.isFinite(num) ? num : null;
   }
@@ -114,10 +115,17 @@
     grid.querySelectorAll('.add-cart').forEach(btn=>{
       btn.addEventListener('click', ()=>{
         const card = btn.closest('.store-card-new');
-        const qty = parseInt(card.querySelector('.qty')?.value || '1', 10) || 1;
+        const qtyInput = card.querySelector('.qty');
+        const maxQty = Number(qtyInput?.max || '');
+        let qty = parseInt(qtyInput?.value || '1', 10) || 1;
+        if(Number.isFinite(maxQty) && maxQty > 0){
+          qty = Math.min(qty, maxQty);
+          if(qtyInput) qtyInput.value = qty;
+        }
         const sku = card?.dataset?.sku;
         if(!sku) return;
-        cart.addItem(sku, qty, (list.find(p=>p.sku===sku)?.availability?.mode || 'stock'));
+        const product = list.find(p=>p.sku===sku);
+        cart.addItem(sku, qty, (product?.pricing?.activePriceType || product?.availability?.activePriceType || 'stock'));
         btn.textContent = 'Added';
         setTimeout(()=>{btn.textContent='Add to project';}, 1200);
       });
