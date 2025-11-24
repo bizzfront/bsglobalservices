@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>B&S Floor Supply · Cart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="Review your floors and moldings, add installation and delivery options, and send your project to B&S Floor Supply for a custom quote."
+  />
+  <style>
+    :root {
+      --bg-page: #f5f1eb;
+      --bg-card: #ffffff;
+      --bg-soft: #faf4ec;
+      --bg-header: #ffffff;
+      --border-soft: rgba(0, 0, 0, 0.06);
+      --text-main: #2b201c;
+      --text-muted: #7a6a62;
+      --accent: #7a2630;
+      --accent-soft: #f6e6e7;
+      --accent-strong: #5a1620;
+      --shadow-soft: 0 14px 30px rgba(0, 0, 0, 0.08);
+      --shadow-card: 0 10px 22px rgba(0, 0, 0, 0.06);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-pill: 999px;
+      --promo-bg: linear-gradient(135deg, #5a1620, #c69b64);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: var(--bg-page);
+      color: var(--text-main);
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    /* HEADER (coherente con el store) */
+
+    .top-promo {
+      background: #201216;
+      color: #f8ece9;
+      font-size: 0.8rem;
+      padding: 6px 10px;
+      text-align: center;
+    }
+
+    .top-promo strong {
+      color: #ffdcb0;
+    }
+
+    header.site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--bg-header);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+      box-shadow: 0 10px 18px rgba(0, 0, 0, 0.04);
+    }
+
+    .header-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .logo-block {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: #5a1620;
+      color: #fdf5f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .logo-title {
+      font-size: 0.98rem;
+      font-weight: 650;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .logo-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .header-nav {
+      display: flex;
+      gap: 12px;
+      font-size: 0.85rem;
+    }
+
+    .header-nav a {
+      padding: 5px 10px;
+      border-radius: 999px;
+      color: #5c4a45;
+    }
+
+    .header-nav a.is-active {
+      background: #f4e7de;
+      color: #5a1620;
+      font-weight: 600;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-btn {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #ffffff;
+      cursor: pointer;
+      color: #5a1620;
+    }
+
+    .header-btn.whatsapp {
+      border-color: #22c35e;
+      color: #0b8a3d;
+      background: #e7f9ee;
+    }
+
+    /* MAIN LAYOUT */
+
+    main.cart-main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .breadcrumb {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .breadcrumb a {
+      color: var(--text-muted);
+      text-decoration: underline;
+    }
+
+    .cart-header {
+      margin-bottom: 10px;
+    }
+
+    .cart-title {
+      font-size: 1.4rem;
+      font-weight: 650;
+      margin-bottom: 4px;
+    }
+
+    .cart-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .cart-info-banner {
+      margin-top: 10px;
+      margin-bottom: 18px;
+      background: #f6eee4;
+      border-radius: var(--radius-lg);
+      padding: 10px 12px;
+      font-size: 0.8rem;
+      color: #4e3c32;
+      display: flex;
+      gap: 8px;
+    }
+
+    .cart-info-icon {
+      font-size: 1rem;
+      margin-top: 2px;
+    }
+
+    .cart-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 0.9fr);
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    /* CART ITEMS LIST */
+
+    .cart-items {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .cart-items-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 0.82rem;
+    }
+
+    .cart-items-header span {
+      color: var(--text-muted);
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 88px minmax(0, 1.6fr) minmax(0, 1.2fr);
+      gap: 10px;
+      padding: 10px 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .cart-item:first-of-type {
+      border-top: none;
+    }
+
+    .cart-thumb {
+      width: 88px;
+      height: 88px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 0 0, #ffffff, #e7d5c4);
+    }
+
+    .cart-item-main {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.82rem;
+    }
+
+    .cart-item-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .cart-item-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .cart-item-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .badge {
+      border-radius: 999px;
+      padding: 2px 7px;
+      font-size: 0.72rem;
+      background: #fff2f2;
+      color: #8b0020;
+      border: 1px solid #f1c2c7;
+    }
+
+    .badge-stock {
+      background: #e0f4ea;
+      color: #195b37;
+      border-color: #b7e0c8;
+    }
+
+    .badge-backorder {
+      background: #fdf3de;
+      color: #7a4d13;
+      border-color: #f0d9aa;
+    }
+
+    .badge-warning {
+      background: #ffe8d1;
+      color: #8b4b12;
+      border-color: #f1c09b;
+    }
+
+    .badge-neutral {
+      background: #f0e6dd;
+      color: #5a4a45;
+      border-color: #e0d4c6;
+    }
+
+    .cart-item-actions {
+      margin-top: 4px;
+      display: flex;
+      gap: 6px;
+      font-size: 0.78rem;
+    }
+
+    .link-small {
+      color: var(--accent-strong);
+      text-decoration: underline;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      font: inherit;
+    }
+
+    .cart-item-qty {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.78rem;
+    }
+
+    .qty-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .qty-row label {
+      white-space: nowrap;
+    }
+
+    .qty-input {
+      width: 80px;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      padding: 4px 6px;
+      font-size: 0.8rem;
+      text-align: right;
+    }
+
+    .unit-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .install-option {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .install-option input {
+      margin: 0;
+    }
+
+    .install-option span {
+      font-size: 0.78rem;
+    }
+
+    .cart-item-price {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: space-between;
+      font-size: 0.8rem;
+    }
+
+    .price-unit {
+      font-weight: 600;
+      color: var(--accent-strong);
+    }
+
+    .price-unit span {
+      font-size: 0.85rem;
+    }
+
+    .price-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .price-total {
+      font-weight: 650;
+      font-size: 0.9rem;
+    }
+
+    .price-note {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      text-align: right;
+    }
+
+    /* SUMMARY PANEL */
+
+    .cart-summary {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 12px 12px 14px;
+      box-shadow: var(--shadow-card);
+      position: sticky;
+      top: 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 0.82rem;
+    }
+
+    .summary-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .summary-row span:last-child {
+      font-weight: 500;
+    }
+
+    .summary-row.muted span:first-child {
+      color: var(--text-muted);
+    }
+
+    .summary-row strong {
+      font-weight: 650;
+    }
+
+    .summary-divider {
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      margin: 4px 0;
+    }
+
+    .summary-section-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      margin-top: 4px;
+    }
+
+    .summary-note {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    .delivery-options {
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+
+    .delivery-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .delivery-row input[type="checkbox"] {
+      margin: 0;
+    }
+
+    .delivery-row label {
+      font-size: 0.78rem;
+    }
+
+    .delivery-zone-select {
+      width: 100%;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      padding: 4px 8px;
+      font-size: 0.8rem;
+      margin-top: 4px;
+    }
+
+    .btn-primary {
+      margin-top: 8px;
+      width: 100%;
+      border-radius: var(--radius-pill);
+      border: none;
+      padding: 8px 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: var(--promo-bg);
+      color: #fff7ee;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(90, 22, 32, 0.35);
+    }
+
+    .btn-secondary {
+      margin-top: 4px;
+      width: 100%;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      padding: 7px 10px;
+      font-size: 0.8rem;
+      background: #ffffff;
+      color: #5a1620;
+      cursor: pointer;
+    }
+
+    .summary-disclaimer {
+      margin-top: 4px;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 960px) {
+      .cart-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .cart-summary {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+
+      .cart-item {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .cart-item-price {
+        align-items: flex-start;
+      }
+
+      .price-note {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-promo">
+    <strong>BLACK FRIDAY:</strong> This cart is an estimate. Final prices and availability are confirmed in your custom quote.
+  </div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-block">
+        <div class="logo-mark">B&S</div>
+        <div class="logo-text">
+          <div class="logo-title">B&S FLOOR SUPPLY</div>
+          <div class="logo-sub">Floors · Moldings · Installation</div>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <a href="/">Home</a>
+        <a href="/store">Store</a>
+        <a href="/installation">Installation</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button class="header-btn" type="button">
+          Cart (2)
+        </button>
+        <button
+          class="header-btn whatsapp"
+          type="button"
+          onclick="window.open('https://wa.me/16892968515','_blank')"
+        >
+          WhatsApp · Free estimate
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="cart-main">
+    <div class="breadcrumb">
+      <a href="/store">Store</a> · <span>Cart</span>
+    </div>
+
+    <section class="cart-header">
+      <h1 class="cart-title">Your project cart</h1>
+      <p class="cart-subtitle">
+        Adjust quantities, choose installation and delivery. Next step: send your
+        project details for a custom quote.
+      </p>
+
+      <div class="cart-info-banner">
+        <div class="cart-info-icon">ℹ️</div>
+        <div>
+          <strong>This is not an online payment.</strong><br />
+          You’re building a project request. We’ll review stock, delivery and installation
+          and send you a final quote.
+        </div>
+      </div>
+    </section>
+
+    <section class="cart-layout">
+      <!-- LEFT: ITEMS -->
+      <section class="cart-items" id="cartItems">
+        <div class="cart-items-header">
+          <span>2 items in your project</span>
+          <span>Prices in USD</span>
+        </div>
+
+        <!-- CART ITEM 1 – FLOOR -->
+        <article
+          class="cart-item"
+          data-cart-item
+          data-product-id="LVP-STRIPNAT-01"
+          data-product-type="floor"
+          data-unit="sqft"
+          data-price-backorder="1.83"
+          data-price-stock="3.57"
+          data-mode-applied="backorder"
+          data-install-rate="2.50"
+        >
+          <div class="cart-thumb"></div>
+
+          <div class="cart-item-main">
+            <div class="cart-item-title">Strip Natural – Heemo Collection</div>
+            <div class="cart-item-meta">
+              Floor · Waterproof SPC LVP · 7" x 48"
+            </div>
+            <div class="cart-item-meta">
+              <strong>Mode:</strong> Backorder (3–7 days) ·
+              <span>Stock available: ~280 sq ft</span>
+            </div>
+
+            <div class="cart-item-badges">
+              <span class="badge badge-backorder">Backorder – 3 to 7 days</span>
+              <span class="badge badge-neutral">100% waterproof</span>
+              <span class="badge badge-neutral">Florida-ready</span>
+            </div>
+
+            <div class="cart-item-actions">
+              <button class="link-small" type="button">View product details</button>
+              <button class="link-small" type="button">Remove</button>
+            </div>
+          </div>
+
+          <div class="cart-item-qty">
+            <div class="qty-row">
+              <label for="qty-strip">Quantity</label>
+              <input
+                id="qty-strip"
+                class="qty-input"
+                type="number"
+                min="0"
+                step="10"
+                value="650"
+                data-role="qty-input"
+              />
+              <span class="unit-label">sq ft</span>
+            </div>
+            <div class="install-option">
+              <input
+                id="install-strip"
+                type="checkbox"
+                data-role="install-toggle"
+                checked
+              />
+              <span>
+                Add floor installation
+                (<strong>$2.50</strong> / sq ft)
+              </span>
+            </div>
+            <div class="price-note">
+              If quantity exceeds stock, whole order goes to backorder.
+            </div>
+          </div>
+
+          <div class="cart-item-price">
+            <div>
+              <div class="price-unit">
+                <span data-role="unit-price">$1.83</span> / sq ft
+              </div>
+              <div class="price-sub">
+                Backorder price (provider cost + margin)
+              </div>
+            </div>
+            <div>
+              <div class="price-total" data-role="line-material-total">
+                $1,189.50
+              </div>
+              <div class="price-sub">
+                Material subtotal
+              </div>
+              <div class="price-note" data-role="line-install-note">
+                + Installation: $1,625.00
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- CART ITEM 2 – MOLDING -->
+        <article
+          class="cart-item"
+          data-cart-item
+          data-product-id="MOLD-QR-STRIPNAT-01"
+          data-product-type="molding"
+          data-unit="lf"
+          data-price-backorder="0.80"
+          data-price-stock="0.90"
+          data-mode-applied="stock"
+          data-install-rate="1.25"
+        >
+          <div class="cart-thumb"></div>
+
+          <div class="cart-item-main">
+            <div class="cart-item-title">Quarter Round – Strip Natural</div>
+            <div class="cart-item-meta">
+              Molding · Perimeter finish · 94" piece (~7.83 lf)
+            </div>
+            <div class="cart-item-meta">
+              <strong>Mode:</strong> In stock ·
+              <span>Available: ~280 lf ready</span>
+            </div>
+
+            <div class="cart-item-badges">
+              <span class="badge badge-stock">In stock</span>
+              <span class="badge badge-neutral">Matches Strip Natural</span>
+            </div>
+
+            <div class="cart-item-actions">
+              <button class="link-small" type="button">View product details</button>
+              <button class="link-small" type="button">Remove</button>
+            </div>
+          </div>
+
+          <div class="cart-item-qty">
+            <div class="qty-row">
+              <label for="qty-qr">Quantity</label>
+              <input
+                id="qty-qr"
+                class="qty-input"
+                type="number"
+                min="0"
+                step="5"
+                value="210"
+                data-role="qty-input"
+              />
+              <span class="unit-label">lf</span>
+            </div>
+            <div class="install-option">
+              <input
+                id="install-qr"
+                type="checkbox"
+                data-role="install-toggle"
+                checked
+              />
+              <span>
+                Add molding installation
+                (<strong>$1.25</strong> / lf)
+              </span>
+            </div>
+            <div class="price-note">
+              You can change lf manually or use the calculator in the product page.
+            </div>
+          </div>
+
+          <div class="cart-item-price">
+            <div>
+              <div class="price-unit">
+                <span data-role="unit-price">$0.90</span> / lf
+              </div>
+              <div class="price-sub">
+                Stock price (includes B&S internal costs)
+              </div>
+            </div>
+            <div>
+              <div class="price-total" data-role="line-material-total">
+                $189.00
+              </div>
+              <div class="price-sub">
+                Material subtotal
+              </div>
+              <div class="price-note" data-role="line-install-note">
+                + Installation: $262.50
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- RIGHT: SUMMARY -->
+      <aside class="cart-summary" id="cartSummary">
+        <div class="summary-title">Project summary</div>
+
+        <div class="summary-section-title">Totals</div>
+        <div class="summary-row muted">
+          <span>Materials</span>
+          <span data-summary="materials">$1,378.50</span>
+        </div>
+        <div class="summary-row muted">
+          <span>Installation</span>
+          <span data-summary="installation">$1,887.50</span>
+        </div>
+        <div class="summary-row muted">
+          <span>Delivery (estimate)</span>
+          <span data-summary="delivery">$120.00</span>
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-row">
+          <span><strong>Estimated total</strong></span>
+          <span data-summary="total"><strong>$3,386.00</strong></span>
+        </div>
+
+        <p class="summary-note">
+          Final quote may adjust based on exact measurements, delivery zone and
+          scheduling.
+        </p>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-section-title">Delivery & zone</div>
+        <div class="delivery-options">
+          <div class="delivery-row">
+            <input
+              id="deliveryToggle"
+              type="checkbox"
+              checked
+              data-role="delivery-toggle"
+            />
+            <label for="deliveryToggle">
+              I’d like B&S to handle delivery for this project.
+            </label>
+          </div>
+          <select
+            class="delivery-zone-select"
+            data-role="delivery-zone"
+          >
+            <option value="meadow-woods">Meadow Woods / nearby</option>
+            <option value="orlando">Orlando area</option>
+            <option value="greater-fl">Greater Florida</option>
+          </select>
+        </div>
+
+        <p class="summary-disclaimer">
+          Delivery cost is approximate. We confirm exact cost after reviewing your
+          address and access conditions.
+        </p>
+
+        <button
+          class="btn-primary"
+          type="button"
+          onclick="window.location.href='/project-details';"
+        >
+          Continue to project details
+        </button>
+
+        <button
+          class="btn-secondary"
+          type="button"
+          onclick="window.location.href='/store';"
+        >
+          Back to store
+        </button>
+
+        <p class="summary-disclaimer">
+          By continuing, you’ll send this project to our team. No payment is made on
+          this page.
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    // Simple demo recalculation logic for the prototype
+    function formatMoney(value) {
+      return '$' + value.toFixed(2);
+    }
+
+    function recalcCart() {
+      const items = document.querySelectorAll('[data-cart-item]');
+      let totalMaterials = 0;
+      let totalInstall = 0;
+
+      items.forEach(item => {
+        const unit = item.getAttribute('data-unit'); // 'sqft' | 'lf'
+        const mode = item.getAttribute('data-mode-applied'); // 'stock' | 'backorder'
+        const priceStock = parseFloat(item.getAttribute('data-price-stock') || '0');
+        const priceBackorder = parseFloat(item.getAttribute('data-price-backorder') || '0');
+        const installRate = parseFloat(item.getAttribute('data-install-rate') || '0');
+
+        const qtyInput = item.querySelector('[data-role="qty-input"]');
+        const qty = parseFloat(qtyInput.value || '0');
+
+        const unitPriceEl = item.querySelector('[data-role="unit-price"]');
+        const lineMaterialTotalEl = item.querySelector('[data-role="line-material-total"]');
+        const installToggle = item.querySelector('[data-role="install-toggle"]');
+        const lineInstallNote = item.querySelector('[data-role="line-install-note"]');
+
+        // Choose price based on mode
+        const unitPrice = (mode === 'stock') ? priceStock : priceBackorder;
+
+        if (unitPriceEl) unitPriceEl.textContent = formatMoney(unitPrice);
+        const lineMaterialTotal = unitPrice * qty;
+        if (lineMaterialTotalEl) lineMaterialTotalEl.textContent = formatMoney(lineMaterialTotal);
+
+        totalMaterials += lineMaterialTotal;
+
+        // Installation
+        let installTotal = 0;
+        if (installToggle && installToggle.checked) {
+          installTotal = installRate * qty;
+        }
+        totalInstall += installTotal;
+
+        if (lineInstallNote) {
+          if (installTotal > 0) {
+            const labelUnit = (unit === 'sqft') ? 'sq ft' : 'lf';
+            lineInstallNote.textContent =
+              `+ Installation: ${formatMoney(installTotal)} (${formatMoney(installRate)} / ${labelUnit})`;
+          } else {
+            lineInstallNote.textContent = 'Installation not selected for this item.';
+          }
+        }
+      });
+
+      // Delivery (simple placeholder)
+      const deliveryToggle = document.querySelector('[data-role="delivery-toggle"]');
+      const deliveryDisplay = document.querySelector('[data-summary="delivery"]');
+      let delivery = 0;
+      if (deliveryToggle && deliveryToggle.checked) {
+        // número fijo de demo, esto se puede ligar luego a la zona seleccionada
+        delivery = 120;
+      }
+      if (deliveryDisplay) {
+        deliveryDisplay.textContent = formatMoney(delivery);
+      }
+
+      const total = totalMaterials + totalInstall + delivery;
+
+      const materialsEl = document.querySelector('[data-summary="materials"]');
+      const installEl = document.querySelector('[data-summary="installation"]');
+      const totalEl = document.querySelector('[data-summary="total"]');
+
+      if (materialsEl) materialsEl.textContent = formatMoney(totalMaterials);
+      if (installEl) installEl.textContent = formatMoney(totalInstall);
+      if (totalEl) totalEl.textContent = formatMoney(total);
+    }
+
+    document.addEventListener('input', (e) => {
+      if (e.target.matches('[data-role="qty-input"]')) {
+        recalcCart();
+      }
+    });
+
+    document.addEventListener('change', (e) => {
+      if (
+        e.target.matches('[data-role="install-toggle"]') ||
+        e.target.matches('[data-role="delivery-toggle"]')
+      ) {
+        recalcCart();
+      }
+    });
+
+    // Initial calc on load
+    recalcCart();
+  </script>
+</body>
+</html>

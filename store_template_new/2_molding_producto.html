@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Quarter Round – Strip Natural | B&S Floor Supply</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    /* ====== RESET SIMPLE ====== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background: #f5f3f1;
+      color: #2b2523;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ====== LAYOUT GENERAL ====== */
+    .bs-container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 16px 40px;
+    }
+
+    header.bs-header {
+      background: #ffffff;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      margin-bottom: 12px;
+    }
+    .bs-header__inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .bs-header__logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .bs-header__logo-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #591320;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .bs-header__logo-text {
+      font-family: "Montserrat", system-ui, sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #2a1d1b;
+    }
+    .bs-header__nav {
+      display: flex;
+      gap: 12px;
+      font-size: 0.85rem;
+      color: #5a4a45;
+    }
+    .bs-header__nav a {
+      padding: 4px 8px;
+      border-radius: 999px;
+    }
+    .bs-header__nav a.is-active {
+      background: #591320;
+      color: #fff;
+    }
+
+    .bs-breadcrumb {
+      font-size: 0.8rem;
+      color: #8a7b76;
+      margin: 10px 0 8px;
+    }
+    .bs-breadcrumb a {
+      color: #8a7b76;
+    }
+
+    /* ====== HERO PRODUCTO ====== */
+    .bs-product-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 24px;
+      margin-top: 10px;
+    }
+
+    .bs-product-gallery {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+      border: 1px solid rgba(0,0,0,0.03);
+    }
+    .bs-product-gallery__main {
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .bs-product-gallery__thumbs {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .bs-product-gallery__thumb {
+      width: 70px;
+      height: 70px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid transparent;
+      cursor: pointer;
+      background: none;
+    }
+    .bs-product-gallery__thumb.is-active {
+      border-color: #591320;
+    }
+
+    /* PANEL DERECHO */
+    .bs-product-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .bs-product-header {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 14px 14px 10px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+      border: 1px solid rgba(0,0,0,0.03);
+    }
+    .bs-product-title {
+      font-family: "Montserrat", system-ui, sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #2a1d1b;
+      margin-bottom: 4px;
+    }
+    .bs-product-subtitle {
+      font-size: 0.82rem;
+      color: #756660;
+      margin-bottom: 8px;
+    }
+    .bs-product-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.78rem;
+      color: #8a7b76;
+      margin-bottom: 8px;
+    }
+    .bs-product-meta span {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #f8f2ec;
+    }
+
+    .bs-price-block {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .bs-price-block__main {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #591320;
+    }
+    .bs-price-block__unit {
+      font-size: 0.8rem;
+      color: #7b6b65;
+    }
+
+    .bs-condition-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .bs-panel-cta {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .bs-panel-cta__primary {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: none;
+      background: #591320;
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: center;
+    }
+    .bs-panel-cta__secondary {
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid #ded4cc;
+      background: #fff8f4;
+      color: #5a4a45;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    /* ====== BADGES GENÉRICOS ====== */
+    .bs-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+    .bs-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .bs-badge--stock {
+      background: #e0f4ea;
+      color: #195b37;
+    }
+    .bs-badge--backorder {
+      background: #fdf3de;
+      color: #7a4d13;
+    }
+    .bs-badge--discount {
+      background: #ffe7ec;
+      color: #8b1236;
+    }
+    .bs-badge--neutral {
+      background: #f0e6dd;
+      color: #5a4a45;
+    }
+    .bs-badge--warning {
+      background: #ffe8d1;
+      color: #8b4b12;
+    }
+
+    /* ====== CALCULADORA MOLDING ====== */
+    .bs-molding-calculator {
+      margin-top: 4px;
+      padding: 16px 16px 18px;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+      border: 1px solid rgba(0,0,0,0.03);
+      font-size: 0.9rem;
+      color: #2b2523;
+    }
+
+    .bs-molding-calculator__title {
+      font-family: "Montserrat", system-ui, sans-serif;
+      font-size: 1rem;
+      margin-bottom: 4px;
+      color: #591320;
+    }
+
+    .bs-molding-calculator__subtitle {
+      font-size: 0.8rem;
+      color: #8a7b76;
+      margin-bottom: 10px;
+    }
+
+    .bs-molding-calculator__mode-toggle {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .bs-molding-calculator__mode-btn {
+      flex: 1 1 auto;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid #ded4cc;
+      background: #f8f2ec;
+      font-size: 0.8rem;
+      cursor: pointer;
+      color: #5a4a45;
+    }
+
+    .bs-molding-calculator__mode-btn.active {
+      background: #591320;
+      color: #ffffff;
+      border-color: #591320;
+    }
+
+    .bs-molding-calculator__field-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .bs-molding-calculator__field {
+      flex: 1 1 0;
+      margin-bottom: 8px;
+    }
+
+    .bs-molding-calculator__field label {
+      display: block;
+      font-size: 0.8rem;
+      margin-bottom: 3px;
+      color: #4b3d39;
+    }
+
+    .bs-molding-calculator__input-wrap {
+      display: flex;
+      align-items: center;
+      border-radius: 999px;
+      border: 1px solid #ded4cc;
+      background: #fdf8f3;
+      padding: 4px 10px;
+    }
+
+    .bs-molding-calculator__input-wrap input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 0.9rem;
+    }
+
+    .bs-molding-calculator__input-wrap input::-webkit-outer-spin-button,
+    .bs-molding-calculator__input-wrap input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .bs-molding-calculator__unit {
+      font-size: 0.78rem;
+      color: #8a7b76;
+      margin-left: 6px;
+    }
+
+    .bs-molding-calculator__action-btn {
+      margin-bottom: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.85rem;
+      background: #591320;
+      color: #ffffff;
+      font-weight: 500;
+    }
+
+    .bs-molding-calculator__options {
+      margin-top: 6px;
+      padding-top: 8px;
+      border-top: 1px solid #f0e6dd;
+    }
+
+    .bs-molding-calculator__options h3 {
+      font-family: "Montserrat", system-ui, sans-serif;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      color: #591320;
+    }
+
+    .bs-molding-calculator__checkbox {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+      color: #4e413e;
+    }
+
+    .bs-molding-calculator__delivery-zone {
+      margin-top: 4px;
+    }
+
+    .bs-molding-calculator__delivery-zone label {
+      display: block;
+      font-size: 0.8rem;
+      margin-bottom: 3px;
+      color: #4b3d39;
+    }
+
+    .bs-molding-calculator__delivery-zone select {
+      width: 100%;
+      border-radius: 999px;
+      border: 1px solid #ded4cc;
+      padding: 5px 10px;
+      font-size: 0.85rem;
+      background: #fffaf4;
+    }
+
+    .bs-molding-calculator__summary {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid #f0e6dd;
+    }
+
+    .bs-molding-calculator__summary h3 {
+      font-family: "Montserrat", system-ui, sans-serif;
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+      color: #591320;
+    }
+
+    .bs-molding-calculator__summary-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 0.8rem;
+      margin-bottom: 3px;
+      color: #4a403d;
+    }
+
+    .bs-molding-calculator__summary-line span:last-child {
+      font-weight: 500;
+    }
+
+    .bs-molding-calculator__summary-total {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px dashed #e1d6cd;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #3c2f2b;
+    }
+
+    .bs-molding-calculator__note {
+      margin-top: 4px;
+      font-size: 0.75rem;
+      color: #8a7b76;
+    }
+
+    /* ====== TABS DETALLES ====== */
+    .bs-product-tabs {
+      margin-top: 26px;
+    }
+    .bs-product-tabs__nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .bs-product-tabs__btn {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid #ded4cc;
+      background: #f8f2ec;
+      font-size: 0.8rem;
+      cursor: pointer;
+      color: #5a4a45;
+    }
+    .bs-product-tabs__btn.is-active {
+      background: #591320;
+      border-color: #591320;
+      color: #ffffff;
+    }
+    .bs-product-tabs__panel {
+      display: none;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 14px 16px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.05);
+      border: 1px solid rgba(0,0,0,0.03);
+      font-size: 0.85rem;
+      color: #3c2f2b;
+    }
+    .bs-product-tabs__panel.is-active {
+      display: block;
+    }
+    .bs-product-tabs__panel h3 {
+      font-family: "Montserrat", system-ui, sans-serif;
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+      color: #2a1d1b;
+    }
+    .bs-product-tabs__panel p {
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    .bs-spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.83rem;
+    }
+    .bs-spec-table th,
+    .bs-spec-table td {
+      padding: 6px 4px;
+      border-bottom: 1px solid #f0e6dd;
+      text-align: left;
+    }
+    .bs-spec-table th {
+      width: 40%;
+      color: #7b6b65;
+      font-weight: 500;
+    }
+
+    /* ====== RELATED / SEO ====== */
+    .bs-related {
+      margin-top: 22px;
+    }
+    .bs-related h3 {
+      font-family: "Montserrat", system-ui, sans-serif;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+      color: #2a1d1b;
+    }
+    .bs-related__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+    .bs-related__card {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 10px;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.05);
+      font-size: 0.8rem;
+    }
+    .bs-related__card-title {
+      font-weight: 600;
+      margin-top: 4px;
+      margin-bottom: 2px;
+    }
+    .bs-related__card-meta {
+      color: #7b6b65;
+      font-size: 0.76rem;
+    }
+
+    .bs-seo-block {
+      margin-top: 22px;
+      background: #fff8f4;
+      border-radius: 18px;
+      padding: 14px 16px;
+      font-size: 0.82rem;
+      color: #4a403d;
+    }
+    .bs-seo-block h3 {
+      font-family: "Montserrat", system-ui, sans-serif;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+      color: #2a1d1b;
+    }
+
+    footer.bs-footer {
+      margin-top: 30px;
+      padding: 14px 16px;
+      background: #201514;
+      color: #f7f3f0;
+      font-size: 0.8rem;
+    }
+    .bs-footer__inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    /* ====== RESPONSIVE ====== */
+    @media (max-width: 880px) {
+      .bs-product-hero {
+        grid-template-columns: minmax(0,1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .bs-header__inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .bs-molding-calculator {
+        padding: 14px 12px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header class="bs-header">
+  <div class="bs-header__inner">
+    <div class="bs-header__logo">
+      <div class="bs-header__logo-mark">B&S</div>
+      <div class="bs-header__logo-text">B&S Floor Supply</div>
+    </div>
+    <nav class="bs-header__nav">
+      <a href="/">Home</a>
+      <a href="/store" class="is-active">Store</a>
+      <a href="/services">Installation</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="bs-container">
+  <!-- Breadcrumb -->
+  <nav class="bs-breadcrumb">
+    <a href="/">Home</a> ›
+    <a href="/store">Store</a> ›
+    <a href="/store/moldings">Moldings & Trims</a> ›
+    <span>Quarter Round – Strip Natural</span>
+  </nav>
+
+  <!-- HERO PRODUCTO -->
+  <section class="bs-product-hero">
+    <!-- Galería -->
+    <aside class="bs-product-gallery">
+      <div class="bs-product-gallery__main">
+        <img id="bs-main-image"
+             src="https://via.placeholder.com/800x500?text=Quarter+Round+Strip+Natural"
+             alt="Quarter Round – Strip Natural" />
+      </div>
+      <div class="bs-product-gallery__thumbs">
+        <button class="bs-product-gallery__thumb is-active" data-img="https://via.placeholder.com/800x500?text=Quarter+Round+Strip+Natural">
+          <img src="https://via.placeholder.com/160x160?text=Profile" alt="Profile view">
+        </button>
+        <button class="bs-product-gallery__thumb" data-img="https://via.placeholder.com/800x500?text=Installed+with+Floor">
+          <img src="https://via.placeholder.com/160x160?text=Installed" alt="Installed with floor">
+        </button>
+        <button class="bs-product-gallery__thumb" data-img="https://via.placeholder.com/800x500?text=Detail">
+          <img src="https://via.placeholder.com/160x160?text=Detail" alt="Detail view">
+        </button>
+      </div>
+    </aside>
+
+    <!-- Panel derecho -->
+    <section class="bs-product-panel">
+      <!-- Título + meta + precio -->
+      <div class="bs-product-header">
+        <h1 class="bs-product-title" id="bs-product-title">
+          Quarter Round – Strip Natural · 94" molding
+        </h1>
+        <p class="bs-product-subtitle" id="bs-product-subtitle">
+          Matching molding for Strip Natural SPC · Ideal for baseboards and perimeter finish.
+        </p>
+        <div class="bs-product-meta">
+          <span id="bs-meta-lf">94" piece · ~7.8 lf per stick</span>
+          <span>Recommended with Strip Natural SPC floors</span>
+        </div>
+
+        <div class="bs-price-block">
+          <div class="bs-price-block__main" id="bs-price-main">$1.95</div>
+          <div class="bs-price-block__unit">/ lf</div>
+        </div>
+
+        <!-- BADGES dinámicos -->
+        <div class="bs-condition-badges" id="bs-condition-badges"></div>
+
+        <div class="bs-panel-cta">
+          <button class="bs-panel-cta__primary">
+            Add molding to quote
+          </button>
+          <button class="bs-panel-cta__secondary">
+            Request full project estimate
+          </button>
+        </div>
+      </div>
+
+      <!-- CALCULADORA MOLDING -->
+      <section class="bs-molding-calculator">
+        <h2 class="bs-molding-calculator__title">📏 Calculate your moldings</h2>
+        <p class="bs-molding-calculator__subtitle">
+          Estimate linear feet, pieces and optional services for this molding.
+        </p>
+
+        <!-- Toggle modos -->
+        <div class="bs-molding-calculator__mode-toggle">
+          <button type="button" class="bs-molding-calculator__mode-btn active" data-mode="area">
+            I know the floor area
+          </button>
+          <button type="button" class="bs-molding-calculator__mode-btn" data-mode="lf">
+            I already know total LF
+          </button>
+        </div>
+
+        <!-- MODO A: área piso => LF recomendados -->
+        <div class="bs-molding-calculator__mode bs-molding-calculator__mode--area">
+          <div class="bs-molding-calculator__field-row">
+            <div class="bs-molding-calculator__field">
+              <label for="bs-floor-length">Floor length</label>
+              <div class="bs-molding-calculator__input-wrap">
+                <input type="number" id="bs-floor-length" min="0" step="0.1" placeholder="e.g. 15">
+                <span class="bs-molding-calculator__unit">ft</span>
+              </div>
+            </div>
+
+            <div class="bs-molding-calculator__field">
+              <label for="bs-floor-width">Floor width</label>
+              <div class="bs-molding-calculator__input-wrap">
+                <input type="number" id="bs-floor-width" min="0" step="0.1" placeholder="e.g. 12">
+                <span class="bs-molding-calculator__unit">ft</span>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="bs-molding-calculator__action-btn" id="bs-calc-from-area">
+            Calculate recommended LF (30% rule)
+          </button>
+        </div>
+
+        <!-- MODO B: LF directo -->
+        <div class="bs-molding-calculator__mode bs-molding-calculator__mode--lf" style="display:none;">
+          <div class="bs-molding-calculator__field">
+            <label for="bs-total-lf">Total linear feet (LF)</label>
+            <div class="bs-molding-calculator__input-wrap">
+              <input type="number" id="bs-total-lf" min="0" step="1" placeholder="e.g. 120">
+              <span class="bs-molding-calculator__unit">lf</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Servicios opcionales -->
+        <div class="bs-molding-calculator__options">
+          <h3>Optional services</h3>
+
+          <label class="bs-molding-calculator__checkbox">
+            <input type="checkbox" id="bs-include-install-molding">
+            <span>Include molding installation estimate (1.25 $/lf)</span>
+          </label>
+
+          <label class="bs-molding-calculator__checkbox">
+            <input type="checkbox" id="bs-include-delivery-molding">
+            <span>Include delivery</span>
+          </label>
+
+          <div class="bs-molding-calculator__delivery-zone" id="bs-delivery-zone-wrap" style="display:none;">
+            <label for="bs-delivery-zone">Delivery zone</label>
+            <select id="bs-delivery-zone">
+              <option value="meadow">Meadow Woods (base)</option>
+              <option value="orlando">Orlando area</option>
+              <option value="florida">Other Florida area</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Resumen -->
+        <div class="bs-molding-calculator__summary">
+          <h3>Estimate summary</h3>
+          <div class="bs-molding-calculator__summary-line">
+            <span>Total LF:</span>
+            <span id="bs-summary-lf">—</span>
+          </div>
+          <div class="bs-molding-calculator__summary-line">
+            <span>Pieces needed:</span>
+            <span id="bs-summary-pieces">—</span>
+          </div>
+          <div class="bs-molding-calculator__summary-line">
+            <span>Condition:</span>
+            <span id="bs-summary-condition-molding">—</span>
+          </div>
+          <div class="bs-molding-calculator__summary-line">
+            <span>Material:</span>
+            <span id="bs-summary-material-molding">—</span>
+          </div>
+          <div class="bs-molding-calculator__summary-line">
+            <span>Installation:</span>
+            <span id="bs-summary-install-molding">—</span>
+          </div>
+          <div class="bs-molding-calculator__summary-line">
+            <span>Delivery:</span>
+            <span id="bs-summary-delivery-molding">—</span>
+          </div>
+          <div class="bs-molding-calculator__summary-total">
+            <span>Estimated total:</span>
+            <span id="bs-summary-total-molding">—</span>
+          </div>
+          <p class="bs-molding-calculator__note">
+            This is an estimate. Final quote may adjust based on project details and promotions.
+          </p>
+        </div>
+      </section>
+    </section>
+  </section>
+
+  <!-- TABS DETALLES -->
+  <section class="bs-product-tabs">
+    <div class="bs-product-tabs__nav">
+      <button class="bs-product-tabs__btn is-active" data-tab="details">Product details</button>
+      <button class="bs-product-tabs__btn" data-tab="specs">Specifications</button>
+      <button class="bs-product-tabs__btn" data-tab="install">Installation & use</button>
+      <button class="bs-product-tabs__btn" data-tab="faq">FAQs</button>
+    </div>
+
+    <div class="bs-product-tabs__panel is-active" id="tab-details">
+      <h3>Product details</h3>
+      <p>
+        Quarter Round – Strip Natural is designed to match the Strip Natural SPC floor,
+        giving a clean perimeter finish around baseboards, cabinets and fixed elements.
+      </p>
+      <p>
+        Use it to cover expansion gaps and create a professional, continuous look between
+        your floor and walls.
+      </p>
+    </div>
+
+    <div class="bs-product-tabs__panel" id="tab-specs">
+      <h3>Specifications</h3>
+      <table class="bs-spec-table">
+        <tbody>
+          <tr>
+            <th>Profile</th>
+            <td>Quarter Round</td>
+          </tr>
+          <tr>
+            <th>Length</th>
+            <td>94" (~7.8 lf per piece)</td>
+          </tr>
+          <tr>
+            <th>Finish</th>
+            <td>Strip Natural color match</td>
+          </tr>
+          <tr>
+            <th>Recommended use</th>
+            <td>Baseboards, cabinets, perimeters</td>
+          </tr>
+          <tr>
+            <th>Installation</th>
+            <td>Nail, adhesive or combined</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="bs-product-tabs__panel" id="tab-install">
+      <h3>Installation & use</h3>
+      <p>
+        Install after your Strip Natural SPC floor is in place, leaving the required
+        expansion gap and then covering it with the quarter round.
+      </p>
+      <p>
+        B&S Floor Supply can include molding installation as part of your full flooring
+        project in Meadow Woods, Orlando and surrounding Florida areas.
+      </p>
+    </div>
+
+    <div class="bs-product-tabs__panel" id="tab-faq">
+      <h3>FAQs</h3>
+      <p><strong>Do I have to use the exact matching molding?</strong><br>
+        It is recommended for the most consistent look, especially in visible areas.
+      </p>
+      <p><strong>Can I order moldings without the floor?</strong><br>
+        Yes, you can order moldings separately, but availability follows stock and
+        order-in conditions.
+      </p>
+    </div>
+  </section>
+
+  <!-- RELATED: FLOORS + OTROS MOLDINGS -->
+  <section class="bs-related">
+    <h3>Use with these floors & trims</h3>
+    <div class="bs-related__grid">
+      <article class="bs-related__card">
+        <img src="https://via.placeholder.com/300x180?text=Strip+Natural+SPC" alt="Strip Natural SPC">
+        <div class="bs-related__card-title">Strip Natural SPC Floor</div>
+        <div class="bs-related__card-meta">Main floor · Heemo Collection</div>
+      </article>
+      <article class="bs-related__card">
+        <img src="https://via.placeholder.com/300x180?text=End+Cap+Strip+Natural" alt="End Cap">
+        <div class="bs-related__card-title">End Cap – Strip Natural</div>
+        <div class="bs-related__card-meta">Doors · Transitions</div>
+      </article>
+      <article class="bs-related__card">
+        <img src="https://via.placeholder.com/300x180?text=T-Molding+Strip+Natural" alt="T-Molding">
+        <div class="bs-related__card-title">T-Molding – Strip Natural</div>
+        <div class="bs-related__card-meta">Room-to-room transitions</div>
+      </article>
+    </div>
+  </section>
+
+  <!-- SEO LOCAL -->
+  <section class="bs-seo-block">
+    <h3>Moldings and trims in Meadow Woods & Orlando</h3>
+    <p>
+      B&S Floor Supply provides matching moldings, trims and transitions for your SPC and
+      LVP floors across Meadow Woods, Orlando and surrounding Florida areas. We help you
+      estimate the linear feet you need and include installation and delivery options so
+      your project is complete from edge to edge.
+    </p>
+  </section>
+</main>
+
+<footer class="bs-footer">
+  <div class="bs-footer__inner">
+    <div>© B&S Floor Supply · Meadow Woods, FL</div>
+    <div>Call / WhatsApp: +1 (689) 296-8515 · +1 (407) 225-1284</div>
+  </div>
+</footer>
+
+<script>
+  // ========= PRODUCT DATA (en producción vendrá del backend / API) =========
+  const productData = {
+    productId: "MOLD-QR-STRIPNAT-01",
+    productType: "molding",
+    name: "Quarter Round – Strip Natural · 94\" molding",
+    subtitle: "Matching molding for Strip Natural SPC · Ideal for baseboards and perimeter finish.",
+    specs: {
+      lfPerPiece: 7.8,        // 94" ~ 7.8 lf
+      piecesPerBox: 10,       // ejemplo
+      lfPerBox: 78            // 7.8 * 10
+    },
+    pricing: {
+      basePriceStockPerLf: 2.10,
+      finalPriceStockPerLf: 1.95,
+      finalPriceBackorderPerLf: 1.75
+    },
+    availability: {
+      mode: "stock_and_backorder",   // stock_only | backorder_only | stock_and_backorder | disabled
+      stockAvailableLf: 350,
+      leadTimeBackorderDays: "3–7 days"
+    },
+    services: {
+      installRateMolding: 1.25,
+      deliveryZones: {
+        meadow: 30,
+        orlando: 45,
+        florida: 80
+      }
+    },
+    badges: [
+      {
+        id: "in_stock",
+        type: "status",
+        label: "In stock – 350 lf ready",
+        tone: "stock",
+        priority: 100,
+        visibleOn: ["product", "listing"]
+      },
+      {
+        id: "backorder",
+        type: "status",
+        label: "Order-In – 3 to 7 days",
+        tone: "backorder",
+        priority: 80,
+        visibleOn: ["product"]
+      },
+      {
+        id: "discount",
+        type: "promo",
+        label: "Now $1.95 (was $2.10)",
+        tone: "discount",
+        priority: 95,
+        visibleOn: ["product", "listing"]
+      },
+      {
+        id: "waterproof",
+        type: "feature",
+        label: "Designed for SPC/LVP environments",
+        tone: "neutral",
+        priority: 50,
+        visibleOn: ["product"]
+      }
+    ]
+  };
+
+  // ========= RENDER BADGES =========
+  function renderBadges(badges, scope = "product") {
+    const container = document.getElementById("bs-condition-badges");
+    if (!container) return;
+
+    const filtered = (badges || [])
+      .filter(b => !b.visibleOn || b.visibleOn.includes(scope))
+      .sort((a, b) => (b.priority || 0) - (a.priority || 0));
+
+    const limited = filtered.slice(0, 3);
+
+    container.innerHTML = limited.map(badge => {
+      const toneClass = badge.tone ? `bs-badge--${badge.tone}` : "";
+      return `
+        <span class="bs-badge ${toneClass}">
+          <span class="bs-badge-dot"></span>
+          ${badge.label}
+        </span>
+      `;
+    }).join("");
+  }
+
+  // ========= GALERÍA SIMPLE =========
+  (function initGallery() {
+    const mainImg = document.getElementById("bs-main-image");
+    const thumbs = document.querySelectorAll(".bs-product-gallery__thumb");
+    thumbs.forEach(btn => {
+      btn.addEventListener("click", () => {
+        thumbs.forEach(b => b.classList.remove("is-active"));
+        btn.classList.add("is-active");
+        const src = btn.getAttribute("data-img");
+        if (src) mainImg.src = src;
+      });
+    });
+  })();
+
+  // ========= TABS DETALLES =========
+  (function initTabs() {
+    const tabBtns = document.querySelectorAll(".bs-product-tabs__btn");
+    const panels = {
+      details: document.getElementById("tab-details"),
+      specs: document.getElementById("tab-specs"),
+      install: document.getElementById("tab-install"),
+      faq: document.getElementById("tab-faq")
+    };
+    tabBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-tab");
+        if (!id) return;
+        tabBtns.forEach(b => b.classList.remove("is-active"));
+        btn.classList.add("is-active");
+        Object.keys(panels).forEach(key => {
+          panels[key].classList.toggle("is-active", key === id);
+        });
+      });
+    });
+  })();
+
+  // ========= INICIALIZACIÓN DE CABECERA (precio, título, badges) =========
+  (function initHeaderFromProduct() {
+    const titleEl = document.getElementById("bs-product-title");
+    const subtitleEl = document.getElementById("bs-product-subtitle");
+    const priceMainEl = document.getElementById("bs-price-main");
+    const metaLfEl = document.getElementById("bs-meta-lf");
+
+    if (titleEl) titleEl.textContent = productData.name;
+    if (subtitleEl) subtitleEl.textContent = productData.subtitle;
+
+    if (metaLfEl && productData.specs) {
+      const lfPerPiece = productData.specs.lfPerPiece || 7.8;
+      metaLfEl.textContent = `94" piece · ~${lfPerPiece.toFixed(1)} lf per stick`;
+    }
+
+    let mainPrice = productData.pricing.finalPriceStockPerLf;
+    if (productData.availability.mode === "backorder_only") {
+      mainPrice = productData.pricing.finalPriceBackorderPerLf;
+    }
+    if (priceMainEl) {
+      priceMainEl.textContent = `$${mainPrice.toFixed(2)}`;
+    }
+
+    renderBadges(productData.badges, "product");
+  })();
+
+  // ========= CALCULADORA MOLDING =========
+  (function initMoldingCalculator() {
+    const priceStockPerLf = productData.pricing.finalPriceStockPerLf;
+    const priceBackorderPerLf = productData.pricing.finalPriceBackorderPerLf;
+    const lfPerPiece = productData.specs.lfPerPiece || 7.8;
+    const stockAvailableLf = productData.availability.stockAvailableLf || 0;
+
+    const installRate = productData.services.installRateMolding || 1.25;
+    const deliveryZones = productData.services.deliveryZones || {
+      meadow: 30,
+      orlando: 45,
+      florida: 80
+    };
+
+    const modeButtons = document.querySelectorAll(".bs-molding-calculator__mode-btn");
+    const modeArea = document.querySelector(".bs-molding-calculator__mode--area");
+    const modeLf = document.querySelector(".bs-molding-calculator__mode--lf");
+
+    const floorLengthInput = document.getElementById("bs-floor-length");
+    const floorWidthInput = document.getElementById("bs-floor-width");
+    const calcFromAreaBtn = document.getElementById("bs-calc-from-area");
+    const totalLfInput = document.getElementById("bs-total-lf");
+
+    const includeInstall = document.getElementById("bs-include-install-molding");
+    const includeDelivery = document.getElementById("bs-include-delivery-molding");
+    const deliveryZoneWrap = document.getElementById("bs-delivery-zone-wrap");
+    const deliveryZoneSelect = document.getElementById("bs-delivery-zone");
+
+    const summaryLf = document.getElementById("bs-summary-lf");
+    const summaryPieces = document.getElementById("bs-summary-pieces");
+    const summaryCondition = document.getElementById("bs-summary-condition-molding");
+    const summaryMaterial = document.getElementById("bs-summary-material-molding");
+    const summaryInstall = document.getElementById("bs-summary-install-molding");
+    const summaryDelivery = document.getElementById("bs-summary-delivery-molding");
+    const summaryTotal = document.getElementById("bs-summary-total-molding");
+
+    let currentMode = "area";
+    let currentLf = 0;
+
+    modeButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const mode = btn.getAttribute("data-mode");
+        if (!mode || mode === currentMode) return;
+        currentMode = mode;
+        modeButtons.forEach(b => b.classList.toggle("active", b === btn));
+        if (mode === "area") {
+          modeArea.style.display = "";
+          modeLf.style.display = "none";
+        } else {
+          modeArea.style.display = "none";
+          modeLf.style.display = "";
+          recalcFromInputs();
+        }
+      });
+    });
+
+    calcFromAreaBtn.addEventListener("click", recalcFromInputs);
+    totalLfInput.addEventListener("input", () => {
+      if (currentMode === "lf") recalcFromInputs();
+    });
+    includeInstall.addEventListener("change", recalcFromInputs);
+    includeDelivery.addEventListener("change", () => {
+      deliveryZoneWrap.style.display = includeDelivery.checked ? "" : "none";
+      recalcFromInputs();
+    });
+    deliveryZoneSelect.addEventListener("change", recalcFromInputs);
+
+    function recalcFromInputs() {
+      if (currentMode === "area") {
+        const L = parseFloat(floorLengthInput.value) || 0;
+        const W = parseFloat(floorWidthInput.value) || 0;
+        const area = L * W; // ft²
+        // Regla que comentaste: ancho x largo x 30% => LF recomendados
+        currentLf = area * 0.30;
+      } else {
+        currentLf = parseFloat(totalLfInput.value) || 0;
+      }
+
+      if (currentLf <= 0) {
+        renderEmpty();
+        return;
+      }
+
+      const piecesNeeded = Math.ceil(currentLf / lfPerPiece);
+
+      let isStock = false;
+      if (productData.availability.mode === "stock_only" ||
+          productData.availability.mode === "stock_and_backorder") {
+        isStock = currentLf <= stockAvailableLf;
+      }
+      if (productData.availability.mode === "backorder_only") {
+        isStock = false;
+      }
+
+      const conditionText = isStock
+        ? `In stock – ${stockAvailableLf} lf ready`
+        : `Order-In – ${productData.availability.leadTimeBackorderDays}`;
+
+      const unitPrice = isStock ? priceStockPerLf : priceBackorderPerLf;
+
+      const materialCost = currentLf * unitPrice;
+      const installCost = includeInstall.checked
+        ? currentLf * installRate
+        : 0;
+
+      let deliveryCost = 0;
+      if (includeDelivery.checked && isStock) {
+        const zoneKey = deliveryZoneSelect.value || "meadow";
+        deliveryCost = deliveryZones[zoneKey] || 0;
+      }
+
+      const total = materialCost + installCost + deliveryCost;
+
+      summaryLf.textContent = `${currentLf.toFixed(1)} lf`;
+      summaryPieces.textContent = `${piecesNeeded} piece(s)`;
+      summaryCondition.textContent = conditionText;
+      summaryMaterial.textContent = `$${materialCost.toFixed(2)}`;
+      summaryInstall.textContent = installCost > 0
+        ? `$${installCost.toFixed(2)}`
+        : "Not included";
+      summaryDelivery.textContent = deliveryCost > 0
+        ? `$${deliveryCost.toFixed(2)}`
+        : (includeDelivery.checked ? "Not charged for order-in items" : "Not included");
+      summaryTotal.textContent = `$${total.toFixed(2)}`;
+    }
+
+    function renderEmpty() {
+      summaryLf.textContent = "—";
+      summaryPieces.textContent = "—";
+      summaryCondition.textContent = "—";
+      summaryMaterial.textContent = "—";
+      summaryInstall.textContent = "—";
+      summaryDelivery.textContent = "—";
+      summaryTotal.textContent = "—";
+    }
+
+    renderEmpty();
+  })();
+</script>
+
+</body>
+</html>
