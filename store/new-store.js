@@ -22,10 +22,19 @@
     const badgeClass = priceType === 'stock' ? '' : 'backorder';
     const stockPrice = p.pricing?.finalPriceStockPerUnit;
     const backorderPrice = p.pricing?.finalPriceBackorderPerUnit;
+    const stockAvailable = Number(p.availability?.stockAvailable ?? null);
+    const hasStock = (p.availability?.mode || '').toLowerCase() === 'stock' && Number.isFinite(stockAvailable) && stockAvailable > 0;
     const pkgLabel = p.packageLabel || 'box';
     const coverLabel = p.packageCoverage ? `${formatNumber(p.packageCoverage)} ${unit} / ${pkgLabel}` : '';
     const href = `product.php?sku=${encodeURIComponent(p.sku)}`;
     const img = p.images?.[0] ? `../${p.images[0]}` : '';
+    let stockLabel = '';
+    if(hasStock){
+      const pkgLabelPlural = p.packageLabelPlural || `${pkgLabel}es`;
+      const chosenLabel = stockAvailable === 1 ? pkgLabel : pkgLabelPlural;
+      const coverageText = p.packageCoverage ? ` (≈ ${formatNumber(stockAvailable * p.packageCoverage)} ${unit})` : '';
+      stockLabel = `<div class="store-meta">In stock: ${formatNumber(stockAvailable)} ${chosenLabel}${coverageText}</div>`;
+    }
 
     let priceHtml = '';
     if(priceType === 'stock' && stockPrice != null){
@@ -46,7 +55,8 @@
             <div class="store-meta">${p.collection || ''} ${p.category ? '· '+p.category : ''}</div>
           </div>
           <div class="store-prices">${priceHtml || '<div class="store-price-line"><b>Call for price</b></div>'}</div>
-          ${coverLabel ? `<div class="store-meta">${coverLabel}</div>` : ''}
+          ${stockLabel || (coverLabel ? `<div class="store-meta">${coverLabel}</div>` : '')}
+          ${stockLabel && coverLabel ? `<div class="store-meta">${coverLabel}</div>` : ''}
           <div class="store-badges">
             ${p.thickness ? `<span class="store-badge-new">${p.thickness} mm</span>` : ''}
             ${p.wearLayer ? `<span class="store-badge-new">${p.wearLayer} mil wear</span>` : ''}

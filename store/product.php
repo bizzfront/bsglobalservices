@@ -185,6 +185,9 @@ $storeConfig = load_store_config();
         <?php if($coveragePerBoxLabel): ?>
           <div class="store-price-note"><span class="store-per"><?= htmlspecialchars($coveragePerBoxLabel) ?></span></div>
         <?php endif; ?>
+        <?php if($hasInventoryAvailable): ?>
+          <div class="store-price-note"><span class="store-per">In stock: <?= number_format((float)$stockAvailableValue, 0) ?> <?= $stockAvailableValue == 1 ? htmlspecialchars($packageLabelSingular) : htmlspecialchars($packageLabelPlural) ?><?php if($coveragePerBoxValue): ?> (≈ <?= number_format((float)$stockAvailableValue * (float)$coveragePerBoxValue, 0) ?> <?= htmlspecialchars($unitLabel) ?>)<?php endif; ?></span></div>
+        <?php endif; ?>
 
         <div id="calc" class="calc">
           <h3 style="color: var(--burgundy);">Material calculator</h3>
@@ -226,6 +229,7 @@ $storeConfig = load_store_config();
               </select>
             </label>
             <p id="calcSummary" class="note full"></p>
+            <p id="calcAlert" class="note full" style="color: var(--burgundy); font-weight:600;"></p>
             <button type="button" id="addToCart" class="btn btn-primary full">Add to cart</button>
           </form>
         </div>
@@ -315,6 +319,8 @@ $storeConfig = load_store_config();
     const PRICE_MODES = <?= json_encode($priceModesData) ?>;
     const PRICE_MODE_KEYS = Object.keys(PRICE_MODES);
     const MAX_PURCHASE_QTY = Number(NORMALIZED_PRODUCT?.availability?.maxPurchaseQuantity ?? null);
+    const STOCK_AVAILABLE = Number(NORMALIZED_PRODUCT?.availability?.stockAvailable ?? null);
+    const IS_STOCK_MODE = (NORMALIZED_PRODUCT?.availability?.mode || '').toLowerCase() === 'stock' && Number.isFinite(STOCK_AVAILABLE) && STOCK_AVAILABLE > 0;
     let currentPriceMode = <?= json_encode($defaultPriceMode) ?>;
     if(!PRICE_MODES[currentPriceMode]){
       currentPriceMode = PRICE_MODE_KEYS.length ? PRICE_MODE_KEYS[0] : 'stock';
@@ -344,19 +350,18 @@ $storeConfig = load_store_config();
       const lenInput = document.getElementById('calcLen');
       const widInput = document.getElementById('calcWid');
       const unitsInputEl = document.getElementById('calcUnits');
+      const alertEl = document.getElementById('calcAlert');
       let boxes = parseInt(boxesInput?.value, 10);
+      let requestedBoxes = boxes;
       if(!Number.isFinite(boxes) || boxes < 0){
         boxes = 0;
       }
       if(source === 'calcBoxes'){
         boxes = Math.max(1, Math.round(boxes));
         if(boxesInput) boxesInput.value = boxes > 0 ? boxes : '';
+        requestedBoxes = boxes;
       }
       const maxQty = Number.isFinite(MAX_PURCHASE_QTY) && MAX_PURCHASE_QTY > 0 ? Math.floor(MAX_PURCHASE_QTY) : null;
-      if(maxQty && boxes > maxQty){
-        boxes = maxQty;
-        if(boxesInput) boxesInput.value = boxes;
-      }
       const activePrice = getActivePriceMode();
       const pricePerUnitNum = Number(activePrice.unitValue);
       const lengthPerPiece = Number(LENGTH_FT) || 0;
@@ -404,6 +409,7 @@ $storeConfig = load_store_config();
             }
           }else if(sqft > 0){
             boxes = Math.max(1, Math.ceil(sqft / coveragePerPackage));
+            requestedBoxes = boxes;
             if(boxesInput) boxesInput.value = boxes;
           }else if(boxes > 0){
             const sqftFromBoxes = boxes * coveragePerPackage;
@@ -425,6 +431,7 @@ $storeConfig = load_store_config();
             boxes = Math.max(1, Math.ceil(unitsInput / coveragePerPackage));
           }
           if(boxesInput && boxes > 0) boxesInput.value = boxes;
+          requestedBoxes = boxes;
           unitsNeeded = unitsInput;
         }else if(boxes > 0){
           if(piecesPerBox > 0 && lengthPerPiece > 0){
@@ -436,6 +443,9 @@ $storeConfig = load_store_config();
       }
       if(unitsNeeded === null && boxes > 0 && coveragePerPackage > 0){
         unitsNeeded = boxes * coveragePerPackage;
+      }
+      if(boxes > 0){
+        requestedBoxes = boxes;
       }
       if(maxQty && boxes > maxQty){
         boxes = maxQty;
@@ -501,6 +511,16 @@ $storeConfig = load_store_config();
         summaryParts.push(`Est. total $${grandTotal.toFixed(2)}`);
       }
       document.getElementById('calcSummary').textContent = summaryParts.join(' — ');
+      const exceededStock = IS_STOCK_MODE && Number.isFinite(STOCK_AVAILABLE) && Number.isFinite(requestedBoxes) && requestedBoxes > STOCK_AVAILABLE;
+      if(alertEl){
+        if(exceededStock){
+          const pkgLabel = STOCK_AVAILABLE === 1 ? (PACKAGE_LABEL || 'box') : (PACKAGE_LABEL_PLURAL || ((PACKAGE_LABEL || 'box') + 'es'));
+          const coverageText = coveragePerPackage > 0 ? ` (≈ ${formatUnits(STOCK_AVAILABLE * coveragePerPackage)} ${UNIT_LABEL})` : '';
+          alertEl.textContent = `Requested quantity exceeds available stock. ${formatUnits(STOCK_AVAILABLE)} ${pkgLabel} in stock${coverageText}.`;
+        }else{
+          alertEl.textContent = '';
+        }
+      }
       return boxes;
     }
     ['calcLen','calcWid','calcSqft','calcBoxes','calcUnits'].forEach(id=>{
