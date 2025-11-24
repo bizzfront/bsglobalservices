@@ -1,5 +1,7 @@
 (function(){
   const grid = document.getElementById('store-grid');
+  const resultSummary = document.getElementById('resultSummary');
+  const typeSwitch = document.getElementById('typeSwitch');
   if(!grid || !Array.isArray(BS_PRODUCTS)) return;
 
   function formatCurrency(value){
@@ -34,6 +36,8 @@
       const chosenLabel = stockAvailable === 1 ? pkgLabel : pkgLabelPlural;
       const coverageText = p.packageCoverage ? ` (≈ ${formatNumber(stockAvailable * p.packageCoverage)} ${unit})` : '';
       stockLabel = `<div class="store-meta">In stock: ${formatNumber(stockAvailable)} ${chosenLabel}${coverageText}</div>`;
+    } else if(Number.isFinite(stockAvailable)) {
+      stockLabel = `<div class="store-meta">Next batch: ${formatNumber(stockAvailable)} coming</div>`;
     }
 
     let priceHtml = '';
@@ -61,6 +65,7 @@
             ${p.thickness ? `<span class="store-badge-new">${p.thickness} mm</span>` : ''}
             ${p.wearLayer ? `<span class="store-badge-new">${p.wearLayer} mil wear</span>` : ''}
             ${p.widthIn && p.lengthIn ? `<span class="store-badge-new">${p.widthIn}×${p.lengthIn} in</span>` : ''}
+            ${p.colorFamily ? `<span class="store-badge-new">${p.colorFamily}</span>` : ''}
           </div>
           <div class="store-cta-row">
             <label style="display:flex; align-items:center; gap:6px;">
@@ -75,30 +80,43 @@
     `;
   }
 
+  function getCheckedValues(selector){
+    return Array.from(document.querySelectorAll(selector)).filter(el=>el.checked).map(el=>el.value.toLowerCase());
+  }
+
+  function matchesAvailability(p, filters){
+    if(filters.length === 0) return true;
+    const mode = (p.availability?.mode || '').toLowerCase();
+    const lead = Number(p.availability?.backorderLeadTimeDays ?? NaN);
+    return filters.some(f=>{
+      if(f === 'stock') return mode === 'stock';
+      if(f === 'backorder') return mode !== 'stock';
+      if(f === 'nextday') return mode === 'stock' || (Number.isFinite(lead) && lead <= 7);
+      return true;
+    });
+  }
+
   function applyFilters(list){
+    const colorFilters = getCheckedValues('.filter-color');
+    const availabilityFilters = getCheckedValues('.filter-availability');
+    const toneFilters = colorFilters.filter(v=>['light','medium','dark'].includes(v));
+    const familyFilters = colorFilters.filter(v=>!['light','medium','dark'].includes(v));
+    const thkMin = parseFloat(document.getElementById('fThkMin')?.value || '') || 0;
+    const wearMin = parseFloat(document.getElementById('fWearMin')?.value || '') || 0;
+
     let filtered = [...list];
     if(CURRENT_TYPE === 'flooring'){
-      const cf = (document.getElementById('fColor')?.value || '').toLowerCase();
-      const tone = (document.getElementById('fTone')?.value || '').toLowerCase();
-      const thkMin = parseFloat(document.getElementById('fThkMin')?.value || '') || 0;
-      const wearMin = parseFloat(document.getElementById('fWearMin')?.value || '') || 0;
       filtered = filtered.filter(p=>{
-        if(cf && (p.colorFamily||'').toLowerCase() !== cf) return false;
-        if(tone && (p.tone||'').toLowerCase() !== tone) return false;
+        const tone = (p.tone || '').toLowerCase();
+        const family = (p.colorFamily || '').toLowerCase();
+        if(toneFilters.length && !toneFilters.includes(tone)) return false;
+        if(familyFilters.length && !familyFilters.includes(family)) return false;
         if(thkMin && (parseFloat(p.thickness) || 0) < thkMin) return false;
         if(wearMin && (parseFloat(p.wearLayer) || 0) < wearMin) return false;
         return true;
       });
     }
-    const avail = (document.getElementById('fAvail')?.value || '').toLowerCase();
-    if(avail){
-      filtered = filtered.filter(p=>{
-        const mode = (p.availability?.mode || '').toLowerCase();
-        if(avail === 'stock') return mode === 'stock';
-        if(avail === 'backorder') return mode !== 'stock';
-        return true;
-      });
-    }
+    filtered = filtered.filter(p=>matchesAvailability(p, availabilityFilters));
     return filtered;
   }
 
@@ -122,6 +140,9 @@
   function render(){
     const list = applySort(applyFilters(BS_PRODUCTS));
     grid.innerHTML = list.map(renderCard).join('');
+    if(resultSummary){
+      resultSummary.textContent = `Showing ${list.length} of ${BS_PRODUCTS.length} products`;
+    }
     grid.querySelectorAll('.add-cart').forEach(btn=>{
       btn.addEventListener('click', ()=>{
         const card = btn.closest('.store-card-new');
@@ -142,16 +163,28 @@
     });
   }
 
-  ['sortSel','fColor','fTone','fThkMin','fWearMin','fAvail'].forEach(id=>{
+  ['sortSel','fThkMin','fWearMin'].forEach(id=>{
     document.getElementById(id)?.addEventListener('change', render);
   });
+  document.querySelectorAll('.filter-color,.filter-availability').forEach(el=>{
+    el.addEventListener('change', render);
+  });
   document.getElementById('clearFilters')?.addEventListener('click', ()=>{
-    ['fColor','fTone','fThkMin','fWearMin','fAvail','sortSel'].forEach(id=>{
+    ['fThkMin','fWearMin'].forEach(id=>{
       const el = document.getElementById(id);
-      if(!el) return;
-      if(el.tagName === 'SELECT') el.selectedIndex = 0; else el.value = '';
+      if(el) el.value = '';
+    });
+    document.querySelectorAll('.filter-color,.filter-availability').forEach(el=>{
+      el.checked = false;
     });
     render();
+  });
+
+  typeSwitch?.addEventListener('change', ()=>{
+    const val = typeSwitch.value === 'molding' ? 'molding' : 'flooring';
+    const url = new URL(window.location.href);
+    url.searchParams.set('type', val);
+    window.location.href = url.toString();
   });
 
   render();
