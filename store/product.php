@@ -389,6 +389,7 @@ $installRateLabel = $installRateValue !== null
     const PRICE_MODE_KEYS = Object.keys(PRICE_MODES);
     const MAX_PURCHASE_QTY = Number(NORMALIZED_PRODUCT?.availability?.maxPurchaseQuantity ?? null);
     const STOCK_AVAILABLE = Number(NORMALIZED_PRODUCT?.availability?.stockAvailable ?? null);
+    const DELIVERY_PREF_KEY = 'bs_delivery_pref';
     const IS_STOCK_MODE = (NORMALIZED_PRODUCT?.availability?.mode || '').toLowerCase() === 'stock' && Number.isFinite(STOCK_AVAILABLE) && STOCK_AVAILABLE > 0;
     let currentPriceMode = <?= json_encode($defaultPriceMode) ?>;
     if(!PRICE_MODES[currentPriceMode]){
@@ -399,6 +400,27 @@ $installRateLabel = $installRateValue !== null
     function getActivePriceMode(){
       return PRICE_MODES[currentPriceMode] || {};
     }
+    function getDeliveryZones(){
+      return NORMALIZED_PRODUCT?.delivery?.zones || STORE_CONFIG?.delivery?.zones || [];
+    }
+    function getDefaultDeliveryZone(){
+      const zones = getDeliveryZones();
+      return zones[0]?.id || null;
+    }
+    function loadDeliveryPreferences(){
+      try{
+        const saved = JSON.parse(localStorage.getItem(DELIVERY_PREF_KEY));
+        const zones = getDeliveryZones();
+        const zone = zones.some(z=>z.id === saved?.zone) ? saved.zone : getDefaultDeliveryZone();
+        return {includeDelivery: saved?.includeDelivery !== false, zone};
+      }catch(err){
+        return {includeDelivery: true, zone: getDefaultDeliveryZone()};
+      }
+    }
+    function saveDeliveryPreferences(prefs){
+      localStorage.setItem(DELIVERY_PREF_KEY, JSON.stringify(prefs));
+    }
+    let deliveryPreferences = loadDeliveryPreferences();
     function formatUnits(value){
       const num = Number(value);
       if(!Number.isFinite(num)) return '';
@@ -413,8 +435,22 @@ $installRateLabel = $installRateValue !== null
       const rounded = Math.round(num * 100) / 100;
       return Number.isInteger(rounded) ? String(rounded) : rounded.toString();
     }
-    let calcMode = 'dims';
-    let lastComputedBoxes = 0;
+      let calcMode = 'dims';
+      let lastComputedBoxes = 0;
+    function syncDeliveryControls(){
+      const deliverySelect = document.getElementById('calcDelivery');
+      const deliveryToggle = document.getElementById('calcIncludeDelivery');
+      const zones = getDeliveryZones();
+      const preferredZone = zones.some(z=>z.id === deliveryPreferences.zone) ? deliveryPreferences.zone : getDefaultDeliveryZone();
+      deliveryPreferences = {...deliveryPreferences, zone: preferredZone};
+      if(deliverySelect){
+        deliverySelect.value = preferredZone || '';
+      }
+      if(deliveryToggle){
+        deliveryToggle.checked = deliveryPreferences.includeDelivery !== false;
+      }
+      updateDeliveryVisibility();
+    }
     function updateDeliveryVisibility(){
       const deliveryWrap = document.getElementById('calcDeliveryWrap');
       const deliveryToggle = document.getElementById('calcIncludeDelivery');
@@ -619,8 +655,23 @@ $installRateLabel = $installRateValue !== null
       }
     });
     document.getElementById('calcInstall')?.addEventListener('change', ()=>updateCalc());
-    document.getElementById('calcIncludeDelivery')?.addEventListener('change', ()=>{updateDeliveryVisibility(); updateCalc();});
-    document.getElementById('calcDelivery')?.addEventListener('change', ()=>updateCalc());
+    document.getElementById('calcIncludeDelivery')?.addEventListener('change', (evt)=>{
+      deliveryPreferences = {...deliveryPreferences, includeDelivery: evt.target.checked};
+      if(!evt.target.checked){
+        const pickup = getDeliveryZones().find(z=>z.id === 'pick-up');
+        if(pickup){
+          deliveryPreferences = {...deliveryPreferences, zone: pickup.id};
+        }
+      }
+      saveDeliveryPreferences(deliveryPreferences);
+      updateDeliveryVisibility();
+      updateCalc();
+    });
+    document.getElementById('calcDelivery')?.addEventListener('change', (evt)=>{
+      deliveryPreferences = {...deliveryPreferences, zone: evt.target.value};
+      saveDeliveryPreferences(deliveryPreferences);
+      updateCalc();
+    });
     bindOptionCards();
     document.querySelectorAll('input[name="price_mode"]').forEach(input=>{
       input.addEventListener('change', ()=>{
@@ -636,11 +687,16 @@ $installRateLabel = $installRateValue !== null
         const selectedMode = document.querySelector('input[name="price_mode"]:checked');
         const priceType = selectedMode ? selectedMode.value : currentPriceMode;
         const installSelected = document.getElementById('calcInstall')?.checked;
-        const deliveryZone = (PRODUCT_TYPE === 'flooring' && !(document.getElementById('calcIncludeDelivery')?.checked)) ? null : (document.getElementById('calcDelivery')?.value || null);
-        cart.addItem(SKU, boxes, priceType || 'stock', {install: installSelected, deliveryZone});
+        const currentDeliveryZone = document.getElementById('calcDelivery')?.value || null;
+        deliveryPreferences = {
+          includeDelivery: PRODUCT_TYPE !== 'flooring' || (document.getElementById('calcIncludeDelivery')?.checked ?? true),
+          zone: currentDeliveryZone || deliveryPreferences.zone || getDefaultDeliveryZone()
+        };
+        saveDeliveryPreferences(deliveryPreferences);
+        cart.addItem(SKU, boxes, priceType || 'stock', {install: installSelected});
       }
     });
-    updateDeliveryVisibility();
+    syncDeliveryControls();
     updateCalc();
     function trackEvent(name, params){
       if (window.gtag) gtag('event', name, params || {});
