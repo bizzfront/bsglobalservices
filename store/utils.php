@@ -70,8 +70,8 @@ function enrich_store_product(array $product): array
 
     if (!isset($product['package_label']) || !isset($product['package_label_plural'])) {
         if ($type === 'molding') {
-            $product['package_label'] = 'package';
-            $product['package_label_plural'] = 'packages';
+            $product['package_label'] = 'piece';
+            $product['package_label_plural'] = 'pieces';
         } else {
             $product['package_label'] = 'box';
             $product['package_label_plural'] = 'boxes';
@@ -257,6 +257,12 @@ function normalize_store_product(array $product): array
     $measurementUnit = strtolower($product['measurement_unit'] ?? ($product['product_type'] === 'molding' ? 'lf' : 'sqft'));
     $packageCoverage = $product['computed_coverage_per_package'] ?? $product['coverage_per_box'] ?? $product['sqft_per_box'] ?? null;
     $packageCoverage = parse_store_numeric($packageCoverage);
+    if (($product['product_type'] ?? '') === 'molding') {
+        $lengthFt = parse_store_numeric($product['length_ft'] ?? null);
+        if ($lengthFt !== null && $lengthFt > 0) {
+            $packageCoverage = $lengthFt;
+        }
+    }
     $packageCoverage = $packageCoverage !== null && $packageCoverage > 0 ? $packageCoverage : null;
 
     $stockPrice = $product['pricing']['finalPriceStockPerUnit'] ?? null;
@@ -282,8 +288,8 @@ function normalize_store_product(array $product): array
         'widthIn' => $product['width_in'] ?? null,
         'lengthIn' => $product['length_in'] ?? null,
         'measurementUnit' => $measurementUnit,
-        'packageLabel' => $product['package_label'] ?? ($product['product_type'] === 'molding' ? 'package' : 'box'),
-        'packageLabelPlural' => $product['package_label_plural'] ?? ($product['product_type'] === 'molding' ? 'packages' : 'boxes'),
+        'packageLabel' => $product['package_label'] ?? ($product['product_type'] === 'molding' ? 'piece' : 'box'),
+        'packageLabelPlural' => $product['package_label_plural'] ?? ($product['product_type'] === 'molding' ? 'pieces' : 'boxes'),
         'packageCoverage' => $packageCoverage,
         'core' => $product['core'] ?? null,
         'pad' => $product['pad'] ?? null,

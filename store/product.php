@@ -43,19 +43,19 @@ $unitLabels = [
   'lf' => 'linear feet',
   'piece' => 'pieces'
 ];
-$packageLabelSingular = $product['package_label'] ?? ($isFlooring ? 'box' : 'package');
-$packageLabelPlural = $product['package_label_plural'] ?? ($isFlooring ? 'boxes' : 'packages');
+$packageLabelSingular = $product['package_label'] ?? ($isFlooring ? 'box' : 'piece');
+$packageLabelPlural = $product['package_label_plural'] ?? ($isFlooring ? 'boxes' : 'pieces');
 $unitLabel = $unitLabels[$measurementUnit] ?? $measurementUnit;
 $unitSuffix = $measurementUnit === 'lf' ? '/lf' : ($measurementUnit === 'piece' ? '/piece' : '/sqft');
-$coveragePerBoxValue = $product['computed_coverage_per_package'] ?? $product['coverage_per_box'] ?? $product['sqft_per_box'] ?? null;
+$lengthFtValue = isset($product['length_ft']) ? (float)$product['length_ft'] : null;
+$piecesPerBoxValue = isset($product['pieces_per_box']) ? (float)$product['pieces_per_box'] : null;
+$coveragePerBoxValue = $isFlooring
+  ? ($product['computed_coverage_per_package'] ?? $product['coverage_per_box'] ?? $product['sqft_per_box'] ?? null)
+  : ($lengthFtValue ?? ($product['computed_coverage_per_package'] ?? $product['coverage_per_box'] ?? $product['sqft_per_box'] ?? null));
 $stockAvailableValue = isset($product['availability']['stockAvailable']) ? (float)$product['availability']['stockAvailable'] : null;
 $hasInventoryAvailable = $stockAvailableValue !== null && $stockAvailableValue > 0;
 $activePriceMode = $product['availability']['activePriceType'] ?? ($hasInventoryAvailable ? 'stock' : 'backorder');
-$lengthFtValue = isset($product['length_ft']) ? (float)$product['length_ft'] : null;
-$piecesPerBoxValue = isset($product['pieces_per_box']) ? (float)$product['pieces_per_box'] : null;
-if($coveragePerBoxValue === null && $lengthFtValue && $piecesPerBoxValue){
-  $coveragePerBoxValue = $lengthFtValue * $piecesPerBoxValue;
-}
+$coveragePerBoxValue = $coveragePerBoxValue !== null ? (float)$coveragePerBoxValue : null;
 if($coveragePerBoxValue !== null){
   $coveragePerBoxValue = (float)$coveragePerBoxValue;
 }
@@ -355,7 +355,7 @@ $installRateLabel = $installRateValue !== null
           <?php if($product['actual_size']): ?><li><strong>Actual size:</strong> <?= htmlspecialchars($product['actual_size']) ?></li><?php endif; ?>
           <?php if($product['length_ft']): ?><li><strong>Length per piece:</strong> <?= $product['length_ft'] ?> ft</li><?php endif; ?>
           <?php if($product['pieces_per_box']): ?><li><strong>Pieces per box:</strong> <?= $product['pieces_per_box'] ?></li><?php endif; ?>
-          <?php if($coveragePerBoxValue): ?><li><strong>Coverage per box:</strong> <?= $coveragePerBoxLabel ?></li><?php endif; ?>
+          <?php if($coveragePerBoxValue): ?><li><strong>Coverage per <?= htmlspecialchars($packageLabelSingular) ?>:</strong> <?= $coveragePerBoxLabel ?></li><?php endif; ?>
           <?php if($product['packaging_notes']): ?><li><strong>Packaging:</strong> <?= htmlspecialchars($product['packaging_notes']) ?></li><?php endif; ?>
           <?php if($product['comments']): ?><li><strong>Comments:</strong> <?= htmlspecialchars($product['comments']) ?></li><?php endif; ?>
         <?php endif; ?>
@@ -547,7 +547,9 @@ $installRateLabel = $installRateValue !== null
       const lengthPerPiece = Number(LENGTH_FT) || 0;
       const piecesPerBox = Number(PIECES_PER_BOX) || 0;
       let coveragePerPackage = Number(COVERAGE_PER_PACKAGE);
-      if(!Number.isFinite(coveragePerPackage) || coveragePerPackage <= 0){
+      if(PRODUCT_TYPE === 'molding'){
+        coveragePerPackage = lengthPerPiece > 0 ? lengthPerPiece : (Number.isFinite(coveragePerPackage) && coveragePerPackage > 0 ? coveragePerPackage : 0);
+      }else if(!Number.isFinite(coveragePerPackage) || coveragePerPackage <= 0){
         if(lengthPerPiece > 0 && piecesPerBox > 0){
           coveragePerPackage = lengthPerPiece * piecesPerBox;
         }else{
@@ -582,9 +584,8 @@ $installRateLabel = $installRateValue !== null
       }else{
         const unitsInput = parseFloat(unitsInputEl?.value);
         if(Number.isFinite(unitsInput) && unitsInput > 0){
-          const piecesNeeded = lengthPerPiece > 0 ? unitsInput / lengthPerPiece : null;
-          if(piecesPerBox > 0 && piecesNeeded){
-            boxes = Math.max(1, Math.ceil(piecesNeeded / piecesPerBox));
+          if(lengthPerPiece > 0){
+            boxes = Math.max(1, Math.ceil(unitsInput / lengthPerPiece));
           }else if(coveragePerPackage > 0){
             boxes = Math.max(1, Math.ceil(unitsInput / coveragePerPackage));
           }
@@ -592,8 +593,8 @@ $installRateLabel = $installRateValue !== null
           if(boxesInput && boxes > 0) boxesInput.value = boxes;
           unitsNeeded = unitsInput;
         }else if(boxes > 0){
-          if(piecesPerBox > 0 && lengthPerPiece > 0){
-            unitsNeeded = boxes * piecesPerBox * lengthPerPiece;
+          if(lengthPerPiece > 0){
+            unitsNeeded = boxes * lengthPerPiece;
           }else if(coveragePerPackage > 0){
             unitsNeeded = boxes * coveragePerPackage;
           }
