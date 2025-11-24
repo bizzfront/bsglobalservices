@@ -327,9 +327,17 @@
     .calc-action:hover{background:#6b1a2a}
     .calc-options{margin-top:12px;padding-top:12px;border-top:1px solid #ece7e4}
     .calc-options h4{margin-bottom:8px;color:#4a3c38;font-size:1rem}
-    .calc-checkbox{display:flex;gap:8px;align-items:center;justify-content:space-between;font-size:.95rem;color:#333;margin-bottom:8px;white-space:nowrap}
-    .calc-checkbox span{flex:1;text-align:left}
-    .calc-checkbox input{width:auto;margin:0;margin-left:8px;flex-shrink:0}
+    .calc-option-cards{display:grid;gap:10px;margin-top:8px}
+    .calc-option-card{display:flex;gap:10px;align-items:center;padding:10px 12px;border:1px solid #e6dcd9;border-radius:12px;background:#fff;cursor:pointer;transition:border-color .2s ease,box-shadow .2s ease,background-color .2s ease}
+    .calc-option-card:hover{border-color:#c3b6b2;box-shadow:0 8px 16px rgba(89,19,32,.08)}
+    .calc-option-card.selected{border-color:#591320;box-shadow:0 10px 20px rgba(89,19,32,.14);background:#fbf7f5}
+    .calc-option-card:focus-visible{outline:2px solid #591320;outline-offset:2px}
+    .calc-option-checkbox{appearance:none;width:18px;height:18px;border:1px solid #c9beba;border-radius:6px;display:grid;place-items:center;background:#fff;flex-shrink:0}
+    .calc-option-checkbox:checked{background:#591320;border-color:#591320}
+    .calc-option-checkbox:checked::after{content:"";width:8px;height:8px;display:block;border-radius:2px;background:#fff}
+    .calc-option-content{flex:1;min-width:0}
+    .calc-option-title{font-size:.95rem;color:#332c2a;font-weight:600}
+    .calc-option-desc{font-size:.85rem;color:#6b625f;margin-top:2px}
     .calc select,.calc input[type=number]{padding:.65rem .75rem;border:1px solid #ddd;border-radius:12px;font:inherit;background:#fff}
     .calc-delivery{margin-top:6px}
     .calc-summary{margin-top:14px;padding:12px;border-radius:12px;background:#f8f5f3;border:1px solid #e7dedb}

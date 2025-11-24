@@ -370,14 +370,36 @@
       color: #591320;
     }
 
-    .bs-molding-calculator__checkbox {
+    .bs-molding-calculator__option-cards { display: grid; gap: 8px; }
+    .bs-molding-calculator__option-card {
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.8rem;
-      margin-bottom: 4px;
-      color: #4e413e;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid #e7dcd2;
+      border-radius: 10px;
+      background: #ffffff;
+      cursor: pointer;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
     }
+    .bs-molding-calculator__option-card:hover { border-color: #c6b7ad; box-shadow: 0 8px 16px rgba(89,19,32,0.08); }
+    .bs-molding-calculator__option-card.selected { border-color: #8c2a3e; box-shadow: 0 10px 18px rgba(89,19,32,0.12); background: #fff8f6; }
+    .bs-molding-calculator__option-card:focus-visible { outline: 2px solid #8c2a3e; outline-offset: 2px; }
+    .bs-molding-calculator__checkbox-input {
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border: 1px solid #c7b7af;
+      border-radius: 5px;
+      display: grid;
+      place-items: center;
+      background: #fff;
+      flex-shrink: 0;
+    }
+    .bs-molding-calculator__checkbox-input:checked { background: #8c2a3e; border-color: #8c2a3e; }
+    .bs-molding-calculator__checkbox-input:checked::after { content: ""; width: 7px; height: 7px; display: block; border-radius: 2px; background: #fff; }
+    .bs-molding-calculator__option-title { font-size: 0.85rem; color: #3e3330; font-weight: 600; }
+    .bs-molding-calculator__option-desc { font-size: 0.75rem; color: #6b5c57; margin-top: 2px; }
 
     .bs-molding-calculator__delivery-zone {
       margin-top: 4px;
@@ -726,15 +748,22 @@
         <div class="bs-molding-calculator__options">
           <h3>Optional services</h3>
 
-          <label class="bs-molding-calculator__checkbox">
-            <input type="checkbox" id="bs-include-install-molding">
-            <span>Include molding installation estimate (1.25 $/lf)</span>
-          </label>
-
-          <label class="bs-molding-calculator__checkbox">
-            <input type="checkbox" id="bs-include-delivery-molding">
-            <span>Include delivery</span>
-          </label>
+          <div class="bs-molding-calculator__option-cards">
+            <div class="bs-molding-calculator__option-card" data-checkbox="bs-include-install-molding" role="button" tabindex="0" aria-pressed="false">
+              <input type="checkbox" id="bs-include-install-molding" class="bs-molding-calculator__checkbox-input" aria-hidden="true">
+              <div>
+                <div class="bs-molding-calculator__option-title">Include molding installation estimate (1.25 $/lf)</div>
+                <div class="bs-molding-calculator__option-desc">Apply the estimated install rate per linear foot.</div>
+              </div>
+            </div>
+            <div class="bs-molding-calculator__option-card" data-checkbox="bs-include-delivery-molding" role="button" tabindex="0" aria-pressed="false">
+              <input type="checkbox" id="bs-include-delivery-molding" class="bs-molding-calculator__checkbox-input" aria-hidden="true">
+              <div>
+                <div class="bs-molding-calculator__option-title">Include delivery</div>
+                <div class="bs-molding-calculator__option-desc">Show delivery pricing by zone when available.</div>
+              </div>
+            </div>
+          </div>
 
           <div class="bs-molding-calculator__delivery-zone" id="bs-delivery-zone-wrap" style="display:none;">
             <label for="bs-delivery-zone">Delivery zone</label>
@@ -1087,6 +1116,35 @@
 
     let currentMode = "area";
     let currentLf = 0;
+
+    function bindOptionCards() {
+      document.querySelectorAll(".bs-molding-calculator__option-card").forEach(card => {
+        const checkboxId = card.getAttribute("data-checkbox");
+        const checkbox = checkboxId ? document.getElementById(checkboxId) : null;
+        if (!checkbox) return;
+        const syncState = () => {
+          const checked = checkbox.checked;
+          card.classList.toggle("selected", checked);
+          card.setAttribute("aria-pressed", checked ? "true" : "false");
+        };
+        card.addEventListener("click", (e) => {
+          if (e.target === checkbox) return;
+          checkbox.checked = !checkbox.checked;
+          checkbox.dispatchEvent(new Event("change", { bubbles: true }));
+        });
+        card.addEventListener("keydown", (e) => {
+          if (e.key === " " || e.key === "Enter") {
+            e.preventDefault();
+            checkbox.checked = !checkbox.checked;
+            checkbox.dispatchEvent(new Event("change", { bubbles: true }));
+          }
+        });
+        checkbox.addEventListener("change", syncState);
+        syncState();
+      });
+    }
+
+    bindOptionCards();
 
     modeButtons.forEach(btn => {
       btn.addEventListener("click", () => {

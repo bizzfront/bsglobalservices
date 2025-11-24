@@ -246,15 +246,25 @@ $installRateLabel = $installRateValue !== null
 
           <div class="calc-options">
             <h4>Optional services</h4>
-            <label class="calc-checkbox">
-              <span>Include installation estimate<?= $installRateLabel ? ' ('.$installRateLabel.')' : '' ?></span>
-              <input type="checkbox" id="calcInstall">
-            </label>
+            <div class="calc-option-cards">
+              <div class="calc-option-card" data-checkbox="calcInstall" role="button" tabindex="0" aria-pressed="false">
+                <input type="checkbox" id="calcInstall" class="calc-option-checkbox" aria-hidden="true">
+                <div class="calc-option-content">
+                  <div class="calc-option-title">Include installation estimate<?= $installRateLabel ? ' ('.$installRateLabel.')' : '' ?></div>
+                  <div class="calc-option-desc">Get a ballpark for installation based on your area.</div>
+                </div>
+              </div>
+              <?php if($isFlooring): ?>
+                <div class="calc-option-card" data-checkbox="calcIncludeDelivery" role="button" tabindex="0" aria-pressed="false">
+                  <input type="checkbox" id="calcIncludeDelivery" class="calc-option-checkbox" aria-hidden="true">
+                  <div class="calc-option-content">
+                    <div class="calc-option-title">Include delivery</div>
+                    <div class="calc-option-desc">Select delivery zone and see the estimated fee.</div>
+                  </div>
+                </div>
+              <?php endif; ?>
+            </div>
             <?php if($isFlooring): ?>
-              <label class="calc-checkbox">
-                <span>Include delivery</span>
-                <input type="checkbox" id="calcIncludeDelivery">
-              </label>
               <div id="calcDeliveryWrap" class="calc-delivery" style="display:none;">
                 <label>
                   Delivery zone
@@ -560,6 +570,32 @@ $installRateLabel = $installRateValue !== null
       lastComputedBoxes = boxes;
       return boxes;
     }
+    function bindOptionCards(){
+      document.querySelectorAll('.calc-option-card').forEach(card=>{
+        const checkboxId = card.dataset.checkbox;
+        const checkbox = checkboxId ? document.getElementById(checkboxId) : null;
+        if(!checkbox) return;
+        const syncState = ()=>{
+          const checked = checkbox.checked;
+          card.classList.toggle('selected', checked);
+          card.setAttribute('aria-pressed', checked ? 'true' : 'false');
+        };
+        card.addEventListener('click', (e)=>{
+          if(e.target === checkbox) return;
+          checkbox.checked = !checkbox.checked;
+          checkbox.dispatchEvent(new Event('change', {bubbles:true}));
+        });
+        card.addEventListener('keydown', (e)=>{
+          if(e.key === ' ' || e.key === 'Enter'){
+            e.preventDefault();
+            checkbox.checked = !checkbox.checked;
+            checkbox.dispatchEvent(new Event('change', {bubbles:true}));
+          }
+        });
+        checkbox.addEventListener('change', syncState);
+        syncState();
+      });
+    }
     document.querySelectorAll('[data-calc-mode]').forEach(btn=>{
       btn.addEventListener('click', ()=>{
         const mode = btn.dataset.calcMode;
@@ -585,6 +621,7 @@ $installRateLabel = $installRateValue !== null
     document.getElementById('calcInstall')?.addEventListener('change', ()=>updateCalc());
     document.getElementById('calcIncludeDelivery')?.addEventListener('change', ()=>{updateDeliveryVisibility(); updateCalc();});
     document.getElementById('calcDelivery')?.addEventListener('change', ()=>updateCalc());
+    bindOptionCards();
     document.querySelectorAll('input[name="price_mode"]').forEach(input=>{
       input.addEventListener('change', ()=>{
         if(input.checked){

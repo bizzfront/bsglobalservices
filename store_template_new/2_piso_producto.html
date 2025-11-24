@@ -370,14 +370,36 @@
       color: #591320;
     }
 
-    .bs-floor-calculator__checkbox {
+    .bs-floor-calculator__option-cards { display: grid; gap: 8px; }
+    .bs-floor-calculator__option-card {
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.8rem;
-      margin-bottom: 4px;
-      color: #4e413e;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid #e7dcd2;
+      border-radius: 10px;
+      background: #ffffff;
+      cursor: pointer;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
     }
+    .bs-floor-calculator__option-card:hover { border-color: #c6b7ad; box-shadow: 0 8px 16px rgba(89,19,32,0.08); }
+    .bs-floor-calculator__option-card.selected { border-color: #8c2a3e; box-shadow: 0 10px 18px rgba(89,19,32,0.12); background: #fff8f6; }
+    .bs-floor-calculator__option-card:focus-visible { outline: 2px solid #8c2a3e; outline-offset: 2px; }
+    .bs-floor-calculator__checkbox-input {
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border: 1px solid #c7b7af;
+      border-radius: 5px;
+      display: grid;
+      place-items: center;
+      background: #fff;
+      flex-shrink: 0;
+    }
+    .bs-floor-calculator__checkbox-input:checked { background: #8c2a3e; border-color: #8c2a3e; }
+    .bs-floor-calculator__checkbox-input:checked::after { content: ""; width: 7px; height: 7px; display: block; border-radius: 2px; background: #fff; }
+    .bs-floor-calculator__option-title { font-size: 0.85rem; color: #3e3330; font-weight: 600; }
+    .bs-floor-calculator__option-desc { font-size: 0.75rem; color: #6b5c57; margin-top: 2px; }
 
     .bs-floor-calculator__delivery-zone {
       margin-top: 4px;
@@ -726,15 +748,22 @@
         <div class="bs-floor-calculator__options">
           <h3>Optional services</h3>
 
-          <label class="bs-floor-calculator__checkbox">
-            <input type="checkbox" id="bs-include-install">
-            <span>Include installation estimate (2.50 $/sq ft)</span>
-          </label>
-
-          <label class="bs-floor-calculator__checkbox">
-            <input type="checkbox" id="bs-include-delivery">
-            <span>Include delivery</span>
-          </label>
+          <div class="bs-floor-calculator__option-cards">
+            <div class="bs-floor-calculator__option-card" data-checkbox="bs-include-install" role="button" tabindex="0" aria-pressed="false">
+              <input type="checkbox" id="bs-include-install" class="bs-floor-calculator__checkbox-input" aria-hidden="true">
+              <div>
+                <div class="bs-floor-calculator__option-title">Include installation estimate (2.50 $/sq ft)</div>
+                <div class="bs-floor-calculator__option-desc">Add a rough installation cost based on your area.</div>
+              </div>
+            </div>
+            <div class="bs-floor-calculator__option-card" data-checkbox="bs-include-delivery" role="button" tabindex="0" aria-pressed="false">
+              <input type="checkbox" id="bs-include-delivery" class="bs-floor-calculator__checkbox-input" aria-hidden="true">
+              <div>
+                <div class="bs-floor-calculator__option-title">Include delivery</div>
+                <div class="bs-floor-calculator__option-desc">Show delivery pricing by zone when available.</div>
+              </div>
+            </div>
+          </div>
 
           <div class="bs-floor-calculator__delivery-zone" id="bs-delivery-zone-wrap" style="display:none;">
             <label for="bs-delivery-zone">Delivery zone</label>
@@ -1113,6 +1142,34 @@
     let currentMode = "dims";
     let currentAreaSqft = 0;
 
+    function bindOptionCards() {
+      document.querySelectorAll(".bs-floor-calculator__option-card").forEach(card => {
+        const checkboxId = card.getAttribute("data-checkbox");
+        const checkbox = checkboxId ? document.getElementById(checkboxId) : null;
+        if (!checkbox) return;
+        const syncState = () => {
+          const checked = checkbox.checked;
+          card.classList.toggle("selected", checked);
+          card.setAttribute("aria-pressed", checked ? "true" : "false");
+        };
+        card.addEventListener("click", (e) => {
+          if (e.target === checkbox) return;
+          checkbox.checked = !checkbox.checked;
+          checkbox.dispatchEvent(new Event("change", { bubbles: true }));
+        });
+        card.addEventListener("keydown", (e) => {
+          if (e.key === " " || e.key === "Enter") {
+            e.preventDefault();
+            checkbox.checked = !checkbox.checked;
+            checkbox.dispatchEvent(new Event("change", { bubbles: true }));
+          }
+        });
+        checkbox.addEventListener("change", syncState);
+        syncState();
+      });
+    }
+
+    bindOptionCards();
     modeButtons.forEach(btn => {
       btn.addEventListener("click", () => {
         const mode = btn.getAttribute("data-mode");
