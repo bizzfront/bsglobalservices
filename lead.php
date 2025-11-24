@@ -34,6 +34,18 @@ function read_field(string $key, int $max = 255): string {
     return mb_substr($value, 0, $max);
 }
 
+function read_bool(string $key): bool {
+    if (!isset($_POST[$key])) {
+        return false;
+    }
+    $value = $_POST[$key];
+    if (is_string($value)) {
+        $value = strtolower($value);
+        return !in_array($value, ['false', '0', 'no', 'off', ''], true);
+    }
+    return (bool)$value;
+}
+
 $name = read_field('name');
 $email = read_field('email');
 $phone = read_field('phone');
@@ -47,7 +59,9 @@ $source = read_field('source');
 $city = read_field('city');
 $sessionID = read_field('sessionID', 1000);
 $cartRaw = $_POST['cart'] ?? '';
+$cartTotalsRaw = $_POST['cart_totals'] ?? '';
 $cartItems = json_decode($cartRaw, true);
+$cartTotals = json_decode($cartTotalsRaw, true);
 if (is_array($cartItems) && $cartItems) {
     $message .= "\n\nCart items:\n";
     foreach ($cartItems as $it) {
@@ -98,8 +112,22 @@ $formPayload = [
     'form_name' => $formName,
     'source' => $source,
     'city' => $city,
+    'client_type' => read_field('client_type'),
+    'space_type' => read_field('space_type'),
+    'space_status' => read_field('space_status'),
+    'floor_level' => read_field('floor_level'),
+    'access_notes' => read_field('access_notes'),
+    'delivery_preference' => read_field('delivery_preference'),
+    'delivery_notes' => read_field('delivery_notes'),
+    'start_date' => read_field('start_date'),
+    'timeframe' => read_field('timeframe'),
+    'area_size' => read_field('area_size'),
+    'rooms' => read_field('rooms'),
+    'consent_custom_quote' => read_bool('consent_custom_quote'),
+    'consent_whatsapp' => read_bool('consent_whatsapp'),
     'session_id' => $sessionID,
     'cart' => is_array($cartItems) ? $cartItems : ($cartRaw !== '' ? $cartRaw : null),
+    'cart_totals' => is_array($cartTotals) ? $cartTotals : ($cartTotalsRaw !== '' ? $cartTotalsRaw : null),
     'submitted_at' => gmdate('c'),
     'ip' => $_SERVER['REMOTE_ADDR'] ?? null,
     'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null,
