@@ -26,21 +26,26 @@ $heroSubtitle = $type === 'molding'
     :root {
       --store-radius-lg: 18px;
       --store-radius-md: 12px;
+      --store-radius-sm: 8px;
       --store-shadow: 0 10px 24px rgba(0,0,0,0.08);
+      --store-border: #ded4cc;
+      --store-muted: #7a7270;
+      --store-bg: #f6f2ec;
+      --store-ink: #1f1f1f;
     }
 
-    .store-shell { background:#f6f2ec; }
+    .store-shell { background:var(--store-bg); color:var(--store-ink); }
 
     .store-hero-new {
       background: linear-gradient(120deg, #f5ebdd, #fffdfa);
       border-bottom: 1px solid rgba(0,0,0,0.04);
-      padding: 32px 0 22px;
-      margin-bottom: 10px;
+      padding: 28px 0 18px;
+      margin-bottom: 0;
     }
     .store-hero-inner { display:flex; flex-direction:column; gap:12px; }
     .store-hero-top { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap; }
     .store-hero-title { color: var(--burgundy); font-size:1.7rem; margin:0; }
-    .store-hero-sub { color:#7a7270; max-width:620px; }
+    .store-hero-sub { color:#7a7270; max-width:680px; }
     .store-hero-pills { display:flex; flex-wrap:wrap; gap:8px; }
     .store-hero-pills .pill { background:#fff; color:#4a3c39; border:1px solid #ded4cc; padding:6px 12px; border-radius:999px; font-size:0.9rem; }
     .store-type-switch { display:flex; gap:10px; flex-wrap:wrap; }
@@ -48,29 +53,54 @@ $heroSubtitle = $type === 'molding'
     .store-promo .promo-card { background:#fff; padding:10px 14px; border-radius:var(--store-radius-md); border:1px solid rgba(0,0,0,0.04); box-shadow:var(--store-shadow); font-size:0.9rem; display:flex; align-items:center; gap:8px; }
 
     .store-toolbar { background:#fbf8f4; border-bottom:1px solid rgba(0,0,0,0.04); }
-    .store-filter-bar { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; padding:14px 0; }
-    .store-filter-bar label { display:flex; flex-direction:column; gap:6px; font-size:0.9rem; color:#4a3c39; }
-    .store-filter-bar select, .store-filter-bar input { padding:11px 12px; border-radius:10px; border:1px solid #cfc5bd; background:#fff; min-width:140px; }
-    .store-toolbar-actions { display:flex; gap:10px; align-items:center; margin-left:auto; }
-    .store-toolbar-actions .muted { color:#7a7270; font-size:0.9rem; }
+    .store-toolbar-inner { display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:12px 0; font-size:0.92rem; }
+    .breadcrumb { color:var(--store-muted); }
+    .breadcrumb span { color:var(--burgundy); font-weight:600; }
+    .store-toolbar-actions { display:flex; gap:10px; align-items:center; margin-left:auto; flex-wrap:wrap; }
+    .store-toolbar-actions label { color:var(--store-muted); font-size:0.88rem; }
+    .store-toolbar .select { padding:9px 12px; border-radius:999px; border:1px solid var(--store-border); background:#fff; min-width:150px; }
+    .store-toolbar .pill { background:#fff; border:1px solid var(--store-border); border-radius:999px; padding:8px 12px; color:#4a3c39; }
 
-    .store-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap:16px; margin-top:18px; }
-    .store-card-new { background:#fff; border-radius:var(--store-radius-lg); overflow:hidden; box-shadow:var(--store-shadow); display:flex; flex-direction:column; border:1px solid rgba(0,0,0,0.02); }
-    .store-card-img { padding-top:62%; background-size:cover; background-position:center; position:relative; }
+    .store-main { display:grid; grid-template-columns:280px minmax(0, 1fr); gap:18px; margin:18px 0 32px; align-items:start; }
+    .filters-panel { position:sticky; top:90px; }
+    .filter-card { background:#fff; border:1px solid rgba(0,0,0,0.06); box-shadow:var(--store-shadow); border-radius:var(--store-radius-lg); padding:16px; display:flex; flex-direction:column; gap:12px; }
+    .filter-card header { display:flex; justify-content:space-between; align-items:center; font-weight:600; color:#3a2e2b; }
+    .filter-title { font-weight:600; color:#3a2e2b; margin-bottom:6px; }
+    .filter-group { border-top:1px solid rgba(0,0,0,0.05); padding-top:10px; }
+    .filter-group:first-of-type { border-top:none; padding-top:0; }
+    .filter-options { display:flex; flex-direction:column; gap:6px; color:#4a3c39; font-size:0.95rem; }
+    .filter-options label { display:flex; align-items:center; gap:8px; cursor:pointer; }
+    .filter-options input { accent-color: var(--burgundy); width:16px; height:16px; }
+    .filter-links { display:flex; gap:8px; flex-wrap:wrap; }
+    .filter-pill { padding:8px 12px; border-radius:999px; border:1px solid var(--store-border); background:#fff; color:#4a3c39; font-weight:600; }
+    .filter-pill.active { background:var(--burgundy); border-color:var(--burgundy); color:#fff; }
+    .clear-btn { background:none; border:none; color:var(--burgundy); font-weight:600; cursor:pointer; }
+
+    .store-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap:16px; margin-top:10px; }
+    .store-card-new { background:#fff; border-radius:var(--store-radius-lg); overflow:hidden; box-shadow:var(--store-shadow); display:flex; flex-direction:column; border:1px solid rgba(0,0,0,0.02); transition:transform 0.15s ease, box-shadow 0.15s ease; }
+    .store-card-new:hover { transform:translateY(-3px); box-shadow:0 14px 30px rgba(0,0,0,0.10); }
+    .store-card-img { padding-top:62%; background-size:cover; background-position:center; position:relative; display:block; }
     .store-tag { position:absolute; top:12px; left:12px; background:#591320; color:#fff; padding:6px 10px; border-radius:10px; font-size:0.8rem; }
     .store-tag.backorder { background:#cda349; color:#1f1f1f; }
     .store-card-body { padding:16px; display:flex; flex-direction:column; gap:10px; }
     .store-card-body h3 { margin:0; font-size:1.05rem; color:#1f1f1f; }
     .store-meta { color:#6a605e; font-size:0.9rem; }
+    .store-meta strong { color:#3a2e2b; }
     .store-prices { display:flex; flex-direction:column; gap:4px; }
     .store-price-line { display:flex; align-items:center; gap:8px; font-size:0.95rem; }
     .store-price-line b { color:#591320; }
-    .store-cta-row { display:flex; gap:8px; flex-wrap:wrap; }
+    .store-cta-row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
     .store-cta-row input { width:96px; }
     .store-badges { display:flex; flex-wrap:wrap; gap:6px; }
-    .store-badge-new { background:#f6f2ec; padding:6px 10px; border-radius:10px; font-size:0.85rem; color:#5a504e; }
+    .store-badge-new { background:#f6f2ec; padding:6px 10px; border-radius:10px; font-size:0.85rem; color:#5a504e; border:1px solid rgba(0,0,0,0.04); }
+
+    @media (max-width: 1050px){
+      .store-main { grid-template-columns:1fr; }
+      .filters-panel { position:static; }
+    }
     @media (max-width: 880px){
       .store-grid { grid-template-columns: repeat(auto-fill, minmax(210px,1fr)); }
+      .store-toolbar .select { min-width:130px; }
     }
   </style>
 </head>
@@ -103,52 +133,79 @@ $heroSubtitle = $type === 'molding'
 </section>
 <div class="store-toolbar">
   <div class="container">
-    <div class="store-filter-bar">
-      <?php if($type === 'flooring'): ?>
-      <label>Color
-        <select id="fColor">
-          <option value="">All</option>
-          <option>Gray</option>
-          <option>Brown</option>
-          <option>Beige</option>
-        </select>
-      </label>
-      <label>Tone
-        <select id="fTone">
-          <option value="">All</option>
-          <option>Light</option>
-          <option>Medium</option>
-          <option>Dark</option>
-        </select>
-      </label>
-      <label>Thickness min (mm)
-        <input id="fThkMin" type="number" step="0.1" placeholder="5.0">
-      </label>
-      <label>Wear layer min (mil)
-        <input id="fWearMin" type="number" step="1" placeholder="12">
-      </label>
-      <?php endif; ?>
-      <label>Availability
-        <select id="fAvail">
-          <option value="">Stock & order-in</option>
-          <option value="stock">In stock</option>
-          <option value="backorder">Order-in</option>
-        </select>
-      </label>
-      <button id="clearFilters" class="btn btn-ghost" type="button">Reset filters</button>
+    <div class="store-toolbar-inner">
+      <div class="breadcrumb">Home &gt; <span>Store</span></div>
+      <span class="pill" id="resultSummary">Showing 0 products</span>
       <div class="store-toolbar-actions">
-        <label for="sortSel" class="muted">Sort</label>
-        <select id="sortSel">
-          <option value="relevance" selected>Relevance</option>
-          <option value="price-asc">Price (low → high)</option>
-          <option value="price-desc">Price (high → low)</option>
-        </select>
+        <div>
+          <label for="typeSwitch">Category</label><br />
+          <select id="typeSwitch" class="select">
+            <option value="flooring" <?= $type === 'flooring' ? 'selected' : '' ?>>Floors</option>
+            <option value="molding" <?= $type === 'molding' ? 'selected' : '' ?>>Moldings &amp; Trim</option>
+          </select>
+        </div>
+        <div>
+          <label for="sortSel">Sort by</label><br />
+          <select id="sortSel" class="select">
+            <option value="relevance" selected>Recommended</option>
+            <option value="price-asc">Price (low → high)</option>
+            <option value="price-desc">Price (high → low)</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>
 </div>
 <div class="container">
-  <section id="store-grid" class="store-grid" aria-live="polite"></section>
+  <div class="store-main">
+    <aside class="filters-panel">
+      <div class="filter-card">
+        <header>
+          <span>Filters</span>
+          <button id="clearFilters" class="clear-btn" type="button">Clear</button>
+        </header>
+        <div class="filter-group">
+          <div class="filter-title">Category</div>
+          <div class="filter-links">
+            <a class="filter-pill <?= $type === 'flooring' ? 'active' : '' ?>" href="?type=flooring">Floors</a>
+            <a class="filter-pill <?= $type === 'molding' ? 'active' : '' ?>" href="?type=molding">Moldings &amp; Trim</a>
+          </div>
+        </div>
+        <div class="filter-group">
+          <div class="filter-title">Availability</div>
+          <div class="filter-options">
+            <label><input type="checkbox" class="filter-availability" value="stock" /> In stock</label>
+            <label><input type="checkbox" class="filter-availability" value="backorder" /> Order-in (7–30 days)</label>
+            <label><input type="checkbox" class="filter-availability" value="nextday" /> Next day (&lt; 7 days)</label>
+          </div>
+        </div>
+        <?php if($type === 'flooring'): ?>
+        <div class="filter-group">
+          <div class="filter-title">Color &amp; Tone</div>
+          <div class="filter-options">
+            <label><input type="checkbox" class="filter-color" value="Light" /> Light</label>
+            <label><input type="checkbox" class="filter-color" value="Medium" /> Medium</label>
+            <label><input type="checkbox" class="filter-color" value="Dark" /> Dark</label>
+            <label><input type="checkbox" class="filter-color" value="Brown" /> Brown</label>
+            <label><input type="checkbox" class="filter-color" value="Gray" /> Gray</label>
+            <label><input type="checkbox" class="filter-color" value="Neutral" /> Neutral</label>
+            <label><input type="checkbox" class="filter-color" value="White" /> White</label>
+          </div>
+        </div>
+        <div class="filter-group">
+          <div class="filter-title">Specs</div>
+          <div class="filter-options">
+            <label><input id="fThkMin" type="number" step="0.1" placeholder="Thickness ≥ mm" style="width:100%; padding:9px 10px; border-radius:8px; border:1px solid var(--store-border);" /></label>
+            <label><input id="fWearMin" type="number" step="1" placeholder="Wear layer ≥ mil" style="width:100%; padding:9px 10px; border-radius:8px; border:1px solid var(--store-border);" /></label>
+          </div>
+        </div>
+        <?php endif; ?>
+      </div>
+    </aside>
+    <div>
+      <section id="store-grid" class="store-grid" aria-live="polite"></section>
+    </div>
+  </div>
 </div>
 <?php include $base.'includes/footer.php'; ?>
 <script src="cart.js"></script>
