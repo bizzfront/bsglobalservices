@@ -118,10 +118,7 @@ $contact_source = 'website_store';
             <div class="cart-service-card__desc">Choose delivery or warehouse pick-up for this project.</div>
             <label class="summary-toggle" for="delivery-toggle">
               <input type="checkbox" id="delivery-toggle" checked />
-              <div class="summary-toggle__content">
-                <div class="summary-toggle__title">Include delivery</div>
-                <div class="summary-toggle__desc">We’ll arrange drop-off for this project. Uncheck if you prefer warehouse pick-up.</div>
-              </div>
+              <span>I’d like B&S to handle delivery for this project.</span>
             </label>
             <div class="cart-service-card__select">
               <select id="delivery-zone" class="cart-actions-select"></select>
