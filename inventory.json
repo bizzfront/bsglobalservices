@@ -1,0 +1,52 @@
+{
+  "__defaults": {
+    "mode": "stock",
+    "stockAvailable": 500,
+    "allowBackorder": true,
+    "backorderLeadTimeDays": 21,
+    "backorderNote": "Special order ships once it arrives at our warehouse.",
+    "install": {
+      "flooringRate": 2.5,
+      "moldingRate": 1.25
+    },
+    "deliveryZones": [
+      { "id": "orlando", "label": "Orlando / Kissimmee", "fee": 120 },
+      { "id": "meadow", "label": "Meadow Woods / Lake Nona", "fee": 95 },
+      { "id": "pick-up", "label": "Warehouse pick-up", "fee": 0 }
+    ]
+  },
+  "crystal": {
+    "mode": "stock",
+    "stockAvailable": 280,
+    "allowBackorder": true,
+    "backorderLeadTimeDays": 18,
+    "install": { "flooringRate": 2.6 },
+    "notes": ["High-turn floor kept ready for fast installs"],
+    "deliveryZones": [
+      { "id": "orlando", "label": "Orlando / Kissimmee", "fee": 105 },
+      { "id": "meadow", "label": "Meadow Woods / Lake Nona", "fee": 90 },
+      { "id": "pick-up", "label": "Warehouse pick-up", "fee": 0 }
+    ]
+  },
+  "berlin": {
+    "mode": "stock",
+    "stockAvailable": 150,
+    "allowBackorder": true,
+    "backorderLeadTimeDays": 14,
+    "notes": ["Bulk orders auto switch to backorder pricing"],
+    "install": { "flooringRate": 2.45 }
+  },
+  "venice_mld": {
+    "mode": "stock",
+    "stockAvailable": 900,
+    "allowBackorder": true,
+    "backorderLeadTimeDays": 10,
+    "install": { "moldingRate": 1.35 },
+    "notes": ["Trim line paired with Venice floor"],
+    "deliveryZones": [
+      { "id": "orlando", "label": "Orlando / Kissimmee", "fee": 80 },
+      { "id": "meadow", "label": "Meadow Woods / Lake Nona", "fee": 70 },
+      { "id": "pick-up", "label": "Warehouse pick-up", "fee": 0 }
+    ]
+  }
+}
