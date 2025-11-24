@@ -37,7 +37,11 @@ $contact_source = 'website_store';
     .cart-service-card--install { cursor:pointer; }
     .cart-service-card--delivery { align-items:flex-start; }
     .cart-service-card--delivery .cart-service-card__control { flex:1; display:flex; flex-direction:column; gap:6px; align-items:flex-start; }
-    .cart-service-card--delivery select { width:100%; min-width:180px; }
+    .cart-service-card--delivery .cart-service-card__title { color:#5a1620; }
+    .cart-service-card--delivery .cart-service-card__desc { color:#6a605e; font-size:0.9rem; }
+    .cart-service-card--delivery .cart-service-card__select { width:100%; }
+    .cart-service-card--delivery select { width:100%; min-width:180px; padding:10px; border-radius:10px; border:1px solid #d2c8c1; }
+    .cart-service-card--delivery .summary-toggle { gap:10px; }
     .badge { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; font-size:0.78rem; font-weight:650; background:#f3e7dc; color:#5c3a28; }
     .badge.stock { background:#eef9f0; color:#2d7a42; }
     .badge.backorder { background:#f6e6e7; color:#5a1620; }
@@ -101,13 +105,20 @@ $contact_source = 'website_store';
         </div>
         <p class="summary-note" id="summary-note">Final quote may adjust based on exact measurements, delivery zone and scheduling.</p>
         <div class="summary-divider"></div>
-        <div class="cart-summary-title" style="font-size:0.98rem;">Delivery & zone</div>
-        <label class="summary-toggle" for="delivery-toggle">
-          <input type="checkbox" id="delivery-toggle" checked />
-          <span>I’d like B&S to handle delivery for this project.</span>
-        </label>
-        <select id="delivery-zone" class="cart-actions-select" style="width:100%; margin:8px 0 6px; padding:10px; border-radius:10px; border:1px solid #d2c8c1;"></select>
-        <p class="summary-note" id="delivery-note"></p>
+        <div class="cart-service-card cart-service-card--delivery" role="group" aria-labelledby="delivery-title">
+          <div class="cart-service-card__control">
+            <div class="cart-service-card__title" id="delivery-title">Delivery & zone</div>
+            <div class="cart-service-card__desc">Choose delivery or warehouse pick-up for this project.</div>
+            <label class="summary-toggle" for="delivery-toggle">
+              <input type="checkbox" id="delivery-toggle" checked />
+              <span>I’d like B&S to handle delivery for this project.</span>
+            </label>
+            <div class="cart-service-card__select">
+              <select id="delivery-zone" class="cart-actions-select"></select>
+            </div>
+            <p class="summary-note" id="delivery-note" style="margin:2px 0 0 0;"></p>
+          </div>
+        </div>
         <div class="cart-footer-actions">
           <button type="button" id="go-project" class="btn btn-primary" style="flex:1;">Continue to project details</button>
           <button type="button" class="btn btn-ghost" style="flex:1;" onclick="window.location.href='index.php'">Back to store</button>
