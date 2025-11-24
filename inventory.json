@@ -36,7 +36,7 @@
     "notes": ["Bulk orders auto switch to backorder pricing"],
     "install": { "flooringRate": 2.45 }
   },
-  "venice_mld": {
+  "board-cedar-white-primed-1x4-12ft-1x4in": {
     "mode": "stock",
     "stockAvailable": 900,
     "allowBackorder": true,
