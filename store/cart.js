@@ -17,7 +17,9 @@
       sanitized.push({
         sku,
         quantity,
-        priceType: normalizePriceType(raw.priceType)
+        priceType: normalizePriceType(raw.priceType),
+        install: !!raw.install,
+        deliveryZone: typeof raw.deliveryZone === 'string' ? raw.deliveryZone : null
       });
     }
     return sanitized;
@@ -45,30 +47,48 @@
   }
 
   const api = {
-    addItem(sku, qty, priceType){
+    addItem(sku, qty, priceType, options){
       if(!sku) return;
       qty = parseInt(qty) || 1;
       const normalizedType = normalizePriceType(priceType);
+      const opts = options && typeof options === 'object' ? options : {};
       const cart = load();
       const item = cart.items.find(i => i.sku === sku && i.priceType === normalizedType);
       if(item){
         item.quantity += qty;
+        if(typeof opts.install === 'boolean') item.install = opts.install;
+        if(typeof opts.deliveryZone === 'string') item.deliveryZone = opts.deliveryZone;
       }else{
-        cart.items.push({sku, quantity: qty, priceType: normalizedType});
+        cart.items.push({
+          sku,
+          quantity: qty,
+          priceType: normalizedType,
+          install: !!opts.install,
+          deliveryZone: typeof opts.deliveryZone === 'string' ? opts.deliveryZone : null
+        });
       }
       cart.createdAt = Date.now();
       save(cart);
       notify();
     },
-    setItem(sku, qty, priceType){
+    setItem(sku, qty, priceType, options){
       qty = parseInt(qty) || 1;
       const normalizedType = normalizePriceType(priceType);
+      const opts = options && typeof options === 'object' ? options : {};
       const cart = load();
       const item = cart.items.find(i => i.sku === sku && i.priceType === normalizedType);
       if(item){
         item.quantity = qty;
+        if(typeof opts.install === 'boolean') item.install = opts.install;
+        if(typeof opts.deliveryZone === 'string') item.deliveryZone = opts.deliveryZone;
       }else{
-        cart.items.push({sku, quantity: qty, priceType: normalizedType});
+        cart.items.push({
+          sku,
+          quantity: qty,
+          priceType: normalizedType,
+          install: !!opts.install,
+          deliveryZone: typeof opts.deliveryZone === 'string' ? opts.deliveryZone : null
+        });
       }
       cart.createdAt = Date.now();
       save(cart);

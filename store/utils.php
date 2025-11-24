@@ -26,9 +26,47 @@ function parse_store_numeric($value): ?float
     return null;
 }
 
+function load_store_config(): array
+{
+    static $cache = null;
+    if ($cache !== null) {
+        return $cache;
+    }
+
+    $configPath = __DIR__ . '/../store_config.json';
+    $cache = json_decode(@file_get_contents($configPath), true) ?: [];
+    return $cache;
+}
+
+function load_store_inventory_index(): array
+{
+    static $cache = null;
+    if ($cache !== null) {
+        return $cache;
+    }
+
+    $inventoryPath = __DIR__ . '/../inventory.json';
+    $cache = json_decode(@file_get_contents($inventoryPath), true) ?: [];
+    return $cache;
+}
+
+function merge_inventory(array $product): array
+{
+    $inventoryIndex = load_store_inventory_index();
+    $defaults = $inventoryIndex['__defaults'] ?? [];
+    $sku = $product['sku'] ?? null;
+    $productInventory = $sku && isset($inventoryIndex[$sku]) ? $inventoryIndex[$sku] : [];
+
+    $inventory = array_merge($defaults, $productInventory);
+    $product['inventory'] = $inventory;
+
+    return $product;
+}
+
 function enrich_store_product(array $product): array
 {
     $type = $product['product_type'] ?? 'flooring';
+    $product = merge_inventory($product);
 
     if (!isset($product['package_label']) || !isset($product['package_label_plural'])) {
         if ($type === 'molding') {
@@ -147,6 +185,34 @@ function enrich_store_product(array $product): array
         }
     }
 
+    $stockPrice = $product['computed_price_per_unit_stock'] ?? $product['computed_price_per_unit'] ?? $product['price_per_unit'] ?? $product['price_sqft'] ?? null;
+    $backorderPrice = $product['computed_price_per_unit_backorder'] ?? null;
+    $product['pricing'] = [
+        'finalPriceStockPerUnit' => $stockPrice !== null ? (float) $stockPrice : null,
+        'finalPriceBackorderPerUnit' => $backorderPrice !== null ? (float) $backorderPrice : null,
+    ];
+
+    $inventory = $product['inventory'] ?? [];
+    $product['availability'] = [
+        'mode' => $inventory['mode'] ?? 'stock',
+        'stockAvailable' => $inventory['stockAvailable'] ?? null,
+        'allowBackorder' => $inventory['allowBackorder'] ?? true,
+        'backorderLeadTimeDays' => $inventory['backorderLeadTimeDays'] ?? null,
+        'notes' => $inventory['notes'] ?? [],
+    ];
+
+    $installDefaults = load_store_config()['install'] ?? [];
+    $product['services'] = [
+        'installRate' => $type === 'molding'
+            ? ($inventory['install']['moldingRate'] ?? $installDefaults['defaultMoldingRate'] ?? null)
+            : ($inventory['install']['flooringRate'] ?? $installDefaults['defaultFlooringRate'] ?? null),
+    ];
+
+    $deliveryDefaults = load_store_config()['delivery']['zones'] ?? [];
+    $product['delivery'] = [
+        'zones' => $inventory['deliveryZones'] ?? $deliveryDefaults,
+    ];
+
     return $product;
 }
 
@@ -170,4 +236,51 @@ function load_store_products(): array
 
     $cache = $all;
     return $cache;
+}
+
+function normalize_store_product(array $product): array
+{
+    $config = load_store_config();
+    $measurementUnit = strtolower($product['measurement_unit'] ?? ($product['product_type'] === 'molding' ? 'lf' : 'sqft'));
+    $packageCoverage = $product['computed_coverage_per_package'] ?? $product['coverage_per_box'] ?? $product['sqft_per_box'] ?? null;
+    $packageCoverage = parse_store_numeric($packageCoverage);
+    $packageCoverage = $packageCoverage !== null && $packageCoverage > 0 ? $packageCoverage : null;
+
+    $stockPrice = $product['pricing']['finalPriceStockPerUnit'] ?? null;
+    $backorderPrice = $product['pricing']['finalPriceBackorderPerUnit'] ?? null;
+
+    return [
+        'sku' => $product['sku'] ?? '',
+        'name' => $product['name'] ?? '',
+        'description' => $product['description'] ?? ($product['collection'] ?? ''),
+        'productType' => $product['product_type'] ?? 'flooring',
+        'category' => $product['category'] ?? null,
+        'collection' => $product['collection'] ?? null,
+        'brand' => $product['brand'] ?? null,
+        'colorFamily' => $product['colorFamily'] ?? null,
+        'tone' => $product['tone'] ?? null,
+        'thickness' => $product['thickness_mm'] ?? null,
+        'wearLayer' => $product['wear_layer_mil'] ?? null,
+        'widthIn' => $product['width_in'] ?? null,
+        'lengthIn' => $product['length_in'] ?? null,
+        'measurementUnit' => $measurementUnit,
+        'packageLabel' => $product['package_label'] ?? ($product['product_type'] === 'molding' ? 'package' : 'box'),
+        'packageLabelPlural' => $product['package_label_plural'] ?? ($product['product_type'] === 'molding' ? 'packages' : 'boxes'),
+        'packageCoverage' => $packageCoverage,
+        'core' => $product['core'] ?? null,
+        'pad' => $product['pad'] ?? null,
+        'padMaterial' => $product['pad_material'] ?? null,
+        'images' => array_values(array_filter([$product['image'] ?? null, $product['hoverImage'] ?? null])),
+        'pricing' => [
+            'finalPriceStockPerUnit' => $stockPrice !== null ? (float) $stockPrice : null,
+            'finalPriceBackorderPerUnit' => $backorderPrice !== null ? (float) $backorderPrice : null,
+            'pricePerPackageStock' => isset($product['computed_price_per_package_stock']) ? (float) $product['computed_price_per_package_stock'] : (isset($packageCoverage, $stockPrice) ? (float) $stockPrice * $packageCoverage : null),
+            'pricePerPackageBackorder' => isset($product['computed_price_per_package_backorder']) ? (float) $product['computed_price_per_package_backorder'] : (isset($packageCoverage, $backorderPrice) ? (float) $backorderPrice * $packageCoverage : null),
+        ],
+        'availability' => $product['availability'] ?? [],
+        'services' => $product['services'] ?? [],
+        'delivery' => $product['delivery'] ?? ['zones' => $config['delivery']['zones'] ?? []],
+        'badges' => $product['badges'] ?? [],
+        'notes' => $product['notes'] ?? [],
+    ];
 }

@@ -106,6 +106,8 @@ $formatNumber = static function($value) {
   return rtrim(rtrim($formatted, '0'), '.');
 };
 $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue) . ' ' . ($unitLabels[$measurementUnit] ?? $measurementUnit) . ' / ' . $packageLabelSingular : '';
+$normalizedProduct = normalize_store_product($product);
+$storeConfig = load_store_config();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -205,6 +207,17 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue
               <?= htmlspecialchars(ucfirst($packageLabelPlural)) ?>
               <input type="number" id="calcBoxes" min="1" value="1">
             </label>
+            <div class="full" style="display:flex; align-items:center; gap:10px; margin-top:6px;">
+              <input type="checkbox" id="calcInstall"> <span>Add installation (uses project rates)</span>
+            </div>
+            <label class="full">
+              Delivery / pick-up
+              <select id="calcDelivery">
+                <?php foreach(($normalizedProduct['delivery']['zones'] ?? ($storeConfig['delivery']['zones'] ?? [])) as $zone): ?>
+                  <option value="<?= htmlspecialchars($zone['id'] ?? '') ?>"><?= htmlspecialchars(($zone['label'] ?? 'Zone').' '.(isset($zone['fee']) ? ' — $'.number_format((float)$zone['fee'], 2) : '')) ?></option>
+                <?php endforeach; ?>
+              </select>
+            </label>
             <p id="calcSummary" class="note full"></p>
             <button type="button" id="addToCart" class="btn btn-primary full">Add to cart</button>
           </form>
@@ -290,6 +303,8 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue
     const PACKAGE_LABEL = <?= json_encode($packageLabelSingular) ?>;
     const PACKAGE_LABEL_PLURAL = <?= json_encode($packageLabelPlural) ?>;
     const COVERAGE_PER_PACKAGE = <?= json_encode($coveragePerBoxValue) ?>;
+    const NORMALIZED_PRODUCT = <?= json_encode($normalizedProduct) ?>;
+    const STORE_CONFIG = <?= json_encode($storeConfig) ?>;
     const PRICE_MODES = <?= json_encode($priceModesData) ?>;
     const PRICE_MODE_KEYS = Object.keys(PRICE_MODES);
     let currentPriceMode = <?= json_encode($defaultPriceMode) ?>;
@@ -415,6 +430,27 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue
         pricePerPackage = coveragePerPackage > 0 && pricePerUnit > 0 ? coveragePerPackage * pricePerUnit : 0;
       }
       const totalPrice = boxes > 0 && pricePerPackage > 0 ? boxes * pricePerPackage : 0;
+      const installSelected = document.getElementById('calcInstall')?.checked;
+      const deliveryZone = document.getElementById('calcDelivery')?.value;
+      let installTotal = 0;
+      const installRate = PRODUCT_TYPE === 'molding'
+        ? (NORMALIZED_PRODUCT?.services?.installRate ?? STORE_CONFIG?.install?.defaultMoldingRate)
+        : (NORMALIZED_PRODUCT?.services?.installRate ?? STORE_CONFIG?.install?.defaultFlooringRate);
+      if(installSelected){
+        const unitsForInstall = Number(unitsNeeded || (boxes > 0 && coveragePerPackage > 0 ? boxes * coveragePerPackage : 0));
+        if(Number.isFinite(installRate) && Number.isFinite(unitsForInstall)){
+          installTotal = installRate * unitsForInstall;
+        }
+      }
+      let deliveryTotal = 0;
+      if(deliveryZone){
+        const zones = NORMALIZED_PRODUCT?.delivery?.zones || STORE_CONFIG?.delivery?.zones || [];
+        const zone = zones.find(z=>z.id === deliveryZone);
+        if(zone && Number.isFinite(Number(zone.fee))){
+          deliveryTotal = Number(zone.fee);
+        }
+      }
+      const grandTotal = totalPrice + installTotal + deliveryTotal;
       const summaryParts = [];
       if(boxes > 0){
         const pkgLabel = boxes === 1 ? (PACKAGE_LABEL || 'box') : (PACKAGE_LABEL_PLURAL || ((PACKAGE_LABEL || 'box') + 'es'));
@@ -430,6 +466,15 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue
       if(totalPrice > 0){
         summaryParts.push(`$${totalPrice.toFixed(2)}`);
       }
+      if(installTotal > 0){
+        summaryParts.push(`Install $${installTotal.toFixed(2)}`);
+      }
+      if(deliveryZone){
+        summaryParts.push(`Delivery $${deliveryTotal.toFixed(2)}`);
+      }
+      if(grandTotal > totalPrice){
+        summaryParts.push(`Est. total $${grandTotal.toFixed(2)}`);
+      }
       document.getElementById('calcSummary').textContent = summaryParts.join(' — ');
       return boxes;
     }
@@ -437,6 +482,8 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue
       const el = document.getElementById(id);
       if(el) el.addEventListener('input', ()=>updateCalc(id));
     });
+    document.getElementById('calcInstall')?.addEventListener('change', ()=>updateCalc());
+    document.getElementById('calcDelivery')?.addEventListener('change', ()=>updateCalc());
     document.querySelectorAll('input[name="price_mode"]').forEach(input=>{
       input.addEventListener('change', ()=>{
         if(input.checked){
@@ -450,7 +497,9 @@ $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue
       if(boxes>0){
         const selectedMode = document.querySelector('input[name="price_mode"]:checked');
         const priceType = selectedMode ? selectedMode.value : currentPriceMode;
-        cart.addItem(SKU, boxes, priceType || 'stock');
+        const installSelected = document.getElementById('calcInstall')?.checked;
+        const deliveryZone = document.getElementById('calcDelivery')?.value || null;
+        cart.addItem(SKU, boxes, priceType || 'stock', {install: installSelected, deliveryZone});
       }
     });
     updateCalc();
