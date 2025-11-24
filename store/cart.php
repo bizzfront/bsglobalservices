@@ -50,8 +50,6 @@ $contact_source = 'website_store';
     .summary-note { color:#7a6a62; font-size:0.88rem; line-height:1.4; margin-bottom:8px; }
     .summary-toggle { display:flex; gap:8px; align-items:flex-start; color:#4b4240; }
     .summary-toggle input { margin-top:3px; }
-    .cart-form label { display:block; margin-top:10px; font-weight:600; color:#4b4240; }
-    .cart-form input, .cart-form textarea, .cart-form select { width:100%; padding:10px; border:1px solid #d2c8c1; border-radius:10px; margin-top:4px; }
     .cart-empty { padding:16px; text-align:center; color:#6a605e; }
     .cart-actions .price-note { color:#7a6a62; font-size:0.84rem; margin-top:2px; display:block; }
     .cart-footer-actions { display:flex; gap:8px; flex-wrap:wrap; }
@@ -115,32 +113,6 @@ $contact_source = 'website_store';
           <button type="button" class="btn btn-ghost" style="flex:1;" onclick="window.location.href='index.php'">Back to store</button>
         </div>
         <p class="summary-note" style="margin-top:8px;">By continuing, you’ll send this project to our team. No payment is made on this page.</p>
-      </section>
-      <section class="cart-card">
-        <form id="cart-form" action="<?=$base?>lead.php" method="POST" class="cart-form">
-          <h4 style="color:var(--burgundy);">Quick send</h4>
-          <label for="name-cart">Full name</label>
-          <input id="name-cart" name="name" required />
-          <label for="phone-cart">Phone / WhatsApp</label>
-          <input id="phone-cart" name="phone" required />
-          <label for="email-cart">Email</label>
-          <input id="email-cart" type="email" name="email" required />
-          <label for="project-type">Project type</label>
-          <select id="project-type" name="project_type">
-            <option value="">Select</option>
-            <option>Residential</option>
-            <option>Commercial</option>
-            <option>Remodel</option>
-          </select>
-          <label for="message-cart">Notes</label>
-          <textarea id="message-cart" name="message" rows="3" placeholder="Delivery address, timeline, stair count…"></textarea>
-          <input type="hidden" name="service" value="order" />
-          <input type="hidden" name="form_name" value="B&S – Cart order" />
-          <input type="hidden" name="source" value="<?=$contact_source?>" />
-          <input type="hidden" name="cart" id="cart-field" />
-          <button type="submit" class="btn btn-ghost" style="width:100%; margin-top:10px;" id="send-cart">Send project now</button>
-          <p id="cart-status" class="note" aria-live="polite"></p>
-        </form>
       </section>
     </aside>
   </div>
@@ -296,7 +268,6 @@ function renderCart(){
   empty.style.display = 'none';
   const project = serializeProject(items);
   localStorage.setItem(PROJECT_KEY, JSON.stringify(project));
-  document.getElementById('cart-field').value = JSON.stringify(project);
   container.innerHTML = project.items.map(it=>{
     const p = it.product;
     const unit = p.measurementUnit === 'lf' ? 'lf' : p.measurementUnit === 'piece' ? 'piece' : 'sqft';
@@ -421,34 +392,6 @@ document.getElementById('delivery-zone')?.addEventListener('change', (e)=>{
 refreshDeliveryControls();
 renderCart();
 
-['name-cart','phone-cart','email-cart'].forEach(id=>{
-  const el = document.getElementById(id);
-  if(!el) return;
-  const saved = localStorage.getItem('cart_'+id);
-  if(saved) el.value = saved;
-  el.addEventListener('input', ()=>localStorage.setItem('cart_'+id, el.value));
-});
-
-document.getElementById('cart-form')?.addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  const form = e.currentTarget;
-  const status = document.getElementById('cart-status');
-  status.textContent = 'Sending…';
-  const formData = new FormData(form);
-  form.querySelectorAll('button,input,select,textarea').forEach(el=>el.disabled=true);
-  try{
-    const res = await fetch(form.action, {method:'POST', body: formData});
-    const data = await res.json();
-    status.textContent = data.data || 'Request sent';
-    if(res.ok){
-      cart.clear();
-    }
-  }catch(err){
-    status.textContent = 'Something went wrong. Please try again.';
-  }finally{
-    form.querySelectorAll('button,input,select,textarea').forEach(el=>el.disabled=false);
-  }
-});
 </script>
 </body>
 </html>
