@@ -46,6 +46,9 @@ $packageLabelPlural = $product['package_label_plural'] ?? ($isFlooring ? 'boxes'
 $unitLabel = $unitLabels[$measurementUnit] ?? $measurementUnit;
 $unitSuffix = $measurementUnit === 'lf' ? '/lf' : ($measurementUnit === 'piece' ? '/piece' : '/sqft');
 $coveragePerBoxValue = $product['computed_coverage_per_package'] ?? $product['coverage_per_box'] ?? $product['sqft_per_box'] ?? null;
+$stockAvailableValue = isset($product['availability']['stockAvailable']) ? (float)$product['availability']['stockAvailable'] : null;
+$hasInventoryAvailable = $stockAvailableValue !== null && $stockAvailableValue > 0;
+$activePriceMode = $product['availability']['activePriceType'] ?? ($hasInventoryAvailable ? 'stock' : 'backorder');
 $lengthFtValue = isset($product['length_ft']) ? (float)$product['length_ft'] : null;
 $piecesPerBoxValue = isset($product['pieces_per_box']) ? (float)$product['pieces_per_box'] : null;
 if($coveragePerBoxValue === null && $lengthFtValue && $piecesPerBoxValue){
@@ -90,7 +93,11 @@ if(!$priceModes){
     ];
   }
 }
-$defaultPriceMode = isset($priceModes['stock']) ? 'stock' : (isset($priceModes['backorder']) ? 'backorder' : (array_key_first($priceModes) ?: 'stock'));
+$preferredMode = $activePriceMode ?? null;
+if($preferredMode && isset($priceModes[$preferredMode])){
+  $priceModes = [$preferredMode => $priceModes[$preferredMode]];
+}
+$defaultPriceMode = isset($priceModes[$preferredMode]) ? $preferredMode : (isset($priceModes['stock']) ? 'stock' : (isset($priceModes['backorder']) ? 'backorder' : (array_key_first($priceModes) ?: 'stock')));
 $firstMode = $priceModes[$defaultPriceMode] ?? (array_values($priceModes)[0] ?? ['unit' => null, 'package' => null, 'label' => '']);
 $priceModesData = [];
 foreach($priceModes as $key => $data){
@@ -205,7 +212,7 @@ $storeConfig = load_store_config();
             <?php endif; ?>
             <label class="full">
               <?= htmlspecialchars(ucfirst($packageLabelPlural)) ?>
-              <input type="number" id="calcBoxes" min="1" value="1">
+              <input type="number" id="calcBoxes" min="1" value="1" <?= $hasInventoryAvailable ? 'max="'.(int)$stockAvailableValue.'"' : '' ?>>
             </label>
             <div class="full" style="display:flex; align-items:center; gap:10px; margin-top:6px;">
               <input type="checkbox" id="calcInstall"> <span>Add installation (uses project rates)</span>
@@ -307,6 +314,7 @@ $storeConfig = load_store_config();
     const STORE_CONFIG = <?= json_encode($storeConfig) ?>;
     const PRICE_MODES = <?= json_encode($priceModesData) ?>;
     const PRICE_MODE_KEYS = Object.keys(PRICE_MODES);
+    const MAX_PURCHASE_QTY = Number(NORMALIZED_PRODUCT?.availability?.maxPurchaseQuantity ?? null);
     let currentPriceMode = <?= json_encode($defaultPriceMode) ?>;
     if(!PRICE_MODES[currentPriceMode]){
       currentPriceMode = PRICE_MODE_KEYS.length ? PRICE_MODE_KEYS[0] : 'stock';
@@ -343,6 +351,11 @@ $storeConfig = load_store_config();
       if(source === 'calcBoxes'){
         boxes = Math.max(1, Math.round(boxes));
         if(boxesInput) boxesInput.value = boxes > 0 ? boxes : '';
+      }
+      const maxQty = Number.isFinite(MAX_PURCHASE_QTY) && MAX_PURCHASE_QTY > 0 ? Math.floor(MAX_PURCHASE_QTY) : null;
+      if(maxQty && boxes > maxQty){
+        boxes = maxQty;
+        if(boxesInput) boxesInput.value = boxes;
       }
       const activePrice = getActivePriceMode();
       const pricePerUnitNum = Number(activePrice.unitValue);
@@ -424,6 +437,18 @@ $storeConfig = load_store_config();
       if(unitsNeeded === null && boxes > 0 && coveragePerPackage > 0){
         unitsNeeded = boxes * coveragePerPackage;
       }
+      if(maxQty && boxes > maxQty){
+        boxes = maxQty;
+        if(boxesInput) boxesInput.value = boxes;
+        if(PRODUCT_TYPE === 'flooring' && coveragePerPackage > 0){
+          const cappedUnits = boxes * coveragePerPackage;
+          if(sqftInput){
+            const formattedSqft = formatInputValue(cappedUnits);
+            sqftInput.value = formattedSqft || '';
+          }
+          unitsNeeded = cappedUnits;
+        }
+      }
       let pricePerPackage = Number(activePrice.packageValue);
       if(!Number.isFinite(pricePerPackage) || pricePerPackage <= 0){
         const pricePerUnit = Number.isFinite(pricePerUnitNum) ? pricePerUnitNum : 0;
@@ -480,7 +505,12 @@ $storeConfig = load_store_config();
     }
     ['calcLen','calcWid','calcSqft','calcBoxes','calcUnits'].forEach(id=>{
       const el = document.getElementById(id);
-      if(el) el.addEventListener('input', ()=>updateCalc(id));
+      if(el){
+        el.addEventListener('input', ()=>updateCalc(id));
+        if(id === 'calcBoxes' && Number.isFinite(MAX_PURCHASE_QTY) && MAX_PURCHASE_QTY > 0){
+          el.max = Math.floor(MAX_PURCHASE_QTY);
+        }
+      }
     });
     document.getElementById('calcInstall')?.addEventListener('change', ()=>updateCalc());
     document.getElementById('calcDelivery')?.addEventListener('change', ()=>updateCalc());
