@@ -1,5 +1,6 @@
 {
   "currency": "USD",
+  "taxes": 0.07,
   "waste": {
     "flooring": 0.1,
     "molding": 0.05
