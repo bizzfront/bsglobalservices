@@ -499,7 +499,7 @@ createApp({
             tabs: [
                 { id: 'home', label: 'Home' },
                 { id: 'manager', label: 'Gestor' },
-                { id: 'editor', label: 'Editor' },
+                { id: 'editor', label: 'Editor avanzado JSON' },
             ],
             activeTab: 'home',
             files: [
