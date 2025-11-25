@@ -461,7 +461,7 @@ if (isset($_GET['api'])) {
                     </div>
                     <div class="d-flex flex-wrap align-items-end gap-2" style="min-width: 260px;">
                         <div class="w-100">
-                            <label class="form-label text-muted mb-1">Archivo</label>
+                            <!--<label class="form-label text-muted mb-1">Archivo</label>-->
                             <select class="form-select form-select-sm" v-model="managerFile" @change="loadManagement()">
                                 <option v-for="file in files" :value="file.key" :key="file.key">{{ file.label }}</option>
                             </select>
@@ -595,7 +595,7 @@ if (isset($_GET['api'])) {
             <div class="card p-3 h-100 editor-card">
                 <h6 class="card-title mb-3">Selector de archivo</h6>
                 <div class="mb-3">
-                    <label class="form-label text-muted">Archivo</label>
+                    <!--<label class="form-label text-muted">Archivo</label>-->
                     <select class="form-select form-select-sm" v-model="selectedFile" @change="loadFile()">
                         <option v-for="file in files" :value="file.key" :key="file.key">{{ file.label }}</option>
                     </select>
