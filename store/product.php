@@ -901,7 +901,7 @@ $installRateLabel = $installRateValue !== null
         }
       });
     });
-    document.getElementById('addToCart')?.addEventListener('click', ()=>{
+    document.getElementById('addToCart')?.addEventListener('click', async ()=>{
       const boxes = updateCalc();
       if(boxes>0){
         const selectedMode = document.querySelector('input[name="price_mode"]:checked');
@@ -918,7 +918,12 @@ $installRateLabel = $installRateValue !== null
         const inventoryId = priceType === 'stock' ? ACTIVE_INVENTORY_ID : null;
         cart.addItem(SKU, boxes, priceType || 'stock', {install: installSelected, inventoryId});
         if(PRODUCT_TYPE === 'flooring'){
-          const goToMolding = window.confirm('¿Quieres añadir moldings para este piso? Te llevaremos a la sección de moldings.');
+          const goToMolding = await bsModal.confirm({
+            title: 'Añadir moldings',
+            message: '¿Quieres añadir moldings para este piso? Te llevaremos a la sección de moldings.',
+            confirmText: 'Sí, llévame',
+            cancelText: 'No por ahora'
+          });
           if(goToMolding){
             window.location.href = 'index.php?type=molding';
           }
