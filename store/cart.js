@@ -14,11 +14,13 @@
       const sku = raw.sku;
       const quantity = parseInt(raw.quantity) || 0;
       if(!sku || quantity <= 0) continue;
+      const inventoryId = typeof raw.inventoryId === 'string' ? raw.inventoryId : null;
       sanitized.push({
         sku,
         quantity,
         priceType: normalizePriceType(raw.priceType),
-        install: !!raw.install
+        install: !!raw.install,
+        inventoryId
       });
     }
     return sanitized;
@@ -52,16 +54,19 @@
       const normalizedType = normalizePriceType(priceType);
       const opts = options && typeof options === 'object' ? options : {};
       const cart = load();
-      const item = cart.items.find(i => i.sku === sku && i.priceType === normalizedType);
+      const targetInventory = typeof opts.inventoryId === 'string' ? opts.inventoryId : null;
+      const item = cart.items.find(i => i.sku === sku && i.priceType === normalizedType && i.inventoryId === targetInventory);
       if(item){
         item.quantity += qty;
         if(typeof opts.install === 'boolean') item.install = opts.install;
+        if(targetInventory !== undefined) item.inventoryId = targetInventory;
       }else{
         cart.items.push({
           sku,
           quantity: qty,
           priceType: normalizedType,
-          install: !!opts.install
+          install: !!opts.install,
+          inventoryId: targetInventory || null
         });
       }
       cart.createdAt = Date.now();
@@ -73,26 +78,34 @@
       const normalizedType = normalizePriceType(priceType);
       const opts = options && typeof options === 'object' ? options : {};
       const cart = load();
-      const item = cart.items.find(i => i.sku === sku && i.priceType === normalizedType);
+      const targetInventory = typeof opts.inventoryId === 'string' ? opts.inventoryId : null;
+      const item = cart.items.find(i => i.sku === sku && i.priceType === normalizedType && i.inventoryId === targetInventory);
       if(item){
         item.quantity = qty;
         if(typeof opts.install === 'boolean') item.install = opts.install;
+        if(targetInventory !== undefined) item.inventoryId = targetInventory;
       }else{
         cart.items.push({
           sku,
           quantity: qty,
           priceType: normalizedType,
-          install: !!opts.install
+          install: !!opts.install,
+          inventoryId: targetInventory || null
         });
       }
       cart.createdAt = Date.now();
       save(cart);
       notify();
     },
-    removeItem(sku, priceType){
+    removeItem(sku, priceType, inventoryId){
       const normalizedType = normalizePriceType(priceType);
+      const normalizedInventory = typeof inventoryId === 'string' ? inventoryId : null;
       const cart = load();
-      cart.items = cart.items.filter(i => !(i.sku === sku && i.priceType === normalizedType));
+      cart.items = cart.items.filter(i => {
+        if(i.sku !== sku || i.priceType !== normalizedType) return true;
+        if(normalizedInventory && i.inventoryId !== normalizedInventory) return true;
+        return false;
+      });
       cart.createdAt = Date.now();
       save(cart);
       notify();

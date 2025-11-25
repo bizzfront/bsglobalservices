@@ -46,6 +46,54 @@ function read_bool(string $key): bool {
     return (bool)$value;
 }
 
+function append_orders(array $cartItems, string $formName = ''): void {
+    $ordersPath = __DIR__ . '/orders.json';
+    $existing = json_decode(@file_get_contents($ordersPath), true);
+    if (!is_array($existing)) {
+        $existing = ['orders' => []];
+    }
+    if (!isset($existing['orders']) || !is_array($existing['orders'])) {
+        $existing['orders'] = [];
+    }
+
+    $orders =& $existing['orders'];
+    $lastId = 0;
+    foreach ($orders as $order) {
+        $idVal = isset($order['id']) ? (int) $order['id'] : 0;
+        if ($idVal > $lastId) {
+            $lastId = $idVal;
+        }
+    }
+
+    $now = gmdate('c');
+    foreach ($cartItems as $item) {
+        if (!is_array($item)) {
+            continue;
+        }
+        $sku = preg_replace('/[^\w-]/', '', $item['sku'] ?? '');
+        $quantity = isset($item['quantity']) ? (int) $item['quantity'] : 0;
+        $priceType = strtolower((string)($item['priceType'] ?? $item['price_type'] ?? 'stock'));
+        if ($sku === '' || $quantity <= 0 || $priceType === 'backorder') {
+            continue;
+        }
+        $inventoryId = (string)($item['inventoryId'] ?? '');
+        if ($inventoryId === '') {
+            $inventoryId = 'default';
+        }
+        $orders[] = [
+            'id' => ++$lastId,
+            'sku' => $sku,
+            'inventoryId' => $inventoryId,
+            'quantity' => $quantity,
+            'status' => 'active',
+            'createdAt' => $now,
+            'formName' => $formName,
+        ];
+    }
+
+    @file_put_contents($ordersPath, json_encode($existing, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES), LOCK_EX);
+}
+
 $name = read_field('name');
 $email = read_field('email');
 $phone = read_field('phone');
@@ -137,6 +185,10 @@ $formPayloadJson = json_encode($formPayload, JSON_UNESCAPED_SLASHES | JSON_UNESC
 if ($formPayloadJson === false) {
     echo json_encode(['code' => '02', 'data' => 'A error occurred while processing the form data. Please try again later.']);
     exit;
+}
+
+if (is_array($cartItems) && !empty($cartItems)) {
+    append_orders($cartItems, $formName);
 }
 
 try {

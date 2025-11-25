@@ -197,8 +197,14 @@ function resolveProjectDeliveryZone(){
   return zones[0].id;
 }
 function computePricing(item, product){
-  const priceType = item.priceType === 'backorder' ? 'backorder' : 'stock';
+  let priceType = item.priceType === 'backorder' ? 'backorder' : 'stock';
   const coverage = Number(product.packageCoverage) || 0;
+  const availableStock = Number(product.availability?.stockAvailable ?? NaN);
+  const allowBackorder = product.availability?.allowBackorder !== false;
+  const hasStock = ((product.availability?.activePriceType || product.availability?.mode) === 'stock') && Number.isFinite(availableStock) && availableStock > 0;
+  if(priceType === 'stock' && (!hasStock || (allowBackorder && Number(item.quantity) > availableStock))){
+    priceType = 'backorder';
+  }
   const packagePrice = priceType === 'backorder'
     ? (product.pricing?.pricePerPackageBackorder ?? (coverage>0 && product.pricing?.finalPriceBackorderPerUnit ? product.pricing.finalPriceBackorderPerUnit * coverage : null))
     : (product.pricing?.pricePerPackageStock ?? (coverage>0 && product.pricing?.finalPriceStockPerUnit ? product.pricing.finalPriceStockPerUnit * coverage : null));
@@ -206,7 +212,8 @@ function computePricing(item, product){
     ? (product.pricing?.finalPriceBackorderPerUnit ?? product.pricing?.finalPriceStockPerUnit)
     : (product.pricing?.finalPriceStockPerUnit ?? product.pricing?.finalPriceBackorderPerUnit);
   const subtotal = packagePrice ? packagePrice * item.quantity : 0;
-  return {priceType, unitPrice, packagePrice, subtotal, coverage};
+  const inventoryId = priceType === 'stock' ? (item.inventoryId || product.availability?.activeInventoryId || null) : null;
+  return {priceType, unitPrice, packagePrice, subtotal, coverage, inventoryId};
 }
 
 function getMoldingTruckloadPricePerPiece(piecesCount, piecesPerBox){
@@ -289,6 +296,9 @@ function serializeProject(items){
     const unitPriceWithTruckload = product.productType === 'molding'
       ? (Number(pricing.unitPrice) || 0) + (Number(truckload.pricePerPiece) || 0)
       : pricing.unitPrice;
+    if(item.priceType !== pricing.priceType || item.inventoryId !== pricing.inventoryId){
+      cart.setItem(item.sku, item.quantity, pricing.priceType, {install: item.install, inventoryId: pricing.inventoryId});
+    }
     totals.material += pricing.subtotal;
     totals.install += install;
     totals.truckload += truckload.total;
@@ -299,6 +309,7 @@ function serializeProject(items){
       unitPrice: pricing.unitPrice,
       unitPriceWithTruckload,
       packagePrice: pricing.packagePrice,
+      inventoryId: pricing.inventoryId,
       subtotal: pricing.subtotal,
       truckloadPricePerPiece: truckload.pricePerPiece,
       truckloadTotal: truckload.total,
@@ -378,7 +389,7 @@ function refreshDeliveryControls(){
       const installRateLabel = installRate ? ` (${formatCurrency(installRate)} / ${installUnitLabel})` : '';
       const truckloadLabel = p.productType === 'molding' ? ` | Truckload: ${formatCurrency(it.truckloadTotal || 0)}` : '';
       return `
-        <article class="cart-item" data-sku="${it.sku}" data-price-type="${it.priceType}">
+        <article class="cart-item" data-sku="${it.sku}" data-price-type="${it.priceType}" data-inventory-id="${it.inventoryId || ''}">
           <div>${image ? `<img src="${image}" alt="${p.name}">` : ''}</div>
           <div>
             <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
@@ -428,9 +439,10 @@ function refreshDeliveryControls(){
       const article = input.closest('.cart-item');
       const sku = article?.dataset?.sku;
       const priceType = article?.dataset?.priceType;
+      const inventoryId = article?.dataset?.inventoryId;
       const install = article?.querySelector('.install-toggle')?.checked;
       if(!sku) return;
-      cart.setItem(sku, parseInt(input.value)||1, priceType, {install});
+      cart.setItem(sku, parseInt(input.value)||1, priceType, {install, inventoryId});
       renderCart();
     });
   });
@@ -439,8 +451,9 @@ function refreshDeliveryControls(){
       const article = input.closest('.cart-item');
       const sku = article?.dataset?.sku;
       const priceType = article?.dataset?.priceType;
+      const inventoryId = article?.dataset?.inventoryId;
       const qty = parseInt(article?.querySelector('.qty')?.value)||1;
-      cart.setItem(sku, qty, priceType, {install: input.checked});
+      cart.setItem(sku, qty, priceType, {install: input.checked, inventoryId});
       renderCart();
     });
   });
@@ -462,7 +475,7 @@ function refreshDeliveryControls(){
   container.querySelectorAll('.remove').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       const article = btn.closest('.cart-item');
-      cart.removeItem(article?.dataset?.sku, article?.dataset?.priceType);
+      cart.removeItem(article?.dataset?.sku, article?.dataset?.priceType, article?.dataset?.inventoryId);
       renderCart();
     });
   });
