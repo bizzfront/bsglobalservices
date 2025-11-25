@@ -48,8 +48,20 @@ $active = $active ?? '';
 </header>
 <script src="<?=$base?>store/cart.js"></script>
 <script>
+  function getStoredCartCount(){
+    try{
+      const raw = localStorage.getItem('bs_cart');
+      if(!raw) return 0;
+      const data = JSON.parse(raw);
+      if(!data || !Array.isArray(data.items)) return 0;
+      return data.items.reduce((sum, item) => sum + (parseInt(item?.quantity) || 0), 0);
+    }catch(e){
+      return 0;
+    }
+  }
+
   function updateCartCount(){
-    const count = cart.getCount();
+    const count = (window.cart && typeof cart.getCount === 'function') ? cart.getCount() : getStoredCartCount();
     const el = document.getElementById('cart-count');
     const hasItems = count > 0;
     if(el) el.textContent = count;
