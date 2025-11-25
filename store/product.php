@@ -79,7 +79,7 @@ $backorderUnitValue = isset($product['computed_price_per_unit_backorder']) ? (fl
 if($backorderUnitValue !== null){
   $backorderPackageValue = isset($product['computed_price_per_package_backorder']) ? (float)$product['computed_price_per_package_backorder'] : (($coveragePerBoxValue && $backorderUnitValue !== null) ? $backorderUnitValue * $coveragePerBoxValue : null);
   $priceModes['backorder'] = [
-    'label' => 'Backorder',
+    'label' => 'Order-in',
     'unit' => (float)$backorderUnitValue,
     'package' => $backorderPackageValue !== null ? (float)$backorderPackageValue : null,
   ];
@@ -754,10 +754,14 @@ $installRateLabel = $installRateValue !== null
         }
       }
       const grandTotal = totalPrice + installTotal + deliveryTotal + truckloadTotal;
+      const exceededStock = ALLOW_BACKORDER && IS_STOCK_MODE && Number.isFinite(STOCK_AVAILABLE) && Number.isFinite(requestedBoxes) && requestedBoxes > STOCK_AVAILABLE;
       const areaText = unitsNeeded ? `${formatUnits(unitsNeeded)} ${UNIT_LABEL}` : '—';
       document.getElementById('calcSummaryArea').textContent = areaText;
       document.getElementById('calcSummaryBoxes').textContent = boxes > 0 ? formatUnits(boxes) : '—';
-      const priceModeLabel = activePrice.label || (currentPriceMode === 'backorder' ? 'Backorder' : 'In stock');
+      const isBackorderMode = currentPriceMode === 'backorder' || exceededStock;
+      const priceModeLabel = isBackorderMode
+        ? (PRICE_MODES['backorder']?.label || 'Order-in')
+        : (activePrice.label || 'In stock');
       document.getElementById('calcSummaryCondition').textContent = priceModeLabel || '—';
       document.getElementById('calcSummaryMaterial').textContent = totalPrice > 0 ? `$${totalPrice.toFixed(2)}` : '—';
       const truckloadRow = document.getElementById('calcSummaryTruckloadRow');
@@ -781,7 +785,6 @@ $installRateLabel = $installRateValue !== null
       document.getElementById('calcSummaryInstall').textContent = installTotal > 0 ? `$${installTotal.toFixed(2)}` : '—';
       document.getElementById('calcSummaryDelivery').textContent = deliveryTotal > 0 ? `$${deliveryTotal.toFixed(2)}` : (deliveryEnabled ? '$0.00' : '—');
       document.getElementById('calcSummaryTotal').textContent = grandTotal > 0 ? `$${grandTotal.toFixed(2)}` : '—';
-      const exceededStock = ALLOW_BACKORDER && IS_STOCK_MODE && Number.isFinite(STOCK_AVAILABLE) && Number.isFinite(requestedBoxes) && requestedBoxes > STOCK_AVAILABLE;
       if(alertEl){
         if(exceededStock){
           const pkgLabel = STOCK_AVAILABLE === 1 ? (PACKAGE_LABEL || 'box') : (PACKAGE_LABEL_PLURAL || ((PACKAGE_LABEL || 'box') + 'es'));
