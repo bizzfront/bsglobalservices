@@ -310,6 +310,7 @@ $installRateLabel = $installRateValue !== null
             <div class="calc-summary-line"><span><?= htmlspecialchars(ucfirst($packageLabelPlural)) ?> needed:</span><span id="calcSummaryBoxes">—</span></div>
             <div class="calc-summary-line"><span>Condition:</span><span id="calcSummaryCondition">—</span></div>
             <div class="calc-summary-line"><span>Material:</span><span id="calcSummaryMaterial">—</span></div>
+            <div class="calc-summary-line" id="calcSummaryTruckloadRow"><span>Truckload:</span><span id="calcSummaryTruckload">—</span></div>
             <div class="calc-summary-line"><span>Installation:</span><span id="calcSummaryInstall">—</span></div>
             <div class="calc-summary-line"><span>Delivery:</span><span id="calcSummaryDelivery">—</span></div>
             <div class="calc-summary-total"><span>Estimated total:</span><span id="calcSummaryTotal">—</span></div>
@@ -415,6 +416,30 @@ $installRateLabel = $installRateValue !== null
     }
     const LENGTH_FT = <?= json_encode($product['length_ft'] ?? null) ?>;
     const PIECES_PER_BOX = <?= json_encode($product['pieces_per_box'] ?? null) ?>;
+    function getMoldingTruckloadPricePerPiece(pieces){
+      const piecesPerBox = Number(PIECES_PER_BOX);
+      if(!Number.isFinite(piecesPerBox) || piecesPerBox <= 0 || !Number.isFinite(pieces) || pieces <= 0){
+        return 0;
+      }
+      const ratio = pieces / piecesPerBox;
+      const truckloadConfig = STORE_CONFIG?.molding?.truckload || {};
+      const tiers = Array.isArray(truckloadConfig.tiers) ? truckloadConfig.tiers : [];
+      const sortedTiers = tiers
+        .map(t=>({maxBoxes: Number(t.maxBoxes), pricePerPiece: Number(t.pricePerPiece)}))
+        .filter(t=>Number.isFinite(t.maxBoxes) && t.maxBoxes > 0 && Number.isFinite(t.pricePerPiece) && t.pricePerPiece >= 0)
+        .sort((a,b)=>a.maxBoxes - b.maxBoxes);
+      let pricePerPiece = Number(truckloadConfig.defaultPricePerPiece);
+      if(!Number.isFinite(pricePerPiece) || pricePerPiece < 0){
+        pricePerPiece = sortedTiers.length ? sortedTiers[sortedTiers.length - 1].pricePerPiece : 0;
+      }
+      for(const tier of sortedTiers){
+        if(ratio <= tier.maxBoxes){
+          pricePerPiece = tier.pricePerPiece;
+          break;
+        }
+      }
+      return pricePerPiece;
+    }
     function getActivePriceMode(){
       return PRICE_MODES[currentPriceMode] || {};
     }
@@ -626,6 +651,14 @@ $installRateLabel = $installRateValue !== null
         pricePerPackage = coveragePerPackage > 0 && pricePerUnit > 0 ? coveragePerPackage * pricePerUnit : 0;
       }
       const totalPrice = boxes > 0 && pricePerPackage > 0 ? boxes * pricePerPackage : 0;
+      let truckloadTotal = 0;
+      if(PRODUCT_TYPE === 'molding'){
+        const piecesCount = boxes > 0 ? boxes : 0;
+        const truckloadPricePerPiece = getMoldingTruckloadPricePerPiece(piecesCount);
+        if(Number.isFinite(truckloadPricePerPiece) && truckloadPricePerPiece > 0 && piecesCount > 0){
+          truckloadTotal = truckloadPricePerPiece * piecesCount;
+        }
+      }
       const installSelected = document.getElementById('calcInstall')?.checked;
       const deliveryEnabled = PRODUCT_TYPE === 'flooring' ? (deliveryToggle?.checked ?? false) : true;
       const deliveryZone = deliveryEnabled ? document.getElementById('calcDelivery')?.value : null;
@@ -647,13 +680,22 @@ $installRateLabel = $installRateValue !== null
           deliveryTotal = Number(zone.fee);
         }
       }
-      const grandTotal = totalPrice + installTotal + deliveryTotal;
+      const grandTotal = totalPrice + installTotal + deliveryTotal + truckloadTotal;
       const areaText = unitsNeeded ? `${formatUnits(unitsNeeded)} ${UNIT_LABEL}` : '—';
       document.getElementById('calcSummaryArea').textContent = areaText;
       document.getElementById('calcSummaryBoxes').textContent = boxes > 0 ? formatUnits(boxes) : '—';
       const priceModeLabel = activePrice.label || (currentPriceMode === 'backorder' ? 'Backorder' : 'In stock');
       document.getElementById('calcSummaryCondition').textContent = priceModeLabel || '—';
       document.getElementById('calcSummaryMaterial').textContent = totalPrice > 0 ? `$${totalPrice.toFixed(2)}` : '—';
+      const truckloadRow = document.getElementById('calcSummaryTruckloadRow');
+      const truckloadEl = document.getElementById('calcSummaryTruckload');
+      if(PRODUCT_TYPE === 'molding'){
+        if(truckloadRow) truckloadRow.style.display = '';
+        if(truckloadEl) truckloadEl.textContent = truckloadTotal > 0 ? `$${truckloadTotal.toFixed(2)}` : '$0.00';
+      }else{
+        if(truckloadRow) truckloadRow.style.display = 'none';
+        if(truckloadEl) truckloadEl.textContent = '—';
+      }
       document.getElementById('calcSummaryInstall').textContent = installTotal > 0 ? `$${installTotal.toFixed(2)}` : '—';
       document.getElementById('calcSummaryDelivery').textContent = deliveryTotal > 0 ? `$${deliveryTotal.toFixed(2)}` : (deliveryEnabled ? '$0.00' : '—');
       document.getElementById('calcSummaryTotal').textContent = grandTotal > 0 ? `$${grandTotal.toFixed(2)}` : '—';
