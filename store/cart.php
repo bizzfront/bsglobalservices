@@ -234,13 +234,15 @@ function getMoldingTruckloadPricePerPiece(piecesCount, piecesPerBox){
 
 function computeTruckload(item, product){
   if(product.productType !== 'molding') return {pricePerPiece: 0, total: 0};
-  const piecesPerBox = Number(product.pieces_per_box ?? product.piecesPerBox);
+  const piecesPerPackage = (product.packageLabel === 'piece' || product.packageLabelPlural === 'pieces')
+    ? 1
+    : Number(product.pieces_per_box ?? product.piecesPerBox);
   const packages = Number(item.quantity);
-  if(!Number.isFinite(packages) || packages <= 0 || !Number.isFinite(piecesPerBox) || piecesPerBox <= 0){
+  if(!Number.isFinite(packages) || packages <= 0 || !Number.isFinite(piecesPerPackage) || piecesPerPackage <= 0){
     return {pricePerPiece: 0, total: 0};
   }
-  const totalPieces = packages * piecesPerBox;
-  const pricePerPiece = getMoldingTruckloadPricePerPiece(totalPieces, piecesPerBox);
+  const totalPieces = packages * piecesPerPackage;
+  const pricePerPiece = getMoldingTruckloadPricePerPiece(totalPieces, piecesPerPackage);
   const total = Number.isFinite(pricePerPiece) && pricePerPiece > 0 ? pricePerPiece * totalPieces : 0;
   return {pricePerPiece, total};
 }

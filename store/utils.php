@@ -272,6 +272,7 @@ function normalize_store_product(array $product): array
     $activePricePerPackage = $product['pricing']['activePricePerPackage'] ?? null;
     $stockAvailable = $product['availability']['stockAvailable'] ?? null;
     $maxPurchaseQuantity = $product['availability']['maxPurchaseQuantity'] ?? null;
+    $piecesPerBox = parse_store_numeric($product['pieces_per_box'] ?? null);
 
     return [
         'sku' => $product['sku'] ?? '',
@@ -291,6 +292,7 @@ function normalize_store_product(array $product): array
         'packageLabel' => $product['package_label'] ?? ($product['product_type'] === 'molding' ? 'piece' : 'box'),
         'packageLabelPlural' => $product['package_label_plural'] ?? ($product['product_type'] === 'molding' ? 'pieces' : 'boxes'),
         'packageCoverage' => $packageCoverage,
+        'piecesPerBox' => $piecesPerBox !== null && $piecesPerBox > 0 ? $piecesPerBox : null,
         'core' => $product['core'] ?? null,
         'pad' => $product['pad'] ?? null,
         'padMaterial' => $product['pad_material'] ?? null,
