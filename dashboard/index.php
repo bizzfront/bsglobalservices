@@ -502,7 +502,7 @@ createApp({
                 inventory: { primaryKey: '__key', titleField: 'mode', type: 'inventory' },
                 zip_zones: { primaryKey: 'zip', titleField: 'city', type: 'array' },
                 orders: { primaryKey: 'id', titleField: 'status', type: 'orders' },
-                store_config: { primaryKey: 'id', titleField: 'name', type: 'object' },
+                store_config: { primaryKey: '__key', titleField: 'name', type: 'object' },
             },
         };
     },
@@ -623,7 +623,12 @@ createApp({
                 return { items: parsed, raw: parsed };
             }
             if (typeof parsed === 'object') {
-                const items = Object.entries(parsed || {}).map(([k, v]) => ({ __key: k, ...(v || {}) }));
+                const items = Object.entries(parsed || {}).map(([k, v]) => {
+                    if (v && typeof v === 'object' && !Array.isArray(v)) {
+                        return { __key: k, ...v };
+                    }
+                    return { __key: k, __value: v };
+                });
                 return { items, raw: parsed || {} };
             }
             return { items: [], raw: {} };
@@ -633,7 +638,11 @@ createApp({
             this.draftId = '';
             this.draftStatus = 'pending';
             this.draftDescription = '';
-            this.draftFields = [{ key: '', value: '' }];
+            if (this.currentMeta().type === 'object') {
+                this.draftFields = [{ key: '__value', value: '' }];
+            } else {
+                this.draftFields = [{ key: '', value: '' }];
+            }
         },
         startEditItem(item, idx) {
             this.editIndex = idx;
@@ -648,6 +657,14 @@ createApp({
             if (meta.type === 'inventory') {
                 this.draftId = item.__key || '';
                 delete cleanItem.__key;
+            } else if (meta.type === 'object' && item.__key !== undefined) {
+                this.draftId = item.__key;
+                delete cleanItem.__key;
+                if (Object.prototype.hasOwnProperty.call(cleanItem, '__value')) {
+                    this.draftFields = [{ key: '__value', value: this.stringifyValue(cleanItem.__value) }];
+                    delete cleanItem.__value;
+                    return;
+                }
             } else if (meta.primaryKey && item[meta.primaryKey] !== undefined) {
                 this.draftId = item[meta.primaryKey];
                 delete cleanItem[meta.primaryKey];
@@ -704,6 +721,12 @@ createApp({
                 if (!field.key) return;
                 obj[field.key] = this.parseFieldValue(field.value);
             });
+            if (this.currentMeta().type === 'object') {
+                if (obj.__value !== undefined && Object.keys(obj).length === 1) {
+                    return { __value: obj.__value };
+                }
+                delete obj.__value;
+            }
             if (this.currentMeta().type === 'orders') {
                 obj.status = this.draftStatus || 'pending';
                 obj.description = this.draftDescription;
@@ -751,7 +774,11 @@ createApp({
                     const key = item.__key || item[meta.primaryKey] || item.id || `item_${Date.now()}`;
                     const clone = { ...item };
                     delete clone.__key;
-                    assembled[key] = clone;
+                    if (Object.prototype.hasOwnProperty.call(clone, '__value')) {
+                        assembled[key] = clone.__value;
+                    } else {
+                        assembled[key] = clone;
+                    }
                 });
                 payload = assembled;
             }
