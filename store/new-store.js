@@ -144,7 +144,7 @@
       resultSummary.textContent = `Showing ${list.length} of ${BS_PRODUCTS.length} products`;
     }
     grid.querySelectorAll('.add-cart').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
+      btn.addEventListener('click', async ()=>{
         const card = btn.closest('.store-card-new');
         const qtyInput = card.querySelector('.qty');
         const maxQty = Number(qtyInput?.max || '');
@@ -167,7 +167,12 @@
         btn.textContent = 'Added';
         setTimeout(()=>{btn.textContent='Add to project';}, 1200);
         if(CURRENT_TYPE === 'flooring'){
-          const goToMolding = window.confirm('¿Quieres añadir moldings para este piso? Te llevaremos a la sección de moldings.');
+          const goToMolding = await bsModal.confirm({
+            title: 'Añadir moldings',
+            message: '¿Quieres añadir moldings para este piso? Te llevaremos a la sección de moldings.',
+            confirmText: 'Sí, llévame',
+            cancelText: 'No por ahora'
+          });
           if(goToMolding){
             const url = new URL(window.location.href);
             url.searchParams.set('type', 'molding');
