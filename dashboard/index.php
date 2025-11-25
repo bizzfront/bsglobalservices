@@ -312,7 +312,7 @@ if (isset($_GET['api'])) {
         </div>
     </div>
 
-    <div v-else class="row g-3">
+    <div v-else-if="activeTab === 'editor'" class="row g-3">
         <div class="col-12 col-lg-4">
             <div class="card p-3 h-100">
                 <h6 class="card-title mb-3">Selector de archivo</h6>
@@ -356,6 +356,104 @@ if (isset($_GET['api'])) {
             </div>
         </div>
     </div>
+
+    <div v-else class="row g-3">
+        <div class="col-12 col-lg-4">
+            <div class="card p-3 h-100">
+                <h6 class="card-title mb-3">Gestor de elementos</h6>
+                <div class="mb-3">
+                    <label class="form-label text-muted">Archivo</label>
+                    <select class="form-select form-select-sm" v-model="managerFile" @change="loadManagement()">
+                        <option v-for="file in files" :value="file.key" :key="file.key">{{ file.label }}</option>
+                    </select>
+                </div>
+                <div class="small text-muted mb-2">Edita elementos sin tocar el JSON. El gestor trabaja sobre el borrador en <code>dashboard/jsons</code>.</div>
+                <div class="d-flex gap-2 flex-wrap mb-2">
+                    <button class="btn btn-outline-primary btn-sm" @click="loadManagement()" :disabled="managerLoading">Recargar lista</button>
+                    <button class="btn btn-outline-success btn-sm" @click="startNewItem" :disabled="managerLoading">Agregar nuevo</button>
+                </div>
+                <div class="mt-2 small" v-if="managerError">
+                    <span class="text-danger">{{ managerError }}</span>
+                </div>
+                <div class="mt-2 small text-muted">Mantén el Editor JSON para cambios avanzados; cualquier guardado desde aquí también actualiza el borrador.</div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-8">
+            <div class="card p-3">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <h6 class="card-title mb-0">{{ managerTitle }}</h6>
+                    <span class="badge text-bg-light" style="font-size: 0.8rem;">{{ managerItems.length }} elemento(s)</span>
+                </div>
+
+                <div class="mb-3">
+                    <div class="list-group small" style="max-height: 220px; overflow: auto;">
+                        <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" v-for="(item, idx) in managerItems" :key="idx" @click="startEditItem(item, idx)">
+                            <div class="ms-0 me-auto">
+                                <div class="fw-semibold">{{ renderItemTitle(item) }}</div>
+                                <small class="text-muted">{{ renderItemSubtitle(item) }}</small>
+                            </div>
+                            <span class="badge bg-primary rounded-pill">Editar</span>
+                        </button>
+                        <div class="text-muted text-center py-3" v-if="!managerItems.length && !managerLoading">No hay elementos en este archivo.</div>
+                        <div class="text-muted text-center py-3" v-if="managerLoading">Cargando...</div>
+                    </div>
+                </div>
+
+                <div class="border rounded p-3" v-if="draftFields">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div>
+                            <h6 class="mb-0">{{ editIndex === -1 ? 'Nuevo elemento' : 'Editar elemento' }}</h6>
+                            <small class="text-muted">Completa los campos y guarda para actualizar el borrador.</small>
+                        </div>
+                        <button class="btn btn-sm btn-outline-secondary" @click="startNewItem">Limpiar</button>
+                    </div>
+
+                    <div class="mb-2" v-if="currentPrimaryKey">
+                        <label class="form-label">Identificador ({{ currentPrimaryKey }})</label>
+                        <input type="text" class="form-control form-control-sm" v-model="draftId" placeholder="Ingresa un identificador único" />
+                    </div>
+
+                    <div class="row g-2 mb-2" v-if="managerFile === 'orders'">
+                        <div class="col-6">
+                            <label class="form-label">Status</label>
+                            <select class="form-select form-select-sm" v-model="draftStatus">
+                                <option value="pending">Pending</option>
+                                <option value="complete">Complete</option>
+                                <option value="canceled">Canceled</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Descripción</label>
+                            <input type="text" class="form-control form-control-sm" v-model="draftDescription" placeholder="Notas del estado" />
+                        </div>
+                    </div>
+
+                    <div class="mb-2" v-for="(field, i) in draftFields" :key="i">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-4">
+                                <input type="text" class="form-control form-control-sm" v-model="field.key" placeholder="Campo" />
+                            </div>
+                            <div class="col-7">
+                                <input type="text" class="form-control form-control-sm" v-model="field.value" placeholder="Valor (se acepta JSON)" />
+                            </div>
+                            <div class="col-1 text-end">
+                                <button class="btn btn-link text-danger p-0" @click="removeField(i)" title="Eliminar campo">×</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline-primary btn-sm mb-3" @click="addField">Agregar campo</button>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-outline-secondary btn-sm" @click="startNewItem">Cancelar</button>
+                        <button class="btn btn-primary btn-sm" @click="saveManagedItem" :disabled="managerLoading">
+                            {{ editIndex === -1 ? 'Crear' : 'Guardar cambios' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -369,6 +467,7 @@ createApp({
             tabs: [
                 { id: 'home', label: 'Home' },
                 { id: 'editor', label: 'Editor' },
+                { id: 'manager', label: 'Gestor' },
             ],
             activeTab: 'home',
             files: [
@@ -387,6 +486,24 @@ createApp({
             saving: false,
             syncing: false,
             summary: { files: [] },
+            managerFile: 'floorings',
+            managerItems: [],
+            managerRaw: {},
+            managerLoading: false,
+            managerError: '',
+            editIndex: -1,
+            draftId: '',
+            draftStatus: 'pending',
+            draftDescription: '',
+            draftFields: [],
+            fileMeta: {
+                floorings: { primaryKey: 'sku', titleField: 'name', type: 'array' },
+                moldings: { primaryKey: 'sku', titleField: 'name', type: 'array' },
+                inventory: { primaryKey: '__key', titleField: 'mode', type: 'inventory' },
+                zip_zones: { primaryKey: 'zip', titleField: 'city', type: 'array' },
+                orders: { primaryKey: 'id', titleField: 'status', type: 'orders' },
+                store_config: { primaryKey: 'id', titleField: 'name', type: 'object' },
+            },
         };
     },
     methods: {
@@ -452,10 +569,211 @@ createApp({
                 this.syncing = false;
             }
         },
+        currentMeta() {
+            return this.fileMeta[this.managerFile] || { primaryKey: 'id', titleField: 'name', type: 'array' };
+        },
+        resetManagerState() {
+            this.managerItems = [];
+            this.managerRaw = {};
+            this.editIndex = -1;
+            this.draftId = '';
+            this.draftFields = [];
+        },
+        async loadManagement(fileKey = null) {
+            if (fileKey) {
+                this.managerFile = fileKey;
+                this.selectedFile = fileKey;
+            }
+            this.managerLoading = true;
+            this.managerError = '';
+            this.resetManagerState();
+            try {
+                const res = await fetch(`?api=load&file=${this.managerFile}&source=staging`);
+                const data = await res.json();
+                const parsed = data.content ? JSON.parse(data.content) : (this.currentMeta().type === 'array' ? [] : {});
+                const { items, raw } = this.normalizeManagedData(parsed);
+                this.managerItems = items;
+                this.managerRaw = raw;
+                if (items.length) {
+                    this.startEditItem(items[0], 0);
+                } else {
+                    this.startNewItem();
+                }
+            } catch (e) {
+                this.managerError = 'No se pudo cargar el archivo seleccionado.';
+            } finally {
+                this.managerLoading = false;
+            }
+        },
+        normalizeManagedData(parsed) {
+            const meta = this.currentMeta();
+            if (meta.type === 'orders') {
+                const orders = Array.isArray(parsed?.orders) ? parsed.orders : [];
+                return { items: orders, raw: { orders } };
+            }
+            if (meta.type === 'inventory') {
+                const entries = [];
+                Object.entries(parsed || {}).forEach(([key, value]) => {
+                    if (key === '__defaults') return;
+                    entries.push({ __key: key, ...(value || {}) });
+                });
+                return { items: entries, raw: parsed || {} };
+            }
+            if (Array.isArray(parsed)) {
+                return { items: parsed, raw: parsed };
+            }
+            if (typeof parsed === 'object') {
+                const items = Object.entries(parsed || {}).map(([k, v]) => ({ __key: k, ...(v || {}) }));
+                return { items, raw: parsed || {} };
+            }
+            return { items: [], raw: {} };
+        },
+        startNewItem() {
+            this.editIndex = -1;
+            this.draftId = '';
+            this.draftStatus = 'pending';
+            this.draftDescription = '';
+            this.draftFields = [{ key: '', value: '' }];
+        },
+        startEditItem(item, idx) {
+            this.editIndex = idx;
+            const meta = this.currentMeta();
+            const cleanItem = { ...item };
+            if (meta.type === 'orders') {
+                this.draftStatus = item.status || 'pending';
+                this.draftDescription = item.description || '';
+                delete cleanItem.status;
+                delete cleanItem.description;
+            }
+            if (meta.type === 'inventory') {
+                this.draftId = item.__key || '';
+                delete cleanItem.__key;
+            } else if (meta.primaryKey && item[meta.primaryKey] !== undefined) {
+                this.draftId = item[meta.primaryKey];
+                delete cleanItem[meta.primaryKey];
+            } else {
+                this.draftId = '';
+            }
+            this.draftFields = this.buildFields(cleanItem);
+        },
+        buildFields(obj) {
+            const entries = Object.entries(obj || {});
+            if (!entries.length) return [{ key: '', value: '' }];
+            return entries.map(([key, value]) => ({ key, value: this.stringifyValue(value) }));
+        },
+        stringifyValue(value) {
+            if (typeof value === 'string') return value;
+            try {
+                return JSON.stringify(value);
+            } catch (e) {
+                return String(value);
+            }
+        },
+        addField() {
+            this.draftFields.push({ key: '', value: '' });
+        },
+        removeField(index) {
+            this.draftFields.splice(index, 1);
+            if (!this.draftFields.length) {
+                this.addField();
+            }
+        },
+        renderItemTitle(item) {
+            const meta = this.currentMeta();
+            const primary = item[meta.primaryKey] || item.__key || '(sin id)';
+            return primary;
+        },
+        renderItemSubtitle(item) {
+            const meta = this.currentMeta();
+            if (meta.type === 'orders') {
+                return `Status: ${item.status || 'pending'}`;
+            }
+            const title = item[meta.titleField] || '';
+            return title || 'Sin detalles';
+        },
+        parseFieldValue(value) {
+            try {
+                return JSON.parse(value);
+            } catch (e) {
+                return value;
+            }
+        },
+        createObjectFromFields() {
+            const obj = {};
+            this.draftFields.forEach(field => {
+                if (!field.key) return;
+                obj[field.key] = this.parseFieldValue(field.value);
+            });
+            if (this.currentMeta().type === 'orders') {
+                obj.status = this.draftStatus || 'pending';
+                obj.description = this.draftDescription;
+            }
+            return obj;
+        },
+        saveManagedItem() {
+            const meta = this.currentMeta();
+            const baseObj = this.createObjectFromFields();
+            this.managerError = '';
+            if (meta.primaryKey) {
+                const idValue = this.draftId || baseObj[meta.primaryKey] || '';
+                if (!idValue) {
+                    this.managerError = 'El identificador es obligatorio.';
+                    return;
+                }
+                baseObj[meta.primaryKey] = idValue;
+            }
+            const items = [...this.managerItems];
+            if (this.editIndex >= 0) {
+                items.splice(this.editIndex, 1, baseObj);
+            } else {
+                items.push(baseObj);
+            }
+            this.persistManagerItems(items);
+        },
+        persistManagerItems(items) {
+            const meta = this.currentMeta();
+            let payload = items;
+            if (meta.type === 'orders') {
+                payload = { orders: items.map(order => ({ description: '', status: 'pending', ...order })) };
+            } else if (meta.type === 'inventory') {
+                const assembled = { ...(this.managerRaw.__defaults ? { __defaults: this.managerRaw.__defaults } : {}) };
+                items.forEach(item => {
+                    const key = item.__key || item[meta.primaryKey] || `item_${Date.now()}`;
+                    const clone = { ...item };
+                    delete clone.__key;
+                    delete clone[meta.primaryKey];
+                    assembled[key] = clone;
+                });
+                payload = assembled;
+            } else if (meta.type === 'object') {
+                const assembled = {};
+                items.forEach(item => {
+                    const key = item.__key || item[meta.primaryKey] || item.id || `item_${Date.now()}`;
+                    const clone = { ...item };
+                    delete clone.__key;
+                    assembled[key] = clone;
+                });
+                payload = assembled;
+            }
+            this.managerItems = items;
+            this.editorContent = JSON.stringify(payload, null, 2);
+            this.saveDraft();
+            this.startNewItem();
+        },
+    },
+    computed: {
+        managerTitle() {
+            const label = this.files.find(f => f.key === this.managerFile)?.label || this.managerFile;
+            return `Gestión de ${label}`;
+        },
+        currentPrimaryKey() {
+            return this.currentMeta().primaryKey;
+        },
     },
     mounted() {
         this.fetchSummary();
         this.loadFile();
+        this.loadManagement();
     },
 }).mount('#app');
 </script>
