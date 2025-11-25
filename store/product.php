@@ -284,22 +284,18 @@ $installRateLabel = $installRateValue !== null
             <?php if($isFlooring): ?>
               <div id="calcDeliveryWrap" class="calc-delivery" style="display:none;">
                 <label>
-                  Delivery zone
-                  <select id="calcDelivery">
-                    <?php foreach(($normalizedProduct['delivery']['zones'] ?? ($storeConfig['delivery']['zones'] ?? [])) as $zone): ?>
-                      <option value="<?= htmlspecialchars($zone['id'] ?? '') ?>"><?= htmlspecialchars(($zone['label'] ?? 'Zone').' '.(isset($zone['fee']) ? ' — $'.number_format((float)$zone['fee'], 2) : '')) ?></option>
-                    <?php endforeach; ?>
-                  </select>
+                  Delivery ZIP Code
+                  <input type="text" id="calcDeliveryZip" list="calcDeliveryZipList" placeholder="Enter ZIP Code" inputmode="numeric" pattern="\\d*">
+                  <datalist id="calcDeliveryZipList"></datalist>
                 </label>
+                <p class="calc-note" id="calcDeliveryZipNote"></p>
               </div>
             <?php else: ?>
               <label class="full">
                 Delivery / pick-up
-                <select id="calcDelivery">
-                  <?php foreach(($normalizedProduct['delivery']['zones'] ?? ($storeConfig['delivery']['zones'] ?? [])) as $zone): ?>
-                    <option value="<?= htmlspecialchars($zone['id'] ?? '') ?>"><?= htmlspecialchars(($zone['label'] ?? 'Zone').' '.(isset($zone['fee']) ? ' — $'.number_format((float)$zone['fee'], 2) : '')) ?></option>
-                  <?php endforeach; ?>
-                </select>
+                <input type="text" id="calcDelivery" list="calcDeliveryZipList" placeholder="Enter ZIP Code or leave blank for warehouse" inputmode="numeric" pattern="\\d*">
+                <datalist id="calcDeliveryZipList"></datalist>
+                <p class="calc-note" id="calcDeliveryZipNote"></p>
               </label>
             <?php endif; ?>
           </div>
@@ -412,6 +408,10 @@ $installRateLabel = $installRateValue !== null
     const ACTIVE_INVENTORY_ID = NORMALIZED_PRODUCT?.availability?.activeInventoryId || null;
     const ALLOW_BACKORDER = NORMALIZED_PRODUCT?.availability?.allowBackorder !== false;
     const DELIVERY_PREF_KEY = 'bs_delivery_pref';
+    const ZIP_ZONE_FILE = 'zip_zones.json';
+    const ZIP_ZONE_MAPPING = {A: 'meadow', B: 'orlando', C: 'orlando'};
+    let ZIP_DATA = [];
+    let zipLoadPromise = null;
     const IS_STOCK_MODE = (NORMALIZED_PRODUCT?.availability?.mode || '').toLowerCase() === 'stock' && Number.isFinite(STOCK_AVAILABLE) && STOCK_AVAILABLE > 0;
     let currentPriceMode = <?= json_encode($defaultPriceMode) ?>;
     if(!PRICE_MODES[currentPriceMode]){
@@ -455,22 +455,57 @@ $installRateLabel = $installRateValue !== null
     }
     function getDefaultDeliveryZone(){
       const zones = getDeliveryZones();
-      return zones[0]?.id || null;
+      const pickup = zones.find(z=>z.id === 'pick-up');
+      return pickup?.id || zones[0]?.id || null;
     }
     function loadDeliveryPreferences(){
       try{
         const saved = JSON.parse(localStorage.getItem(DELIVERY_PREF_KEY));
         const zones = getDeliveryZones();
-        const zone = zones.some(z=>z.id === saved?.zone) ? saved.zone : getDefaultDeliveryZone();
-        return {includeDelivery: saved?.includeDelivery !== false, zone};
+        const defaults = {includeDelivery: false, zone: getDefaultDeliveryZone(), zip: '', city: '', zoneSource: null};
+        const merged = {...defaults, ...(saved || {})};
+        merged.zone = zones.some(z=>z.id === merged.zone) ? merged.zone : getDefaultDeliveryZone();
+        return merged;
       }catch(err){
-        return {includeDelivery: true, zone: getDefaultDeliveryZone()};
+        return {includeDelivery: false, zone: getDefaultDeliveryZone(), zip: '', city: '', zoneSource: null};
       }
     }
     function saveDeliveryPreferences(prefs){
       localStorage.setItem(DELIVERY_PREF_KEY, JSON.stringify(prefs));
     }
     let deliveryPreferences = loadDeliveryPreferences();
+    function resolveDeliveryZone(){
+      const zones = getDeliveryZones();
+      if(!zones.length) return null;
+      if(deliveryPreferences.includeDelivery === false){
+        const pickup = zones.find(z=>z.id === 'pick-up');
+        return pickup?.id || zones[0]?.id || null;
+      }
+      if(deliveryPreferences.zone && zones.some(z=>z.id === deliveryPreferences.zone)) return deliveryPreferences.zone;
+      return zones[0]?.id || null;
+    }
+    function mapZoneFromLetter(letter){
+      const mapped = ZIP_ZONE_MAPPING[letter?.toString().trim().toUpperCase()];
+      return mapped || getDefaultDeliveryZone();
+    }
+    function ensureZipData(){
+      if(zipLoadPromise) return zipLoadPromise;
+      zipLoadPromise = fetch(ZIP_ZONE_FILE)
+        .then(res=>res.ok ? res.json() : [])
+        .then(data=>{ ZIP_DATA = Array.isArray(data) ? data : []; return ZIP_DATA; })
+        .catch(()=>{ ZIP_DATA = []; return ZIP_DATA; });
+      return zipLoadPromise;
+    }
+    function resolveZipEntry(zip){
+      const normalized = (zip || '').toString().trim();
+      if(!normalized || !ZIP_DATA.length) return null;
+      const entry = ZIP_DATA.find(z=>z.zip === normalized);
+      if(!entry) return null;
+      const zones = getDeliveryZones();
+      const zoneId = mapZoneFromLetter(entry.zone);
+      const validZone = zones.some(z=>z.id === zoneId) ? zoneId : getDefaultDeliveryZone();
+      return {...entry, zoneId: validZone};
+    }
     function formatUnits(value){
       const num = Number(value);
       if(!Number.isFinite(num)) return '';
@@ -534,16 +569,34 @@ $installRateLabel = $installRateValue !== null
       let lastComputedBoxes = 0;
       let lastComputedPriceMode = currentPriceMode;
     function syncDeliveryControls(){
-      const deliverySelect = document.getElementById('calcDelivery');
+      const deliveryZip = document.getElementById('calcDeliveryZip') || document.getElementById('calcDelivery');
       const deliveryToggle = document.getElementById('calcIncludeDelivery');
+      const deliveryNote = document.getElementById('calcDeliveryZipNote');
+      const zipList = document.getElementById('calcDeliveryZipList');
       const zones = getDeliveryZones();
       const preferredZone = zones.some(z=>z.id === deliveryPreferences.zone) ? deliveryPreferences.zone : getDefaultDeliveryZone();
       deliveryPreferences = {...deliveryPreferences, zone: preferredZone};
-      if(deliverySelect){
-        deliverySelect.value = preferredZone || '';
+      if(deliveryZip){
+        deliveryZip.value = deliveryPreferences.zip || '';
+        deliveryZip.disabled = deliveryPreferences.includeDelivery === false;
       }
       if(deliveryToggle){
         deliveryToggle.checked = deliveryPreferences.includeDelivery !== false;
+      }
+      if(deliveryNote){
+        const zone = zones.find(z=>z.id === preferredZone);
+        const zoneLabel = zone ? `${zone.label}${zone.fee!=null ? ' — $'+Number(zone.fee).toFixed(2) : ''}` : '';
+        const pickup = zones.find(z=>z.id === 'pick-up');
+        const pickupLabel = pickup ? `${pickup.label}${pickup.fee!=null ? ' — $'+Number(pickup.fee).toFixed(2) : ''}` : 'Warehouse pick-up (default)';
+        const cityLabel = deliveryPreferences.zip && deliveryPreferences.city ? `${deliveryPreferences.city} (${deliveryPreferences.zip})` : '';
+        deliveryNote.textContent = deliveryPreferences.includeDelivery !== false
+          ? [cityLabel || 'Delivery ZIP pending', zoneLabel].filter(Boolean).join(' · ')
+          : pickupLabel;
+      }
+      if(zipList){
+        ensureZipData().then(()=>{
+          zipList.innerHTML = ZIP_DATA.map(z=>`<option value="${z.zip}">${z.city}</option>`).join('');
+        });
       }
       updateDeliveryVisibility();
     }
@@ -561,7 +614,7 @@ $installRateLabel = $installRateValue !== null
       const widInput = document.getElementById('calcWid');
       const unitsInputEl = document.getElementById('calcUnits');
       const deliveryToggle = document.getElementById('calcIncludeDelivery');
-      const deliverySelect = document.getElementById('calcDelivery');
+      const deliveryZip = document.getElementById('calcDeliveryZip') || document.getElementById('calcDelivery');
       const alertEl = document.getElementById('calcAlert');
       let boxes = boxesInput ? parseInt(boxesInput.value, 10) : 0;
       let requestedBoxes = boxes;
@@ -680,8 +733,8 @@ $installRateLabel = $installRateValue !== null
         }
       }
       const installSelected = document.getElementById('calcInstall')?.checked;
-      const deliveryEnabled = PRODUCT_TYPE === 'flooring' ? (deliveryToggle?.checked ?? false) : true;
-      const deliveryZone = deliveryEnabled ? document.getElementById('calcDelivery')?.value : null;
+      const deliveryEnabled = PRODUCT_TYPE === 'flooring' ? (deliveryToggle?.checked ?? false) : (deliveryPreferences.includeDelivery !== false);
+      const deliveryZone = deliveryEnabled ? resolveDeliveryZone() : null;
       let installTotal = 0;
       const installRate = PRODUCT_TYPE === 'molding'
         ? (NORMALIZED_PRODUCT?.services?.installRate ?? STORE_CONFIG?.install?.defaultMoldingRate)
@@ -796,21 +849,48 @@ $installRateLabel = $installRateValue !== null
     });
     document.getElementById('calcInstall')?.addEventListener('change', ()=>updateCalc());
     document.getElementById('calcIncludeDelivery')?.addEventListener('change', (evt)=>{
-      deliveryPreferences = {...deliveryPreferences, includeDelivery: evt.target.checked};
-      if(!evt.target.checked){
-        const pickup = getDeliveryZones().find(z=>z.id === 'pick-up');
-        if(pickup){
-          deliveryPreferences = {...deliveryPreferences, zone: pickup.id};
-        }
-      }
+      const pickup = getDeliveryZones().find(z=>z.id === 'pick-up');
+      deliveryPreferences = {
+        ...deliveryPreferences,
+        includeDelivery: evt.target.checked,
+        zone: evt.target.checked ? (deliveryPreferences.zone || getDefaultDeliveryZone()) : (pickup?.id || getDefaultDeliveryZone()),
+        zip: evt.target.checked ? deliveryPreferences.zip : '',
+        city: evt.target.checked ? deliveryPreferences.city : '',
+        zoneSource: evt.target.checked ? deliveryPreferences.zoneSource : null
+      };
       saveDeliveryPreferences(deliveryPreferences);
       updateDeliveryVisibility();
       updateCalc();
     });
-    document.getElementById('calcDelivery')?.addEventListener('change', (evt)=>{
-      deliveryPreferences = {...deliveryPreferences, zone: evt.target.value};
-      saveDeliveryPreferences(deliveryPreferences);
-      updateCalc();
+    const deliveryZipInput = document.getElementById('calcDeliveryZip') || document.getElementById('calcDelivery');
+    deliveryZipInput?.addEventListener('change', (evt)=>{
+      const raw = (evt.target.value || '').trim();
+      ensureZipData().then(()=>{
+        const entry = resolveZipEntry(raw);
+        if(entry){
+          deliveryPreferences = {
+            ...deliveryPreferences,
+            includeDelivery: true,
+            zone: entry.zoneId,
+            zip: entry.zip,
+            city: entry.city,
+            zoneSource: entry.zone
+          };
+        }else{
+          const pickup = getDeliveryZones().find(z=>z.id === 'pick-up');
+          deliveryPreferences = {
+            ...deliveryPreferences,
+            includeDelivery: false,
+            zone: pickup?.id || getDefaultDeliveryZone(),
+            zip: '',
+            city: '',
+            zoneSource: null
+          };
+        }
+        saveDeliveryPreferences(deliveryPreferences);
+        syncDeliveryControls();
+        updateCalc();
+      });
     });
     bindOptionCards();
     document.querySelectorAll('input[name="price_mode"]').forEach(input=>{
@@ -828,9 +908,10 @@ $installRateLabel = $installRateValue !== null
         let priceType = selectedMode ? selectedMode.value : (lastComputedPriceMode || currentPriceMode);
         priceType = priceType === 'backorder' ? 'backorder' : 'stock';
         const installSelected = document.getElementById('calcInstall')?.checked;
-        const currentDeliveryZone = document.getElementById('calcDelivery')?.value || null;
+        const currentDeliveryZone = resolveDeliveryZone();
         deliveryPreferences = {
-          includeDelivery: PRODUCT_TYPE !== 'flooring' || (document.getElementById('calcIncludeDelivery')?.checked ?? true),
+          ...deliveryPreferences,
+          includeDelivery: PRODUCT_TYPE !== 'flooring' ? (deliveryPreferences.includeDelivery !== false) : (document.getElementById('calcIncludeDelivery')?.checked ?? false),
           zone: currentDeliveryZone || deliveryPreferences.zone || getDefaultDeliveryZone()
         };
         saveDeliveryPreferences(deliveryPreferences);

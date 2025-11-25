@@ -288,6 +288,12 @@ $active = 'cart';
               </div>
             </div>
             <div class="form-field">
+              <label class="form-label" for="delivery_zip">Delivery ZIP Code</label>
+              <input id="delivery_zip" name="delivery_zip" type="text" class="form-input" list="delivery_zip_list" placeholder="Enter ZIP Code or leave blank for warehouse" inputmode="numeric" pattern="\\d*" />
+              <datalist id="delivery_zip_list"></datalist>
+              <div class="form-helper" id="delivery_zip_note"></div>
+            </div>
+            <div class="form-field">
               <label class="form-label" for="delivery_notes">Delivery / building notes</label>
               <input id="delivery_notes" name="delivery_notes" type="text" class="form-input" placeholder="Gate code, parking, preferred time window" />
             </div>
@@ -378,6 +384,10 @@ $active = 'cart';
 const STORE_PRODUCTS = <?= json_encode(array_values($products)) ?>;
 const STORE_CONFIG = <?= json_encode($storeConfig) ?>;
 const PROJECT_KEY = 'bs_project';
+const ZIP_ZONE_FILE = 'zip_zones.json';
+const ZIP_ZONE_MAPPING = {A: 'meadow', B: 'orlando', C: 'orlando'};
+let ZIP_DATA = [];
+let zipLoadPromise = null;
 
 function formatCurrency(value){
   const num = Number(value);
@@ -388,6 +398,25 @@ function formatUnits(value){
   const num = Number(value);
   if(!Number.isFinite(num)) return '';
   return num.toLocaleString(undefined, {maximumFractionDigits: 2});
+}
+function mapZoneFromLetter(letter){
+  return ZIP_ZONE_MAPPING[letter?.toString().trim().toUpperCase()] || null;
+}
+function ensureZipData(){
+  if(zipLoadPromise) return zipLoadPromise;
+  zipLoadPromise = fetch(ZIP_ZONE_FILE)
+    .then(res=>res.ok ? res.json() : [])
+    .then(data=>{ ZIP_DATA = Array.isArray(data) ? data : []; return ZIP_DATA; })
+    .catch(()=>{ ZIP_DATA = []; return ZIP_DATA; });
+  return zipLoadPromise;
+}
+function resolveZipEntry(zip){
+  const normalized = (zip || '').toString().trim();
+  if(!normalized || !ZIP_DATA.length) return null;
+  const entry = ZIP_DATA.find(z=>z.zip === normalized);
+  if(!entry) return null;
+  const zoneId = mapZoneFromLetter(entry.zone);
+  return {...entry, zoneId};
 }
 
 function loadProject(){
@@ -452,13 +481,66 @@ if(summaryNote && STORE_CONFIG.install?.notes){
 }
 
 const deliveryPreferenceInputs = document.querySelectorAll('input[name="delivery_preference"]');
+let defaultDeliveryPreference = 'delivery';
 if(deliveryPreferenceInputs.length){
   const pickupSelected = project?.deliveryPreferences?.includeDelivery === false || project?.deliveryZone === 'pick-up';
-  const defaultValue = pickupSelected ? 'pickup' : 'delivery';
+  defaultDeliveryPreference = pickupSelected ? 'pickup' : 'delivery';
   deliveryPreferenceInputs.forEach(input=>{
-    input.checked = input.value === defaultValue;
+    input.checked = input.value === defaultDeliveryPreference;
   });
 }
+const deliveryZipInput = document.getElementById('delivery_zip');
+const deliveryZipNote = document.getElementById('delivery_zip_note');
+const deliveryZipList = document.getElementById('delivery_zip_list');
+function renderDeliveryZipNote(entry, includeDelivery){
+  if(!deliveryZipNote) return;
+  const zones = STORE_CONFIG?.delivery?.zones || [];
+  const pickup = zones.find(z=>z.id === 'pick-up');
+  const zone = zones.find(z=>z.id === (entry?.zoneId || project?.deliveryZone));
+  const pickupLabel = pickup ? `${pickup.label}${pickup.fee!=null ? ' — '+formatCurrency(pickup.fee) : ''}` : 'Warehouse pick-up (default)';
+  if(includeDelivery === false){
+    deliveryZipNote.textContent = pickupLabel;
+    return;
+  }
+  const zoneLabel = zone ? `${zone.label}${zone.fee!=null ? ' — '+formatCurrency(zone.fee) : ''}` : '';
+  const cityLabel = entry?.city && entry?.zip ? `${entry.city} (${entry.zip})` : '';
+  deliveryZipNote.textContent = [cityLabel || 'Delivery ZIP pending', zoneLabel].filter(Boolean).join(' · ');
+}
+ensureZipData().then(()=>{
+  if(deliveryZipList){
+    deliveryZipList.innerHTML = ZIP_DATA.map(z=>`<option value="${z.zip}">${z.city}</option>`).join('');
+  }
+  const storedZip = project?.deliveryInfo?.zip || '';
+  const entry = resolveZipEntry(storedZip);
+  if(deliveryZipInput && storedZip){
+    deliveryZipInput.value = storedZip;
+  }
+  renderDeliveryZipNote(entry, project?.deliveryInfo?.includeDelivery !== false && defaultDeliveryPreference !== 'pickup');
+});
+deliveryZipInput?.addEventListener('change', (evt)=>{
+  const raw = (evt.target.value || '').trim();
+  ensureZipData().then(()=>{
+    const entry = resolveZipEntry(raw);
+    const deliveryRadio = Array.from(deliveryPreferenceInputs).find(r=>r.value === 'delivery');
+    const pickupRadio = Array.from(deliveryPreferenceInputs).find(r=>r.value === 'pickup');
+    if(entry){
+      if(deliveryRadio) deliveryRadio.checked = true;
+      renderDeliveryZipNote(entry, true);
+    }else{
+      if(pickupRadio) pickupRadio.checked = true;
+      renderDeliveryZipNote(null, false);
+    }
+  });
+});
+deliveryPreferenceInputs.forEach(input=>{
+  input.addEventListener('change', ()=>{
+    const includeDelivery = input.value === 'delivery' && input.checked;
+    if(!includeDelivery && deliveryZipInput){
+      deliveryZipInput.value = '';
+    }
+    renderDeliveryZipNote(resolveZipEntry(deliveryZipInput?.value || ''), includeDelivery);
+  });
+});
 
 function composeMessage(form){
   const fd = new FormData(form);
@@ -481,6 +563,7 @@ function composeMessage(form){
   if(fd.get('start_date')) lines.push(`Desired start: ${fd.get('start_date')}`);
   if(fd.get('timeframe')) lines.push(`Project timing: ${fd.get('timeframe')}`);
   if(fd.get('delivery_preference')) lines.push(`Delivery preference: ${fd.get('delivery_preference')}`);
+  if(fd.get('delivery_zip')) lines.push(`Delivery ZIP: ${fd.get('delivery_zip')}`);
   if(fd.get('delivery_notes')) lines.push(`Delivery notes: ${fd.get('delivery_notes')}`);
   if(fd.get('area_size')) lines.push(`Area / LF: ${fd.get('area_size')}`);
   if(fd.get('rooms')) lines.push(`Rooms / zones: ${fd.get('rooms')}`);
