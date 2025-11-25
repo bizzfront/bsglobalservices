@@ -325,11 +325,18 @@ if (isset($_GET['api'])) {
             <h4 class="fw-semibold mb-1">Dashboard de Configuración</h4>
             <p class="text-muted mb-0" style="font-size: 0.92rem;">Gestiona los JSON del sitio desde un panel limpio y rápido.</p>
         </div>
-        <button class="btn btn-primary btn-sm d-flex align-items-center gap-2" @click="applyToSite" :disabled="syncing">
+        <button class="btn btn-primary btn-sm d-flex align-items-center gap-2" @click="confirmApply" :disabled="syncing">
             <span class="spinner-border spinner-border-sm" role="status" v-if="syncing"></span>
             <span v-else class="fw-semibold">⇆</span>
             Aplicar cambios al sitio
         </button>
+    </div>
+
+    <div class="position-fixed" style="top: 16px; right: 16px; z-index: 1080; min-width: 320px;">
+        <div v-for="alert in alerts" :key="alert.id" class="alert" :class="[`alert-${alert.type}`,'shadow-sm','border-0','d-flex','align-items-center','justify-content-between','mb-2']">
+            <div class="me-3">{{ alert.message }}</div>
+            <button type="button" class="btn-close" aria-label="Close" @click="dismissAlert(alert.id)"></button>
+        </div>
     </div>
 
     <ul class="nav nav-pills mb-3 gap-2">
@@ -487,8 +494,9 @@ if (isset($_GET['api'])) {
                     <button class="btn btn-outline-primary btn-sm mb-3" @click="addField">Agregar campo</button>
 
                     <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-outline-danger btn-sm" v-if="editIndex >= 0" @click="confirmDelete" :disabled="managerLoading">Eliminar</button>
                         <button class="btn btn-outline-secondary btn-sm" @click="cancelEdit">Cancelar</button>
-                        <button class="btn btn-primary btn-sm" @click="saveManagedItem" :disabled="managerLoading">
+                        <button class="btn btn-primary btn-sm" @click="confirmSaveManagedItem" :disabled="managerLoading">
                             {{ editIndex === -1 ? 'Crear' : 'Guardar cambios' }}
                         </button>
                     </div>
@@ -541,6 +549,25 @@ if (isset($_GET['api'])) {
             </div>
         </div>
     </div>
+    <div class="modal fade" :class="{show: confirmModal.show}" style="display: block;" v-if="confirmModal.show" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ confirmModal.title }}</h5>
+                    <button type="button" class="btn-close" @click="closeConfirm"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-0">{{ confirmModal.message }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @click="closeConfirm">{{ confirmModal.cancelText || 'Cancelar' }}</button>
+                    <button type="button" class="btn" :class="confirmModal.danger ? 'btn-danger' : 'btn-primary'" @click="confirmProceed">{{ confirmModal.confirmText || 'Confirmar' }}</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-backdrop fade show"></div>
+    </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 <script>
@@ -583,6 +610,17 @@ createApp({
             draftFields: [],
             showEditor: false,
             templates: {},
+            alerts: [],
+            confirmModal: {
+                show: false,
+                title: '',
+                message: '',
+                confirmText: 'Confirmar',
+                cancelText: 'Cancelar',
+                danger: false,
+                onConfirm: null,
+                payload: null,
+            },
             fileMeta: {
                 floorings: { primaryKey: 'sku', titleField: 'name', type: 'array' },
                 moldings: { primaryKey: 'sku', titleField: 'name', type: 'array' },
@@ -667,6 +705,22 @@ createApp({
                 this.statusMessage = 'Error al aplicar cambios al sitio.';
             } finally {
                 this.syncing = false;
+            }
+        },
+        confirmApply() {
+            this.openConfirm({
+                title: 'Aplicar cambios',
+                message: '¿Confirmas aplicar todos los borradores al sitio?',
+                confirmText: 'Aplicar',
+                onConfirm: () => this.executeApply(),
+            });
+        },
+        async executeApply() {
+            await this.applyToSite();
+            if (this.statusOk) {
+                this.pushAlert('success', 'Cambios aplicados correctamente.');
+            } else {
+                this.pushAlert('danger', this.statusMessage || 'No se pudo aplicar los cambios.');
             }
         },
         currentMeta() {
@@ -918,6 +972,15 @@ createApp({
                 event.target.value = '';
             }
         },
+        confirmSaveManagedItem() {
+            const isEdit = this.editIndex >= 0;
+            this.openConfirm({
+                title: isEdit ? 'Guardar cambios' : 'Crear nuevo elemento',
+                message: isEdit ? '¿Deseas guardar las modificaciones en este elemento?' : '¿Deseas crear este nuevo elemento?',
+                confirmText: isEdit ? 'Guardar' : 'Crear',
+                onConfirm: () => this.saveManagedItem(),
+            });
+        },
         saveManagedItem() {
             const meta = this.currentMeta();
             const baseObj = this.createObjectFromFields();
@@ -926,6 +989,7 @@ createApp({
                 const idValue = this.draftId || baseObj[meta.primaryKey] || '';
                 if (!idValue) {
                     this.managerError = 'El identificador es obligatorio.';
+                    this.pushAlert('danger', this.managerError);
                     return;
                 }
                 baseObj[meta.primaryKey] = idValue;
@@ -937,6 +1001,24 @@ createApp({
                 items.push(baseObj);
             }
             this.persistManagerItems(items);
+            this.pushAlert('success', this.editIndex >= 0 ? 'Elemento actualizado correctamente.' : 'Elemento creado correctamente.');
+        },
+        confirmDelete() {
+            if (this.editIndex < 0) return;
+            this.openConfirm({
+                title: 'Eliminar elemento',
+                message: 'Esta acción eliminará el elemento del borrador. ¿Deseas continuar?',
+                confirmText: 'Eliminar',
+                danger: true,
+                onConfirm: () => this.deleteManagedItem(),
+            });
+        },
+        deleteManagedItem() {
+            if (this.editIndex < 0) return;
+            const items = [...this.managerItems];
+            items.splice(this.editIndex, 1);
+            this.persistManagerItems(items);
+            this.pushAlert('success', 'Elemento eliminado correctamente.');
         },
         persistManagerItems(items) {
             const meta = this.currentMeta();
@@ -971,6 +1053,37 @@ createApp({
             this.editorContent = JSON.stringify(payload, null, 2);
             this.saveDraft();
             this.resetDraftState(false);
+        },
+        pushAlert(type, message) {
+            const id = Date.now() + Math.random();
+            this.alerts.push({ id, type, message });
+            setTimeout(() => this.dismissAlert(id), 5000);
+        },
+        dismissAlert(id) {
+            this.alerts = this.alerts.filter(alert => alert.id !== id);
+        },
+        openConfirm(options) {
+            this.confirmModal = {
+                show: true,
+                title: options.title || 'Confirmar',
+                message: options.message || '¿Deseas continuar?',
+                confirmText: options.confirmText || 'Confirmar',
+                cancelText: options.cancelText || 'Cancelar',
+                danger: !!options.danger,
+                onConfirm: options.onConfirm || null,
+                payload: options.payload || null,
+            };
+        },
+        closeConfirm() {
+            this.confirmModal.show = false;
+        },
+        confirmProceed() {
+            const callback = this.confirmModal.onConfirm;
+            const payload = this.confirmModal.payload;
+            this.closeConfirm();
+            if (typeof callback === 'function') {
+                callback(payload);
+            }
         },
     },
     computed: {
