@@ -544,15 +544,11 @@ if (isset($_GET['api'])) {
                                     <textarea class="form-control form-control-sm" rows="4" v-model="field.value" :placeholder="fieldPlaceholder(field)"></textarea>
                                     <div class="small text-muted">Soporta texto enriquecido.</div>
                                 </template>
-                                <template v-else-if="['array','object'].includes(field.config?.type) || structuredPreview(field)">
+                                <template v-else-if="['array','object'].includes(field.config?.type)">
                                     <div class="d-flex flex-column gap-1">
                                         <textarea class="form-control form-control-sm" rows="2" v-model="field.value" :placeholder="fieldPlaceholder(field)"></textarea>
                                         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-                                            <div class="small text-muted">
-                                                <template v-if="field.config?.type">Estructura declarada: {{ field.config.type }}</template>
-                                                <template v-else-if="structuredPreview(field)">Detectado: {{ structuredPreview(field).summary }}</template>
-                                                <template v-else>Detectando estructura…</template>
-                                            </div>
+                                            <div class="small text-muted">Estructura: {{ field.config.type }} (usa el visor para editar).</div>
                                             <button class="btn btn-sm btn-outline-primary" type="button" @click="openNestedEditor(field)">Ver/Editar estructura</button>
                                         </div>
                                     </div>
@@ -1139,10 +1135,8 @@ createApp({
             return Object.prototype.toString.call(val) === '[object Object]';
         },
         openNestedEditor(field) {
-            const detected = this.detectStructure(field.value) || null;
-            const fallback = detected?.type === 'array' ? [] : {};
-            const raw = detected?.parsed ?? this.safeParseJson(field.value, fallback);
-            const type = detected?.type || (Array.isArray(raw) ? 'array' : 'object');
+            const raw = this.safeParseJson(field.value, field.config?.type === 'array' ? [] : {});
+            const type = Array.isArray(raw) ? 'array' : 'object';
             this.nestedEditor.field = field;
             this.nestedEditor.type = type;
             this.nestedEditor.workingCopy = this.cloneValue(raw);
@@ -1157,30 +1151,6 @@ createApp({
             } catch (e) {
                 return this.cloneValue(fallback);
             }
-        },
-        detectStructure(value) {
-            if (value === undefined || value === null) return null;
-            if (Array.isArray(value)) return { type: 'array', parsed: value };
-            if (value && typeof value === 'object') return { type: 'object', parsed: value };
-            if (typeof value !== 'string') return null;
-            const trimmed = value.trim();
-            if (!trimmed.startsWith('{') && !trimmed.startsWith('[')) return null;
-            try {
-                const parsed = JSON.parse(trimmed);
-                if (Array.isArray(parsed)) return { type: 'array', parsed };
-                if (parsed && typeof parsed === 'object') return { type: 'object', parsed };
-            } catch (e) {
-                return null;
-            }
-            return null;
-        },
-        structuredPreview(field) {
-            const detected = this.detectStructure(field.value);
-            if (!detected) return null;
-            const summary = detected.type === 'array'
-                ? `${detected.parsed.length} elemento(s)`
-                : `${Object.keys(detected.parsed || {}).length} campo(s)`;
-            return { ...detected, summary };
         },
         cloneValue(value) {
             try {
