@@ -1,0 +1,171 @@
+{
+  "__defaults": {
+    "mode": "backorder",
+    "stockAvailable": 0,
+    "allowBackorder": true,
+    "backorderLeadTimeDays": 21,
+    "backorderNote": "Special order ships once it arrives at our warehouse.",
+    "install": {
+      "flooringRate": 2.5,
+      "moldingRate": 1.25
+    },
+    "deliveryZones": [
+      {
+        "id": "orlando",
+        "label": "Orlando / Kissimmee",
+        "fee": 120
+      },
+      {
+        "id": "meadow",
+        "label": "Meadow Woods / Lake Nona",
+        "fee": 95
+      },
+      {
+        "id": "pick-up",
+        "label": "Warehouse pick-up",
+        "fee": 0
+      }
+    ]
+  },
+  "crystal": {
+    "mode": "stock",
+    "allowBackorder": true,
+    "backorderLeadTimeDays": 18,
+    "install": {
+      "flooringRate": 2.6
+    },
+    "notes": [
+      "High-turn floor kept ready for fast installs"
+    ],
+    "deliveryZones": [
+      {
+        "id": "orlando",
+        "label": "Orlando / Kissimmee",
+        "fee": 105
+      },
+      {
+        "id": "meadow",
+        "label": "Meadow Woods / Lake Nona",
+        "fee": 90
+      },
+      {
+        "id": "pick-up",
+        "label": "Warehouse pick-up",
+        "fee": 0
+      }
+    ],
+    "inventories": [
+      {
+        "id": "crystal-2024-02",
+        "acquiredAt": "2024-02-12",
+        "stockAvailable": 120,
+        "price_per_unit": 3.1
+      },
+      {
+        "id": "crystal-2024-09",
+        "acquiredAt": "2024-09-08",
+        "stockAvailable": 160,
+        "price_per_unit": 3.32
+      }
+    ]
+  },
+  "berlin": {
+    "mode": "stock",
+    "allowBackorder": true,
+    "backorderLeadTimeDays": 14,
+    "notes": [
+      "Bulk orders auto switch to backorder pricing"
+    ],
+    "install": {
+      "flooringRate": 2.45
+    },
+    "inventories": [
+      {
+        "id": "berlin-2024-03",
+        "acquiredAt": "2024-03-18",
+        "stockAvailable": 150,
+        "price_per_unit": 3.25
+      }
+    ]
+  },
+  "board-cedar-white-primed-1x4-12ft-1x4in": {
+    "mode": "stock",
+    "allowBackorder": true,
+    "backorderLeadTimeDays": 10,
+    "install": {
+      "moldingRate": 1.35
+    },
+    "notes": [
+      "Trim line paired with Venice floor"
+    ],
+    "deliveryZones": [
+      {
+        "id": "orlando",
+        "label": "Orlando / Kissimmee",
+        "fee": 80
+      },
+      {
+        "id": "meadow",
+        "label": "Meadow Woods / Lake Nona",
+        "fee": 70
+      },
+      {
+        "id": "pick-up",
+        "label": "Warehouse pick-up",
+        "fee": 0
+      }
+    ],
+    "inventories": [
+      {
+        "id": "board-cedar-2024-01",
+        "acquiredAt": "2024-01-20",
+        "stockAvailable": 450,
+        "price_per_unit": 1.85
+      },
+      {
+        "id": "board-cedar-2024-08",
+        "acquiredAt": "2024-08-15",
+        "stockAvailable": 450,
+        "price_per_unit": 1.95
+      }
+    ]
+  },
+  "savannah": {
+    "mode": "stock",
+    "allowBackorder": true,
+    "backorderLeadTimeDays": 9,
+    "inventories": [
+      {
+        "id": "savannah-2024-05",
+        "acquiredAt": "2024-05-10",
+        "stockAvailable": 140,
+        "price_per_unit": 2.95
+      }
+    ]
+  },
+  "hemmo": {
+    "mode": "stock",
+    "allowBackorder": true,
+    "backorderLeadTimeDays": 12,
+    "inventories": [
+      {
+        "id": "hemmo-2024-04",
+        "acquiredAt": "2024-04-02",
+        "stockAvailable": 210,
+        "price_per_unit": 3.05
+      }
+    ]
+  },
+  "peaks": {
+    "mode": "backorder",
+    "allowBackorder": true,
+    "backorderLeadTimeDays": 15,
+    "inventories": []
+  },
+  "ultra_noor": {
+    "mode": "backorder",
+    "allowBackorder": true,
+    "backorderLeadTimeDays": 7,
+    "inventories": []
+  }
+}
