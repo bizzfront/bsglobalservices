@@ -1,2 +1,7 @@
 # Environment files
 # (tracked to simplify IIS deployment configuration)
+
+*.zip
+/dashboard/jsons
+/images/cdn
+/dashboard/jsons
