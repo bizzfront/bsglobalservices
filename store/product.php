@@ -311,6 +311,7 @@ $installRateLabel = $installRateValue !== null
             <div class="calc-summary-line"><span>Condition:</span><span id="calcSummaryCondition">—</span></div>
             <div class="calc-summary-line"><span>Material:</span><span id="calcSummaryMaterial">—</span></div>
             <div class="calc-summary-line" id="calcSummaryTruckloadRow"><span>Truckload:</span><span id="calcSummaryTruckload">—</span></div>
+            <div class="calc-summary-line" id="calcSummaryTruckloadUnitRow"><span>Truckload (unit):</span><span id="calcSummaryTruckloadUnit">—</span></div>
             <div class="calc-summary-line"><span>Installation:</span><span id="calcSummaryInstall">—</span></div>
             <div class="calc-summary-line"><span>Delivery:</span><span id="calcSummaryDelivery">—</span></div>
             <div class="calc-summary-total"><span>Estimated total:</span><span id="calcSummaryTotal">—</span></div>
@@ -416,8 +417,11 @@ $installRateLabel = $installRateValue !== null
     }
     const LENGTH_FT = <?= json_encode($product['length_ft'] ?? null) ?>;
     const PIECES_PER_BOX = <?= json_encode($product['pieces_per_box'] ?? null) ?>;
+    const TRUCKLOAD_PIECES_PER_PACKAGE = (NORMALIZED_PRODUCT?.packageLabel === 'piece' || NORMALIZED_PRODUCT?.packageLabelPlural === 'pieces')
+      ? 1
+      : Number(PIECES_PER_BOX);
     function getMoldingTruckloadPricePerPiece(pieces){
-      const piecesPerBox = Number(PIECES_PER_BOX);
+      const piecesPerBox = Number(TRUCKLOAD_PIECES_PER_PACKAGE);
       if(!Number.isFinite(piecesPerBox) || piecesPerBox <= 0 || !Number.isFinite(pieces) || pieces <= 0){
         return 0;
       }
@@ -652,11 +656,13 @@ $installRateLabel = $installRateValue !== null
       }
       const totalPrice = boxes > 0 && pricePerPackage > 0 ? boxes * pricePerPackage : 0;
       let truckloadTotal = 0;
+      let truckloadUnitPrice = 0;
       if(PRODUCT_TYPE === 'molding'){
-        const piecesCount = boxes > 0 ? boxes : 0;
-        const truckloadPricePerPiece = getMoldingTruckloadPricePerPiece(piecesCount);
-        if(Number.isFinite(truckloadPricePerPiece) && truckloadPricePerPiece > 0 && piecesCount > 0){
-          truckloadTotal = truckloadPricePerPiece * piecesCount;
+        const piecesPerBox = Number(TRUCKLOAD_PIECES_PER_PACKAGE);
+        const totalPieces = boxes > 0 && Number.isFinite(piecesPerBox) ? boxes * piecesPerBox : 0;
+        truckloadUnitPrice = getMoldingTruckloadPricePerPiece(totalPieces);
+        if(Number.isFinite(truckloadUnitPrice) && truckloadUnitPrice > 0 && totalPieces > 0){
+          truckloadTotal = truckloadUnitPrice * totalPieces;
         }
       }
       const installSelected = document.getElementById('calcInstall')?.checked;
@@ -688,13 +694,22 @@ $installRateLabel = $installRateValue !== null
       document.getElementById('calcSummaryCondition').textContent = priceModeLabel || '—';
       document.getElementById('calcSummaryMaterial').textContent = totalPrice > 0 ? `$${totalPrice.toFixed(2)}` : '—';
       const truckloadRow = document.getElementById('calcSummaryTruckloadRow');
+      const truckloadUnitRow = document.getElementById('calcSummaryTruckloadUnitRow');
       const truckloadEl = document.getElementById('calcSummaryTruckload');
+      const truckloadUnitEl = document.getElementById('calcSummaryTruckloadUnit');
       if(PRODUCT_TYPE === 'molding'){
         if(truckloadRow) truckloadRow.style.display = '';
+        if(truckloadUnitRow) truckloadUnitRow.style.display = '';
         if(truckloadEl) truckloadEl.textContent = truckloadTotal > 0 ? `$${truckloadTotal.toFixed(2)}` : '$0.00';
+        if(truckloadUnitEl){
+          const formattedUnit = Number.isFinite(truckloadUnitPrice) && truckloadUnitPrice > 0 ? `$${truckloadUnitPrice.toFixed(2)}` : '$0.00';
+          truckloadUnitEl.textContent = `${formattedUnit} / piece`;
+        }
       }else{
         if(truckloadRow) truckloadRow.style.display = 'none';
+        if(truckloadUnitRow) truckloadUnitRow.style.display = 'none';
         if(truckloadEl) truckloadEl.textContent = '—';
+        if(truckloadUnitEl) truckloadUnitEl.textContent = '—';
       }
       document.getElementById('calcSummaryInstall').textContent = installTotal > 0 ? `$${installTotal.toFixed(2)}` : '—';
       document.getElementById('calcSummaryDelivery').textContent = deliveryTotal > 0 ? `$${deliveryTotal.toFixed(2)}` : (deliveryEnabled ? '$0.00' : '—');
