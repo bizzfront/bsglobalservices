@@ -419,11 +419,10 @@ $installRateLabel = $installRateValue !== null
     const PIECES_PER_BOX = <?= json_encode($product['pieces_per_box'] ?? null) ?>;
     const TRUCKLOAD_PIECES_PER_PACKAGE = (NORMALIZED_PRODUCT?.packageLabel === 'piece' || NORMALIZED_PRODUCT?.packageLabelPlural === 'pieces')
       ? 1
-      : (Number.isFinite(Number(PIECES_PER_BOX)) && Number(PIECES_PER_BOX) > 0 ? Number(PIECES_PER_BOX) : 1);
+      : Number(PIECES_PER_BOX);
     function getMoldingTruckloadPricePerPiece(pieces){
       const piecesPerBox = Number(TRUCKLOAD_PIECES_PER_PACKAGE);
-      const piecesPerPackage = Number.isFinite(piecesPerBox) && piecesPerBox > 0 ? piecesPerBox : 1;
-      if(!Number.isFinite(pieces) || pieces <= 0){
+      if(!Number.isFinite(piecesPerBox) || piecesPerBox <= 0 || !Number.isFinite(pieces) || pieces <= 0){
         return 0;
       }
       const ratio = pieces / piecesPerPackage;
@@ -660,9 +659,7 @@ $installRateLabel = $installRateValue !== null
       let truckloadTotal = 0;
       let truckloadUnitPrice = 0;
       if(PRODUCT_TYPE === 'molding'){
-        const piecesPerBox = Number(TRUCKLOAD_PIECES_PER_PACKAGE);
-        const piecesPerPackage = Number.isFinite(piecesPerBox) && piecesPerBox > 0 ? piecesPerBox : 1;
-        const totalPieces = boxes > 0 ? boxes * piecesPerPackage : 0;
+        const totalPieces = boxes > 0 && Number.isFinite(PIECES_PER_BOX) ? boxes * Number(PIECES_PER_BOX) : 0;
         truckloadUnitPrice = getMoldingTruckloadPricePerPiece(totalPieces);
         if(Number.isFinite(truckloadUnitPrice) && truckloadUnitPrice > 0 && totalPieces > 0){
           truckloadTotal = truckloadUnitPrice * totalPieces;
