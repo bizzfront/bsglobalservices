@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>B&S Floor Supply – Project received</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../modal.css" />
 
   <style>
     :root {
@@ -466,6 +467,7 @@
     </main>
   </div>
 
+  <script src="../modal.js"></script>
   <script>
     // Print summary (or full page)
     document.querySelectorAll('[data-action="print-summary"]').forEach(btn => {
@@ -475,7 +477,10 @@
     // Download summary as PDF (placeholder for dev)
     document.querySelectorAll('[data-action="download-summary-pdf"]').forEach(btn => {
       btn.addEventListener('click', () => {
-        alert("PDF download for this project summary will be implemented by the developer.");
+        bsModal.alert({
+          title: 'Descarga próximamente',
+          message: 'La descarga en PDF de este resumen estará disponible pronto.'
+        });
       });
     });
 
@@ -497,9 +502,15 @@
           }
         } else if (navigator.clipboard) {
           await navigator.clipboard.writeText(message);
-          alert("Project link copied to clipboard.");
+          bsModal.alert({
+            title: 'Enlace copiado',
+            message: 'El enlace del proyecto se copió al portapapeles.'
+          });
         } else {
-          alert("Share not supported on this browser. Copy the URL manually.");
+          bsModal.alert({
+            title: 'Compartir no disponible',
+            message: 'Tu navegador no soporta compartir automáticamente. Copia el URL manualmente.'
+          });
         }
       });
     });
