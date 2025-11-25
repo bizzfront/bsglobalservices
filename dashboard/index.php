@@ -320,6 +320,25 @@ if (isset($_GET['api'])) {
 </head>
 <body>
 <div id="app" class="container-fluid py-4">
+    <div class="modal fade" :class="{show: confirmModal.show}" style="display: block; z-index: 998;" v-if="confirmModal.show" tabindex="1">
+        <div class="modal-dialog" style="display: block; z-index: 999;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ confirmModal.title }}</h5>
+                    <button type="button" class="btn-close" @click="closeConfirm"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-0">{{ confirmModal.message }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @click="closeConfirm">{{ confirmModal.cancelText || 'Cancelar' }}</button>
+                    <button type="button" class="btn" :class="confirmModal.danger ? 'btn-danger' : 'btn-primary'" @click="confirmProceed">{{ confirmModal.confirmText || 'Confirmar' }}</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-backdrop fade show" style="z-index: 99 !important;"></div>
+    </div>
+
     <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
         <div>
             <h4 class="fw-semibold mb-1">Dashboard de Configuración</h4>
@@ -381,7 +400,7 @@ if (isset($_GET['api'])) {
                 <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                     <div class="flex-grow-1">
                         <h6 class="card-title mb-1">Gestor de elementos</h6>
-                        <div class="small text-muted">Edita elementos sin tocar el JSON. El gestor trabaja sobre el borrador en <code>dashboard/jsons</code>.</div>
+                        <div class="small text-muted">Visualiza/Edita elementos del sistema.</div>
                     </div>
                     <div class="d-flex flex-wrap align-items-end gap-2" style="min-width: 260px;">
                         <div class="w-100">
@@ -549,24 +568,7 @@ if (isset($_GET['api'])) {
             </div>
         </div>
     </div>
-    <div class="modal fade" :class="{show: confirmModal.show}" style="display: block;" v-if="confirmModal.show" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">{{ confirmModal.title }}</h5>
-                    <button type="button" class="btn-close" @click="closeConfirm"></button>
-                </div>
-                <div class="modal-body">
-                    <p class="mb-0">{{ confirmModal.message }}</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" @click="closeConfirm">{{ confirmModal.cancelText || 'Cancelar' }}</button>
-                    <button type="button" class="btn" :class="confirmModal.danger ? 'btn-danger' : 'btn-primary'" @click="confirmProceed">{{ confirmModal.confirmText || 'Confirmar' }}</button>
-                </div>
-            </div>
-        </div>
-        <div class="modal-backdrop fade show"></div>
-    </div>
+    
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
