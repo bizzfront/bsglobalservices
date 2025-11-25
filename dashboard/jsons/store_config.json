@@ -1,0 +1,38 @@
+{
+  "currency": "USD",
+  "taxes": 0.07,
+  "waste": {
+    "flooring": 0.1,
+    "molding": 0.05
+  },
+  "install": {
+    "defaultFlooringRate": 2.5,
+    "defaultMoldingRate": 1.25,
+    "notes": "Labor covers prep and install; accessories billed separately."
+  },
+  "molding": {
+    "truckload": {
+      "defaultPricePerPiece": 0,
+      "tiers": [
+        { "maxBoxes": 9, "pricePerPiece": 0.2 },
+        { "maxBoxes": 3, "pricePerPiece": 0.3 },
+        { "maxBoxes": 1, "pricePerPiece": 0.35 }
+      ]
+    }
+  },
+  "delivery": {
+    "notes": "Fees may change for oversized deliveries or out-of-zone drops.",
+    "zones": [
+      { "id": "orlando", "label": "Orlando / Kissimmee", "fee": 120 },
+      { "id": "meadow", "label": "Meadow Woods / Lake Nona", "fee": 95 },
+      { "id": "pick-up", "label": "Warehouse pick-up", "fee": 0 }
+    ]
+  },
+  "ui": {
+    "badges": {
+      "stock": "In stock",
+      "backorder": "Order-in",
+      "discontinued": "Discontinued"
+    }
+  }
+}
