@@ -320,6 +320,63 @@ if (isset($_GET['api'])) {
 </head>
 <body>
 <div id="app" class="container-fluid py-4">
+    <div class="modal fade" :class="{show: nestedEditor.show}" style="display: block; z-index: 1100;" v-if="nestedEditor.show" tabindex="1">
+        <div class="modal-dialog modal-lg" style="display: block; z-index: 1101;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ nestedEditor.title }}</h5>
+                    <button type="button" class="btn-close" @click="closeNestedEditor"></button>
+                </div>
+                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                    <template v-if="nestedEditor.type === 'array'">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="small text-muted">{{ nestedEditor.summary }}</div>
+                            <button class="btn btn-sm btn-outline-primary" @click="addNestedItem">Agregar elemento</button>
+                        </div>
+                        <div class="border rounded p-2 mb-2" v-for="(entry, idx) in nestedEditor.workingCopy" :key="idx">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="fw-semibold">Elemento #{{ idx + 1 }}</div>
+                                <button class="btn btn-sm btn-outline-danger" @click="removeNestedItem(idx)">Eliminar</button>
+                            </div>
+                            <template v-if="isPlainObject(entry)">
+                                <div class="row g-2" v-for="(val, key) in entry" :key="key">
+                                    <div class="col-4">
+                                        <input type="text" class="form-control form-control-sm" :value="key" readonly />
+                                    </div>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control form-control-sm" v-model="nestedEditor.workingCopy[idx][key]" />
+                                    </div>
+                                </div>
+                            </template>
+                            <template v-else>
+                                <input type="text" class="form-control form-control-sm" v-model="nestedEditor.workingCopy[idx]" />
+                            </template>
+                        </div>
+                    </template>
+                    <template v-else>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="small text-muted">{{ nestedEditor.summary }}</div>
+                            <button class="btn btn-sm btn-outline-primary" @click="addNestedObjectField">Agregar campo</button>
+                        </div>
+                        <div class="row g-2 border rounded p-2 mb-2" v-for="(val, key) in nestedEditor.workingCopy" :key="key">
+                            <div class="col-4">
+                                <input type="text" class="form-control form-control-sm" v-model="nestedEditor.keyBuffer[key]" @input="updateNestedObjectKey(key, $event.target.value)" />
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control form-control-sm" v-model="nestedEditor.workingCopy[key]" />
+                            </div>
+                        </div>
+                    </template>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @click="closeNestedEditor">Cerrar</button>
+                    <button type="button" class="btn btn-primary" @click="applyNestedEditor">Aplicar cambios</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-backdrop fade show" style="z-index: 1099 !important;"></div>
+    </div>
+
     <div class="modal fade" :class="{show: confirmModal.show}" style="display: block; z-index: 998;" v-if="confirmModal.show" tabindex="1">
         <div class="modal-dialog" style="display: block; z-index: 999;">
             <div class="modal-content">
@@ -487,6 +544,19 @@ if (isset($_GET['api'])) {
                                     <textarea class="form-control form-control-sm" rows="4" v-model="field.value" :placeholder="fieldPlaceholder(field)"></textarea>
                                     <div class="small text-muted">Soporta texto enriquecido.</div>
                                 </template>
+                                <template v-else-if="['array','object'].includes(field.config?.type) || structuredPreview(field)">
+                                    <div class="d-flex flex-column gap-1">
+                                        <textarea class="form-control form-control-sm" rows="2" v-model="field.value" :placeholder="fieldPlaceholder(field)"></textarea>
+                                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                            <div class="small text-muted">
+                                                <template v-if="field.config?.type">Estructura declarada: {{ field.config.type }}</template>
+                                                <template v-else-if="structuredPreview(field)">Detectado: {{ structuredPreview(field).summary }}</template>
+                                                <template v-else>Detectando estructura…</template>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline-primary" type="button" @click="openNestedEditor(field)">Ver/Editar estructura</button>
+                                        </div>
+                                    </div>
+                                </template>
                                 <template v-else-if="field.config?.input_type === 'image'">
                                     <div class="d-flex flex-column gap-1">
                                         <div class="input-group input-group-sm">
@@ -630,6 +700,15 @@ createApp({
                 zip_zones: { primaryKey: 'zip', titleField: 'city', type: 'array' },
                 orders: { primaryKey: 'id', titleField: 'status', type: 'orders' },
                 store_config: { primaryKey: '__key', titleField: 'name', type: 'object' },
+            },
+            nestedEditor: {
+                show: false,
+                field: null,
+                type: 'array',
+                workingCopy: [],
+                summary: '',
+                title: '',
+                keyBuffer: {},
             },
         };
     },
@@ -1055,6 +1134,120 @@ createApp({
             this.editorContent = JSON.stringify(payload, null, 2);
             this.saveDraft();
             this.resetDraftState(false);
+        },
+        isPlainObject(val) {
+            return Object.prototype.toString.call(val) === '[object Object]';
+        },
+        openNestedEditor(field) {
+            const detected = this.detectStructure(field.value) || null;
+            const fallback = detected?.type === 'array' ? [] : {};
+            const raw = detected?.parsed ?? this.safeParseJson(field.value, fallback);
+            const type = detected?.type || (Array.isArray(raw) ? 'array' : 'object');
+            this.nestedEditor.field = field;
+            this.nestedEditor.type = type;
+            this.nestedEditor.workingCopy = this.cloneValue(raw);
+            this.nestedEditor.title = `Editar ${field.key || 'estructura'}`;
+            this.nestedEditor.keyBuffer = type === 'object' ? Object.fromEntries(Object.keys(raw).map(k => [k, k])) : {};
+            this.refreshNestedSummary();
+            this.nestedEditor.show = true;
+        },
+        safeParseJson(value, fallback) {
+            try {
+                return JSON.parse(value);
+            } catch (e) {
+                return this.cloneValue(fallback);
+            }
+        },
+        detectStructure(value) {
+            if (value === undefined || value === null) return null;
+            if (Array.isArray(value)) return { type: 'array', parsed: value };
+            if (value && typeof value === 'object') return { type: 'object', parsed: value };
+            if (typeof value !== 'string') return null;
+            const trimmed = value.trim();
+            if (!trimmed.startsWith('{') && !trimmed.startsWith('[')) return null;
+            try {
+                const parsed = JSON.parse(trimmed);
+                if (Array.isArray(parsed)) return { type: 'array', parsed };
+                if (parsed && typeof parsed === 'object') return { type: 'object', parsed };
+            } catch (e) {
+                return null;
+            }
+            return null;
+        },
+        structuredPreview(field) {
+            const detected = this.detectStructure(field.value);
+            if (!detected) return null;
+            const summary = detected.type === 'array'
+                ? `${detected.parsed.length} elemento(s)`
+                : `${Object.keys(detected.parsed || {}).length} campo(s)`;
+            return { ...detected, summary };
+        },
+        cloneValue(value) {
+            try {
+                return JSON.parse(JSON.stringify(value));
+            } catch (e) {
+                return value;
+            }
+        },
+        addNestedItem() {
+            if (this.nestedEditor.type !== 'array') return;
+            const current = this.nestedEditor.workingCopy;
+            const sample = this.sampleFromArray(current);
+            current.push(sample);
+            this.refreshNestedSummary();
+        },
+        removeNestedItem(idx) {
+            if (this.nestedEditor.type !== 'array') return;
+            this.nestedEditor.workingCopy.splice(idx, 1);
+            this.refreshNestedSummary();
+        },
+        sampleFromArray(arr) {
+            if (arr.length && this.isPlainObject(arr[0])) {
+                const template = arr[0];
+                return Object.fromEntries(Object.keys(template).map(key => [key, '']));
+            }
+            return '';
+        },
+        addNestedObjectField() {
+            if (this.nestedEditor.type !== 'object') return;
+            const key = `campo_${Object.keys(this.nestedEditor.workingCopy).length + 1}`;
+            this.nestedEditor.workingCopy[key] = '';
+            this.nestedEditor.keyBuffer[key] = key;
+            this.refreshNestedSummary();
+        },
+        updateNestedObjectKey(oldKey, newKey) {
+            if (!newKey || oldKey === newKey) return;
+            const exists = this.nestedEditor.workingCopy;
+            if (Object.prototype.hasOwnProperty.call(exists, newKey)) return;
+            exists[newKey] = exists[oldKey];
+            delete exists[oldKey];
+            this.nestedEditor.keyBuffer = Object.fromEntries(Object.keys(exists).map(k => [k, k]));
+            this.refreshNestedSummary();
+        },
+        applyNestedEditor() {
+            if (!this.nestedEditor.field) return;
+            const serialized = JSON.stringify(this.nestedEditor.workingCopy, null, 2);
+            this.nestedEditor.field.value = serialized;
+            this.closeNestedEditor();
+        },
+        refreshNestedSummary() {
+            const type = this.nestedEditor.type;
+            if (type === 'array') {
+                this.nestedEditor.summary = `${this.nestedEditor.workingCopy.length} elemento(s)`;
+                return;
+            }
+            this.nestedEditor.summary = `${Object.keys(this.nestedEditor.workingCopy || {}).length} campo(s)`;
+        },
+        closeNestedEditor() {
+            this.nestedEditor = {
+                show: false,
+                field: null,
+                type: 'array',
+                workingCopy: [],
+                summary: '',
+                title: '',
+                keyBuffer: {},
+            };
         },
         pushAlert(type, message) {
             const id = Date.now() + Math.random();
