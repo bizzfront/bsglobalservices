@@ -207,8 +207,8 @@ function computePricing(item, product){
 
 function getMoldingTruckloadPricePerPiece(piecesCount, piecesPerBox){
   const pieces = Number(piecesCount);
-  const piecesPerPackage = Number(piecesPerBox);
-  if(!Number.isFinite(pieces) || pieces <= 0 || !Number.isFinite(piecesPerPackage) || piecesPerPackage <= 0){
+  const piecesPerPackage = Number.isFinite(Number(piecesPerBox)) && Number(piecesPerBox) > 0 ? Number(piecesPerBox) : 1;
+  if(!Number.isFinite(pieces) || pieces <= 0){
     return 0;
   }
   const truckloadConfig = STORE_CONFIG?.molding?.truckload || {};
@@ -218,9 +218,10 @@ function getMoldingTruckloadPricePerPiece(piecesCount, piecesPerBox){
     .filter(t=>Number.isFinite(t.maxBoxes) && t.maxBoxes > 0 && Number.isFinite(t.pricePerPiece) && t.pricePerPiece >= 0)
     .sort((a,b)=>a.maxBoxes - b.maxBoxes);
   const ratio = pieces / piecesPerPackage;
+  const fallbackPrice = sortedTiers.length ? sortedTiers[sortedTiers.length - 1].pricePerPiece : 0;
   let pricePerPiece = Number(truckloadConfig.defaultPricePerPiece);
-  if(!Number.isFinite(pricePerPiece) || pricePerPiece < 0){
-    pricePerPiece = sortedTiers.length ? sortedTiers[sortedTiers.length - 1].pricePerPiece : 0;
+  if(!Number.isFinite(pricePerPiece) || pricePerPiece <= 0){
+    pricePerPiece = fallbackPrice;
   }
   for(const tier of sortedTiers){
     if(ratio <= tier.maxBoxes){
