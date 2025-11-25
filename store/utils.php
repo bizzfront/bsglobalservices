@@ -257,6 +257,7 @@ function normalize_store_product(array $product): array
     $measurementUnit = strtolower($product['measurement_unit'] ?? ($product['product_type'] === 'molding' ? 'lf' : 'sqft'));
     $packageCoverage = $product['computed_coverage_per_package'] ?? $product['coverage_per_box'] ?? $product['sqft_per_box'] ?? null;
     $packageCoverage = parse_store_numeric($packageCoverage);
+    $taxesOmit = !empty($product['taxes_omit']);
     if (($product['product_type'] ?? '') === 'molding') {
         $lengthFt = parse_store_numeric($product['length_ft'] ?? null);
         if ($lengthFt !== null && $lengthFt > 0) {
@@ -297,6 +298,7 @@ function normalize_store_product(array $product): array
         'pad' => $product['pad'] ?? null,
         'padMaterial' => $product['pad_material'] ?? null,
         'images' => array_values(array_filter([$product['image'] ?? null, $product['hoverImage'] ?? null])),
+        'taxesOmit' => $taxesOmit,
         'pricing' => [
             'finalPriceStockPerUnit' => $stockPrice !== null ? (float) $stockPrice : null,
             'finalPriceBackorderPerUnit' => $backorderPrice !== null ? (float) $backorderPrice : null,

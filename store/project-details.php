@@ -364,6 +364,7 @@ $active = 'cart';
           <div class="summary-row"><div class="summary-label">Truckload (molding)</div><div class="summary-value" id="summary-truckload">$0.00</div></div>
           <div class="summary-row"><div class="summary-label">Installation</div><div class="summary-value" id="summary-install">$0.00</div></div>
           <div class="summary-row"><div class="summary-label">Delivery</div><div class="summary-value" id="summary-delivery">$0.00</div></div>
+          <div class="summary-row"><div class="summary-label">Taxes</div><div class="summary-value" id="summary-taxes">$0.00</div></div>
           <div class="summary-total" id="summary-total">Estimated total: $0.00</div>
         </div>
         <p class="summary-note" id="summary-note">Final quote may adjust after verifying actual quantities, site conditions and delivery zone.</p>
@@ -406,7 +407,7 @@ document.getElementById('project-cart-field').value = JSON.stringify(project.ite
 document.getElementById('project-cart-totals').value = JSON.stringify(project.totals || {});
 
 const itemsContainer = document.getElementById('summary-items');
-const totals = project.totals || {material:0, install:0, truckload:0, delivery:0, total:0};
+const totals = project.totals || {material:0, install:0, truckload:0, delivery:0, taxes:0, total:0};
 
 if(Array.isArray(project.items)){
   itemsContainer.innerHTML = project.items.map(it=>{
@@ -420,7 +421,11 @@ if(Array.isArray(project.items)){
     if(p.packageCoverage) metaParts.push(`≈ ${formatUnits(it.quantity * p.packageCoverage)} ${unit}`);
     if(it.install) metaParts.push('Install included');
     if(it.truckloadTotal) metaParts.push(`Truckload ${formatCurrency(it.truckloadTotal)}`);
+    if(p.taxesOmit) metaParts.push('Tax exempt');
+    else if(it.taxes) metaParts.push(`Taxes ${formatCurrency(it.taxes)}`);
     metaParts.push(priceTypeLabel);
+    const itemTotal = (it.subtotal || 0) + (it.install || 0) + (it.delivery || 0) + (it.truckloadTotal || 0) + (it.taxes || 0);
+    const taxesLabel = p.taxesOmit ? 'Tax exempt' : `Taxes ${formatCurrency(it.taxes || 0)}`;
     return `
       <div class="summary-item">
         <div>
@@ -428,8 +433,8 @@ if(Array.isArray(project.items)){
           <div class="summary-item-meta">${metaParts.filter(Boolean).join(' · ')}</div>
         </div>
         <div class="summary-item-right">
-          <div>${formatCurrency((it.subtotal || 0) + (it.install || 0) + (it.delivery || 0) + (it.truckloadTotal || 0))}</div>
-          <div class="summary-item-meta">${formatCurrency(it.subtotal || 0)} material</div>
+          <div>${formatCurrency(itemTotal)}</div>
+          <div class="summary-item-meta">${formatCurrency(it.subtotal || 0)} material · ${taxesLabel}</div>
         </div>
       </div>`;
   }).join('');
@@ -439,6 +444,7 @@ document.getElementById('summary-material').textContent = formatCurrency(totals.
 document.getElementById('summary-truckload').textContent = formatCurrency(totals.truckload);
 document.getElementById('summary-install').textContent = formatCurrency(totals.install);
 document.getElementById('summary-delivery').textContent = formatCurrency(totals.delivery);
+document.getElementById('summary-taxes').textContent = formatCurrency(totals.taxes);
 document.getElementById('summary-total').textContent = `Estimated total: ${formatCurrency(totals.total)}`;
 const summaryNote = document.getElementById('summary-note');
 if(summaryNote && STORE_CONFIG.install?.notes){
