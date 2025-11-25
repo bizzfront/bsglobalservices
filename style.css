@@ -44,6 +44,9 @@
     .brand{display:flex;align-items:center}
     .menu{display:flex;gap:1.2rem;align-items:center}
     .menu a{font-weight:500}
+    .cart-actions{display:inline-flex;align-items:center;gap:.45rem}
+    .cart-reset{border:1px solid var(--danger);background:transparent;color:var(--danger);width:28px;height:28px;border-radius:8px;font-weight:700;font-size:1.1rem;line-height:1;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,color .2s}
+    .cart-reset:hover{background:var(--danger);color:#fff}
     .cta-wa{background:var(--burgundy);color:#fff;padding:.6rem .9rem;border-radius:12px;font-weight:600;border:2px solid var(--burgundy)}
     .cta-wa:hover{background:#591320}
     .burger{display:none;flex-direction:column;gap:5px}
