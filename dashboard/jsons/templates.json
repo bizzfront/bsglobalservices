@@ -1,70 +1,336 @@
 {
   "floorings": {
-    "sku": "",
-    "name": "",
-    "collection": "",
-    "thickness_mm": "",
-    "wearlayer_mil": "",
-    "truck_load_1216_pallets": "",
-    "1_pallet_box": "",
-    "1_pallet_sf": "",
-    "box_sf": "",
-    "storage_date": "",
-    "alquiler_storage_mes": "",
-    "paletas": "",
-    "cajas": "",
-    "pedido": "",
-    "coste_de_descarga_camion": "",
-    "precio_de_carga": "",
-    "storage_por_sqft_depende_del_mes": "",
-    "transporte_mano_de_obra_por_sqft": "",
-    "sqft": "",
-    "precio_base": "",
-    "precio": "",
-    "ganancia": "",
-    "margen_deganancia": "",
-    "ganancia_neta": "",
-    "descuento": "",
-    "margen_descuento": "",
-    "margen_final": "",
-    "instalacin": "",
-    "wear_layer_mil": "",
-    "width_in": "",
-    "core": "",
-    "pad": "",
-    "installation": "",
-    "waterproof": "",
-    "scratch_resistant": "",
-    "image": "",
-    "hoverImage": "",
-    "short_desc": "",
-    "long_desc": "",
-    "colorFamily": "",
-    "tone": "",
-    "taxes_omit": false
+    "sku": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "name": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "collection": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "thickness_mm": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "wearlayer_mil": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "truck_load_1216_pallets": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "1_pallet_box": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "1_pallet_sf": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "box_sf": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "storage_date": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "alquiler_storage_mes": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "paletas": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "cajas": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "pedido": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "coste_de_descarga_camion": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "precio_de_carga": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "storage_por_sqft_depende_del_mes": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "transporte_mano_de_obra_por_sqft": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "sqft": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "precio_base": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "precio": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "ganancia": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "margen_deganancia": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "ganancia_neta": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "descuento": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "margen_descuento": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "margen_final": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "instalacin": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "wear_layer_mil": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "width_in": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "core": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "pad": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "installation": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "waterproof": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "scratch_resistant": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "image": {
+      "type": "image",
+      "input_type": "image",
+      "default_value": ""
+    },
+    "hoverImage": {
+      "type": "image",
+      "input_type": "image",
+      "default_value": ""
+    },
+    "short_desc": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "long_desc": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "colorFamily": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "tone": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "taxes_omit": {
+      "type": "boolean",
+      "input_type": "text",
+      "default_value": false
+    },
+    "description": {
+      "type": "text",
+      "input_type": "textarea",
+      "default_value": ""
+    }
   },
   "moldings": {
-    "sku": "",
-    "name": "",
-    "category": "",
-    "nominal_size": "",
-    "actual_size": "",
-    "length_ft": "",
-    "pieces_per_box": "",
-    "packaging_notes": "",
-    "unit_type_raw": "",
-    "product_type": "molding",
-    "measurement_unit": "lf",
-    "price_per_unit": "",
-    "price_loading": "",
-    "transport_and_logistic_price": "",
-    "price_percentage": "",
-    "coverage_per_box": "",
-    "comments": "",
-    "image": "",
-    "hoverImage": "",
-    "colorFamily": "",
-    "tone": "",
-    "taxes_omit": false
+    "sku": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "name": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "category": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "nominal_size": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "actual_size": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "length_ft": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "pieces_per_box": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "packaging_notes": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "unit_type_raw": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "product_type": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": "molding"
+    },
+    "measurement_unit": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": "lf"
+    },
+    "price_per_unit": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "price_loading": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "transport_and_logistic_price": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "price_percentage": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "coverage_per_box": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "comments": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "image": {
+      "type": "image",
+      "input_type": "image",
+      "default_value": ""
+    },
+    "hoverImage": {
+      "type": "image",
+      "input_type": "image",
+      "default_value": ""
+    },
+    "colorFamily": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "tone": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": ""
+    },
+    "taxes_omit": {
+      "type": "boolean",
+      "input_type": "text",
+      "default_value": false
+    },
+    "description": {
+      "type": "text",
+      "input_type": "textarea",
+      "default_value": ""
+    }
   }
 }
