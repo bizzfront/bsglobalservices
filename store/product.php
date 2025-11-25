@@ -659,7 +659,8 @@ $installRateLabel = $installRateValue !== null
       let truckloadTotal = 0;
       let truckloadUnitPrice = 0;
       if(PRODUCT_TYPE === 'molding'){
-        const totalPieces = boxes > 0 && Number.isFinite(PIECES_PER_BOX) ? boxes * Number(PIECES_PER_BOX) : 0;
+        const piecesPerPackage = Number(TRUCKLOAD_PIECES_PER_PACKAGE);
+        const totalPieces = boxes > 0 && Number.isFinite(piecesPerPackage) ? boxes * piecesPerPackage : 0;
         truckloadUnitPrice = getMoldingTruckloadPricePerPiece(totalPieces);
         if(Number.isFinite(truckloadUnitPrice) && truckloadUnitPrice > 0 && totalPieces > 0){
           truckloadTotal = truckloadUnitPrice * totalPieces;
