@@ -121,19 +121,24 @@ $contact_source = 'website_store';
         <p class="summary-note" id="summary-note">Final quote may adjust based on exact measurements, delivery zone and scheduling.</p>
         <div class="summary-divider"></div>
         <div class="cart-service-card cart-service-card--delivery" role="group" aria-labelledby="delivery-title">
-          <div class="cart-service-card__control">
-            <div class="cart-service-card__title" id="delivery-title">Delivery & zone</div>
-            <div class="cart-service-card__desc">Choose delivery or warehouse pick-up for this project.</div>
+            <div class="cart-service-card__control">
+              <div class="cart-service-card__title" id="delivery-title">Delivery & zone</div>
+              <div class="cart-service-card__desc">Choose delivery or warehouse pick-up for this project.</div>
             <label class="summary-toggle" for="delivery-toggle">
               <input type="checkbox" id="delivery-toggle" checked />
               <span>I’d like B&S to handle delivery for this project.</span>
             </label>
             <div class="cart-service-card__select">
-              <select id="delivery-zone" class="cart-actions-select"></select>
+              <label style="width:100%; display:block;">
+                <span style="display:block; margin-bottom:6px; color:#4b4240; font-weight:600;">Delivery ZIP Code</span>
+                <input type="text" id="delivery-zip" list="delivery-zip-list" placeholder="Enter ZIP Code" style="width:100%; min-width:180px; padding:10px; border-radius:10px; border:1px solid #d2c8c1;" inputmode="numeric" pattern="\\d*" />
+                <datalist id="delivery-zip-list"></datalist>
+              </label>
             </div>
             <p class="summary-note" id="delivery-note" style="margin:2px 0 0 0;"></p>
+            <p class="summary-note" id="delivery-city" style="margin:2px 0 0 0;"></p>
+            </div>
           </div>
-        </div>
         <div class="cart-footer-actions">
           <button type="button" id="go-project" class="btn btn-primary" style="flex:1;">Continue to project details</button>
           <button type="button" class="btn btn-ghost" style="flex:1;" onclick="window.location.href='index.php'">Back to store</button>
@@ -150,6 +155,10 @@ const PRODUCTS = <?= json_encode(array_values($products)) ?>;
 const STORE_CONFIG = <?= json_encode($storeConfig) ?>;
 const PROJECT_KEY = 'bs_project';
 const DELIVERY_PREF_KEY = 'bs_delivery_pref';
+const ZIP_ZONE_FILE = 'zip_zones.json';
+const ZIP_ZONE_MAPPING = {A: 'meadow', B: 'orlando', C: 'orlando'};
+let ZIP_DATA = [];
+let zipLoadPromise = null;
 
 function formatCurrency(value){
   const num = Number(value);
@@ -163,23 +172,45 @@ function formatUnits(value){
 }
 function getDefaultDeliveryZone(){
   const zones = STORE_CONFIG.delivery?.zones || [];
-  return zones[0]?.id || null;
+  const pickup = zones.find(z=>z.id === 'pick-up');
+  return pickup?.id || zones[0]?.id || null;
 }
 function loadDeliveryPreferences(){
   try{
     const saved = JSON.parse(localStorage.getItem(DELIVERY_PREF_KEY));
-    return {
-      includeDelivery: saved?.includeDelivery !== false,
-      zone: saved?.zone || getDefaultDeliveryZone()
-    };
+    const defaults = {includeDelivery: false, zone: getDefaultDeliveryZone(), zip: '', city: '', zoneSource: null};
+    const merged = {...defaults, ...(saved || {})};
+    if(!merged.zone) merged.zone = getDefaultDeliveryZone();
+    return merged;
   }catch(e){
-    return {includeDelivery: true, zone: getDefaultDeliveryZone()};
+    return {includeDelivery: false, zone: getDefaultDeliveryZone(), zip: '', city: '', zoneSource: null};
   }
 }
 function saveDeliveryPreferences(prefs){
   localStorage.setItem(DELIVERY_PREF_KEY, JSON.stringify(prefs));
 }
 let deliveryPreferences = loadDeliveryPreferences();
+function mapZoneFromLetter(letter){
+  return ZIP_ZONE_MAPPING[letter?.toString().trim().toUpperCase()] || getDefaultDeliveryZone();
+}
+function ensureZipData(){
+  if(zipLoadPromise) return zipLoadPromise;
+  zipLoadPromise = fetch(ZIP_ZONE_FILE)
+    .then(res=>res.ok ? res.json() : [])
+    .then(data=>{ ZIP_DATA = Array.isArray(data) ? data : []; return ZIP_DATA; })
+    .catch(()=>{ ZIP_DATA = []; return ZIP_DATA; });
+  return zipLoadPromise;
+}
+function resolveZipEntry(zip){
+  const normalized = (zip || '').toString().trim();
+  if(!normalized || !ZIP_DATA.length) return null;
+  const entry = ZIP_DATA.find(z=>z.zip === normalized);
+  if(!entry) return null;
+  const zoneId = mapZoneFromLetter(entry.zone);
+  const zones = getAvailableDeliveryZones();
+  const validZone = zones.some(z=>z.id === zoneId) ? zoneId : getDefaultDeliveryZone();
+  return {...entry, zoneId: validZone};
+}
 function getProduct(sku){
   return PRODUCTS.find(p=>p.sku===sku) || null;
 }
@@ -286,6 +317,13 @@ function serializeProject(items){
   const deliveryZones = getAvailableDeliveryZones();
   const deliveryZone = resolveProjectDeliveryZone();
   const deliveryFee = deliveryPreferences.includeDelivery === false ? 0 : computeDelivery(deliveryZone, deliveryZones);
+  const deliveryInfo = {
+    includeDelivery: deliveryPreferences.includeDelivery !== false,
+    zone: deliveryZone,
+    zip: deliveryPreferences.zip || '',
+    city: deliveryPreferences.city || '',
+    zoneSource: deliveryPreferences.zoneSource || null
+  };
   for(const item of items){
     const product = getProduct(item.sku);
     if(!product) continue;
@@ -324,28 +362,40 @@ function serializeProject(items){
   }
   totals.delivery = deliveryFee;
   totals.total = totals.material + totals.install + totals.delivery + totals.truckload + totals.taxes;
-  return {items: enriched, totals, createdAt: Date.now(), deliveryPreferences: {...deliveryPreferences, zone: deliveryZone}, deliveryZone};
+  return {items: enriched, totals, createdAt: Date.now(), deliveryPreferences: {...deliveryPreferences, zone: deliveryZone}, deliveryZone, deliveryInfo};
 }
 function refreshDeliveryControls(){
   const toggle = document.getElementById('delivery-toggle');
-  const select = document.getElementById('delivery-zone');
+  const zipInput = document.getElementById('delivery-zip');
+  const zipList = document.getElementById('delivery-zip-list');
   const note = document.getElementById('delivery-note');
+  const cityNote = document.getElementById('delivery-city');
   const zones = getAvailableDeliveryZones();
   if(toggle){
     toggle.checked = deliveryPreferences.includeDelivery !== false;
   }
-  if(select){
-    const preferred = zones.some(z=>z.id === deliveryPreferences.zone) ? deliveryPreferences.zone : zones[0]?.id || '';
-    if(preferred && preferred !== deliveryPreferences.zone){
-      deliveryPreferences = {...deliveryPreferences, zone: preferred};
-      saveDeliveryPreferences(deliveryPreferences);
-    }
-    select.innerHTML = zones.map(z=>`<option value="${z.id}">${z.label}${z.fee!=null ? ' — '+formatCurrency(z.fee) : ''}</option>`).join('') || '<option value="" disabled>No delivery zones</option>';
-    select.value = preferred;
-    select.disabled = !deliveryPreferences.includeDelivery || zones.length === 0;
+  if(zipInput){
+    zipInput.value = deliveryPreferences.zip || '';
+    zipInput.disabled = !deliveryPreferences.includeDelivery;
   }
   if(note){
     note.textContent = STORE_CONFIG.delivery?.notes || 'Delivery cost may vary based on access conditions.';
+  }
+  if(cityNote){
+    const zoneId = resolveProjectDeliveryZone();
+    const zone = zones.find(z=>z.id === zoneId);
+    const pickup = zones.find(z=>z.id === 'pick-up');
+    const cityLabel = deliveryPreferences.zip && deliveryPreferences.city ? `${deliveryPreferences.city} (${deliveryPreferences.zip})` : '';
+    const zoneLabel = zone ? `${zone.label}${zone.fee!=null ? ' — '+formatCurrency(zone.fee) : ''}` : '';
+    const pickupLabel = pickup ? `${pickup.label}${pickup.fee!=null ? ' — '+formatCurrency(pickup.fee) : ''}` : 'Warehouse pick-up (default)';
+    cityNote.textContent = deliveryPreferences.includeDelivery !== false
+      ? [cityLabel || 'Delivery ZIP pending', zoneLabel].filter(Boolean).join(' · ')
+      : pickupLabel;
+  }
+  if(zipList){
+    ensureZipData().then(()=>{
+      zipList.innerHTML = ZIP_DATA.map(z=>`<option value="${z.zip}">${z.city}</option>`).join('');
+    });
   }
   const summaryNote = document.getElementById('summary-note');
   if(summaryNote && STORE_CONFIG.install?.notes){
@@ -488,20 +538,45 @@ document.getElementById('go-project')?.addEventListener('click', ()=>{
 });
 
 document.getElementById('delivery-toggle')?.addEventListener('change', (e)=>{
-  deliveryPreferences = {...deliveryPreferences, includeDelivery: e.target.checked};
-  if(!e.target.checked){
-    const pickup = getAvailableDeliveryZones().find(z=>z.id === 'pick-up');
-    if(pickup){
-      deliveryPreferences = {...deliveryPreferences, zone: pickup.id};
-    }
-  }
+  const pickup = getAvailableDeliveryZones().find(z=>z.id === 'pick-up');
+  deliveryPreferences = {
+    ...deliveryPreferences,
+    includeDelivery: e.target.checked,
+    zone: e.target.checked ? deliveryPreferences.zone || getDefaultDeliveryZone() : (pickup?.id || getDefaultDeliveryZone()),
+    zip: e.target.checked ? deliveryPreferences.zip : '',
+    city: e.target.checked ? deliveryPreferences.city : '',
+    zoneSource: e.target.checked ? deliveryPreferences.zoneSource : null
+  };
   saveDeliveryPreferences(deliveryPreferences);
   renderCart();
 });
-document.getElementById('delivery-zone')?.addEventListener('change', (e)=>{
-  deliveryPreferences = {...deliveryPreferences, zone: e.target.value};
-  saveDeliveryPreferences(deliveryPreferences);
-  renderCart();
+document.getElementById('delivery-zip')?.addEventListener('change', (e)=>{
+  const raw = (e.target.value || '').trim();
+  ensureZipData().then(()=>{
+    const entry = resolveZipEntry(raw);
+    if(entry){
+      deliveryPreferences = {
+        ...deliveryPreferences,
+        includeDelivery: true,
+        zone: entry.zoneId,
+        zip: entry.zip,
+        city: entry.city,
+        zoneSource: entry.zone
+      };
+    }else{
+      const pickup = getAvailableDeliveryZones().find(z=>z.id === 'pick-up');
+      deliveryPreferences = {
+        ...deliveryPreferences,
+        includeDelivery: false,
+        zone: pickup?.id || getDefaultDeliveryZone(),
+        zip: '',
+        city: '',
+        zoneSource: null
+      };
+    }
+    saveDeliveryPreferences(deliveryPreferences);
+    renderCart();
+  });
 });
 
 refreshDeliveryControls();
