@@ -2,6 +2,8 @@
 $base = $base ?? '';
 $active = $active ?? '';
 ?>
+<link rel="stylesheet" href="<?=$base?>modal.css" />
+
 <!-- Top bilingual bar -->
 <div id="topbar" class="topbar">
   <div class="container wrap">
@@ -46,6 +48,7 @@ $active = $active ?? '';
     </nav>
   </div>
 </header>
+<script src="<?=$base?>modal.js"></script>
 <script src="<?=$base?>store/cart.js"></script>
 <script>
   function getStoredCartCount(){
@@ -76,8 +79,14 @@ $active = $active ?? '';
   window.addEventListener('storage', (evt) => {
     if(evt.key === 'bs_cart') updateCartCount();
   });
-  document.getElementById('cart-reset')?.addEventListener('click', () => {
-    if(confirm('¿Deseas eliminar todos los artículos del carrito?')){
+  document.getElementById('cart-reset')?.addEventListener('click', async () => {
+    const confirmed = await bsModal.confirm({
+      title: 'Vaciar carrito',
+      message: '¿Deseas eliminar todos los artículos del carrito?',
+      confirmText: 'Sí, eliminar',
+      cancelText: 'No, conservar'
+    });
+    if(confirmed){
       cart.clear();
     }
   });
