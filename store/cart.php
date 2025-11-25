@@ -97,6 +97,10 @@ $contact_source = 'website_store';
             <strong id="summary-material">$0.00</strong>
           </div>
           <div class="summary-row">
+            <span>Truckload (molding)</span>
+            <strong id="summary-truckload">$0.00</strong>
+          </div>
+          <div class="summary-row">
             <span>Installation</span>
             <strong id="summary-install">$0.00</strong>
           </div>
@@ -200,6 +204,40 @@ function computePricing(item, product){
   const subtotal = packagePrice ? packagePrice * item.quantity : 0;
   return {priceType, unitPrice, packagePrice, subtotal, coverage};
 }
+
+function getMoldingTruckloadPricePerPiece(piecesCount, piecesPerBox){
+  const pieces = Number(piecesCount);
+  const piecesPerPackage = Number(piecesPerBox);
+  if(!Number.isFinite(pieces) || pieces <= 0 || !Number.isFinite(piecesPerPackage) || piecesPerPackage <= 0){
+    return 0;
+  }
+  const truckloadConfig = STORE_CONFIG?.molding?.truckload || {};
+  const tiers = Array.isArray(truckloadConfig.tiers) ? truckloadConfig.tiers : [];
+  const sortedTiers = tiers
+    .map(t=>({maxBoxes: Number(t.maxBoxes), pricePerPiece: Number(t.pricePerPiece)}))
+    .filter(t=>Number.isFinite(t.maxBoxes) && t.maxBoxes > 0 && Number.isFinite(t.pricePerPiece) && t.pricePerPiece >= 0)
+    .sort((a,b)=>a.maxBoxes - b.maxBoxes);
+  const ratio = pieces / piecesPerPackage;
+  let pricePerPiece = Number(truckloadConfig.defaultPricePerPiece);
+  if(!Number.isFinite(pricePerPiece) || pricePerPiece < 0){
+    pricePerPiece = sortedTiers.length ? sortedTiers[sortedTiers.length - 1].pricePerPiece : 0;
+  }
+  for(const tier of sortedTiers){
+    if(ratio <= tier.maxBoxes){
+      pricePerPiece = tier.pricePerPiece;
+      break;
+    }
+  }
+  return pricePerPiece;
+}
+
+function computeTruckload(item, product){
+  if(product.productType !== 'molding') return {pricePerPiece: 0, total: 0};
+  const piecesPerBox = product.pieces_per_box ?? product.piecesPerBox;
+  const pricePerPiece = getMoldingTruckloadPricePerPiece(item.quantity, piecesPerBox);
+  const total = Number.isFinite(pricePerPiece) && pricePerPiece > 0 && item.quantity > 0 ? pricePerPiece * item.quantity : 0;
+  return {pricePerPiece, total};
+}
 function computeInstall(item, product, coverage){
   if(!item.install) return 0;
   const rate = product.services?.installRate ?? (product.productType === 'molding' ? STORE_CONFIG?.install?.defaultMoldingRate : STORE_CONFIG?.install?.defaultFlooringRate);
@@ -214,7 +252,7 @@ function computeDelivery(zoneId, zones){
 }
 function serializeProject(items){
   const enriched = [];
-  let totals = {material:0, install:0, delivery:0, total:0};
+  let totals = {material:0, install:0, truckload:0, delivery:0, total:0};
   const deliveryZones = getAvailableDeliveryZones();
   const deliveryZone = resolveProjectDeliveryZone();
   const deliveryFee = deliveryPreferences.includeDelivery === false ? 0 : computeDelivery(deliveryZone, deliveryZones);
@@ -222,15 +260,19 @@ function serializeProject(items){
     const product = getProduct(item.sku);
     if(!product) continue;
     const pricing = computePricing(item, product);
+    const truckload = computeTruckload(item, product);
     const install = computeInstall(item, product, pricing.coverage);
     totals.material += pricing.subtotal;
     totals.install += install;
+    totals.truckload += truckload.total;
     enriched.push({
       ...item,
       priceType: pricing.priceType,
       unitPrice: pricing.unitPrice,
       packagePrice: pricing.packagePrice,
       subtotal: pricing.subtotal,
+      truckloadPricePerPiece: truckload.pricePerPiece,
+      truckloadTotal: truckload.total,
       install,
       delivery: deliveryFee,
       deliveryZone,
@@ -239,7 +281,7 @@ function serializeProject(items){
     });
   }
   totals.delivery = deliveryFee;
-  totals.total = totals.material + totals.install + totals.delivery;
+  totals.total = totals.material + totals.install + totals.delivery + totals.truckload;
   return {items: enriched, totals, createdAt: Date.now(), deliveryPreferences: {...deliveryPreferences, zone: deliveryZone}, deliveryZone};
 }
 function refreshDeliveryControls(){
@@ -277,6 +319,7 @@ function renderCart(){
     empty.style.display = 'block';
     document.getElementById('summary-items').textContent = 'No items yet';
     document.getElementById('summary-material').textContent = '$0.00';
+    document.getElementById('summary-truckload').textContent = '$0.00';
     document.getElementById('summary-install').textContent = '$0.00';
     document.getElementById('summary-delivery').textContent = '$0.00';
     document.getElementById('summary-total').textContent = '$0.00';
@@ -296,6 +339,7 @@ function renderCart(){
     const installRate = p.services?.installRate ?? (p.productType === 'molding' ? STORE_CONFIG?.install?.defaultMoldingRate : STORE_CONFIG?.install?.defaultFlooringRate);
     const installUnitLabel = p.measurementUnit === 'lf' ? 'lf' : (p.measurementUnit === 'piece' ? 'piece' : 'sq ft');
     const installRateLabel = installRate ? ` (${formatCurrency(installRate)} / ${installUnitLabel})` : '';
+    const truckloadLabel = p.productType === 'molding' ? ` | Truckload: ${formatCurrency(it.truckloadTotal || 0)}` : '';
     return `
       <article class="cart-item" data-sku="${it.sku}" data-price-type="${it.priceType}">
         <div>${image ? `<img src="${image}" alt="${p.name}">` : ''}</div>
@@ -325,13 +369,14 @@ function renderCart(){
               </div>
             </div>
           </div>
-          <div class="cart-item-meta">Subtotal: ${formatCurrency(it.subtotal)} | Install: ${formatCurrency(it.install)}</div>
+          <div class="cart-item-meta">Subtotal: ${formatCurrency(it.subtotal)}${truckloadLabel} | Install: ${formatCurrency(it.install)}</div>
         </div>
       </article>
     `;
   }).join('');
 
   document.getElementById('summary-material').textContent = formatCurrency(project.totals.material);
+  document.getElementById('summary-truckload').textContent = formatCurrency(project.totals.truckload);
   document.getElementById('summary-install').textContent = formatCurrency(project.totals.install);
   document.getElementById('summary-delivery').textContent = formatCurrency(project.totals.delivery);
   document.getElementById('summary-total').textContent = formatCurrency(project.totals.total);
