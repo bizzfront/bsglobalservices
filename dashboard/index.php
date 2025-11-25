@@ -537,7 +537,7 @@ if (isset($_GET['api'])) {
                         <div class="row g-2 align-items-start">
                             <div class="col-4">
                                 <input type="text" class="form-control form-control-sm" v-model="field.key" :readonly="!!field.config && field.key" placeholder="Campo" />
-                                <div class="small text-muted" v-if="field.config">{{ field.config.type }} • {{ field.config.input_type }}</div>
+                                <!--<div class="small text-muted" v-if="field.config">{{ field.config.type }} • {{ field.config.input_type }}</div>-->
                             </div>
                             <div class="col-7">
                                 <template v-if="field.config?.input_type === 'textarea'">
