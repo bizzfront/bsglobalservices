@@ -108,6 +108,10 @@ $contact_source = 'website_store';
             <span>Delivery (estimate)</span>
             <strong id="summary-delivery">$0.00</strong>
           </div>
+          <div class="summary-row">
+            <span>Taxes</span>
+            <strong id="summary-taxes">$0.00</strong>
+          </div>
           <div class="summary-divider"></div>
           <div class="summary-row">
             <span><strong>Estimated total</strong></span>
@@ -258,9 +262,20 @@ function computeDelivery(zoneId, zones){
   if(zone && Number.isFinite(Number(zone.fee))) return Number(zone.fee);
   return 0;
 }
+function getTaxRate(){
+  const rate = Number(STORE_CONFIG?.taxes);
+  return Number.isFinite(rate) && rate > 0 ? rate : 0;
+}
+function computeTaxes(taxableBase, product){
+  if(product?.taxesOmit) return 0;
+  const rate = getTaxRate();
+  const base = Number(taxableBase);
+  if(!Number.isFinite(base) || base <= 0 || rate <= 0) return 0;
+  return base * rate;
+}
 function serializeProject(items){
   const enriched = [];
-  let totals = {material:0, install:0, truckload:0, delivery:0, total:0};
+  let totals = {material:0, install:0, truckload:0, delivery:0, taxes:0, total:0};
   const deliveryZones = getAvailableDeliveryZones();
   const deliveryZone = resolveProjectDeliveryZone();
   const deliveryFee = deliveryPreferences.includeDelivery === false ? 0 : computeDelivery(deliveryZone, deliveryZones);
@@ -270,12 +285,14 @@ function serializeProject(items){
     const pricing = computePricing(item, product);
     const truckload = computeTruckload(item, product);
     const install = computeInstall(item, product, pricing.coverage);
+    const taxes = computeTaxes((pricing.subtotal || 0) + (truckload.total || 0) + (install || 0), product);
     const unitPriceWithTruckload = product.productType === 'molding'
       ? (Number(pricing.unitPrice) || 0) + (Number(truckload.pricePerPiece) || 0)
       : pricing.unitPrice;
     totals.material += pricing.subtotal;
     totals.install += install;
     totals.truckload += truckload.total;
+    totals.taxes += taxes;
     enriched.push({
       ...item,
       priceType: pricing.priceType,
@@ -286,6 +303,8 @@ function serializeProject(items){
       truckloadPricePerPiece: truckload.pricePerPiece,
       truckloadTotal: truckload.total,
       install,
+      taxes,
+      taxRate: getTaxRate(),
       delivery: deliveryFee,
       deliveryZone,
       deliveryZones,
@@ -293,7 +312,7 @@ function serializeProject(items){
     });
   }
   totals.delivery = deliveryFee;
-  totals.total = totals.material + totals.install + totals.delivery + totals.truckload;
+  totals.total = totals.material + totals.install + totals.delivery + totals.truckload + totals.taxes;
   return {items: enriched, totals, createdAt: Date.now(), deliveryPreferences: {...deliveryPreferences, zone: deliveryZone}, deliveryZone};
 }
 function refreshDeliveryControls(){
@@ -322,22 +341,23 @@ function refreshDeliveryControls(){
     summaryNote.textContent = STORE_CONFIG.install.notes;
   }
 }
-function renderCart(){
-  const items = cart.getItems();
-  const container = document.getElementById('cart-items');
-  const empty = document.getElementById('cart-empty');
-  if(items.length === 0){
-    container.innerHTML = '';
-    empty.style.display = 'block';
-    document.getElementById('summary-items').textContent = 'No items yet';
-    document.getElementById('summary-material').textContent = '$0.00';
-    //document.getElementById('summary-truckload').textContent = '$0.00';
-    document.getElementById('summary-install').textContent = '$0.00';
-    document.getElementById('summary-delivery').textContent = '$0.00';
-    document.getElementById('summary-total').textContent = '$0.00';
-    refreshDeliveryControls();
-    return;
-  }
+  function renderCart(){
+    const items = cart.getItems();
+    const container = document.getElementById('cart-items');
+    const empty = document.getElementById('cart-empty');
+    if(items.length === 0){
+      container.innerHTML = '';
+      empty.style.display = 'block';
+      document.getElementById('summary-items').textContent = 'No items yet';
+      document.getElementById('summary-material').textContent = '$0.00';
+      //document.getElementById('summary-truckload').textContent = '$0.00';
+      document.getElementById('summary-install').textContent = '$0.00';
+      document.getElementById('summary-delivery').textContent = '$0.00';
+      document.getElementById('summary-taxes').textContent = '$0.00';
+      document.getElementById('summary-total').textContent = '$0.00';
+      refreshDeliveryControls();
+      return;
+    }
   empty.style.display = 'none';
   const project = serializeProject(items);
   localStorage.setItem(PROJECT_KEY, JSON.stringify(project));
@@ -350,25 +370,26 @@ function renderCart(){
       ? `${formatCurrency(Number(it.unitPriceWithTruckload))} / ${unit}`
       : '';
     const packagePriceLabel = it.packagePrice ? `${formatCurrency(it.packagePrice)} / ${p.packageLabel || 'box'}` : '';
-    const priceLabel = [unitPriceLabel, packagePriceLabel].filter(Boolean).join(' · ') || 'Call for price';
-    const priceTypeLabel = it.priceType === 'backorder' ? 'Order-in' : 'In stock';
-    const installRate = p.services?.installRate ?? (p.productType === 'molding' ? STORE_CONFIG?.install?.defaultMoldingRate : STORE_CONFIG?.install?.defaultFlooringRate);
-    const installUnitLabel = p.measurementUnit === 'lf' ? 'lf' : (p.measurementUnit === 'piece' ? 'piece' : 'sq ft');
-    const installRateLabel = installRate ? ` (${formatCurrency(installRate)} / ${installUnitLabel})` : '';
-    const truckloadLabel = p.productType === 'molding' ? ` | Truckload: ${formatCurrency(it.truckloadTotal || 0)}` : '';
-    return `
-      <article class="cart-item" data-sku="${it.sku}" data-price-type="${it.priceType}">
-        <div>${image ? `<img src="${image}" alt="${p.name}">` : ''}</div>
-        <div>
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
-            <div>
-              <div style="font-weight:700; color:#1f1f1f;">${p.name}</div>
-              <div class="cart-item-meta">${p.collection || ''} ${coverLabel ? '· '+coverLabel : ''}</div>
-              <div class="cart-item-meta"><span class="badge ${it.priceType === 'backorder' ? 'backorder' : 'stock'}">${priceTypeLabel}</span></div>
+      const priceLabel = [unitPriceLabel, packagePriceLabel].filter(Boolean).join(' · ') || 'Call for price';
+      const priceTypeLabel = it.priceType === 'backorder' ? 'Order-in' : 'In stock';
+      const taxLabel = p.taxesOmit ? '<span class="badge">Tax exempt</span>' : '';
+      const installRate = p.services?.installRate ?? (p.productType === 'molding' ? STORE_CONFIG?.install?.defaultMoldingRate : STORE_CONFIG?.install?.defaultFlooringRate);
+      const installUnitLabel = p.measurementUnit === 'lf' ? 'lf' : (p.measurementUnit === 'piece' ? 'piece' : 'sq ft');
+      const installRateLabel = installRate ? ` (${formatCurrency(installRate)} / ${installUnitLabel})` : '';
+      const truckloadLabel = p.productType === 'molding' ? ` | Truckload: ${formatCurrency(it.truckloadTotal || 0)}` : '';
+      return `
+        <article class="cart-item" data-sku="${it.sku}" data-price-type="${it.priceType}">
+          <div>${image ? `<img src="${image}" alt="${p.name}">` : ''}</div>
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+              <div>
+                <div style="font-weight:700; color:#1f1f1f;">${p.name}</div>
+                <div class="cart-item-meta">${p.collection || ''} ${coverLabel ? '· '+coverLabel : ''}</div>
+                <div class="cart-item-meta"><span class="badge ${it.priceType === 'backorder' ? 'backorder' : 'stock'}">${priceTypeLabel}</span>${taxLabel ? ' · '+taxLabel : ''}</div>
+              </div>
+              <button type="button" class="remove btn btn-ghost" style="padding:6px 10px;">Remove</button>
             </div>
-            <button type="button" class="remove btn btn-ghost" style="padding:6px 10px;">Remove</button>
-          </div>
-          <div class="cart-item-meta" style="margin:6px 0;">${priceLabel}</div>
+            <div class="cart-item-meta" style="margin:6px 0;">${priceLabel}</div>
           <div class="cart-actions">
             <label class="cart-qty-control">Qty
               <input type="number" class="qty" min="1" value="${it.quantity}">
@@ -385,16 +406,18 @@ function renderCart(){
               </div>
             </div>
           </div>
-          <div class="cart-item-meta">Subtotal: ${formatCurrency(it.subtotal)}${truckloadLabel} | Install: ${formatCurrency(it.install)}</div>
-        </div>
-      </article>
-    `;
-  }).join('');
+            <div class="cart-item-meta">Subtotal: ${formatCurrency(it.subtotal)}${truckloadLabel} | Install: ${formatCurrency(it.install)}</div>
+            <div class="cart-item-meta">Taxes: ${formatCurrency(it.taxes || 0)}</div>
+          </div>
+        </article>
+      `;
+    }).join('');
 
   document.getElementById('summary-material').textContent = formatCurrency(project.totals.material+project.totals.truckload);
   //document.getElementById('summary-truckload').textContent = formatCurrency(project.totals.truckload);
   document.getElementById('summary-install').textContent = formatCurrency(project.totals.install);
   document.getElementById('summary-delivery').textContent = formatCurrency(project.totals.delivery);
+  document.getElementById('summary-taxes').textContent = formatCurrency(project.totals.taxes);
   document.getElementById('summary-total').textContent = formatCurrency(project.totals.total);
   const totalUnits = project.items.reduce((sum, it)=> sum + (it.quantity || 0), 0);
   document.getElementById('summary-items').textContent = `${project.items.length} item${project.items.length === 1 ? '' : 's'} · ${formatUnits(totalUnits)} package${totalUnits === 1 ? '' : 's'}`;
