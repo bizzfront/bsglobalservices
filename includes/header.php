@@ -61,6 +61,9 @@ $active = $active ?? '';
     if(actions) actions.hidden = !hasItems;
   }
   document.addEventListener('cartchange', updateCartCount);
+  window.addEventListener('storage', (evt) => {
+    if(evt.key === 'bs_cart') updateCartCount();
+  });
   document.getElementById('cart-reset')?.addEventListener('click', () => {
     if(confirm('¿Deseas eliminar todos los artículos del carrito?')){
       cart.clear();
