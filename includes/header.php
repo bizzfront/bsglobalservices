@@ -38,7 +38,10 @@ $active = $active ?? '';
         <?php else: ?>
           <a href="<?=$base?>register/" role="menuitem">Catalog &amp; Schedule</a>
         <?php endif; ?>
-        <a id="cart-link" href="<?=$base?>store/cart.php" role="menuitem" hidden>Cart (<span id="cart-count">0</span>)</a>
+        <div class="cart-actions" id="cart-actions" aria-label="Cart actions">
+          <a id="cart-link" href="<?=$base?>store/cart.php" role="menuitem" hidden>Cart (<span id="cart-count">0</span>)</a>
+          <button type="button" id="cart-reset" class="cart-reset" aria-label="Reset cart" hidden>&times;</button>
+        </div>
       </div>
     </nav>
   </div>
@@ -48,10 +51,20 @@ $active = $active ?? '';
   function updateCartCount(){
     const count = cart.getCount();
     const el = document.getElementById('cart-count');
+    const hasItems = count > 0;
     if(el) el.textContent = count;
     const link = document.getElementById('cart-link');
-    if(link) link.hidden = count <= 0;
+    const reset = document.getElementById('cart-reset');
+    const actions = document.getElementById('cart-actions');
+    if(link) link.hidden = !hasItems;
+    if(reset) reset.hidden = !hasItems;
+    if(actions) actions.hidden = !hasItems;
   }
   document.addEventListener('cartchange', updateCartCount);
+  document.getElementById('cart-reset')?.addEventListener('click', () => {
+    if(confirm('¿Deseas eliminar todos los artículos del carrito?')){
+      cart.clear();
+    }
+  });
   updateCartCount();
 </script>
