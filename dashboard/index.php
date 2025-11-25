@@ -213,6 +213,16 @@ if (isset($_GET['api'])) {
             color: #fff;
             box-shadow: 0 8px 20px rgba(13, 110, 253, 0.16);
         }
+        .nav-pills .nav-link.editor-tab-link {
+            color: #b02a37;
+            border: 1px solid transparent;
+        }
+        .nav-pills .nav-link.editor-tab-link.active {
+            background: #f8d7da;
+            color: #842029;
+            border-color: #f1aeb5;
+            box-shadow: 0 8px 20px rgba(176, 42, 55, 0.16);
+        }
         .card {
             border: none;
             border-radius: 14px;
@@ -260,6 +270,20 @@ if (isset($_GET['api'])) {
             border-radius: 50%;
             margin-right: 6px;
         }
+        .editor-card .card-title,
+        .editor-card .btn,
+        .editor-card .badge {
+            color: #b02a37;
+        }
+        .editor-card .btn,
+        .editor-card .badge {
+            border-color: #f8d7da;
+        }
+        .editor-card textarea.form-control {
+            border-color: #f1aeb5;
+            background-color: #fff8f8;
+            color: #4a1c1c;
+        }
     </style>
 </head>
 <body>
@@ -278,7 +302,7 @@ if (isset($_GET['api'])) {
 
     <ul class="nav nav-pills mb-3 gap-2">
         <li class="nav-item" v-for="tab in tabs" :key="tab.id">
-            <button class="nav-link" :class="{active: activeTab === tab.id}" @click="activeTab = tab.id">{{ tab.label }}</button>
+            <button class="nav-link" :class="[{active: activeTab === tab.id}, tab.id === 'editor' ? 'editor-tab-link' : '']" @click="activeTab = tab.id">{{ tab.label }}</button>
         </li>
     </ul>
 
@@ -312,65 +336,26 @@ if (isset($_GET['api'])) {
         </div>
     </div>
 
-    <div v-else-if="activeTab === 'editor'" class="row g-3">
-        <div class="col-12 col-lg-4">
+    <div v-else-if="activeTab === 'manager'" class="row g-3">
+        <div class="col-12">
             <div class="card p-3 h-100">
-                <h6 class="card-title mb-3">Selector de archivo</h6>
-                <div class="mb-3">
-                    <label class="form-label text-muted">Archivo</label>
-                    <select class="form-select form-select-sm" v-model="selectedFile" @change="loadFile()">
-                        <option v-for="file in files" :value="file.key" :key="file.key">{{ file.label }}</option>
-                    </select>
-                </div>
-                <div class="small text-muted mb-3">
-                    Se edita siempre sobre la copia en <code>dashboard/jsons</code>. Usa "Aplicar cambios al sitio" cuando estés listo.
-                </div>
-                <div class="d-flex gap-2 flex-wrap">
-                    <button class="btn btn-outline-primary btn-sm" @click="loadFile('staging')">Recargar borrador</button>
-                    <button class="btn btn-outline-secondary btn-sm" @click="loadFile('actual')">Ver original</button>
-                    <button class="btn btn-outline-success btn-sm" @click="saveDraft" :disabled="saving">
-                        <span class="spinner-border spinner-border-sm" v-if="saving"></span>
-                        <span v-else>Guardar borrador</span>
-                    </button>
-                </div>
-                <div class="mt-3 small" v-if="statusMessage">
-                    <span class="text-success" v-if="statusOk">{{ statusMessage }}</span>
-                    <span class="text-danger" v-else>{{ statusMessage }}</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-lg-8">
-            <div class="card p-3">
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                    <h6 class="card-title mb-0">Editor JSON</h6>
-                    <span class="badge text-bg-light" style="font-size: 0.8rem;">Fuente: {{ editorSource === 'actual' ? 'Producción' : 'Borrador' }}</span>
-                </div>
-                <textarea class="form-control" v-model="editorContent" spellcheck="false"></textarea>
-                <div class="d-flex justify-content-between align-items-center mt-2">
-                    <small class="text-muted">Revisa que el JSON sea válido antes de guardar.</small>
-                    <button class="btn btn-primary btn-sm" @click="saveDraft" :disabled="saving">
-                        <span class="spinner-border spinner-border-sm" v-if="saving"></span>
-                        <span v-else>Guardar borrador</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div v-else class="row g-3">
-        <div class="col-12 col-lg-4">
-            <div class="card p-3 h-100">
-                <h6 class="card-title mb-3">Gestor de elementos</h6>
-                <div class="mb-3">
-                    <label class="form-label text-muted">Archivo</label>
-                    <select class="form-select form-select-sm" v-model="managerFile" @change="loadManagement()">
-                        <option v-for="file in files" :value="file.key" :key="file.key">{{ file.label }}</option>
-                    </select>
-                </div>
-                <div class="small text-muted mb-2">Edita elementos sin tocar el JSON. El gestor trabaja sobre el borrador en <code>dashboard/jsons</code>.</div>
-                <div class="d-flex gap-2 flex-wrap mb-2">
-                    <button class="btn btn-outline-primary btn-sm" @click="loadManagement()" :disabled="managerLoading">Recargar lista</button>
-                    <button class="btn btn-outline-success btn-sm" @click="startNewItem" :disabled="managerLoading">Agregar nuevo</button>
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                    <div class="flex-grow-1">
+                        <h6 class="card-title mb-1">Gestor de elementos</h6>
+                        <div class="small text-muted">Edita elementos sin tocar el JSON. El gestor trabaja sobre el borrador en <code>dashboard/jsons</code>.</div>
+                    </div>
+                    <div class="d-flex flex-wrap align-items-end gap-2" style="min-width: 260px;">
+                        <div class="w-100">
+                            <label class="form-label text-muted mb-1">Archivo</label>
+                            <select class="form-select form-select-sm" v-model="managerFile" @change="loadManagement()">
+                                <option v-for="file in files" :value="file.key" :key="file.key">{{ file.label }}</option>
+                            </select>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-outline-primary btn-sm" @click="loadManagement()" :disabled="managerLoading">Recargar lista</button>
+                            <button class="btn btn-outline-success btn-sm" @click="startNewItem" :disabled="managerLoading">Agregar nuevo</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="mt-2 small" v-if="managerError">
                     <span class="text-danger">{{ managerError }}</span>
@@ -379,15 +364,17 @@ if (isset($_GET['api'])) {
             </div>
         </div>
 
-        <div class="col-12 col-lg-8">
-            <div class="card p-3">
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                    <h6 class="card-title mb-0">{{ managerTitle }}</h6>
-                    <span class="badge text-bg-light" style="font-size: 0.8rem;">{{ managerItems.length }} elemento(s)</span>
-                </div>
-
-                <div class="mb-3">
-                    <div class="list-group small" style="max-height: 220px; overflow: auto;">
+        <div class="col-12">
+            <div class="card p-3 h-100">
+                <template v-if="!showEditor">
+                    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+                        <div>
+                            <h6 class="card-title mb-0">{{ managerTitle }}</h6>
+                            <small class="text-muted">Se muestran todos los elementos disponibles.</small>
+                        </div>
+                        <span class="badge text-bg-light" style="font-size: 0.85rem;">{{ managerItems.length }} elemento(s)</span>
+                    </div>
+                    <div class="list-group small" style="max-height: 360px; overflow: auto;">
                         <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" v-for="(item, idx) in managerItems" :key="idx" @click="startEditItem(item, idx)">
                             <div class="ms-0 me-auto">
                                 <div class="fw-semibold">{{ renderItemTitle(item) }}</div>
@@ -398,15 +385,17 @@ if (isset($_GET['api'])) {
                         <div class="text-muted text-center py-3" v-if="!managerItems.length && !managerLoading">No hay elementos en este archivo.</div>
                         <div class="text-muted text-center py-3" v-if="managerLoading">Cargando...</div>
                     </div>
-                </div>
+                </template>
 
-                <div class="border rounded p-3" v-if="draftFields">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
+                <template v-else>
+                    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
                         <div>
                             <h6 class="mb-0">{{ editIndex === -1 ? 'Nuevo elemento' : 'Editar elemento' }}</h6>
                             <small class="text-muted">Completa los campos y guarda para actualizar el borrador.</small>
                         </div>
-                        <button class="btn btn-sm btn-outline-secondary" @click="startNewItem">Limpiar</button>
+                        <button class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-1" @click="cancelEdit">
+                            ✕ <span>Volver al listado</span>
+                        </button>
                     </div>
 
                     <div class="mb-2" v-if="currentPrimaryKey">
@@ -432,7 +421,7 @@ if (isset($_GET['api'])) {
                     <div class="mb-2" v-for="(field, i) in draftFields" :key="i">
                         <div class="row g-2 align-items-center">
                             <div class="col-4">
-                                <input type="text" class="form-control form-control-sm" v-model="field.key" placeholder="Campo" />
+                                <input type="text" class="form-control form-control-sm" v-model="field.key" placeholder="Campo"/>
                             </div>
                             <div class="col-7">
                                 <input type="text" class="form-control form-control-sm" v-model="field.value" placeholder="Valor (se acepta JSON)" />
@@ -445,17 +434,60 @@ if (isset($_GET['api'])) {
                     <button class="btn btn-outline-primary btn-sm mb-3" @click="addField">Agregar campo</button>
 
                     <div class="d-flex justify-content-end gap-2">
-                        <button class="btn btn-outline-secondary btn-sm" @click="startNewItem">Cancelar</button>
+                        <button class="btn btn-outline-secondary btn-sm" @click="cancelEdit">Cancelar</button>
                         <button class="btn btn-primary btn-sm" @click="saveManagedItem" :disabled="managerLoading">
                             {{ editIndex === -1 ? 'Crear' : 'Guardar cambios' }}
                         </button>
                     </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <div v-else-if="activeTab === 'editor'" class="row g-3">
+        <div class="col-12 col-lg-4">
+            <div class="card p-3 h-100 editor-card">
+                <h6 class="card-title mb-3">Selector de archivo</h6>
+                <div class="mb-3">
+                    <label class="form-label text-muted">Archivo</label>
+                    <select class="form-select form-select-sm" v-model="selectedFile" @change="loadFile()">
+                        <option v-for="file in files" :value="file.key" :key="file.key">{{ file.label }}</option>
+                    </select>
+                </div>
+                <div class="small text-muted mb-3">
+                    Se edita siempre sobre la copia en <code>dashboard/jsons</code>. Usa "Aplicar cambios al sitio" cuando estés listo.
+                </div>
+                <div class="d-flex gap-2 flex-wrap">
+                    <button class="btn btn-outline-danger btn-sm" @click="loadFile('staging')">Recargar borrador</button>
+                    <button class="btn btn-outline-secondary btn-sm" @click="loadFile('actual')">Ver original</button>
+                    <button class="btn btn-danger btn-sm" @click="saveDraft" :disabled="saving">
+                        <span class="spinner-border spinner-border-sm" v-if="saving"></span>
+                        <span v-else>Guardar borrador</span>
+                    </button>
+                </div>
+                <div class="mt-3 small" v-if="statusMessage">
+                    <span class="text-success" v-if="statusOk">{{ statusMessage }}</span>
+                    <span class="text-danger" v-else>{{ statusMessage }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-8">
+            <div class="card p-3 editor-card">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <h6 class="card-title mb-0">Editor JSON</h6>
+                    <span class="badge bg-danger-subtle text-danger" style="font-size: 0.8rem;">Fuente: {{ editorSource === 'actual' ? 'Producción' : 'Borrador' }}</span>
+                </div>
+                <textarea class="form-control border-danger-subtle" v-model="editorContent" spellcheck="false"></textarea>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                    <small class="text-muted">Revisa que el JSON sea válido antes de guardar.</small>
+                    <button class="btn btn-danger btn-sm" @click="saveDraft" :disabled="saving">
+                        <span class="spinner-border spinner-border-sm" v-if="saving"></span>
+                        <span v-else>Guardar borrador</span>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 <script>
@@ -466,8 +498,8 @@ createApp({
         return {
             tabs: [
                 { id: 'home', label: 'Home' },
-                { id: 'editor', label: 'Editor' },
                 { id: 'manager', label: 'Gestor' },
+                { id: 'editor', label: 'Editor' },
             ],
             activeTab: 'home',
             files: [
@@ -496,6 +528,8 @@ createApp({
             draftStatus: 'pending',
             draftDescription: '',
             draftFields: [],
+            showEditor: false,
+            templates: {},
             fileMeta: {
                 floorings: { primaryKey: 'sku', titleField: 'name', type: 'array' },
                 moldings: { primaryKey: 'sku', titleField: 'name', type: 'array' },
@@ -510,6 +544,19 @@ createApp({
         async fetchSummary() {
             const res = await fetch('?api=summary');
             this.summary = await res.json();
+        },
+        async fetchTemplates() {
+            try {
+                const res = await fetch('jsons/templates.json');
+                if (res.ok) {
+                    this.templates = await res.json();
+                    if (!this.showEditor) {
+                        this.resetDraftState(false);
+                    }
+                }
+            } catch (e) {
+                this.templates = {};
+            }
         },
         formatBytes(bytes) {
             if (!bytes) return '0 B';
@@ -575,9 +622,7 @@ createApp({
         resetManagerState() {
             this.managerItems = [];
             this.managerRaw = {};
-            this.editIndex = -1;
-            this.draftId = '';
-            this.draftFields = [];
+            this.resetDraftState(false);
         },
         async loadManagement(fileKey = null) {
             if (fileKey) {
@@ -594,11 +639,7 @@ createApp({
                 const { items, raw } = this.normalizeManagedData(parsed);
                 this.managerItems = items;
                 this.managerRaw = raw;
-                if (items.length) {
-                    this.startEditItem(items[0], 0);
-                } else {
-                    this.startNewItem();
-                }
+                this.resetDraftState(false);
             } catch (e) {
                 this.managerError = 'No se pudo cargar el archivo seleccionado.';
             } finally {
@@ -633,19 +674,31 @@ createApp({
             }
             return { items: [], raw: {} };
         },
-        startNewItem() {
+        resetDraftState(showEditor = false) {
             this.editIndex = -1;
             this.draftId = '';
             this.draftStatus = 'pending';
             this.draftDescription = '';
-            if (this.currentMeta().type === 'object') {
+            const meta = this.currentMeta();
+            const template = this.templates[this.managerFile];
+            if (template && meta.primaryKey && template[meta.primaryKey] !== undefined) {
+                this.draftId = template[meta.primaryKey];
+            }
+            if (template) {
+                this.draftFields = this.buildFields(template);
+            } else if (meta.type === 'object') {
                 this.draftFields = [{ key: '__value', value: '' }];
             } else {
                 this.draftFields = [{ key: '', value: '' }];
             }
+            this.showEditor = showEditor;
+        },
+        startNewItem() {
+            this.resetDraftState(true);
         },
         startEditItem(item, idx) {
             this.editIndex = idx;
+            this.showEditor = true;
             const meta = this.currentMeta();
             const cleanItem = { ...item };
             if (meta.type === 'orders') {
@@ -672,6 +725,9 @@ createApp({
                 this.draftId = '';
             }
             this.draftFields = this.buildFields(cleanItem);
+        },
+        cancelEdit() {
+            this.resetDraftState(false);
         },
         buildFields(obj) {
             const entries = Object.entries(obj || {});
@@ -785,7 +841,7 @@ createApp({
             this.managerItems = items;
             this.editorContent = JSON.stringify(payload, null, 2);
             this.saveDraft();
-            this.startNewItem();
+            this.resetDraftState(false);
         },
     },
     computed: {
@@ -798,6 +854,7 @@ createApp({
         },
     },
     mounted() {
+        this.fetchTemplates();
         this.fetchSummary();
         this.loadFile();
         this.loadManagement();
