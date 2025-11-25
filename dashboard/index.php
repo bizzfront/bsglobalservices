@@ -808,10 +808,11 @@ createApp({
             return template?.[key] || null;
         },
         createField(key, value, config = null) {
+            const resolvedConfig = config || this.fieldConfig(key) || this.inferConfigFromValue(value);
             return {
                 key,
                 value: this.stringifyValue(value),
-                config: config || this.fieldConfig(key),
+                config: resolvedConfig,
                 uploading: false,
                 error: '',
             };
@@ -952,6 +953,13 @@ createApp({
         stringifyValue(value) {
             if (value === undefined) return '';
             if (value === null) return 'null';
+            if (Array.isArray(value) || this.isPlainObject(value)) {
+                try {
+                    return JSON.stringify(value, null, 2);
+                } catch (e) {
+                    return String(value);
+                }
+            }
             if (typeof value === 'string') return value;
             try {
                 return JSON.stringify(value);
@@ -982,6 +990,14 @@ createApp({
             return title || 'Sin detalles';
         },
         parseFieldValue(value, config = null) {
+            if (config?.type === 'array' || config?.type === 'object') {
+                if (Array.isArray(value) || this.isPlainObject(value)) return value;
+                try {
+                    return JSON.parse(value);
+                } catch (e) {
+                    return value;
+                }
+            }
             if (config?.type === 'text' || config?.type === 'image') {
                 return typeof value === 'string' ? value : String(value ?? '');
             }
@@ -996,18 +1012,16 @@ createApp({
                 if (['false', '0', 'no', 'off', ''].includes(normalized)) return false;
                 return !!value;
             }
-            if (config?.type === 'array' || config?.type === 'object') {
-                try {
-                    return JSON.parse(value);
-                } catch (e) {
-                    return value;
-                }
-            }
             try {
                 return JSON.parse(value);
             } catch (e) {
                 return value;
             }
+        },
+        inferConfigFromValue(value) {
+            if (Array.isArray(value)) return { type: 'array', input_type: 'textarea' };
+            if (this.isPlainObject(value)) return { type: 'object', input_type: 'textarea' };
+            return null;
         },
         createObjectFromFields() {
             const obj = {};
@@ -1146,6 +1160,9 @@ createApp({
             this.nestedEditor.show = true;
         },
         safeParseJson(value, fallback) {
+            if (Array.isArray(value) || this.isPlainObject(value)) {
+                return this.cloneValue(value);
+            }
             try {
                 return JSON.parse(value);
             } catch (e) {
