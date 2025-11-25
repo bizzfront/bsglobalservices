@@ -207,8 +207,8 @@ function computePricing(item, product){
 
 function getMoldingTruckloadPricePerPiece(piecesCount, piecesPerBox){
   const pieces = Number(piecesCount);
-  const piecesPerPackage = Number(piecesPerBox);
-  if(!Number.isFinite(pieces) || pieces <= 0 || !Number.isFinite(piecesPerPackage) || piecesPerPackage <= 0){
+  const piecesPerPackage = Number.isFinite(Number(piecesPerBox)) && Number(piecesPerBox) > 0 ? Number(piecesPerBox) : 1;
+  if(!Number.isFinite(pieces) || pieces <= 0){
     return 0;
   }
   const truckloadConfig = STORE_CONFIG?.molding?.truckload || {};
@@ -218,9 +218,10 @@ function getMoldingTruckloadPricePerPiece(piecesCount, piecesPerBox){
     .filter(t=>Number.isFinite(t.maxBoxes) && t.maxBoxes > 0 && Number.isFinite(t.pricePerPiece) && t.pricePerPiece >= 0)
     .sort((a,b)=>a.maxBoxes - b.maxBoxes);
   const ratio = pieces / piecesPerPackage;
+  const fallbackPrice = sortedTiers.length ? sortedTiers[sortedTiers.length - 1].pricePerPiece : 0;
   let pricePerPiece = Number(truckloadConfig.defaultPricePerPiece);
-  if(!Number.isFinite(pricePerPiece) || pricePerPiece < 0){
-    pricePerPiece = sortedTiers.length ? sortedTiers[sortedTiers.length - 1].pricePerPiece : 0;
+  if(!Number.isFinite(pricePerPiece) || pricePerPiece <= 0){
+    pricePerPiece = fallbackPrice;
   }
   for(const tier of sortedTiers){
     if(ratio <= tier.maxBoxes){
@@ -233,9 +234,17 @@ function getMoldingTruckloadPricePerPiece(piecesCount, piecesPerBox){
 
 function computeTruckload(item, product){
   if(product.productType !== 'molding') return {pricePerPiece: 0, total: 0};
-  const piecesPerBox = product.pieces_per_box ?? product.piecesPerBox;
-  const pricePerPiece = getMoldingTruckloadPricePerPiece(item.quantity, piecesPerBox);
-  const total = Number.isFinite(pricePerPiece) && pricePerPiece > 0 && item.quantity > 0 ? pricePerPiece * item.quantity : 0;
+  const piecesPerBoxRaw = Number(product.pieces_per_box ?? product.piecesPerBox);
+  const piecesPerBox = product.packageLabel === 'piece' || product.packageLabelPlural === 'pieces'
+    ? 1
+    : (Number.isFinite(piecesPerBoxRaw) && piecesPerBoxRaw > 0 ? piecesPerBoxRaw : 1);
+  const packages = Number(item.quantity);
+  if(!Number.isFinite(packages) || packages <= 0 || !Number.isFinite(piecesPerBox) || piecesPerBox <= 0){
+    return {pricePerPiece: 0, total: 0};
+  }
+  const totalPieces = packages * piecesPerBox;
+  const pricePerPiece = getMoldingTruckloadPricePerPiece(totalPieces, piecesPerBox);
+  const total = Number.isFinite(pricePerPiece) && pricePerPiece > 0 ? pricePerPiece * totalPieces : 0;
   return {pricePerPiece, total};
 }
 function computeInstall(item, product, coverage){
@@ -262,6 +271,9 @@ function serializeProject(items){
     const pricing = computePricing(item, product);
     const truckload = computeTruckload(item, product);
     const install = computeInstall(item, product, pricing.coverage);
+    const unitPriceWithTruckload = product.productType === 'molding'
+      ? (Number(pricing.unitPrice) || 0) + (Number(truckload.pricePerPiece) || 0)
+      : pricing.unitPrice;
     totals.material += pricing.subtotal;
     totals.install += install;
     totals.truckload += truckload.total;
@@ -269,6 +281,7 @@ function serializeProject(items){
       ...item,
       priceType: pricing.priceType,
       unitPrice: pricing.unitPrice,
+      unitPriceWithTruckload,
       packagePrice: pricing.packagePrice,
       subtotal: pricing.subtotal,
       truckloadPricePerPiece: truckload.pricePerPiece,
@@ -334,7 +347,11 @@ function renderCart(){
     const unit = p.measurementUnit === 'lf' ? 'lf' : p.measurementUnit === 'piece' ? 'piece' : 'sqft';
     const coverLabel = it.product.packageCoverage ? `${formatUnits(it.product.packageCoverage)} ${unit} / ${p.packageLabel || 'box'}` : '';
     const image = p.images?.[0] ? `../${p.images[0]}` : '';
-    const priceLabel = it.packagePrice ? `${formatCurrency(it.packagePrice)} / ${p.packageLabel || 'box'}` : 'Call for price';
+    const unitPriceLabel = Number.isFinite(Number(it.unitPriceWithTruckload))
+      ? `${formatCurrency(Number(it.unitPriceWithTruckload))} / ${unit}`
+      : '';
+    const packagePriceLabel = it.packagePrice ? `${formatCurrency(it.packagePrice)} / ${p.packageLabel || 'box'}` : '';
+    const priceLabel = [unitPriceLabel, packagePriceLabel].filter(Boolean).join(' · ') || 'Call for price';
     const priceTypeLabel = it.priceType === 'backorder' ? 'Order-in' : 'In stock';
     const installRate = p.services?.installRate ?? (p.productType === 'molding' ? STORE_CONFIG?.install?.defaultMoldingRate : STORE_CONFIG?.install?.defaultFlooringRate);
     const installUnitLabel = p.measurementUnit === 'lf' ? 'lf' : (p.measurementUnit === 'piece' ? 'piece' : 'sq ft');
