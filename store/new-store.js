@@ -156,7 +156,14 @@
         const sku = card?.dataset?.sku;
         if(!sku) return;
         const product = list.find(p=>p.sku===sku);
-        cart.addItem(sku, qty, (product?.pricing?.activePriceType || product?.availability?.activePriceType || 'stock'));
+        const stockAvailable = Number(product?.availability?.stockAvailable ?? NaN);
+        const allowBackorder = product?.availability?.allowBackorder !== false;
+        let priceType = (product?.pricing?.activePriceType || product?.availability?.activePriceType || 'stock');
+        if(priceType === 'stock' && allowBackorder && Number.isFinite(stockAvailable) && stockAvailable > 0 && qty > stockAvailable){
+          priceType = 'backorder';
+        }
+        const inventoryId = priceType === 'stock' ? (product?.availability?.activeInventoryId || null) : null;
+        cart.addItem(sku, qty, priceType, {inventoryId});
         btn.textContent = 'Added';
         setTimeout(()=>{btn.textContent='Add to project';}, 1200);
         if(CURRENT_TYPE === 'flooring'){

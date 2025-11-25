@@ -50,14 +50,125 @@ function load_store_inventory_index(): array
     return $cache;
 }
 
+function load_store_orders(): array
+{
+    static $cache = null;
+    if ($cache !== null) {
+        return $cache;
+    }
+
+    $ordersPath = __DIR__ . '/../orders.json';
+    $cache = json_decode(@file_get_contents($ordersPath), true) ?: ['orders' => []];
+    if (!isset($cache['orders']) || !is_array($cache['orders'])) {
+        $cache['orders'] = [];
+    }
+
+    return $cache;
+}
+
+function get_inventory_reservations(string $sku): array
+{
+    $ordersData = load_store_orders();
+    $reservations = [];
+    foreach ($ordersData['orders'] as $order) {
+        if (!is_array($order) || ($order['sku'] ?? null) !== $sku) {
+            continue;
+        }
+        $status = strtolower((string)($order['status'] ?? 'active'));
+        if (in_array($status, ['cancelled', 'canceled', 'fulfilled', 'closed', 'complete'], true)) {
+            continue;
+        }
+        $inventoryId = (string)($order['inventoryId'] ?? '');
+        if ($inventoryId === '') {
+            continue;
+        }
+        $qty = parse_store_numeric($order['quantity'] ?? null);
+        if ($qty === null || $qty <= 0) {
+            continue;
+        }
+        $reservations[$inventoryId] = ($reservations[$inventoryId] ?? 0) + (float) $qty;
+    }
+
+    return $reservations;
+}
+
+function normalize_inventory_entries(array $inventory, array $defaults, string $sku): array
+{
+    $entries = [];
+    $rawList = [];
+    if (isset($inventory['inventories']) && is_array($inventory['inventories'])) {
+        $rawList = $inventory['inventories'];
+    }
+
+    if (!$rawList && (isset($inventory['stockAvailable']) || isset($defaults['stockAvailable']))) {
+        $rawList[] = [
+            'id' => $inventory['inventoryId'] ?? ($inventory['acquiredAt'] ?? $sku . '-inv'),
+            'stockAvailable' => $inventory['stockAvailable'] ?? $defaults['stockAvailable'] ?? null,
+            'price_per_unit' => $inventory['price_per_unit'] ?? null,
+            'price_per_package' => $inventory['price_per_package'] ?? null,
+            'acquiredAt' => $inventory['acquiredAt'] ?? null,
+        ];
+    }
+
+    foreach ($rawList as $index => $entry) {
+        if (!is_array($entry)) {
+            continue;
+        }
+        $id = (string)($entry['id'] ?? '');
+        if ($id === '') {
+            $id = $entry['acquiredAt'] ?? ($sku . '-' . $index);
+        }
+        $stockAvailable = parse_store_numeric($entry['stockAvailable'] ?? null);
+        $pricePerUnit = parse_store_numeric($entry['price_per_unit'] ?? $entry['pricePerUnit'] ?? null);
+        $pricePerPackage = parse_store_numeric($entry['price_per_package'] ?? $entry['pricePerPackage'] ?? null);
+        $entries[] = [
+            'id' => $id,
+            'acquiredAt' => $entry['acquiredAt'] ?? null,
+            'stockAvailable' => $stockAvailable !== null ? max(0, (float) $stockAvailable) : null,
+            'pricePerUnit' => $pricePerUnit !== null ? (float) $pricePerUnit : null,
+            'pricePerPackage' => $pricePerPackage !== null ? (float) $pricePerPackage : null,
+        ];
+    }
+
+    usort($entries, function ($a, $b) {
+        $aDate = $a['acquiredAt'] ?? null;
+        $bDate = $b['acquiredAt'] ?? null;
+        if ($aDate && $bDate && $aDate !== $bDate) {
+            return strcmp($aDate, $bDate);
+        }
+        return 0;
+    });
+
+    return $entries;
+}
+
 function merge_inventory(array $product): array
 {
     $inventoryIndex = load_store_inventory_index();
     $defaults = $inventoryIndex['__defaults'] ?? [];
     $sku = $product['sku'] ?? null;
     $productInventory = $sku && isset($inventoryIndex[$sku]) ? $inventoryIndex[$sku] : [];
-
     $inventory = array_merge($defaults, $productInventory);
+    $entries = normalize_inventory_entries($productInventory, $defaults, (string) $sku);
+    $reservations = $sku ? get_inventory_reservations((string) $sku) : [];
+    $activeInventory = null;
+    foreach ($entries as &$entry) {
+        $reserved = $reservations[$entry['id']] ?? 0;
+        $available = ($entry['stockAvailable'] ?? 0) - $reserved;
+        $entry['reserved'] = $reserved > 0 ? (float) $reserved : 0;
+        $entry['availableAfterOrders'] = $available > 0 ? (float) $available : 0.0;
+        if ($activeInventory === null && $available > 0) {
+            $activeInventory = $entry;
+        }
+    }
+    unset($entry);
+
+    $inventory['inventories'] = $entries;
+    $inventory['activeInventoryId'] = $activeInventory['id'] ?? null;
+    $inventory['stockAvailable'] = $activeInventory['availableAfterOrders'] ?? 0;
+    $inventory['activeInventory'] = $activeInventory;
+    $inventory['reservations'] = $reservations;
+
     $product['inventory'] = $inventory;
 
     return $product;
@@ -67,6 +178,9 @@ function enrich_store_product(array $product): array
 {
     $type = $product['product_type'] ?? 'flooring';
     $product = merge_inventory($product);
+    $activeInventory = $product['inventory']['activeInventory'] ?? null;
+    $inventoryPricePerUnit = $activeInventory['pricePerUnit'] ?? null;
+    $inventoryPricePerPackage = $activeInventory['pricePerPackage'] ?? null;
 
     if (!isset($product['package_label']) || !isset($product['package_label_plural'])) {
         if ($type === 'molding') {
@@ -185,6 +299,15 @@ function enrich_store_product(array $product): array
         }
     }
 
+    if ($inventoryPricePerUnit !== null) {
+        $product['computed_price_per_unit_stock'] = (float) $inventoryPricePerUnit;
+    }
+    if ($inventoryPricePerPackage !== null) {
+        $product['computed_price_per_package_stock'] = (float) $inventoryPricePerPackage;
+    } elseif ($inventoryPricePerUnit !== null && isset($product['computed_coverage_per_package'])) {
+        $product['computed_price_per_package_stock'] = (float) $inventoryPricePerUnit * (float) $product['computed_coverage_per_package'];
+    }
+
     $stockPrice = $product['computed_price_per_unit_stock'] ?? $product['computed_price_per_unit'] ?? $product['price_per_unit'] ?? $product['price_sqft'] ?? null;
     $backorderPrice = $product['computed_price_per_unit_backorder'] ?? null;
     $product['pricing'] = [
@@ -198,6 +321,8 @@ function enrich_store_product(array $product): array
     $hasInventory = $stockAvailable !== null && $stockAvailable > 0;
     $availabilityMode = $hasInventory ? 'stock' : 'backorder';
     $activePriceType = $availabilityMode === 'stock' && $stockPrice !== null ? 'stock' : ($backorderPrice !== null ? 'backorder' : $availabilityMode);
+    $allowBackorder = $inventory['allowBackorder'] ?? true;
+    $maxPurchaseQuantity = $hasInventory && !$allowBackorder ? $stockAvailable : null;
 
     $product['pricing']['activePriceType'] = $activePriceType;
     $product['pricing']['activePricePerUnit'] = $activePriceType === 'stock' ? $stockPrice : $backorderPrice;
@@ -207,11 +332,15 @@ function enrich_store_product(array $product): array
     $product['availability'] = [
         'mode' => $availabilityMode,
         'stockAvailable' => $stockAvailable,
-        'allowBackorder' => $inventory['allowBackorder'] ?? true,
+        'allowBackorder' => $allowBackorder,
         'backorderLeadTimeDays' => $inventory['backorderLeadTimeDays'] ?? null,
         'notes' => $inventory['notes'] ?? [],
-        'maxPurchaseQuantity' => $hasInventory ? $stockAvailable : null,
+        'maxPurchaseQuantity' => $maxPurchaseQuantity,
         'activePriceType' => $activePriceType,
+        'activeInventoryId' => $inventory['activeInventoryId'] ?? null,
+        'inventoryEntries' => $inventory['inventories'] ?? [],
+        'reservations' => $inventory['reservations'] ?? [],
+        'activeInventoryStock' => $inventory['activeInventory']['availableAfterOrders'] ?? $stockAvailable,
     ];
 
     $installDefaults = load_store_config()['install'] ?? [];
