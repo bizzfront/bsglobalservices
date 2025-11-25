@@ -1,0 +1,7287 @@
+[
+  {
+    "zip": "32003",
+    "city": "Fleming Island",
+    "zone": "C"
+  },
+  {
+    "zip": "32004",
+    "city": "Ponte Vedra Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32006",
+    "city": "Fleming Island",
+    "zone": "C"
+  },
+  {
+    "zip": "32007",
+    "city": "Bostwick",
+    "zone": "C"
+  },
+  {
+    "zip": "32008",
+    "city": "Branford",
+    "zone": "C"
+  },
+  {
+    "zip": "32009",
+    "city": "Bryceville",
+    "zone": "C"
+  },
+  {
+    "zip": "32011",
+    "city": "Callahan",
+    "zone": "C"
+  },
+  {
+    "zip": "32013",
+    "city": "Day",
+    "zone": "C"
+  },
+  {
+    "zip": "32024",
+    "city": "Lake City",
+    "zone": "C"
+  },
+  {
+    "zip": "32025",
+    "city": "Lake City",
+    "zone": "C"
+  },
+  {
+    "zip": "32030",
+    "city": "Doctors Inlet",
+    "zone": "C"
+  },
+  {
+    "zip": "32033",
+    "city": "Elkton",
+    "zone": "C"
+  },
+  {
+    "zip": "32034",
+    "city": "Fernandina Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32035",
+    "city": "Fernandina Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32038",
+    "city": "Fort White",
+    "zone": "C"
+  },
+  {
+    "zip": "32040",
+    "city": "Glen Saint Mary",
+    "zone": "C"
+  },
+  {
+    "zip": "32041",
+    "city": "Yulee",
+    "zone": "C"
+  },
+  {
+    "zip": "32042",
+    "city": "Graham",
+    "zone": "C"
+  },
+  {
+    "zip": "32043",
+    "city": "Green Cove Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "32044",
+    "city": "Hampton",
+    "zone": "C"
+  },
+  {
+    "zip": "32046",
+    "city": "Hilliard",
+    "zone": "C"
+  },
+  {
+    "zip": "32050",
+    "city": "Middleburg",
+    "zone": "C"
+  },
+  {
+    "zip": "32052",
+    "city": "Jasper",
+    "zone": "C"
+  },
+  {
+    "zip": "32053",
+    "city": "Jennings",
+    "zone": "C"
+  },
+  {
+    "zip": "32054",
+    "city": "Lake Butler",
+    "zone": "C"
+  },
+  {
+    "zip": "32055",
+    "city": "Lake City",
+    "zone": "C"
+  },
+  {
+    "zip": "32056",
+    "city": "Lake City",
+    "zone": "C"
+  },
+  {
+    "zip": "32058",
+    "city": "Lawtey",
+    "zone": "C"
+  },
+  {
+    "zip": "32059",
+    "city": "Lee",
+    "zone": "C"
+  },
+  {
+    "zip": "32060",
+    "city": "Live Oak",
+    "zone": "C"
+  },
+  {
+    "zip": "32061",
+    "city": "Lulu",
+    "zone": "C"
+  },
+  {
+    "zip": "32062",
+    "city": "Mc Alpin",
+    "zone": "C"
+  },
+  {
+    "zip": "32063",
+    "city": "Macclenny",
+    "zone": "C"
+  },
+  {
+    "zip": "32064",
+    "city": "Live Oak",
+    "zone": "C"
+  },
+  {
+    "zip": "32065",
+    "city": "Orange Park",
+    "zone": "C"
+  },
+  {
+    "zip": "32066",
+    "city": "Mayo",
+    "zone": "C"
+  },
+  {
+    "zip": "32067",
+    "city": "Orange Park",
+    "zone": "C"
+  },
+  {
+    "zip": "32068",
+    "city": "Middleburg",
+    "zone": "C"
+  },
+  {
+    "zip": "32071",
+    "city": "O Brien",
+    "zone": "C"
+  },
+  {
+    "zip": "32073",
+    "city": "Orange Park",
+    "zone": "C"
+  },
+  {
+    "zip": "32079",
+    "city": "Penney Farms",
+    "zone": "C"
+  },
+  {
+    "zip": "32080",
+    "city": "Saint Augustine",
+    "zone": "C"
+  },
+  {
+    "zip": "32081",
+    "city": "Ponte Vedra",
+    "zone": "C"
+  },
+  {
+    "zip": "32082",
+    "city": "Ponte Vedra Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32083",
+    "city": "Raiford",
+    "zone": "C"
+  },
+  {
+    "zip": "32084",
+    "city": "Saint Augustine",
+    "zone": "C"
+  },
+  {
+    "zip": "32085",
+    "city": "Saint Augustine",
+    "zone": "C"
+  },
+  {
+    "zip": "32086",
+    "city": "Saint Augustine",
+    "zone": "C"
+  },
+  {
+    "zip": "32087",
+    "city": "Sanderson",
+    "zone": "C"
+  },
+  {
+    "zip": "32091",
+    "city": "Starke",
+    "zone": "C"
+  },
+  {
+    "zip": "32092",
+    "city": "Saint Augustine",
+    "zone": "C"
+  },
+  {
+    "zip": "32094",
+    "city": "Wellborn",
+    "zone": "C"
+  },
+  {
+    "zip": "32095",
+    "city": "Saint Augustine",
+    "zone": "C"
+  },
+  {
+    "zip": "32096",
+    "city": "White Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "32097",
+    "city": "Yulee",
+    "zone": "C"
+  },
+  {
+    "zip": "32099",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32102",
+    "city": "Astor",
+    "zone": "C"
+  },
+  {
+    "zip": "32105",
+    "city": "Barberville",
+    "zone": "C"
+  },
+  {
+    "zip": "32110",
+    "city": "Bunnell",
+    "zone": "C"
+  },
+  {
+    "zip": "32111",
+    "city": "Candler",
+    "zone": "C"
+  },
+  {
+    "zip": "32112",
+    "city": "Crescent City",
+    "zone": "C"
+  },
+  {
+    "zip": "32113",
+    "city": "Citra",
+    "zone": "C"
+  },
+  {
+    "zip": "32114",
+    "city": "Daytona Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32115",
+    "city": "Daytona Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32116",
+    "city": "Daytona Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32117",
+    "city": "Daytona Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32118",
+    "city": "Daytona Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32119",
+    "city": "Daytona Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32120",
+    "city": "Daytona Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32121",
+    "city": "Daytona Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32122",
+    "city": "Daytona Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32123",
+    "city": "Port Orange",
+    "zone": "C"
+  },
+  {
+    "zip": "32124",
+    "city": "Daytona Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32125",
+    "city": "Daytona Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32126",
+    "city": "Daytona Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32127",
+    "city": "Port Orange",
+    "zone": "C"
+  },
+  {
+    "zip": "32128",
+    "city": "Port Orange",
+    "zone": "C"
+  },
+  {
+    "zip": "32129",
+    "city": "Port Orange",
+    "zone": "C"
+  },
+  {
+    "zip": "32130",
+    "city": "De Leon Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "32131",
+    "city": "East Palatka",
+    "zone": "C"
+  },
+  {
+    "zip": "32132",
+    "city": "Edgewater",
+    "zone": "C"
+  },
+  {
+    "zip": "32133",
+    "city": "Eastlake Weir",
+    "zone": "C"
+  },
+  {
+    "zip": "32134",
+    "city": "Fort Mc Coy",
+    "zone": "C"
+  },
+  {
+    "zip": "32135",
+    "city": "Palm Coast",
+    "zone": "C"
+  },
+  {
+    "zip": "32136",
+    "city": "Flagler Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32137",
+    "city": "Palm Coast",
+    "zone": "C"
+  },
+  {
+    "zip": "32138",
+    "city": "Grandin",
+    "zone": "C"
+  },
+  {
+    "zip": "32139",
+    "city": "Georgetown",
+    "zone": "C"
+  },
+  {
+    "zip": "32140",
+    "city": "Florahome",
+    "zone": "C"
+  },
+  {
+    "zip": "32141",
+    "city": "Edgewater",
+    "zone": "C"
+  },
+  {
+    "zip": "32142",
+    "city": "Palm Coast",
+    "zone": "C"
+  },
+  {
+    "zip": "32143",
+    "city": "Palm Coast",
+    "zone": "C"
+  },
+  {
+    "zip": "32145",
+    "city": "Hastings",
+    "zone": "C"
+  },
+  {
+    "zip": "32147",
+    "city": "Hollister",
+    "zone": "C"
+  },
+  {
+    "zip": "32148",
+    "city": "Interlachen",
+    "zone": "C"
+  },
+  {
+    "zip": "32149",
+    "city": "Interlachen",
+    "zone": "C"
+  },
+  {
+    "zip": "32157",
+    "city": "Lake Como",
+    "zone": "C"
+  },
+  {
+    "zip": "32158",
+    "city": "Lady Lake",
+    "zone": "C"
+  },
+  {
+    "zip": "32159",
+    "city": "Lady Lake",
+    "zone": "C"
+  },
+  {
+    "zip": "32160",
+    "city": "Lake Geneva",
+    "zone": "C"
+  },
+  {
+    "zip": "32162",
+    "city": "The Villages",
+    "zone": "C"
+  },
+  {
+    "zip": "32163",
+    "city": "The Villages",
+    "zone": "C"
+  },
+  {
+    "zip": "32164",
+    "city": "Palm Coast",
+    "zone": "C"
+  },
+  {
+    "zip": "32168",
+    "city": "New Smyrna Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32169",
+    "city": "New Smyrna Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32170",
+    "city": "New Smyrna Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32173",
+    "city": "Ormond Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32174",
+    "city": "Ormond Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32175",
+    "city": "Ormond Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32176",
+    "city": "Ormond Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32177",
+    "city": "Palatka",
+    "zone": "C"
+  },
+  {
+    "zip": "32178",
+    "city": "Palatka",
+    "zone": "C"
+  },
+  {
+    "zip": "32179",
+    "city": "Ocklawaha",
+    "zone": "C"
+  },
+  {
+    "zip": "32180",
+    "city": "Pierson",
+    "zone": "C"
+  },
+  {
+    "zip": "32181",
+    "city": "Pomona Park",
+    "zone": "C"
+  },
+  {
+    "zip": "32182",
+    "city": "Orange Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "32183",
+    "city": "Ocklawaha",
+    "zone": "C"
+  },
+  {
+    "zip": "32185",
+    "city": "Putnam Hall",
+    "zone": "C"
+  },
+  {
+    "zip": "32187",
+    "city": "San Mateo",
+    "zone": "C"
+  },
+  {
+    "zip": "32189",
+    "city": "Satsuma",
+    "zone": "C"
+  },
+  {
+    "zip": "32190",
+    "city": "Seville",
+    "zone": "C"
+  },
+  {
+    "zip": "32192",
+    "city": "Sparr",
+    "zone": "C"
+  },
+  {
+    "zip": "32193",
+    "city": "Welaka",
+    "zone": "C"
+  },
+  {
+    "zip": "32195",
+    "city": "Weirsdale",
+    "zone": "C"
+  },
+  {
+    "zip": "32198",
+    "city": "Daytona Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32201",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32202",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32203",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32204",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32205",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32206",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32207",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32208",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32209",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32210",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32211",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32212",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32214",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32216",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32217",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32218",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32219",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32220",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32221",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32222",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32223",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32224",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32225",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32226",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32227",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32228",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32229",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32231",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32232",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32233",
+    "city": "Atlantic Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32234",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32235",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32236",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32238",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32239",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32240",
+    "city": "Jacksonville Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32241",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32244",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32245",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32246",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32247",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32250",
+    "city": "Jacksonville Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32254",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32255",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32256",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32257",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32258",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32259",
+    "city": "Saint Johns",
+    "zone": "C"
+  },
+  {
+    "zip": "32260",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32266",
+    "city": "Neptune Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32277",
+    "city": "Jacksonville",
+    "zone": "C"
+  },
+  {
+    "zip": "32301",
+    "city": "Tallahassee",
+    "zone": "C"
+  },
+  {
+    "zip": "32302",
+    "city": "Tallahassee",
+    "zone": "C"
+  },
+  {
+    "zip": "32303",
+    "city": "Tallahassee",
+    "zone": "C"
+  },
+  {
+    "zip": "32304",
+    "city": "Tallahassee",
+    "zone": "C"
+  },
+  {
+    "zip": "32305",
+    "city": "Tallahassee",
+    "zone": "C"
+  },
+  {
+    "zip": "32306",
+    "city": "Tallahassee",
+    "zone": "C"
+  },
+  {
+    "zip": "32307",
+    "city": "Tallahassee",
+    "zone": "C"
+  },
+  {
+    "zip": "32308",
+    "city": "Tallahassee",
+    "zone": "C"
+  },
+  {
+    "zip": "32309",
+    "city": "Tallahassee",
+    "zone": "C"
+  },
+  {
+    "zip": "32310",
+    "city": "Tallahassee",
+    "zone": "C"
+  },
+  {
+    "zip": "32311",
+    "city": "Tallahassee",
+    "zone": "C"
+  },
+  {
+    "zip": "32312",
+    "city": "Tallahassee",
+    "zone": "C"
+  },
+  {
+    "zip": "32313",
+    "city": "Tallahassee",
+    "zone": "C"
+  },
+  {
+    "zip": "32314",
+    "city": "Tallahassee",
+    "zone": "C"
+  },
+  {
+    "zip": "32315",
+    "city": "Tallahassee",
+    "zone": "C"
+  },
+  {
+    "zip": "32316",
+    "city": "Tallahassee",
+    "zone": "C"
+  },
+  {
+    "zip": "32317",
+    "city": "Tallahassee",
+    "zone": "C"
+  },
+  {
+    "zip": "32318",
+    "city": "Tallahassee",
+    "zone": "C"
+  },
+  {
+    "zip": "32320",
+    "city": "Apalachicola",
+    "zone": "C"
+  },
+  {
+    "zip": "32321",
+    "city": "Bristol",
+    "zone": "C"
+  },
+  {
+    "zip": "32322",
+    "city": "Carrabelle",
+    "zone": "C"
+  },
+  {
+    "zip": "32323",
+    "city": "Lanark Village",
+    "zone": "C"
+  },
+  {
+    "zip": "32324",
+    "city": "Chattahoochee",
+    "zone": "C"
+  },
+  {
+    "zip": "32326",
+    "city": "Crawfordville",
+    "zone": "C"
+  },
+  {
+    "zip": "32327",
+    "city": "Crawfordville",
+    "zone": "C"
+  },
+  {
+    "zip": "32328",
+    "city": "Eastpoint",
+    "zone": "C"
+  },
+  {
+    "zip": "32329",
+    "city": "Apalachicola",
+    "zone": "C"
+  },
+  {
+    "zip": "32330",
+    "city": "Greensboro",
+    "zone": "C"
+  },
+  {
+    "zip": "32331",
+    "city": "Greenville",
+    "zone": "C"
+  },
+  {
+    "zip": "32332",
+    "city": "Gretna",
+    "zone": "C"
+  },
+  {
+    "zip": "32333",
+    "city": "Havana",
+    "zone": "C"
+  },
+  {
+    "zip": "32334",
+    "city": "Hosford",
+    "zone": "C"
+  },
+  {
+    "zip": "32335",
+    "city": "Sumatra",
+    "zone": "C"
+  },
+  {
+    "zip": "32336",
+    "city": "Lamont",
+    "zone": "C"
+  },
+  {
+    "zip": "32337",
+    "city": "Lloyd",
+    "zone": "C"
+  },
+  {
+    "zip": "32340",
+    "city": "Madison",
+    "zone": "C"
+  },
+  {
+    "zip": "32341",
+    "city": "Madison",
+    "zone": "C"
+  },
+  {
+    "zip": "32343",
+    "city": "Midway",
+    "zone": "C"
+  },
+  {
+    "zip": "32344",
+    "city": "Monticello",
+    "zone": "C"
+  },
+  {
+    "zip": "32345",
+    "city": "Monticello",
+    "zone": "C"
+  },
+  {
+    "zip": "32346",
+    "city": "Panacea",
+    "zone": "C"
+  },
+  {
+    "zip": "32347",
+    "city": "Perry",
+    "zone": "C"
+  },
+  {
+    "zip": "32348",
+    "city": "Perry",
+    "zone": "C"
+  },
+  {
+    "zip": "32350",
+    "city": "Pinetta",
+    "zone": "C"
+  },
+  {
+    "zip": "32351",
+    "city": "Quincy",
+    "zone": "C"
+  },
+  {
+    "zip": "32352",
+    "city": "Quincy",
+    "zone": "C"
+  },
+  {
+    "zip": "32353",
+    "city": "Quincy",
+    "zone": "C"
+  },
+  {
+    "zip": "32355",
+    "city": "Saint Marks",
+    "zone": "C"
+  },
+  {
+    "zip": "32356",
+    "city": "Salem",
+    "zone": "C"
+  },
+  {
+    "zip": "32357",
+    "city": "Shady Grove",
+    "zone": "C"
+  },
+  {
+    "zip": "32358",
+    "city": "Sopchoppy",
+    "zone": "C"
+  },
+  {
+    "zip": "32359",
+    "city": "Steinhatchee",
+    "zone": "C"
+  },
+  {
+    "zip": "32360",
+    "city": "Telogia",
+    "zone": "C"
+  },
+  {
+    "zip": "32361",
+    "city": "Wacissa",
+    "zone": "C"
+  },
+  {
+    "zip": "32362",
+    "city": "Woodville",
+    "zone": "C"
+  },
+  {
+    "zip": "32399",
+    "city": "Tallahassee",
+    "zone": "C"
+  },
+  {
+    "zip": "32401",
+    "city": "Panama City",
+    "zone": "C"
+  },
+  {
+    "zip": "32402",
+    "city": "Panama City",
+    "zone": "C"
+  },
+  {
+    "zip": "32403",
+    "city": "Panama City",
+    "zone": "C"
+  },
+  {
+    "zip": "32404",
+    "city": "Panama City",
+    "zone": "C"
+  },
+  {
+    "zip": "32405",
+    "city": "Panama City",
+    "zone": "C"
+  },
+  {
+    "zip": "32406",
+    "city": "Panama City",
+    "zone": "C"
+  },
+  {
+    "zip": "32407",
+    "city": "Panama City Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32408",
+    "city": "Panama City",
+    "zone": "C"
+  },
+  {
+    "zip": "32409",
+    "city": "Panama City",
+    "zone": "C"
+  },
+  {
+    "zip": "32410",
+    "city": "Mexico Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32411",
+    "city": "Panama City",
+    "zone": "C"
+  },
+  {
+    "zip": "32412",
+    "city": "Panama City",
+    "zone": "C"
+  },
+  {
+    "zip": "32413",
+    "city": "Panama City Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32417",
+    "city": "Panama City",
+    "zone": "C"
+  },
+  {
+    "zip": "32420",
+    "city": "Alford",
+    "zone": "C"
+  },
+  {
+    "zip": "32421",
+    "city": "Altha",
+    "zone": "C"
+  },
+  {
+    "zip": "32422",
+    "city": "Argyle",
+    "zone": "C"
+  },
+  {
+    "zip": "32423",
+    "city": "Bascom",
+    "zone": "C"
+  },
+  {
+    "zip": "32424",
+    "city": "Blountstown",
+    "zone": "C"
+  },
+  {
+    "zip": "32425",
+    "city": "Bonifay",
+    "zone": "C"
+  },
+  {
+    "zip": "32426",
+    "city": "Campbellton",
+    "zone": "C"
+  },
+  {
+    "zip": "32427",
+    "city": "Caryville",
+    "zone": "C"
+  },
+  {
+    "zip": "32428",
+    "city": "Chipley",
+    "zone": "C"
+  },
+  {
+    "zip": "32430",
+    "city": "Clarksville",
+    "zone": "C"
+  },
+  {
+    "zip": "32431",
+    "city": "Cottondale",
+    "zone": "C"
+  },
+  {
+    "zip": "32432",
+    "city": "Cypress",
+    "zone": "C"
+  },
+  {
+    "zip": "32433",
+    "city": "Defuniak Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "32434",
+    "city": "Mossy Head",
+    "zone": "C"
+  },
+  {
+    "zip": "32435",
+    "city": "Defuniak Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "32437",
+    "city": "Ebro",
+    "zone": "C"
+  },
+  {
+    "zip": "32438",
+    "city": "Fountain",
+    "zone": "C"
+  },
+  {
+    "zip": "32439",
+    "city": "Freeport",
+    "zone": "C"
+  },
+  {
+    "zip": "32440",
+    "city": "Graceville",
+    "zone": "C"
+  },
+  {
+    "zip": "32442",
+    "city": "Grand Ridge",
+    "zone": "C"
+  },
+  {
+    "zip": "32443",
+    "city": "Greenwood",
+    "zone": "C"
+  },
+  {
+    "zip": "32444",
+    "city": "Lynn Haven",
+    "zone": "C"
+  },
+  {
+    "zip": "32445",
+    "city": "Malone",
+    "zone": "C"
+  },
+  {
+    "zip": "32446",
+    "city": "Marianna",
+    "zone": "C"
+  },
+  {
+    "zip": "32447",
+    "city": "Marianna",
+    "zone": "C"
+  },
+  {
+    "zip": "32448",
+    "city": "Marianna",
+    "zone": "C"
+  },
+  {
+    "zip": "32449",
+    "city": "Wewahitchka",
+    "zone": "C"
+  },
+  {
+    "zip": "32452",
+    "city": "Noma",
+    "zone": "C"
+  },
+  {
+    "zip": "32455",
+    "city": "Ponce De Leon",
+    "zone": "C"
+  },
+  {
+    "zip": "32456",
+    "city": "Port Saint Joe",
+    "zone": "C"
+  },
+  {
+    "zip": "32457",
+    "city": "Port Saint Joe",
+    "zone": "C"
+  },
+  {
+    "zip": "32459",
+    "city": "Santa Rosa Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32460",
+    "city": "Sneads",
+    "zone": "C"
+  },
+  {
+    "zip": "32461",
+    "city": "Inlet Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32462",
+    "city": "Vernon",
+    "zone": "C"
+  },
+  {
+    "zip": "32463",
+    "city": "Wausau",
+    "zone": "C"
+  },
+  {
+    "zip": "32464",
+    "city": "Westville",
+    "zone": "C"
+  },
+  {
+    "zip": "32465",
+    "city": "Wewahitchka",
+    "zone": "C"
+  },
+  {
+    "zip": "32466",
+    "city": "Youngstown",
+    "zone": "C"
+  },
+  {
+    "zip": "32501",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32502",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32503",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32504",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32505",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32506",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32507",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32508",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32509",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32511",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32512",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32513",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32514",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32516",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32520",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32521",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32522",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32523",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32524",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32526",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32530",
+    "city": "Bagdad",
+    "zone": "C"
+  },
+  {
+    "zip": "32531",
+    "city": "Baker",
+    "zone": "C"
+  },
+  {
+    "zip": "32533",
+    "city": "Cantonment",
+    "zone": "C"
+  },
+  {
+    "zip": "32534",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32535",
+    "city": "Century",
+    "zone": "C"
+  },
+  {
+    "zip": "32536",
+    "city": "Crestview",
+    "zone": "C"
+  },
+  {
+    "zip": "32537",
+    "city": "Milligan",
+    "zone": "C"
+  },
+  {
+    "zip": "32538",
+    "city": "Paxton",
+    "zone": "C"
+  },
+  {
+    "zip": "32539",
+    "city": "Crestview",
+    "zone": "C"
+  },
+  {
+    "zip": "32540",
+    "city": "Destin",
+    "zone": "C"
+  },
+  {
+    "zip": "32541",
+    "city": "Destin",
+    "zone": "C"
+  },
+  {
+    "zip": "32542",
+    "city": "Eglin AFB",
+    "zone": "C"
+  },
+  {
+    "zip": "32544",
+    "city": "Hurlburt Field",
+    "zone": "C"
+  },
+  {
+    "zip": "32547",
+    "city": "Fort Walton Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32548",
+    "city": "Fort Walton Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32549",
+    "city": "Fort Walton Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32550",
+    "city": "Miramar Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32559",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32560",
+    "city": "Gonzalez",
+    "zone": "C"
+  },
+  {
+    "zip": "32561",
+    "city": "Gulf Breeze",
+    "zone": "C"
+  },
+  {
+    "zip": "32562",
+    "city": "Gulf Breeze",
+    "zone": "C"
+  },
+  {
+    "zip": "32563",
+    "city": "Gulf Breeze",
+    "zone": "C"
+  },
+  {
+    "zip": "32564",
+    "city": "Holt",
+    "zone": "C"
+  },
+  {
+    "zip": "32565",
+    "city": "Jay",
+    "zone": "C"
+  },
+  {
+    "zip": "32566",
+    "city": "Navarre",
+    "zone": "C"
+  },
+  {
+    "zip": "32567",
+    "city": "Laurel Hill",
+    "zone": "C"
+  },
+  {
+    "zip": "32568",
+    "city": "Mc David",
+    "zone": "C"
+  },
+  {
+    "zip": "32569",
+    "city": "Mary Esther",
+    "zone": "C"
+  },
+  {
+    "zip": "32570",
+    "city": "Milton",
+    "zone": "C"
+  },
+  {
+    "zip": "32571",
+    "city": "Milton",
+    "zone": "C"
+  },
+  {
+    "zip": "32572",
+    "city": "Milton",
+    "zone": "C"
+  },
+  {
+    "zip": "32577",
+    "city": "Molino",
+    "zone": "C"
+  },
+  {
+    "zip": "32578",
+    "city": "Niceville",
+    "zone": "C"
+  },
+  {
+    "zip": "32579",
+    "city": "Shalimar",
+    "zone": "C"
+  },
+  {
+    "zip": "32580",
+    "city": "Valparaiso",
+    "zone": "C"
+  },
+  {
+    "zip": "32583",
+    "city": "Milton",
+    "zone": "C"
+  },
+  {
+    "zip": "32588",
+    "city": "Niceville",
+    "zone": "C"
+  },
+  {
+    "zip": "32591",
+    "city": "Pensacola",
+    "zone": "C"
+  },
+  {
+    "zip": "32601",
+    "city": "Gainesville",
+    "zone": "C"
+  },
+  {
+    "zip": "32602",
+    "city": "Gainesville",
+    "zone": "C"
+  },
+  {
+    "zip": "32603",
+    "city": "Gainesville",
+    "zone": "C"
+  },
+  {
+    "zip": "32604",
+    "city": "Gainesville",
+    "zone": "C"
+  },
+  {
+    "zip": "32605",
+    "city": "Gainesville",
+    "zone": "C"
+  },
+  {
+    "zip": "32606",
+    "city": "Gainesville",
+    "zone": "C"
+  },
+  {
+    "zip": "32607",
+    "city": "Gainesville",
+    "zone": "C"
+  },
+  {
+    "zip": "32608",
+    "city": "Gainesville",
+    "zone": "C"
+  },
+  {
+    "zip": "32609",
+    "city": "Gainesville",
+    "zone": "C"
+  },
+  {
+    "zip": "32610",
+    "city": "Gainesville",
+    "zone": "C"
+  },
+  {
+    "zip": "32611",
+    "city": "Gainesville",
+    "zone": "C"
+  },
+  {
+    "zip": "32612",
+    "city": "Gainesville",
+    "zone": "C"
+  },
+  {
+    "zip": "32614",
+    "city": "Gainesville",
+    "zone": "C"
+  },
+  {
+    "zip": "32615",
+    "city": "Alachua",
+    "zone": "C"
+  },
+  {
+    "zip": "32616",
+    "city": "Alachua",
+    "zone": "C"
+  },
+  {
+    "zip": "32617",
+    "city": "Anthony",
+    "zone": "C"
+  },
+  {
+    "zip": "32618",
+    "city": "Archer",
+    "zone": "C"
+  },
+  {
+    "zip": "32619",
+    "city": "Bell",
+    "zone": "C"
+  },
+  {
+    "zip": "32621",
+    "city": "Bronson",
+    "zone": "C"
+  },
+  {
+    "zip": "32622",
+    "city": "Brooker",
+    "zone": "C"
+  },
+  {
+    "zip": "32625",
+    "city": "Cedar Key",
+    "zone": "C"
+  },
+  {
+    "zip": "32626",
+    "city": "Chiefland",
+    "zone": "C"
+  },
+  {
+    "zip": "32627",
+    "city": "Gainesville",
+    "zone": "C"
+  },
+  {
+    "zip": "32628",
+    "city": "Cross City",
+    "zone": "C"
+  },
+  {
+    "zip": "32631",
+    "city": "Earleton",
+    "zone": "C"
+  },
+  {
+    "zip": "32633",
+    "city": "Evinston",
+    "zone": "C"
+  },
+  {
+    "zip": "32634",
+    "city": "Fairfield",
+    "zone": "C"
+  },
+  {
+    "zip": "32635",
+    "city": "Gainesville",
+    "zone": "C"
+  },
+  {
+    "zip": "32639",
+    "city": "Gulf Hammock",
+    "zone": "C"
+  },
+  {
+    "zip": "32640",
+    "city": "Hawthorne",
+    "zone": "C"
+  },
+  {
+    "zip": "32641",
+    "city": "Gainesville",
+    "zone": "C"
+  },
+  {
+    "zip": "32643",
+    "city": "High Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "32644",
+    "city": "Chiefland",
+    "zone": "C"
+  },
+  {
+    "zip": "32648",
+    "city": "Horseshoe Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32653",
+    "city": "Gainesville",
+    "zone": "C"
+  },
+  {
+    "zip": "32654",
+    "city": "Island Grove",
+    "zone": "C"
+  },
+  {
+    "zip": "32655",
+    "city": "High Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "32656",
+    "city": "Keystone Heights",
+    "zone": "C"
+  },
+  {
+    "zip": "32658",
+    "city": "La Crosse",
+    "zone": "C"
+  },
+  {
+    "zip": "32662",
+    "city": "Lochloosa",
+    "zone": "C"
+  },
+  {
+    "zip": "32663",
+    "city": "Lowell",
+    "zone": "C"
+  },
+  {
+    "zip": "32664",
+    "city": "Mc Intosh",
+    "zone": "C"
+  },
+  {
+    "zip": "32666",
+    "city": "Melrose",
+    "zone": "C"
+  },
+  {
+    "zip": "32667",
+    "city": "Micanopy",
+    "zone": "C"
+  },
+  {
+    "zip": "32668",
+    "city": "Morriston",
+    "zone": "C"
+  },
+  {
+    "zip": "32669",
+    "city": "Newberry",
+    "zone": "C"
+  },
+  {
+    "zip": "32680",
+    "city": "Old Town",
+    "zone": "C"
+  },
+  {
+    "zip": "32681",
+    "city": "Orange Lake",
+    "zone": "C"
+  },
+  {
+    "zip": "32683",
+    "city": "Otter Creek",
+    "zone": "C"
+  },
+  {
+    "zip": "32686",
+    "city": "Reddick",
+    "zone": "C"
+  },
+  {
+    "zip": "32692",
+    "city": "Suwannee",
+    "zone": "C"
+  },
+  {
+    "zip": "32693",
+    "city": "Trenton",
+    "zone": "C"
+  },
+  {
+    "zip": "32694",
+    "city": "Waldo",
+    "zone": "C"
+  },
+  {
+    "zip": "32696",
+    "city": "Williston",
+    "zone": "C"
+  },
+  {
+    "zip": "32697",
+    "city": "Worthington Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "32701",
+    "city": "Altamonte Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "32702",
+    "city": "Altoona",
+    "zone": "C"
+  },
+  {
+    "zip": "32703",
+    "city": "Apopka",
+    "zone": "C"
+  },
+  {
+    "zip": "32704",
+    "city": "Apopka",
+    "zone": "C"
+  },
+  {
+    "zip": "32706",
+    "city": "Cassadaga",
+    "zone": "C"
+  },
+  {
+    "zip": "32707",
+    "city": "Casselberry",
+    "zone": "C"
+  },
+  {
+    "zip": "32708",
+    "city": "Winter Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "32709",
+    "city": "Christmas",
+    "zone": "C"
+  },
+  {
+    "zip": "32710",
+    "city": "Clarcona",
+    "zone": "C"
+  },
+  {
+    "zip": "32712",
+    "city": "Apopka",
+    "zone": "C"
+  },
+  {
+    "zip": "32713",
+    "city": "Debary",
+    "zone": "C"
+  },
+  {
+    "zip": "32714",
+    "city": "Altamonte Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "32715",
+    "city": "Altamonte Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "32716",
+    "city": "Altamonte Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "32718",
+    "city": "Casselberry",
+    "zone": "C"
+  },
+  {
+    "zip": "32719",
+    "city": "Winter Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "32720",
+    "city": "Deland",
+    "zone": "C"
+  },
+  {
+    "zip": "32721",
+    "city": "Deland",
+    "zone": "C"
+  },
+  {
+    "zip": "32722",
+    "city": "Glenwood",
+    "zone": "C"
+  },
+  {
+    "zip": "32723",
+    "city": "Deland",
+    "zone": "C"
+  },
+  {
+    "zip": "32724",
+    "city": "Deland",
+    "zone": "C"
+  },
+  {
+    "zip": "32725",
+    "city": "Deltona",
+    "zone": "C"
+  },
+  {
+    "zip": "32726",
+    "city": "Eustis",
+    "zone": "C"
+  },
+  {
+    "zip": "32727",
+    "city": "Eustis",
+    "zone": "C"
+  },
+  {
+    "zip": "32728",
+    "city": "Deltona",
+    "zone": "C"
+  },
+  {
+    "zip": "32730",
+    "city": "Casselberry",
+    "zone": "C"
+  },
+  {
+    "zip": "32732",
+    "city": "Geneva",
+    "zone": "C"
+  },
+  {
+    "zip": "32733",
+    "city": "Goldenrod",
+    "zone": "C"
+  },
+  {
+    "zip": "32735",
+    "city": "Grand Island",
+    "zone": "C"
+  },
+  {
+    "zip": "32736",
+    "city": "Eustis",
+    "zone": "C"
+  },
+  {
+    "zip": "32738",
+    "city": "Deltona",
+    "zone": "C"
+  },
+  {
+    "zip": "32739",
+    "city": "Deltona",
+    "zone": "C"
+  },
+  {
+    "zip": "32744",
+    "city": "Lake Helen",
+    "zone": "C"
+  },
+  {
+    "zip": "32745",
+    "city": "Mid Florida",
+    "zone": "C"
+  },
+  {
+    "zip": "32746",
+    "city": "Lake Mary",
+    "zone": "C"
+  },
+  {
+    "zip": "32747",
+    "city": "Lake Monroe",
+    "zone": "C"
+  },
+  {
+    "zip": "32750",
+    "city": "Longwood",
+    "zone": "C"
+  },
+  {
+    "zip": "32751",
+    "city": "Maitland",
+    "zone": "C"
+  },
+  {
+    "zip": "32752",
+    "city": "Longwood",
+    "zone": "C"
+  },
+  {
+    "zip": "32753",
+    "city": "Debary",
+    "zone": "C"
+  },
+  {
+    "zip": "32754",
+    "city": "Mims",
+    "zone": "C"
+  },
+  {
+    "zip": "32756",
+    "city": "Mount Dora",
+    "zone": "C"
+  },
+  {
+    "zip": "32757",
+    "city": "Mount Dora",
+    "zone": "C"
+  },
+  {
+    "zip": "32759",
+    "city": "Oak Hill",
+    "zone": "C"
+  },
+  {
+    "zip": "32762",
+    "city": "Oviedo",
+    "zone": "C"
+  },
+  {
+    "zip": "32763",
+    "city": "Orange City",
+    "zone": "C"
+  },
+  {
+    "zip": "32764",
+    "city": "Osteen",
+    "zone": "C"
+  },
+  {
+    "zip": "32765",
+    "city": "Oviedo",
+    "zone": "C"
+  },
+  {
+    "zip": "32766",
+    "city": "Oviedo",
+    "zone": "C"
+  },
+  {
+    "zip": "32767",
+    "city": "Paisley",
+    "zone": "C"
+  },
+  {
+    "zip": "32768",
+    "city": "Plymouth",
+    "zone": "C"
+  },
+  {
+    "zip": "32771",
+    "city": "Sanford",
+    "zone": "C"
+  },
+  {
+    "zip": "32772",
+    "city": "Sanford",
+    "zone": "C"
+  },
+  {
+    "zip": "32773",
+    "city": "Sanford",
+    "zone": "C"
+  },
+  {
+    "zip": "32774",
+    "city": "Orange City",
+    "zone": "C"
+  },
+  {
+    "zip": "32775",
+    "city": "Scottsmoor",
+    "zone": "C"
+  },
+  {
+    "zip": "32776",
+    "city": "Sorrento",
+    "zone": "C"
+  },
+  {
+    "zip": "32777",
+    "city": "Tangerine",
+    "zone": "C"
+  },
+  {
+    "zip": "32778",
+    "city": "Tavares",
+    "zone": "C"
+  },
+  {
+    "zip": "32779",
+    "city": "Longwood",
+    "zone": "C"
+  },
+  {
+    "zip": "32780",
+    "city": "Titusville",
+    "zone": "C"
+  },
+  {
+    "zip": "32781",
+    "city": "Titusville",
+    "zone": "C"
+  },
+  {
+    "zip": "32783",
+    "city": "Titusville",
+    "zone": "C"
+  },
+  {
+    "zip": "32784",
+    "city": "Umatilla",
+    "zone": "C"
+  },
+  {
+    "zip": "32789",
+    "city": "Winter Park",
+    "zone": "C"
+  },
+  {
+    "zip": "32790",
+    "city": "Winter Park",
+    "zone": "C"
+  },
+  {
+    "zip": "32791",
+    "city": "Longwood",
+    "zone": "C"
+  },
+  {
+    "zip": "32792",
+    "city": "Winter Park",
+    "zone": "C"
+  },
+  {
+    "zip": "32793",
+    "city": "Winter Park",
+    "zone": "C"
+  },
+  {
+    "zip": "32794",
+    "city": "Maitland",
+    "zone": "C"
+  },
+  {
+    "zip": "32795",
+    "city": "Lake Mary",
+    "zone": "C"
+  },
+  {
+    "zip": "32796",
+    "city": "Titusville",
+    "zone": "C"
+  },
+  {
+    "zip": "32798",
+    "city": "Zellwood",
+    "zone": "C"
+  },
+  {
+    "zip": "32799",
+    "city": "Mid Florida",
+    "zone": "C"
+  },
+  {
+    "zip": "32801",
+    "city": "Orlando",
+    "zone": "B"
+  },
+  {
+    "zip": "32802",
+    "city": "Orlando",
+    "zone": "B"
+  },
+  {
+    "zip": "32803",
+    "city": "Orlando",
+    "zone": "B"
+  },
+  {
+    "zip": "32804",
+    "city": "Orlando",
+    "zone": "B"
+  },
+  {
+    "zip": "32805",
+    "city": "Orlando",
+    "zone": "B"
+  },
+  {
+    "zip": "32806",
+    "city": "Orlando",
+    "zone": "B"
+  },
+  {
+    "zip": "32807",
+    "city": "Orlando",
+    "zone": "B"
+  },
+  {
+    "zip": "32808",
+    "city": "Orlando",
+    "zone": "B"
+  },
+  {
+    "zip": "32809",
+    "city": "Orlando",
+    "zone": "B"
+  },
+  {
+    "zip": "32810",
+    "city": "Orlando",
+    "zone": "B"
+  },
+  {
+    "zip": "32811",
+    "city": "Orlando",
+    "zone": "B"
+  },
+  {
+    "zip": "32812",
+    "city": "Orlando",
+    "zone": "B"
+  },
+  {
+    "zip": "32814",
+    "city": "Orlando",
+    "zone": "B"
+  },
+  {
+    "zip": "32815",
+    "city": "Orlando",
+    "zone": "B"
+  },
+  {
+    "zip": "32816",
+    "city": "Orlando",
+    "zone": "B"
+  },
+  {
+    "zip": "32817",
+    "city": "Orlando",
+    "zone": "B"
+  },
+  {
+    "zip": "32818",
+    "city": "Orlando",
+    "zone": "B"
+  },
+  {
+    "zip": "32819",
+    "city": "Orlando",
+    "zone": "B"
+  },
+  {
+    "zip": "32820",
+    "city": "Orlando",
+    "zone": "A"
+  },
+  {
+    "zip": "32821",
+    "city": "Orlando",
+    "zone": "A"
+  },
+  {
+    "zip": "32822",
+    "city": "Orlando",
+    "zone": "A"
+  },
+  {
+    "zip": "32824",
+    "city": "Orlando",
+    "zone": "A"
+  },
+  {
+    "zip": "32825",
+    "city": "Orlando",
+    "zone": "A"
+  },
+  {
+    "zip": "32826",
+    "city": "Orlando",
+    "zone": "A"
+  },
+  {
+    "zip": "32827",
+    "city": "Orlando",
+    "zone": "A"
+  },
+  {
+    "zip": "32828",
+    "city": "Orlando",
+    "zone": "A"
+  },
+  {
+    "zip": "32829",
+    "city": "Orlando",
+    "zone": "A"
+  },
+  {
+    "zip": "32830",
+    "city": "Orlando",
+    "zone": "A"
+  },
+  {
+    "zip": "32831",
+    "city": "Orlando",
+    "zone": "A"
+  },
+  {
+    "zip": "32832",
+    "city": "Orlando",
+    "zone": "A"
+  },
+  {
+    "zip": "32833",
+    "city": "Orlando",
+    "zone": "A"
+  },
+  {
+    "zip": "32834",
+    "city": "Orlando",
+    "zone": "A"
+  },
+  {
+    "zip": "32835",
+    "city": "Orlando",
+    "zone": "A"
+  },
+  {
+    "zip": "32836",
+    "city": "Orlando",
+    "zone": "A"
+  },
+  {
+    "zip": "32837",
+    "city": "Orlando",
+    "zone": "A"
+  },
+  {
+    "zip": "32839",
+    "city": "Orlando",
+    "zone": "A"
+  },
+  {
+    "zip": "32853",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32854",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32855",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32856",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32857",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32858",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32859",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32860",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32861",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32862",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32867",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32868",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32869",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32872",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32877",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32878",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32885",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32886",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32887",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32891",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32896",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32897",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32899",
+    "city": "Orlando",
+    "zone": "C"
+  },
+  {
+    "zip": "32901",
+    "city": "Melbourne",
+    "zone": "C"
+  },
+  {
+    "zip": "32902",
+    "city": "Melbourne",
+    "zone": "C"
+  },
+  {
+    "zip": "32903",
+    "city": "Indialantic",
+    "zone": "C"
+  },
+  {
+    "zip": "32904",
+    "city": "Melbourne",
+    "zone": "C"
+  },
+  {
+    "zip": "32905",
+    "city": "Palm Bay",
+    "zone": "C"
+  },
+  {
+    "zip": "32906",
+    "city": "Palm Bay",
+    "zone": "C"
+  },
+  {
+    "zip": "32907",
+    "city": "Palm Bay",
+    "zone": "C"
+  },
+  {
+    "zip": "32908",
+    "city": "Palm Bay",
+    "zone": "C"
+  },
+  {
+    "zip": "32909",
+    "city": "Palm Bay",
+    "zone": "C"
+  },
+  {
+    "zip": "32910",
+    "city": "Palm Bay",
+    "zone": "C"
+  },
+  {
+    "zip": "32911",
+    "city": "Palm Bay",
+    "zone": "C"
+  },
+  {
+    "zip": "32912",
+    "city": "Melbourne",
+    "zone": "C"
+  },
+  {
+    "zip": "32919",
+    "city": "Melbourne",
+    "zone": "C"
+  },
+  {
+    "zip": "32920",
+    "city": "Cape Canaveral",
+    "zone": "C"
+  },
+  {
+    "zip": "32922",
+    "city": "Cocoa",
+    "zone": "C"
+  },
+  {
+    "zip": "32923",
+    "city": "Cocoa",
+    "zone": "C"
+  },
+  {
+    "zip": "32924",
+    "city": "Cocoa",
+    "zone": "C"
+  },
+  {
+    "zip": "32925",
+    "city": "Patrick Air Force Base",
+    "zone": "C"
+  },
+  {
+    "zip": "32926",
+    "city": "Cocoa",
+    "zone": "C"
+  },
+  {
+    "zip": "32927",
+    "city": "Cocoa",
+    "zone": "C"
+  },
+  {
+    "zip": "32931",
+    "city": "Cocoa Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32932",
+    "city": "Cocoa Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32934",
+    "city": "Melbourne",
+    "zone": "C"
+  },
+  {
+    "zip": "32935",
+    "city": "Melbourne",
+    "zone": "C"
+  },
+  {
+    "zip": "32936",
+    "city": "Melbourne",
+    "zone": "C"
+  },
+  {
+    "zip": "32937",
+    "city": "Satellite Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32940",
+    "city": "Melbourne",
+    "zone": "C"
+  },
+  {
+    "zip": "32941",
+    "city": "Melbourne",
+    "zone": "C"
+  },
+  {
+    "zip": "32948",
+    "city": "Fellsmere",
+    "zone": "C"
+  },
+  {
+    "zip": "32949",
+    "city": "Grant",
+    "zone": "C"
+  },
+  {
+    "zip": "32950",
+    "city": "Malabar",
+    "zone": "C"
+  },
+  {
+    "zip": "32951",
+    "city": "Melbourne Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32952",
+    "city": "Merritt Island",
+    "zone": "C"
+  },
+  {
+    "zip": "32953",
+    "city": "Merritt Island",
+    "zone": "C"
+  },
+  {
+    "zip": "32954",
+    "city": "Merritt Island",
+    "zone": "C"
+  },
+  {
+    "zip": "32955",
+    "city": "Rockledge",
+    "zone": "C"
+  },
+  {
+    "zip": "32956",
+    "city": "Rockledge",
+    "zone": "C"
+  },
+  {
+    "zip": "32957",
+    "city": "Roseland",
+    "zone": "C"
+  },
+  {
+    "zip": "32958",
+    "city": "Sebastian",
+    "zone": "C"
+  },
+  {
+    "zip": "32959",
+    "city": "Sharpes",
+    "zone": "C"
+  },
+  {
+    "zip": "32960",
+    "city": "Vero Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32961",
+    "city": "Vero Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32962",
+    "city": "Vero Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32963",
+    "city": "Vero Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32964",
+    "city": "Vero Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32965",
+    "city": "Vero Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32966",
+    "city": "Vero Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32967",
+    "city": "Vero Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32968",
+    "city": "Vero Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32969",
+    "city": "Vero Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32970",
+    "city": "Wabasso",
+    "zone": "C"
+  },
+  {
+    "zip": "32971",
+    "city": "Winter Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "32976",
+    "city": "Sebastian",
+    "zone": "C"
+  },
+  {
+    "zip": "32978",
+    "city": "Sebastian",
+    "zone": "C"
+  },
+  {
+    "zip": "33001",
+    "city": "Long Key",
+    "zone": "C"
+  },
+  {
+    "zip": "33002",
+    "city": "Hialeah",
+    "zone": "C"
+  },
+  {
+    "zip": "33004",
+    "city": "Dania",
+    "zone": "C"
+  },
+  {
+    "zip": "33008",
+    "city": "Hallandale",
+    "zone": "C"
+  },
+  {
+    "zip": "33009",
+    "city": "Hallandale",
+    "zone": "C"
+  },
+  {
+    "zip": "33010",
+    "city": "Hialeah",
+    "zone": "C"
+  },
+  {
+    "zip": "33011",
+    "city": "Hialeah",
+    "zone": "C"
+  },
+  {
+    "zip": "33012",
+    "city": "Hialeah",
+    "zone": "C"
+  },
+  {
+    "zip": "33013",
+    "city": "Hialeah",
+    "zone": "C"
+  },
+  {
+    "zip": "33014",
+    "city": "Hialeah",
+    "zone": "C"
+  },
+  {
+    "zip": "33015",
+    "city": "Hialeah",
+    "zone": "C"
+  },
+  {
+    "zip": "33016",
+    "city": "Hialeah",
+    "zone": "C"
+  },
+  {
+    "zip": "33017",
+    "city": "Hialeah",
+    "zone": "C"
+  },
+  {
+    "zip": "33018",
+    "city": "Hialeah",
+    "zone": "C"
+  },
+  {
+    "zip": "33019",
+    "city": "Hollywood",
+    "zone": "C"
+  },
+  {
+    "zip": "33020",
+    "city": "Hollywood",
+    "zone": "C"
+  },
+  {
+    "zip": "33021",
+    "city": "Hollywood",
+    "zone": "C"
+  },
+  {
+    "zip": "33022",
+    "city": "Hollywood",
+    "zone": "C"
+  },
+  {
+    "zip": "33023",
+    "city": "Hollywood",
+    "zone": "C"
+  },
+  {
+    "zip": "33024",
+    "city": "Hollywood",
+    "zone": "C"
+  },
+  {
+    "zip": "33025",
+    "city": "Hollywood",
+    "zone": "C"
+  },
+  {
+    "zip": "33026",
+    "city": "Hollywood",
+    "zone": "C"
+  },
+  {
+    "zip": "33027",
+    "city": "Hollywood",
+    "zone": "C"
+  },
+  {
+    "zip": "33028",
+    "city": "Pembroke Pines",
+    "zone": "C"
+  },
+  {
+    "zip": "33029",
+    "city": "Hollywood",
+    "zone": "C"
+  },
+  {
+    "zip": "33030",
+    "city": "Homestead",
+    "zone": "C"
+  },
+  {
+    "zip": "33031",
+    "city": "Homestead",
+    "zone": "C"
+  },
+  {
+    "zip": "33032",
+    "city": "Homestead",
+    "zone": "C"
+  },
+  {
+    "zip": "33033",
+    "city": "Homestead",
+    "zone": "C"
+  },
+  {
+    "zip": "33034",
+    "city": "Homestead",
+    "zone": "C"
+  },
+  {
+    "zip": "33035",
+    "city": "Homestead",
+    "zone": "C"
+  },
+  {
+    "zip": "33036",
+    "city": "Islamorada",
+    "zone": "C"
+  },
+  {
+    "zip": "33037",
+    "city": "Key Largo",
+    "zone": "C"
+  },
+  {
+    "zip": "33039",
+    "city": "Homestead",
+    "zone": "C"
+  },
+  {
+    "zip": "33040",
+    "city": "Key West",
+    "zone": "C"
+  },
+  {
+    "zip": "33041",
+    "city": "Key West",
+    "zone": "C"
+  },
+  {
+    "zip": "33042",
+    "city": "Summerland Key",
+    "zone": "C"
+  },
+  {
+    "zip": "33043",
+    "city": "Big Pine Key",
+    "zone": "C"
+  },
+  {
+    "zip": "33045",
+    "city": "Key West",
+    "zone": "C"
+  },
+  {
+    "zip": "33050",
+    "city": "Marathon",
+    "zone": "C"
+  },
+  {
+    "zip": "33051",
+    "city": "Key Colony Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33052",
+    "city": "Marathon Shores",
+    "zone": "C"
+  },
+  {
+    "zip": "33054",
+    "city": "Opa Locka",
+    "zone": "C"
+  },
+  {
+    "zip": "33055",
+    "city": "Opa Locka",
+    "zone": "C"
+  },
+  {
+    "zip": "33056",
+    "city": "Miami Gardens",
+    "zone": "C"
+  },
+  {
+    "zip": "33060",
+    "city": "Pompano Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33061",
+    "city": "Pompano Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33062",
+    "city": "Pompano Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33063",
+    "city": "Pompano Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33064",
+    "city": "Pompano Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33065",
+    "city": "Coral Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "33066",
+    "city": "Pompano Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33067",
+    "city": "Pompano Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33068",
+    "city": "Pompano Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33069",
+    "city": "Pompano Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33070",
+    "city": "Tavernier",
+    "zone": "C"
+  },
+  {
+    "zip": "33071",
+    "city": "Coral Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "33073",
+    "city": "Pompano Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33074",
+    "city": "Pompano Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33075",
+    "city": "Coral Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "33076",
+    "city": "Pompano Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33077",
+    "city": "Pompano Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33081",
+    "city": "Hollywood",
+    "zone": "C"
+  },
+  {
+    "zip": "33082",
+    "city": "Pembroke Pines",
+    "zone": "C"
+  },
+  {
+    "zip": "33083",
+    "city": "Hollywood",
+    "zone": "C"
+  },
+  {
+    "zip": "33084",
+    "city": "Hollywood",
+    "zone": "C"
+  },
+  {
+    "zip": "33090",
+    "city": "Homestead",
+    "zone": "C"
+  },
+  {
+    "zip": "33092",
+    "city": "Homestead",
+    "zone": "C"
+  },
+  {
+    "zip": "33093",
+    "city": "Margate",
+    "zone": "C"
+  },
+  {
+    "zip": "33097",
+    "city": "Coconut Creek",
+    "zone": "C"
+  },
+  {
+    "zip": "33101",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33102",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33106",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33109",
+    "city": "Miami Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33112",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33114",
+    "city": "Coral Gables",
+    "zone": "C"
+  },
+  {
+    "zip": "33116",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33119",
+    "city": "Miami Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33122",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33124",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33125",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33126",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33127",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33128",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33129",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33130",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33131",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33132",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33133",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33134",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33135",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33136",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33137",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33138",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33139",
+    "city": "Miami Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33140",
+    "city": "Miami Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33141",
+    "city": "Miami Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33142",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33143",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33144",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33145",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33146",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33147",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33149",
+    "city": "Key Biscayne",
+    "zone": "C"
+  },
+  {
+    "zip": "33150",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33152",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33153",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33154",
+    "city": "Miami Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33155",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33156",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33157",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33158",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33160",
+    "city": "North Miami Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33161",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33162",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33163",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33164",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33165",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33166",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33167",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33168",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33169",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33170",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33172",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33173",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33174",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33175",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33176",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33177",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33178",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33179",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33180",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33181",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33182",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33183",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33184",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33185",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33186",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33187",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33188",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33189",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33190",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33191",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33192",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33193",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33194",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33195",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33196",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33197",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33198",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33199",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33206",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33222",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33231",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33233",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33234",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33238",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33239",
+    "city": "Miami Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33242",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33243",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33245",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33247",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33255",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33256",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33257",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33261",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33265",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33266",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33269",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33280",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33283",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33296",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33299",
+    "city": "Miami",
+    "zone": "C"
+  },
+  {
+    "zip": "33301",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33302",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33303",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33304",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33305",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33306",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33307",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33308",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33309",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33310",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33311",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33312",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33313",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33314",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33315",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33316",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33317",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33318",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33319",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33320",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33321",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33322",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33323",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33324",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33325",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33326",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33327",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33328",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33329",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33330",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33331",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33332",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33334",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33335",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33338",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33339",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33340",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33345",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33346",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33348",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33351",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33355",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33359",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33388",
+    "city": "Plantation",
+    "zone": "C"
+  },
+  {
+    "zip": "33394",
+    "city": "Fort Lauderdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33401",
+    "city": "West Palm Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33402",
+    "city": "West Palm Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33403",
+    "city": "West Palm Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33404",
+    "city": "West Palm Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33405",
+    "city": "West Palm Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33406",
+    "city": "West Palm Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33407",
+    "city": "West Palm Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33408",
+    "city": "North Palm Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33409",
+    "city": "West Palm Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33410",
+    "city": "Palm Beach Gardens",
+    "zone": "C"
+  },
+  {
+    "zip": "33411",
+    "city": "West Palm Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33412",
+    "city": "West Palm Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33413",
+    "city": "West Palm Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33414",
+    "city": "Wellington",
+    "zone": "C"
+  },
+  {
+    "zip": "33415",
+    "city": "West Palm Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33416",
+    "city": "West Palm Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33417",
+    "city": "West Palm Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33418",
+    "city": "Palm Beach Gardens",
+    "zone": "C"
+  },
+  {
+    "zip": "33419",
+    "city": "West Palm Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33420",
+    "city": "West Palm Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33421",
+    "city": "Royal Palm Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33422",
+    "city": "West Palm Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33424",
+    "city": "Boynton Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33425",
+    "city": "Boynton Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33426",
+    "city": "Boynton Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33427",
+    "city": "Boca Raton",
+    "zone": "C"
+  },
+  {
+    "zip": "33428",
+    "city": "Boca Raton",
+    "zone": "C"
+  },
+  {
+    "zip": "33429",
+    "city": "Boca Raton",
+    "zone": "C"
+  },
+  {
+    "zip": "33430",
+    "city": "Belle Glade",
+    "zone": "C"
+  },
+  {
+    "zip": "33431",
+    "city": "Boca Raton",
+    "zone": "C"
+  },
+  {
+    "zip": "33432",
+    "city": "Boca Raton",
+    "zone": "C"
+  },
+  {
+    "zip": "33433",
+    "city": "Boca Raton",
+    "zone": "C"
+  },
+  {
+    "zip": "33434",
+    "city": "Boca Raton",
+    "zone": "C"
+  },
+  {
+    "zip": "33435",
+    "city": "Boynton Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33436",
+    "city": "Boynton Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33437",
+    "city": "Boynton Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33438",
+    "city": "Canal Point",
+    "zone": "C"
+  },
+  {
+    "zip": "33440",
+    "city": "Clewiston",
+    "zone": "C"
+  },
+  {
+    "zip": "33441",
+    "city": "Deerfield Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33442",
+    "city": "Deerfield Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33443",
+    "city": "Deerfield Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33444",
+    "city": "Delray Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33445",
+    "city": "Delray Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33446",
+    "city": "Delray Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33448",
+    "city": "Delray Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33449",
+    "city": "Lake Worth",
+    "zone": "C"
+  },
+  {
+    "zip": "33454",
+    "city": "Greenacres",
+    "zone": "C"
+  },
+  {
+    "zip": "33455",
+    "city": "Hobe Sound",
+    "zone": "C"
+  },
+  {
+    "zip": "33458",
+    "city": "Jupiter",
+    "zone": "C"
+  },
+  {
+    "zip": "33459",
+    "city": "Lake Harbor",
+    "zone": "C"
+  },
+  {
+    "zip": "33460",
+    "city": "Lake Worth Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33461",
+    "city": "Lake Worth",
+    "zone": "C"
+  },
+  {
+    "zip": "33462",
+    "city": "Lake Worth",
+    "zone": "C"
+  },
+  {
+    "zip": "33463",
+    "city": "Lake Worth",
+    "zone": "C"
+  },
+  {
+    "zip": "33464",
+    "city": "Boca Raton",
+    "zone": "C"
+  },
+  {
+    "zip": "33465",
+    "city": "Lake Worth",
+    "zone": "C"
+  },
+  {
+    "zip": "33466",
+    "city": "Lake Worth",
+    "zone": "C"
+  },
+  {
+    "zip": "33467",
+    "city": "Lake Worth",
+    "zone": "C"
+  },
+  {
+    "zip": "33468",
+    "city": "Jupiter",
+    "zone": "C"
+  },
+  {
+    "zip": "33469",
+    "city": "Jupiter",
+    "zone": "C"
+  },
+  {
+    "zip": "33470",
+    "city": "Loxahatchee",
+    "zone": "C"
+  },
+  {
+    "zip": "33471",
+    "city": "Moore Haven",
+    "zone": "C"
+  },
+  {
+    "zip": "33472",
+    "city": "Boynton Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33473",
+    "city": "Boynton Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33474",
+    "city": "Boynton Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33475",
+    "city": "Hobe Sound",
+    "zone": "C"
+  },
+  {
+    "zip": "33476",
+    "city": "Pahokee",
+    "zone": "C"
+  },
+  {
+    "zip": "33477",
+    "city": "Jupiter",
+    "zone": "C"
+  },
+  {
+    "zip": "33478",
+    "city": "Jupiter",
+    "zone": "C"
+  },
+  {
+    "zip": "33480",
+    "city": "Palm Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33481",
+    "city": "Boca Raton",
+    "zone": "C"
+  },
+  {
+    "zip": "33482",
+    "city": "Delray Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33483",
+    "city": "Delray Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33484",
+    "city": "Delray Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33486",
+    "city": "Boca Raton",
+    "zone": "C"
+  },
+  {
+    "zip": "33487",
+    "city": "Boca Raton",
+    "zone": "C"
+  },
+  {
+    "zip": "33488",
+    "city": "Boca Raton",
+    "zone": "C"
+  },
+  {
+    "zip": "33493",
+    "city": "South Bay",
+    "zone": "C"
+  },
+  {
+    "zip": "33496",
+    "city": "Boca Raton",
+    "zone": "C"
+  },
+  {
+    "zip": "33497",
+    "city": "Boca Raton",
+    "zone": "C"
+  },
+  {
+    "zip": "33498",
+    "city": "Boca Raton",
+    "zone": "C"
+  },
+  {
+    "zip": "33499",
+    "city": "Boca Raton",
+    "zone": "C"
+  },
+  {
+    "zip": "33503",
+    "city": "Balm",
+    "zone": "C"
+  },
+  {
+    "zip": "33508",
+    "city": "Brandon",
+    "zone": "C"
+  },
+  {
+    "zip": "33509",
+    "city": "Brandon",
+    "zone": "C"
+  },
+  {
+    "zip": "33510",
+    "city": "Brandon",
+    "zone": "C"
+  },
+  {
+    "zip": "33511",
+    "city": "Brandon",
+    "zone": "C"
+  },
+  {
+    "zip": "33513",
+    "city": "Bushnell",
+    "zone": "C"
+  },
+  {
+    "zip": "33514",
+    "city": "Center Hill",
+    "zone": "C"
+  },
+  {
+    "zip": "33521",
+    "city": "Coleman",
+    "zone": "C"
+  },
+  {
+    "zip": "33523",
+    "city": "Dade City",
+    "zone": "C"
+  },
+  {
+    "zip": "33524",
+    "city": "Crystal Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "33525",
+    "city": "Dade City",
+    "zone": "C"
+  },
+  {
+    "zip": "33526",
+    "city": "Dade City",
+    "zone": "C"
+  },
+  {
+    "zip": "33527",
+    "city": "Dover",
+    "zone": "C"
+  },
+  {
+    "zip": "33530",
+    "city": "Durant",
+    "zone": "C"
+  },
+  {
+    "zip": "33534",
+    "city": "Gibsonton",
+    "zone": "C"
+  },
+  {
+    "zip": "33537",
+    "city": "Lacoochee",
+    "zone": "C"
+  },
+  {
+    "zip": "33538",
+    "city": "Lake Panasoffkee",
+    "zone": "C"
+  },
+  {
+    "zip": "33539",
+    "city": "Zephyrhills",
+    "zone": "C"
+  },
+  {
+    "zip": "33540",
+    "city": "Zephyrhills",
+    "zone": "C"
+  },
+  {
+    "zip": "33541",
+    "city": "Zephyrhills",
+    "zone": "C"
+  },
+  {
+    "zip": "33542",
+    "city": "Zephyrhills",
+    "zone": "C"
+  },
+  {
+    "zip": "33543",
+    "city": "Wesley Chapel",
+    "zone": "C"
+  },
+  {
+    "zip": "33544",
+    "city": "Wesley Chapel",
+    "zone": "C"
+  },
+  {
+    "zip": "33545",
+    "city": "Wesley Chapel",
+    "zone": "C"
+  },
+  {
+    "zip": "33547",
+    "city": "Lithia",
+    "zone": "C"
+  },
+  {
+    "zip": "33548",
+    "city": "Lutz",
+    "zone": "C"
+  },
+  {
+    "zip": "33549",
+    "city": "Lutz",
+    "zone": "C"
+  },
+  {
+    "zip": "33550",
+    "city": "Mango",
+    "zone": "C"
+  },
+  {
+    "zip": "33556",
+    "city": "Odessa",
+    "zone": "C"
+  },
+  {
+    "zip": "33558",
+    "city": "Lutz",
+    "zone": "C"
+  },
+  {
+    "zip": "33559",
+    "city": "Lutz",
+    "zone": "C"
+  },
+  {
+    "zip": "33563",
+    "city": "Plant City",
+    "zone": "C"
+  },
+  {
+    "zip": "33564",
+    "city": "Plant City",
+    "zone": "C"
+  },
+  {
+    "zip": "33565",
+    "city": "Plant City",
+    "zone": "C"
+  },
+  {
+    "zip": "33566",
+    "city": "Plant City",
+    "zone": "C"
+  },
+  {
+    "zip": "33567",
+    "city": "Plant City",
+    "zone": "C"
+  },
+  {
+    "zip": "33568",
+    "city": "Riverview",
+    "zone": "C"
+  },
+  {
+    "zip": "33569",
+    "city": "Riverview",
+    "zone": "C"
+  },
+  {
+    "zip": "33570",
+    "city": "Ruskin",
+    "zone": "C"
+  },
+  {
+    "zip": "33571",
+    "city": "Sun City Center",
+    "zone": "C"
+  },
+  {
+    "zip": "33572",
+    "city": "Apollo Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33573",
+    "city": "Sun City Center",
+    "zone": "C"
+  },
+  {
+    "zip": "33574",
+    "city": "Saint Leo",
+    "zone": "C"
+  },
+  {
+    "zip": "33575",
+    "city": "Ruskin",
+    "zone": "C"
+  },
+  {
+    "zip": "33576",
+    "city": "San Antonio",
+    "zone": "C"
+  },
+  {
+    "zip": "33578",
+    "city": "Riverview",
+    "zone": "C"
+  },
+  {
+    "zip": "33579",
+    "city": "Riverview",
+    "zone": "C"
+  },
+  {
+    "zip": "33583",
+    "city": "Seffner",
+    "zone": "C"
+  },
+  {
+    "zip": "33584",
+    "city": "Seffner",
+    "zone": "C"
+  },
+  {
+    "zip": "33585",
+    "city": "Sumterville",
+    "zone": "C"
+  },
+  {
+    "zip": "33586",
+    "city": "Sun City",
+    "zone": "C"
+  },
+  {
+    "zip": "33587",
+    "city": "Sydney",
+    "zone": "C"
+  },
+  {
+    "zip": "33592",
+    "city": "Thonotosassa",
+    "zone": "C"
+  },
+  {
+    "zip": "33593",
+    "city": "Trilby",
+    "zone": "C"
+  },
+  {
+    "zip": "33594",
+    "city": "Valrico",
+    "zone": "C"
+  },
+  {
+    "zip": "33595",
+    "city": "Valrico",
+    "zone": "C"
+  },
+  {
+    "zip": "33596",
+    "city": "Valrico",
+    "zone": "C"
+  },
+  {
+    "zip": "33597",
+    "city": "Webster",
+    "zone": "C"
+  },
+  {
+    "zip": "33598",
+    "city": "Wimauma",
+    "zone": "C"
+  },
+  {
+    "zip": "33601",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33602",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33603",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33604",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33605",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33606",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33607",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33608",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33609",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33610",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33611",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33612",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33613",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33614",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33615",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33616",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33617",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33618",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33619",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33620",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33621",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33622",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33623",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33624",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33625",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33626",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33629",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33630",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33631",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33633",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33634",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33635",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33637",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33646",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33647",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33650",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33655",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33660",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33664",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33672",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33673",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33674",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33675",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33677",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33679",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33680",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33681",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33682",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33684",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33685",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33686",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33687",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33688",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33689",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33694",
+    "city": "Tampa",
+    "zone": "C"
+  },
+  {
+    "zip": "33701",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33702",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33703",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33704",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33705",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33706",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33707",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33708",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33709",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33710",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33711",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33712",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33713",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33714",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33715",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33716",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33729",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33730",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33731",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33732",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33733",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33734",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33736",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33738",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33740",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33741",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33742",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33743",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33744",
+    "city": "Bay Pines",
+    "zone": "C"
+  },
+  {
+    "zip": "33747",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33755",
+    "city": "Clearwater",
+    "zone": "C"
+  },
+  {
+    "zip": "33756",
+    "city": "Clearwater",
+    "zone": "C"
+  },
+  {
+    "zip": "33757",
+    "city": "Clearwater",
+    "zone": "C"
+  },
+  {
+    "zip": "33758",
+    "city": "Clearwater",
+    "zone": "C"
+  },
+  {
+    "zip": "33759",
+    "city": "Clearwater",
+    "zone": "C"
+  },
+  {
+    "zip": "33760",
+    "city": "Clearwater",
+    "zone": "C"
+  },
+  {
+    "zip": "33761",
+    "city": "Clearwater",
+    "zone": "C"
+  },
+  {
+    "zip": "33762",
+    "city": "Clearwater",
+    "zone": "C"
+  },
+  {
+    "zip": "33763",
+    "city": "Clearwater",
+    "zone": "C"
+  },
+  {
+    "zip": "33764",
+    "city": "Clearwater",
+    "zone": "C"
+  },
+  {
+    "zip": "33765",
+    "city": "Clearwater",
+    "zone": "C"
+  },
+  {
+    "zip": "33766",
+    "city": "Clearwater",
+    "zone": "C"
+  },
+  {
+    "zip": "33767",
+    "city": "Clearwater Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33769",
+    "city": "Clearwater",
+    "zone": "C"
+  },
+  {
+    "zip": "33770",
+    "city": "Largo",
+    "zone": "C"
+  },
+  {
+    "zip": "33771",
+    "city": "Largo",
+    "zone": "C"
+  },
+  {
+    "zip": "33772",
+    "city": "Seminole",
+    "zone": "C"
+  },
+  {
+    "zip": "33773",
+    "city": "Largo",
+    "zone": "C"
+  },
+  {
+    "zip": "33774",
+    "city": "Largo",
+    "zone": "C"
+  },
+  {
+    "zip": "33775",
+    "city": "Seminole",
+    "zone": "C"
+  },
+  {
+    "zip": "33776",
+    "city": "Seminole",
+    "zone": "C"
+  },
+  {
+    "zip": "33777",
+    "city": "Seminole",
+    "zone": "C"
+  },
+  {
+    "zip": "33778",
+    "city": "Largo",
+    "zone": "C"
+  },
+  {
+    "zip": "33779",
+    "city": "Largo",
+    "zone": "C"
+  },
+  {
+    "zip": "33780",
+    "city": "Pinellas Park",
+    "zone": "C"
+  },
+  {
+    "zip": "33781",
+    "city": "Pinellas Park",
+    "zone": "C"
+  },
+  {
+    "zip": "33782",
+    "city": "Pinellas Park",
+    "zone": "C"
+  },
+  {
+    "zip": "33784",
+    "city": "Saint Petersburg",
+    "zone": "C"
+  },
+  {
+    "zip": "33785",
+    "city": "Indian Rocks Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33786",
+    "city": "Belleair Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33801",
+    "city": "Lakeland",
+    "zone": "C"
+  },
+  {
+    "zip": "33802",
+    "city": "Lakeland",
+    "zone": "C"
+  },
+  {
+    "zip": "33803",
+    "city": "Lakeland",
+    "zone": "C"
+  },
+  {
+    "zip": "33804",
+    "city": "Lakeland",
+    "zone": "C"
+  },
+  {
+    "zip": "33805",
+    "city": "Lakeland",
+    "zone": "C"
+  },
+  {
+    "zip": "33806",
+    "city": "Lakeland",
+    "zone": "C"
+  },
+  {
+    "zip": "33807",
+    "city": "Lakeland",
+    "zone": "C"
+  },
+  {
+    "zip": "33809",
+    "city": "Lakeland",
+    "zone": "C"
+  },
+  {
+    "zip": "33810",
+    "city": "Lakeland",
+    "zone": "C"
+  },
+  {
+    "zip": "33811",
+    "city": "Lakeland",
+    "zone": "C"
+  },
+  {
+    "zip": "33812",
+    "city": "Lakeland",
+    "zone": "C"
+  },
+  {
+    "zip": "33813",
+    "city": "Lakeland",
+    "zone": "C"
+  },
+  {
+    "zip": "33815",
+    "city": "Lakeland",
+    "zone": "C"
+  },
+  {
+    "zip": "33820",
+    "city": "Alturas",
+    "zone": "C"
+  },
+  {
+    "zip": "33823",
+    "city": "Auburndale",
+    "zone": "C"
+  },
+  {
+    "zip": "33825",
+    "city": "Avon Park",
+    "zone": "C"
+  },
+  {
+    "zip": "33826",
+    "city": "Avon Park",
+    "zone": "C"
+  },
+  {
+    "zip": "33827",
+    "city": "Babson Park",
+    "zone": "C"
+  },
+  {
+    "zip": "33830",
+    "city": "Bartow",
+    "zone": "C"
+  },
+  {
+    "zip": "33831",
+    "city": "Bartow",
+    "zone": "C"
+  },
+  {
+    "zip": "33834",
+    "city": "Bowling Green",
+    "zone": "C"
+  },
+  {
+    "zip": "33835",
+    "city": "Bradley",
+    "zone": "C"
+  },
+  {
+    "zip": "33836",
+    "city": "Davenport",
+    "zone": "C"
+  },
+  {
+    "zip": "33837",
+    "city": "Davenport",
+    "zone": "C"
+  },
+  {
+    "zip": "33838",
+    "city": "Dundee",
+    "zone": "C"
+  },
+  {
+    "zip": "33839",
+    "city": "Eagle Lake",
+    "zone": "C"
+  },
+  {
+    "zip": "33840",
+    "city": "Eaton Park",
+    "zone": "C"
+  },
+  {
+    "zip": "33841",
+    "city": "Fort Meade",
+    "zone": "C"
+  },
+  {
+    "zip": "33843",
+    "city": "Frostproof",
+    "zone": "C"
+  },
+  {
+    "zip": "33844",
+    "city": "Haines City",
+    "zone": "C"
+  },
+  {
+    "zip": "33845",
+    "city": "Haines City",
+    "zone": "C"
+  },
+  {
+    "zip": "33846",
+    "city": "Highland City",
+    "zone": "C"
+  },
+  {
+    "zip": "33847",
+    "city": "Homeland",
+    "zone": "C"
+  },
+  {
+    "zip": "33848",
+    "city": "Intercession City",
+    "zone": "C"
+  },
+  {
+    "zip": "33849",
+    "city": "Kathleen",
+    "zone": "C"
+  },
+  {
+    "zip": "33850",
+    "city": "Lake Alfred",
+    "zone": "C"
+  },
+  {
+    "zip": "33851",
+    "city": "Lake Hamilton",
+    "zone": "C"
+  },
+  {
+    "zip": "33852",
+    "city": "Lake Placid",
+    "zone": "C"
+  },
+  {
+    "zip": "33853",
+    "city": "Lake Wales",
+    "zone": "C"
+  },
+  {
+    "zip": "33854",
+    "city": "Lakeshore",
+    "zone": "C"
+  },
+  {
+    "zip": "33855",
+    "city": "Indian Lake Estates",
+    "zone": "C"
+  },
+  {
+    "zip": "33856",
+    "city": "Nalcrest",
+    "zone": "C"
+  },
+  {
+    "zip": "33857",
+    "city": "Lorida",
+    "zone": "C"
+  },
+  {
+    "zip": "33858",
+    "city": "Loughman",
+    "zone": "C"
+  },
+  {
+    "zip": "33859",
+    "city": "Lake Wales",
+    "zone": "C"
+  },
+  {
+    "zip": "33860",
+    "city": "Mulberry",
+    "zone": "C"
+  },
+  {
+    "zip": "33862",
+    "city": "Lake Placid",
+    "zone": "C"
+  },
+  {
+    "zip": "33863",
+    "city": "Nichols",
+    "zone": "C"
+  },
+  {
+    "zip": "33865",
+    "city": "Ona",
+    "zone": "C"
+  },
+  {
+    "zip": "33867",
+    "city": "River Ranch",
+    "zone": "C"
+  },
+  {
+    "zip": "33868",
+    "city": "Polk City",
+    "zone": "C"
+  },
+  {
+    "zip": "33870",
+    "city": "Sebring",
+    "zone": "C"
+  },
+  {
+    "zip": "33871",
+    "city": "Sebring",
+    "zone": "C"
+  },
+  {
+    "zip": "33872",
+    "city": "Sebring",
+    "zone": "C"
+  },
+  {
+    "zip": "33873",
+    "city": "Wauchula",
+    "zone": "C"
+  },
+  {
+    "zip": "33875",
+    "city": "Sebring",
+    "zone": "C"
+  },
+  {
+    "zip": "33876",
+    "city": "Sebring",
+    "zone": "C"
+  },
+  {
+    "zip": "33877",
+    "city": "Waverly",
+    "zone": "C"
+  },
+  {
+    "zip": "33880",
+    "city": "Winter Haven",
+    "zone": "C"
+  },
+  {
+    "zip": "33881",
+    "city": "Winter Haven",
+    "zone": "C"
+  },
+  {
+    "zip": "33882",
+    "city": "Winter Haven",
+    "zone": "C"
+  },
+  {
+    "zip": "33883",
+    "city": "Winter Haven",
+    "zone": "C"
+  },
+  {
+    "zip": "33884",
+    "city": "Winter Haven",
+    "zone": "C"
+  },
+  {
+    "zip": "33885",
+    "city": "Winter Haven",
+    "zone": "C"
+  },
+  {
+    "zip": "33888",
+    "city": "Winter Haven",
+    "zone": "C"
+  },
+  {
+    "zip": "33890",
+    "city": "Zolfo Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "33896",
+    "city": "Davenport",
+    "zone": "C"
+  },
+  {
+    "zip": "33897",
+    "city": "Davenport",
+    "zone": "C"
+  },
+  {
+    "zip": "33898",
+    "city": "Lake Wales",
+    "zone": "C"
+  },
+  {
+    "zip": "33901",
+    "city": "Fort Myers",
+    "zone": "C"
+  },
+  {
+    "zip": "33902",
+    "city": "Fort Myers",
+    "zone": "C"
+  },
+  {
+    "zip": "33903",
+    "city": "North Fort Myers",
+    "zone": "C"
+  },
+  {
+    "zip": "33904",
+    "city": "Cape Coral",
+    "zone": "C"
+  },
+  {
+    "zip": "33905",
+    "city": "Fort Myers",
+    "zone": "C"
+  },
+  {
+    "zip": "33906",
+    "city": "Fort Myers",
+    "zone": "C"
+  },
+  {
+    "zip": "33907",
+    "city": "Fort Myers",
+    "zone": "C"
+  },
+  {
+    "zip": "33908",
+    "city": "Fort Myers",
+    "zone": "C"
+  },
+  {
+    "zip": "33909",
+    "city": "Cape Coral",
+    "zone": "C"
+  },
+  {
+    "zip": "33910",
+    "city": "Cape Coral",
+    "zone": "C"
+  },
+  {
+    "zip": "33912",
+    "city": "Fort Myers",
+    "zone": "C"
+  },
+  {
+    "zip": "33913",
+    "city": "Fort Myers",
+    "zone": "C"
+  },
+  {
+    "zip": "33914",
+    "city": "Cape Coral",
+    "zone": "C"
+  },
+  {
+    "zip": "33915",
+    "city": "Cape Coral",
+    "zone": "C"
+  },
+  {
+    "zip": "33916",
+    "city": "Fort Myers",
+    "zone": "C"
+  },
+  {
+    "zip": "33917",
+    "city": "North Fort Myers",
+    "zone": "C"
+  },
+  {
+    "zip": "33918",
+    "city": "North Fort Myers",
+    "zone": "C"
+  },
+  {
+    "zip": "33919",
+    "city": "Fort Myers",
+    "zone": "C"
+  },
+  {
+    "zip": "33920",
+    "city": "Alva",
+    "zone": "C"
+  },
+  {
+    "zip": "33921",
+    "city": "Boca Grande",
+    "zone": "C"
+  },
+  {
+    "zip": "33922",
+    "city": "Bokeelia",
+    "zone": "C"
+  },
+  {
+    "zip": "33924",
+    "city": "Captiva",
+    "zone": "C"
+  },
+  {
+    "zip": "33927",
+    "city": "El Jobean",
+    "zone": "C"
+  },
+  {
+    "zip": "33928",
+    "city": "Estero",
+    "zone": "C"
+  },
+  {
+    "zip": "33929",
+    "city": "Estero",
+    "zone": "C"
+  },
+  {
+    "zip": "33930",
+    "city": "Felda",
+    "zone": "C"
+  },
+  {
+    "zip": "33931",
+    "city": "Fort Myers Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33932",
+    "city": "Fort Myers Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "33935",
+    "city": "Labelle",
+    "zone": "C"
+  },
+  {
+    "zip": "33936",
+    "city": "Lehigh Acres",
+    "zone": "C"
+  },
+  {
+    "zip": "33938",
+    "city": "Murdock",
+    "zone": "C"
+  },
+  {
+    "zip": "33944",
+    "city": "Palmdale",
+    "zone": "C"
+  },
+  {
+    "zip": "33945",
+    "city": "Pineland",
+    "zone": "C"
+  },
+  {
+    "zip": "33946",
+    "city": "Placida",
+    "zone": "C"
+  },
+  {
+    "zip": "33947",
+    "city": "Rotonda West",
+    "zone": "C"
+  },
+  {
+    "zip": "33948",
+    "city": "Port Charlotte",
+    "zone": "C"
+  },
+  {
+    "zip": "33949",
+    "city": "Port Charlotte",
+    "zone": "C"
+  },
+  {
+    "zip": "33950",
+    "city": "Punta Gorda",
+    "zone": "C"
+  },
+  {
+    "zip": "33951",
+    "city": "Punta Gorda",
+    "zone": "C"
+  },
+  {
+    "zip": "33952",
+    "city": "Port Charlotte",
+    "zone": "C"
+  },
+  {
+    "zip": "33953",
+    "city": "Port Charlotte",
+    "zone": "C"
+  },
+  {
+    "zip": "33954",
+    "city": "Port Charlotte",
+    "zone": "C"
+  },
+  {
+    "zip": "33955",
+    "city": "Punta Gorda",
+    "zone": "C"
+  },
+  {
+    "zip": "33956",
+    "city": "Saint James City",
+    "zone": "C"
+  },
+  {
+    "zip": "33957",
+    "city": "Sanibel",
+    "zone": "C"
+  },
+  {
+    "zip": "33960",
+    "city": "Venus",
+    "zone": "C"
+  },
+  {
+    "zip": "33965",
+    "city": "Fort Myers",
+    "zone": "C"
+  },
+  {
+    "zip": "33966",
+    "city": "Fort Myers",
+    "zone": "C"
+  },
+  {
+    "zip": "33967",
+    "city": "Fort Myers",
+    "zone": "C"
+  },
+  {
+    "zip": "33970",
+    "city": "Lehigh Acres",
+    "zone": "C"
+  },
+  {
+    "zip": "33971",
+    "city": "Lehigh Acres",
+    "zone": "C"
+  },
+  {
+    "zip": "33972",
+    "city": "Lehigh Acres",
+    "zone": "C"
+  },
+  {
+    "zip": "33973",
+    "city": "Lehigh Acres",
+    "zone": "C"
+  },
+  {
+    "zip": "33974",
+    "city": "Lehigh Acres",
+    "zone": "C"
+  },
+  {
+    "zip": "33975",
+    "city": "Labelle",
+    "zone": "C"
+  },
+  {
+    "zip": "33976",
+    "city": "Lehigh Acres",
+    "zone": "C"
+  },
+  {
+    "zip": "33980",
+    "city": "Punta Gorda",
+    "zone": "C"
+  },
+  {
+    "zip": "33981",
+    "city": "Port Charlotte",
+    "zone": "C"
+  },
+  {
+    "zip": "33982",
+    "city": "Punta Gorda",
+    "zone": "C"
+  },
+  {
+    "zip": "33983",
+    "city": "Punta Gorda",
+    "zone": "C"
+  },
+  {
+    "zip": "33990",
+    "city": "Cape Coral",
+    "zone": "C"
+  },
+  {
+    "zip": "33991",
+    "city": "Cape Coral",
+    "zone": "C"
+  },
+  {
+    "zip": "33993",
+    "city": "Cape Coral",
+    "zone": "C"
+  },
+  {
+    "zip": "33994",
+    "city": "Fort Myers",
+    "zone": "C"
+  },
+  {
+    "zip": "34101",
+    "city": "Naples",
+    "zone": "C"
+  },
+  {
+    "zip": "34102",
+    "city": "Naples",
+    "zone": "C"
+  },
+  {
+    "zip": "34103",
+    "city": "Naples",
+    "zone": "C"
+  },
+  {
+    "zip": "34104",
+    "city": "Naples",
+    "zone": "C"
+  },
+  {
+    "zip": "34105",
+    "city": "Naples",
+    "zone": "C"
+  },
+  {
+    "zip": "34106",
+    "city": "Naples",
+    "zone": "C"
+  },
+  {
+    "zip": "34107",
+    "city": "Naples",
+    "zone": "C"
+  },
+  {
+    "zip": "34108",
+    "city": "Naples",
+    "zone": "C"
+  },
+  {
+    "zip": "34109",
+    "city": "Naples",
+    "zone": "C"
+  },
+  {
+    "zip": "34110",
+    "city": "Naples",
+    "zone": "C"
+  },
+  {
+    "zip": "34112",
+    "city": "Naples",
+    "zone": "C"
+  },
+  {
+    "zip": "34113",
+    "city": "Naples",
+    "zone": "C"
+  },
+  {
+    "zip": "34114",
+    "city": "Naples",
+    "zone": "C"
+  },
+  {
+    "zip": "34116",
+    "city": "Naples",
+    "zone": "C"
+  },
+  {
+    "zip": "34117",
+    "city": "Naples",
+    "zone": "C"
+  },
+  {
+    "zip": "34119",
+    "city": "Naples",
+    "zone": "C"
+  },
+  {
+    "zip": "34120",
+    "city": "Naples",
+    "zone": "C"
+  },
+  {
+    "zip": "34133",
+    "city": "Bonita Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "34134",
+    "city": "Bonita Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "34135",
+    "city": "Bonita Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "34136",
+    "city": "Bonita Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "34137",
+    "city": "Copeland",
+    "zone": "C"
+  },
+  {
+    "zip": "34138",
+    "city": "Chokoloskee",
+    "zone": "C"
+  },
+  {
+    "zip": "34139",
+    "city": "Everglades City",
+    "zone": "C"
+  },
+  {
+    "zip": "34140",
+    "city": "Goodland",
+    "zone": "C"
+  },
+  {
+    "zip": "34141",
+    "city": "Ochopee",
+    "zone": "C"
+  },
+  {
+    "zip": "34142",
+    "city": "Immokalee",
+    "zone": "C"
+  },
+  {
+    "zip": "34143",
+    "city": "Immokalee",
+    "zone": "C"
+  },
+  {
+    "zip": "34145",
+    "city": "Marco Island",
+    "zone": "C"
+  },
+  {
+    "zip": "34146",
+    "city": "Marco Island",
+    "zone": "C"
+  },
+  {
+    "zip": "34201",
+    "city": "Bradenton",
+    "zone": "C"
+  },
+  {
+    "zip": "34202",
+    "city": "Bradenton",
+    "zone": "C"
+  },
+  {
+    "zip": "34203",
+    "city": "Bradenton",
+    "zone": "C"
+  },
+  {
+    "zip": "34204",
+    "city": "Bradenton",
+    "zone": "C"
+  },
+  {
+    "zip": "34205",
+    "city": "Bradenton",
+    "zone": "C"
+  },
+  {
+    "zip": "34206",
+    "city": "Bradenton",
+    "zone": "C"
+  },
+  {
+    "zip": "34207",
+    "city": "Bradenton",
+    "zone": "C"
+  },
+  {
+    "zip": "34208",
+    "city": "Bradenton",
+    "zone": "C"
+  },
+  {
+    "zip": "34209",
+    "city": "Bradenton",
+    "zone": "C"
+  },
+  {
+    "zip": "34210",
+    "city": "Bradenton",
+    "zone": "C"
+  },
+  {
+    "zip": "34211",
+    "city": "Bradenton",
+    "zone": "C"
+  },
+  {
+    "zip": "34212",
+    "city": "Bradenton",
+    "zone": "C"
+  },
+  {
+    "zip": "34215",
+    "city": "Cortez",
+    "zone": "C"
+  },
+  {
+    "zip": "34216",
+    "city": "Anna Maria",
+    "zone": "C"
+  },
+  {
+    "zip": "34217",
+    "city": "Bradenton Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "34218",
+    "city": "Holmes Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "34219",
+    "city": "Parrish",
+    "zone": "C"
+  },
+  {
+    "zip": "34220",
+    "city": "Palmetto",
+    "zone": "C"
+  },
+  {
+    "zip": "34221",
+    "city": "Palmetto",
+    "zone": "C"
+  },
+  {
+    "zip": "34222",
+    "city": "Ellenton",
+    "zone": "C"
+  },
+  {
+    "zip": "34223",
+    "city": "Englewood",
+    "zone": "C"
+  },
+  {
+    "zip": "34224",
+    "city": "Englewood",
+    "zone": "C"
+  },
+  {
+    "zip": "34228",
+    "city": "Longboat Key",
+    "zone": "C"
+  },
+  {
+    "zip": "34229",
+    "city": "Osprey",
+    "zone": "C"
+  },
+  {
+    "zip": "34230",
+    "city": "Sarasota",
+    "zone": "C"
+  },
+  {
+    "zip": "34231",
+    "city": "Sarasota",
+    "zone": "C"
+  },
+  {
+    "zip": "34232",
+    "city": "Sarasota",
+    "zone": "C"
+  },
+  {
+    "zip": "34233",
+    "city": "Sarasota",
+    "zone": "C"
+  },
+  {
+    "zip": "34234",
+    "city": "Sarasota",
+    "zone": "C"
+  },
+  {
+    "zip": "34235",
+    "city": "Sarasota",
+    "zone": "C"
+  },
+  {
+    "zip": "34236",
+    "city": "Sarasota",
+    "zone": "C"
+  },
+  {
+    "zip": "34237",
+    "city": "Sarasota",
+    "zone": "C"
+  },
+  {
+    "zip": "34238",
+    "city": "Sarasota",
+    "zone": "C"
+  },
+  {
+    "zip": "34239",
+    "city": "Sarasota",
+    "zone": "C"
+  },
+  {
+    "zip": "34240",
+    "city": "Sarasota",
+    "zone": "C"
+  },
+  {
+    "zip": "34241",
+    "city": "Sarasota",
+    "zone": "C"
+  },
+  {
+    "zip": "34242",
+    "city": "Sarasota",
+    "zone": "C"
+  },
+  {
+    "zip": "34243",
+    "city": "Sarasota",
+    "zone": "C"
+  },
+  {
+    "zip": "34249",
+    "city": "Sarasota",
+    "zone": "C"
+  },
+  {
+    "zip": "34250",
+    "city": "Terra Ceia",
+    "zone": "C"
+  },
+  {
+    "zip": "34251",
+    "city": "Myakka City",
+    "zone": "C"
+  },
+  {
+    "zip": "34260",
+    "city": "Sarasota",
+    "zone": "C"
+  },
+  {
+    "zip": "34264",
+    "city": "Oneco",
+    "zone": "C"
+  },
+  {
+    "zip": "34265",
+    "city": "Arcadia",
+    "zone": "C"
+  },
+  {
+    "zip": "34266",
+    "city": "Arcadia",
+    "zone": "C"
+  },
+  {
+    "zip": "34267",
+    "city": "Fort Ogden",
+    "zone": "C"
+  },
+  {
+    "zip": "34268",
+    "city": "Nocatee",
+    "zone": "C"
+  },
+  {
+    "zip": "34269",
+    "city": "Arcadia",
+    "zone": "C"
+  },
+  {
+    "zip": "34270",
+    "city": "Tallevast",
+    "zone": "C"
+  },
+  {
+    "zip": "34272",
+    "city": "Laurel",
+    "zone": "C"
+  },
+  {
+    "zip": "34274",
+    "city": "Nokomis",
+    "zone": "C"
+  },
+  {
+    "zip": "34275",
+    "city": "Nokomis",
+    "zone": "C"
+  },
+  {
+    "zip": "34276",
+    "city": "Sarasota",
+    "zone": "C"
+  },
+  {
+    "zip": "34277",
+    "city": "Sarasota",
+    "zone": "C"
+  },
+  {
+    "zip": "34280",
+    "city": "Bradenton",
+    "zone": "C"
+  },
+  {
+    "zip": "34281",
+    "city": "Bradenton",
+    "zone": "C"
+  },
+  {
+    "zip": "34282",
+    "city": "Bradenton",
+    "zone": "C"
+  },
+  {
+    "zip": "34284",
+    "city": "Venice",
+    "zone": "C"
+  },
+  {
+    "zip": "34285",
+    "city": "Venice",
+    "zone": "C"
+  },
+  {
+    "zip": "34286",
+    "city": "North Port",
+    "zone": "C"
+  },
+  {
+    "zip": "34287",
+    "city": "North Port",
+    "zone": "C"
+  },
+  {
+    "zip": "34288",
+    "city": "North Port",
+    "zone": "C"
+  },
+  {
+    "zip": "34289",
+    "city": "North Port",
+    "zone": "C"
+  },
+  {
+    "zip": "34290",
+    "city": "North Port",
+    "zone": "C"
+  },
+  {
+    "zip": "34291",
+    "city": "North Port",
+    "zone": "C"
+  },
+  {
+    "zip": "34292",
+    "city": "Venice",
+    "zone": "C"
+  },
+  {
+    "zip": "34293",
+    "city": "Venice",
+    "zone": "C"
+  },
+  {
+    "zip": "34295",
+    "city": "Englewood",
+    "zone": "C"
+  },
+  {
+    "zip": "34420",
+    "city": "Belleview",
+    "zone": "C"
+  },
+  {
+    "zip": "34421",
+    "city": "Belleview",
+    "zone": "C"
+  },
+  {
+    "zip": "34423",
+    "city": "Crystal River",
+    "zone": "C"
+  },
+  {
+    "zip": "34428",
+    "city": "Crystal River",
+    "zone": "C"
+  },
+  {
+    "zip": "34429",
+    "city": "Crystal River",
+    "zone": "C"
+  },
+  {
+    "zip": "34430",
+    "city": "Dunnellon",
+    "zone": "C"
+  },
+  {
+    "zip": "34431",
+    "city": "Dunnellon",
+    "zone": "C"
+  },
+  {
+    "zip": "34432",
+    "city": "Dunnellon",
+    "zone": "C"
+  },
+  {
+    "zip": "34433",
+    "city": "Dunnellon",
+    "zone": "C"
+  },
+  {
+    "zip": "34434",
+    "city": "Dunnellon",
+    "zone": "C"
+  },
+  {
+    "zip": "34436",
+    "city": "Floral City",
+    "zone": "C"
+  },
+  {
+    "zip": "34441",
+    "city": "Hernando",
+    "zone": "C"
+  },
+  {
+    "zip": "34442",
+    "city": "Hernando",
+    "zone": "C"
+  },
+  {
+    "zip": "34445",
+    "city": "Holder",
+    "zone": "C"
+  },
+  {
+    "zip": "34446",
+    "city": "Homosassa",
+    "zone": "C"
+  },
+  {
+    "zip": "34447",
+    "city": "Homosassa Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "34448",
+    "city": "Homosassa",
+    "zone": "C"
+  },
+  {
+    "zip": "34449",
+    "city": "Inglis",
+    "zone": "C"
+  },
+  {
+    "zip": "34450",
+    "city": "Inverness",
+    "zone": "C"
+  },
+  {
+    "zip": "34451",
+    "city": "Inverness",
+    "zone": "C"
+  },
+  {
+    "zip": "34452",
+    "city": "Inverness",
+    "zone": "C"
+  },
+  {
+    "zip": "34453",
+    "city": "Inverness",
+    "zone": "C"
+  },
+  {
+    "zip": "34460",
+    "city": "Lecanto",
+    "zone": "C"
+  },
+  {
+    "zip": "34461",
+    "city": "Lecanto",
+    "zone": "C"
+  },
+  {
+    "zip": "34464",
+    "city": "Beverly Hills",
+    "zone": "C"
+  },
+  {
+    "zip": "34465",
+    "city": "Beverly Hills",
+    "zone": "C"
+  },
+  {
+    "zip": "34470",
+    "city": "Ocala",
+    "zone": "C"
+  },
+  {
+    "zip": "34471",
+    "city": "Ocala",
+    "zone": "C"
+  },
+  {
+    "zip": "34472",
+    "city": "Ocala",
+    "zone": "C"
+  },
+  {
+    "zip": "34473",
+    "city": "Ocala",
+    "zone": "C"
+  },
+  {
+    "zip": "34474",
+    "city": "Ocala",
+    "zone": "C"
+  },
+  {
+    "zip": "34475",
+    "city": "Ocala",
+    "zone": "C"
+  },
+  {
+    "zip": "34476",
+    "city": "Ocala",
+    "zone": "C"
+  },
+  {
+    "zip": "34477",
+    "city": "Ocala",
+    "zone": "C"
+  },
+  {
+    "zip": "34478",
+    "city": "Ocala",
+    "zone": "C"
+  },
+  {
+    "zip": "34479",
+    "city": "Ocala",
+    "zone": "C"
+  },
+  {
+    "zip": "34480",
+    "city": "Ocala",
+    "zone": "C"
+  },
+  {
+    "zip": "34481",
+    "city": "Ocala",
+    "zone": "C"
+  },
+  {
+    "zip": "34482",
+    "city": "Ocala",
+    "zone": "C"
+  },
+  {
+    "zip": "34483",
+    "city": "Ocala",
+    "zone": "C"
+  },
+  {
+    "zip": "34484",
+    "city": "Oxford",
+    "zone": "C"
+  },
+  {
+    "zip": "34487",
+    "city": "Homosassa",
+    "zone": "C"
+  },
+  {
+    "zip": "34488",
+    "city": "Silver Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "34489",
+    "city": "Silver Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "34491",
+    "city": "Summerfield",
+    "zone": "C"
+  },
+  {
+    "zip": "34492",
+    "city": "Summerfield",
+    "zone": "C"
+  },
+  {
+    "zip": "34498",
+    "city": "Yankeetown",
+    "zone": "C"
+  },
+  {
+    "zip": "34601",
+    "city": "Brooksville",
+    "zone": "C"
+  },
+  {
+    "zip": "34602",
+    "city": "Brooksville",
+    "zone": "C"
+  },
+  {
+    "zip": "34603",
+    "city": "Brooksville",
+    "zone": "C"
+  },
+  {
+    "zip": "34604",
+    "city": "Brooksville",
+    "zone": "C"
+  },
+  {
+    "zip": "34605",
+    "city": "Brooksville",
+    "zone": "C"
+  },
+  {
+    "zip": "34606",
+    "city": "Spring Hill",
+    "zone": "C"
+  },
+  {
+    "zip": "34607",
+    "city": "Spring Hill",
+    "zone": "C"
+  },
+  {
+    "zip": "34608",
+    "city": "Spring Hill",
+    "zone": "C"
+  },
+  {
+    "zip": "34609",
+    "city": "Spring Hill",
+    "zone": "C"
+  },
+  {
+    "zip": "34610",
+    "city": "Spring Hill",
+    "zone": "C"
+  },
+  {
+    "zip": "34611",
+    "city": "Spring Hill",
+    "zone": "C"
+  },
+  {
+    "zip": "34613",
+    "city": "Brooksville",
+    "zone": "C"
+  },
+  {
+    "zip": "34614",
+    "city": "Brooksville",
+    "zone": "C"
+  },
+  {
+    "zip": "34636",
+    "city": "Istachatta",
+    "zone": "C"
+  },
+  {
+    "zip": "34637",
+    "city": "Land O Lakes",
+    "zone": "C"
+  },
+  {
+    "zip": "34638",
+    "city": "Land O Lakes",
+    "zone": "C"
+  },
+  {
+    "zip": "34639",
+    "city": "Land O Lakes",
+    "zone": "C"
+  },
+  {
+    "zip": "34652",
+    "city": "New Port Richey",
+    "zone": "C"
+  },
+  {
+    "zip": "34653",
+    "city": "New Port Richey",
+    "zone": "C"
+  },
+  {
+    "zip": "34654",
+    "city": "New Port Richey",
+    "zone": "C"
+  },
+  {
+    "zip": "34655",
+    "city": "New Port Richey",
+    "zone": "C"
+  },
+  {
+    "zip": "34656",
+    "city": "New Port Richey",
+    "zone": "C"
+  },
+  {
+    "zip": "34660",
+    "city": "Ozona",
+    "zone": "C"
+  },
+  {
+    "zip": "34661",
+    "city": "Nobleton",
+    "zone": "C"
+  },
+  {
+    "zip": "34667",
+    "city": "Hudson",
+    "zone": "C"
+  },
+  {
+    "zip": "34668",
+    "city": "Port Richey",
+    "zone": "C"
+  },
+  {
+    "zip": "34669",
+    "city": "Hudson",
+    "zone": "C"
+  },
+  {
+    "zip": "34673",
+    "city": "Port Richey",
+    "zone": "C"
+  },
+  {
+    "zip": "34674",
+    "city": "Hudson",
+    "zone": "C"
+  },
+  {
+    "zip": "34677",
+    "city": "Oldsmar",
+    "zone": "C"
+  },
+  {
+    "zip": "34679",
+    "city": "Aripeka",
+    "zone": "C"
+  },
+  {
+    "zip": "34680",
+    "city": "Elfers",
+    "zone": "C"
+  },
+  {
+    "zip": "34681",
+    "city": "Crystal Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "34682",
+    "city": "Palm Harbor",
+    "zone": "C"
+  },
+  {
+    "zip": "34683",
+    "city": "Palm Harbor",
+    "zone": "C"
+  },
+  {
+    "zip": "34684",
+    "city": "Palm Harbor",
+    "zone": "C"
+  },
+  {
+    "zip": "34685",
+    "city": "Palm Harbor",
+    "zone": "C"
+  },
+  {
+    "zip": "34688",
+    "city": "Tarpon Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "34689",
+    "city": "Tarpon Springs",
+    "zone": "C"
+  },
+  {
+    "zip": "34690",
+    "city": "Holiday",
+    "zone": "C"
+  },
+  {
+    "zip": "34691",
+    "city": "Holiday",
+    "zone": "C"
+  },
+  {
+    "zip": "34692",
+    "city": "Holiday",
+    "zone": "C"
+  },
+  {
+    "zip": "34695",
+    "city": "Safety Harbor",
+    "zone": "C"
+  },
+  {
+    "zip": "34697",
+    "city": "Dunedin",
+    "zone": "C"
+  },
+  {
+    "zip": "34698",
+    "city": "Dunedin",
+    "zone": "C"
+  },
+  {
+    "zip": "34705",
+    "city": "Astatula",
+    "zone": "C"
+  },
+  {
+    "zip": "34711",
+    "city": "Clermont",
+    "zone": "C"
+  },
+  {
+    "zip": "34712",
+    "city": "Clermont",
+    "zone": "C"
+  },
+  {
+    "zip": "34713",
+    "city": "Clermont",
+    "zone": "C"
+  },
+  {
+    "zip": "34714",
+    "city": "Clermont",
+    "zone": "C"
+  },
+  {
+    "zip": "34715",
+    "city": "Clermont",
+    "zone": "C"
+  },
+  {
+    "zip": "34729",
+    "city": "Ferndale",
+    "zone": "C"
+  },
+  {
+    "zip": "34731",
+    "city": "Fruitland Park",
+    "zone": "C"
+  },
+  {
+    "zip": "34734",
+    "city": "Gotha",
+    "zone": "C"
+  },
+  {
+    "zip": "34736",
+    "city": "Groveland",
+    "zone": "C"
+  },
+  {
+    "zip": "34737",
+    "city": "Howey In The Hills",
+    "zone": "C"
+  },
+  {
+    "zip": "34739",
+    "city": "Kenansville",
+    "zone": "C"
+  },
+  {
+    "zip": "34740",
+    "city": "Killarney",
+    "zone": "A"
+  },
+  {
+    "zip": "34741",
+    "city": "Kissimmee",
+    "zone": "A"
+  },
+  {
+    "zip": "34742",
+    "city": "Kissimmee",
+    "zone": "A"
+  },
+  {
+    "zip": "34743",
+    "city": "Kissimmee",
+    "zone": "A"
+  },
+  {
+    "zip": "34744",
+    "city": "Kissimmee",
+    "zone": "A"
+  },
+  {
+    "zip": "34745",
+    "city": "Kissimmee",
+    "zone": "A"
+  },
+  {
+    "zip": "34746",
+    "city": "Kissimmee",
+    "zone": "A"
+  },
+  {
+    "zip": "34747",
+    "city": "Kissimmee",
+    "zone": "A"
+  },
+  {
+    "zip": "34748",
+    "city": "Leesburg",
+    "zone": "A"
+  },
+  {
+    "zip": "34749",
+    "city": "Leesburg",
+    "zone": "A"
+  },
+  {
+    "zip": "34753",
+    "city": "Mascotte",
+    "zone": "B"
+  },
+  {
+    "zip": "34755",
+    "city": "Minneola",
+    "zone": "B"
+  },
+  {
+    "zip": "34756",
+    "city": "Montverde",
+    "zone": "B"
+  },
+  {
+    "zip": "34758",
+    "city": "Kissimmee",
+    "zone": "B"
+  },
+  {
+    "zip": "34759",
+    "city": "Kissimmee",
+    "zone": "B"
+  },
+  {
+    "zip": "34760",
+    "city": "Oakland",
+    "zone": "C"
+  },
+  {
+    "zip": "34761",
+    "city": "Ocoee",
+    "zone": "C"
+  },
+  {
+    "zip": "34762",
+    "city": "The Villages",
+    "zone": "C"
+  },
+  {
+    "zip": "34769",
+    "city": "Saint Cloud",
+    "zone": "C"
+  },
+  {
+    "zip": "34770",
+    "city": "Saint Cloud",
+    "zone": "B"
+  },
+  {
+    "zip": "34771",
+    "city": "Saint Cloud",
+    "zone": "B"
+  },
+  {
+    "zip": "34772",
+    "city": "Saint Cloud",
+    "zone": "B"
+  },
+  {
+    "zip": "34773",
+    "city": "Saint Cloud",
+    "zone": "B"
+  },
+  {
+    "zip": "34777",
+    "city": "Winter Garden",
+    "zone": "B"
+  },
+  {
+    "zip": "34778",
+    "city": "Winter Garden",
+    "zone": "B"
+  },
+  {
+    "zip": "34785",
+    "city": "Wildwood",
+    "zone": "C"
+  },
+  {
+    "zip": "34786",
+    "city": "Windermere",
+    "zone": "C"
+  },
+  {
+    "zip": "34787",
+    "city": "Winter Garden",
+    "zone": "C"
+  },
+  {
+    "zip": "34788",
+    "city": "Leesburg",
+    "zone": "C"
+  },
+  {
+    "zip": "34789",
+    "city": "Leesburg",
+    "zone": "C"
+  },
+  {
+    "zip": "34797",
+    "city": "Yalaha",
+    "zone": "C"
+  },
+  {
+    "zip": "34945",
+    "city": "Fort Pierce",
+    "zone": "C"
+  },
+  {
+    "zip": "34946",
+    "city": "Fort Pierce",
+    "zone": "C"
+  },
+  {
+    "zip": "34947",
+    "city": "Fort Pierce",
+    "zone": "C"
+  },
+  {
+    "zip": "34948",
+    "city": "Fort Pierce",
+    "zone": "C"
+  },
+  {
+    "zip": "34949",
+    "city": "Fort Pierce",
+    "zone": "C"
+  },
+  {
+    "zip": "34950",
+    "city": "Fort Pierce",
+    "zone": "C"
+  },
+  {
+    "zip": "34951",
+    "city": "Fort Pierce",
+    "zone": "C"
+  },
+  {
+    "zip": "34952",
+    "city": "Port Saint Lucie",
+    "zone": "C"
+  },
+  {
+    "zip": "34953",
+    "city": "Port Saint Lucie",
+    "zone": "C"
+  },
+  {
+    "zip": "34954",
+    "city": "Fort Pierce",
+    "zone": "C"
+  },
+  {
+    "zip": "34956",
+    "city": "Indiantown",
+    "zone": "C"
+  },
+  {
+    "zip": "34957",
+    "city": "Jensen Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "34958",
+    "city": "Jensen Beach",
+    "zone": "C"
+  },
+  {
+    "zip": "34972",
+    "city": "Okeechobee",
+    "zone": "C"
+  },
+  {
+    "zip": "34973",
+    "city": "Okeechobee",
+    "zone": "C"
+  },
+  {
+    "zip": "34974",
+    "city": "Okeechobee",
+    "zone": "C"
+  },
+  {
+    "zip": "34979",
+    "city": "Fort Pierce",
+    "zone": "C"
+  },
+  {
+    "zip": "34981",
+    "city": "Fort Pierce",
+    "zone": "C"
+  },
+  {
+    "zip": "34982",
+    "city": "Fort Pierce",
+    "zone": "C"
+  },
+  {
+    "zip": "34983",
+    "city": "Port Saint Lucie",
+    "zone": "C"
+  },
+  {
+    "zip": "34984",
+    "city": "Port Saint Lucie",
+    "zone": "C"
+  },
+  {
+    "zip": "34985",
+    "city": "Port Saint Lucie",
+    "zone": "C"
+  },
+  {
+    "zip": "34986",
+    "city": "Port Saint Lucie",
+    "zone": "C"
+  },
+  {
+    "zip": "34987",
+    "city": "Port Saint Lucie",
+    "zone": "C"
+  },
+  {
+    "zip": "34988",
+    "city": "Port Saint Lucie",
+    "zone": "C"
+  },
+  {
+    "zip": "34990",
+    "city": "Palm City",
+    "zone": "C"
+  },
+  {
+    "zip": "34991",
+    "city": "Palm City",
+    "zone": "C"
+  },
+  {
+    "zip": "34992",
+    "city": "Port Salerno",
+    "zone": "C"
+  },
+  {
+    "zip": "34994",
+    "city": "Stuart",
+    "zone": "C"
+  },
+  {
+    "zip": "34995",
+    "city": "Stuart",
+    "zone": "C"
+  },
+  {
+    "zip": "34996",
+    "city": "Stuart",
+    "zone": "C"
+  },
+  {
+    "zip": "34997",
+    "city": "Stuart",
+    "zone": "C"
+  }
+]
