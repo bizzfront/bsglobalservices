@@ -9,6 +9,16 @@
     "defaultMoldingRate": 1.25,
     "notes": "Labor covers prep and install; accessories billed separately."
   },
+  "molding": {
+    "truckload": {
+      "defaultPricePerPiece": 0,
+      "tiers": [
+        { "maxBoxes": 0.25, "pricePerPiece": 0.45 },
+        { "maxBoxes": 0.5, "pricePerPiece": 0.35 },
+        { "maxBoxes": 1, "pricePerPiece": 0.24 }
+      ]
+    }
+  },
   "delivery": {
     "notes": "Fees may change for oversized deliveries or out-of-zone drops.",
     "zones": [
