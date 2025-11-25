@@ -425,7 +425,7 @@ $installRateLabel = $installRateValue !== null
       if(!Number.isFinite(piecesPerBox) || piecesPerBox <= 0 || !Number.isFinite(pieces) || pieces <= 0){
         return 0;
       }
-      const ratio = pieces / piecesPerPackage;
+      const ratio = pieces / piecesPerBox;
       const truckloadConfig = STORE_CONFIG?.molding?.truckload || {};
       const tiers = Array.isArray(truckloadConfig.tiers) ? truckloadConfig.tiers : [];
       const sortedTiers = tiers
