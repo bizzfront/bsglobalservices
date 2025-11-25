@@ -143,6 +143,38 @@ function handleApi(array $files, string $stagingDir, string $baseDir): void
         ]);
     }
 
+    if ($action === 'upload') {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            respond(['error' => 'Método no permitido'], 405);
+        }
+
+        if (!isset($_FILES['file'])) {
+            respond(['error' => 'No se adjuntó ningún archivo'], 400);
+        }
+
+        $uploadDir = $baseDir . '/images/cdn/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+
+        $originalName = $_FILES['file']['name'] ?? 'image';
+        $extension = pathinfo($originalName, PATHINFO_EXTENSION);
+        $safeBase = preg_replace('/[^a-zA-Z0-9-_]/', '_', pathinfo($originalName, PATHINFO_FILENAME)) ?: 'image';
+        $targetName = $safeBase . '-' . uniqid() . ($extension ? '.' . $extension : '');
+        $targetPath = $uploadDir . $targetName;
+
+        $moved = move_uploaded_file($_FILES['file']['tmp_name'], $targetPath);
+        if (!$moved) {
+            respond(['error' => 'No se pudo guardar el archivo. Inténtalo de nuevo.'], 500);
+        }
+
+        $relativePath = 'images/cdn/' . $targetName;
+        respond([
+            'message' => 'Imagen subida correctamente.',
+            'path' => $relativePath,
+        ]);
+    }
+
     if ($action === 'save') {
         $body = json_decode(file_get_contents('php://input'), true);
         $fileKey = normalizeFileKey($files, $body['file'] ?? null);
@@ -419,12 +451,33 @@ if (isset($_GET['api'])) {
                     </div>
 
                     <div class="mb-2" v-for="(field, i) in draftFields" :key="i">
-                        <div class="row g-2 align-items-center">
+                        <div class="row g-2 align-items-start">
                             <div class="col-4">
-                                <input type="text" class="form-control form-control-sm" v-model="field.key" placeholder="Campo"/>
+                                <input type="text" class="form-control form-control-sm" v-model="field.key" :readonly="!!field.config && field.key" placeholder="Campo" />
+                                <div class="small text-muted" v-if="field.config">{{ field.config.type }} • {{ field.config.input_type }}</div>
                             </div>
                             <div class="col-7">
-                                <input type="text" class="form-control form-control-sm" v-model="field.value" placeholder="Valor (se acepta JSON)" />
+                                <template v-if="field.config?.input_type === 'textarea'">
+                                    <textarea class="form-control form-control-sm" rows="4" v-model="field.value" :placeholder="fieldPlaceholder(field)"></textarea>
+                                    <div class="small text-muted">Soporta texto enriquecido.</div>
+                                </template>
+                                <template v-else-if="field.config?.input_type === 'image'">
+                                    <div class="d-flex flex-column gap-1">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text">URL</span>
+                                            <input type="text" class="form-control form-control-sm" v-model="field.value" :placeholder="fieldPlaceholder(field)" />
+                                        </div>
+                                        <div class="d-flex gap-2 align-items-center flex-wrap">
+                                            <input type="file" class="form-control form-control-sm" accept="image/*" @change="onImageSelected($event, field)" :disabled="field.uploading" />
+                                            <span class="spinner-border spinner-border-sm" role="status" v-if="field.uploading"></span>
+                                        </div>
+                                        <div class="small text-muted">Las imágenes se guardan en <code>/images/cdn/</code>.</div>
+                                        <div class="small text-danger" v-if="field.error">{{ field.error }}</div>
+                                    </div>
+                                </template>
+                                <template v-else>
+                                    <input :type="field.config?.input_type || 'text'" class="form-control form-control-sm" v-model="field.value" :placeholder="fieldPlaceholder(field)" />
+                                </template>
                             </div>
                             <div class="col-1 text-end">
                                 <button class="btn btn-link text-danger p-0" @click="removeField(i)" title="Eliminar campo">×</button>
@@ -619,6 +672,42 @@ createApp({
         currentMeta() {
             return this.fileMeta[this.managerFile] || { primaryKey: 'id', titleField: 'name', type: 'array' };
         },
+        fieldConfig(key) {
+            const template = this.templates[this.managerFile] || {};
+            return template?.[key] || null;
+        },
+        createField(key, value, config = null) {
+            return {
+                key,
+                value: this.stringifyValue(value),
+                config: config || this.fieldConfig(key),
+                uploading: false,
+                error: '',
+            };
+        },
+        fieldPlaceholder(field) {
+            if (field?.config?.input_type === 'textarea') {
+                return 'Ingresa una descripción (se permite HTML)';
+            }
+            if (field?.config?.input_type === 'image') {
+                return '/images/cdn/archivo.png';
+            }
+            if (field?.config) {
+                return `Valor (${field.config.type})`;
+            }
+            return 'Valor (se acepta JSON)';
+        },
+        buildFieldsFromTemplate(template) {
+            const entries = Object.entries(template || {});
+            if (!entries.length) return [this.createField('', '', null)];
+            return entries.map(([key, meta]) => this.createField(key, meta.default_value, meta));
+        },
+        buildFieldsFromObject(obj) {
+            const template = this.templates[this.managerFile] || {};
+            const entries = Object.entries(obj || {});
+            if (!entries.length) return [this.createField('', '', null)];
+            return entries.map(([key, value]) => this.createField(key, value, template[key] || null));
+        },
         resetManagerState() {
             this.managerItems = [];
             this.managerRaw = {};
@@ -681,15 +770,15 @@ createApp({
             this.draftDescription = '';
             const meta = this.currentMeta();
             const template = this.templates[this.managerFile];
-            if (template && meta.primaryKey && template[meta.primaryKey] !== undefined) {
-                this.draftId = template[meta.primaryKey];
+            if (template && meta.primaryKey && template[meta.primaryKey]?.default_value !== undefined) {
+                this.draftId = template[meta.primaryKey].default_value;
             }
             if (template) {
-                this.draftFields = this.buildFields(template);
+                this.draftFields = this.buildFieldsFromTemplate(template);
             } else if (meta.type === 'object') {
-                this.draftFields = [{ key: '__value', value: '' }];
+                this.draftFields = [this.createField('__value', '', null)];
             } else {
-                this.draftFields = [{ key: '', value: '' }];
+                this.draftFields = [this.createField('', '', null)];
             }
             this.showEditor = showEditor;
         },
@@ -724,17 +813,14 @@ createApp({
             } else {
                 this.draftId = '';
             }
-            this.draftFields = this.buildFields(cleanItem);
+            this.draftFields = this.buildFieldsFromObject(cleanItem);
         },
         cancelEdit() {
             this.resetDraftState(false);
         },
-        buildFields(obj) {
-            const entries = Object.entries(obj || {});
-            if (!entries.length) return [{ key: '', value: '' }];
-            return entries.map(([key, value]) => ({ key, value: this.stringifyValue(value) }));
-        },
         stringifyValue(value) {
+            if (value === undefined) return '';
+            if (value === null) return 'null';
             if (typeof value === 'string') return value;
             try {
                 return JSON.stringify(value);
@@ -743,7 +829,7 @@ createApp({
             }
         },
         addField() {
-            this.draftFields.push({ key: '', value: '' });
+            this.draftFields.push(this.createField('', '', null));
         },
         removeField(index) {
             this.draftFields.splice(index, 1);
@@ -764,7 +850,28 @@ createApp({
             const title = item[meta.titleField] || '';
             return title || 'Sin detalles';
         },
-        parseFieldValue(value) {
+        parseFieldValue(value, config = null) {
+            if (config?.type === 'text' || config?.type === 'image') {
+                return typeof value === 'string' ? value : String(value ?? '');
+            }
+            if (config?.type === 'number') {
+                const parsed = Number(value);
+                return Number.isFinite(parsed) ? parsed : value;
+            }
+            if (config?.type === 'boolean') {
+                if (typeof value === 'boolean') return value;
+                const normalized = String(value).trim().toLowerCase();
+                if (['true', '1', 'yes', 'on'].includes(normalized)) return true;
+                if (['false', '0', 'no', 'off', ''].includes(normalized)) return false;
+                return !!value;
+            }
+            if (config?.type === 'array' || config?.type === 'object') {
+                try {
+                    return JSON.parse(value);
+                } catch (e) {
+                    return value;
+                }
+            }
             try {
                 return JSON.parse(value);
             } catch (e) {
@@ -775,7 +882,7 @@ createApp({
             const obj = {};
             this.draftFields.forEach(field => {
                 if (!field.key) return;
-                obj[field.key] = this.parseFieldValue(field.value);
+                obj[field.key] = this.parseFieldValue(field.value, field.config);
             });
             if (this.currentMeta().type === 'object') {
                 if (obj.__value !== undefined && Object.keys(obj).length === 1) {
@@ -788,6 +895,28 @@ createApp({
                 obj.description = this.draftDescription;
             }
             return obj;
+        },
+        async onImageSelected(event, field) {
+            const file = event.target.files?.[0];
+            field.error = '';
+            if (!file) return;
+            field.uploading = true;
+            const formData = new FormData();
+            formData.append('file', file);
+            try {
+                const res = await fetch('?api=upload', { method: 'POST', body: formData });
+                const data = await res.json();
+                if (!res.ok || data.error) {
+                    field.error = data.error || 'No se pudo subir la imagen.';
+                } else if (data.path) {
+                    field.value = data.path;
+                }
+            } catch (e) {
+                field.error = 'Error al conectar con el servidor.';
+            } finally {
+                field.uploading = false;
+                event.target.value = '';
+            }
         },
         saveManagedItem() {
             const meta = this.currentMeta();
