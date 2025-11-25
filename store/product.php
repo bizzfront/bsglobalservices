@@ -256,7 +256,7 @@ $installRateLabel = $installRateValue !== null
             </label>
             <label class="full">
               <?= htmlspecialchars(ucfirst($packageLabelPlural)) ?>
-              <input type="number" id="calcBoxes" min="1" value="1" <?= $hasInventoryAvailable ? 'max="'.(int)$stockAvailableValue.'"' : '' ?>>
+              <input type="number" id="calcBoxes" min="1" value="1">
             </label>
             <div id="flooringHelper" class="calc-flooring-helper" aria-live="polite"></div>
           <?php endif; ?>
@@ -409,6 +409,8 @@ $installRateLabel = $installRateValue !== null
     const PRICE_MODE_KEYS = Object.keys(PRICE_MODES);
     const MAX_PURCHASE_QTY = Number(NORMALIZED_PRODUCT?.availability?.maxPurchaseQuantity ?? null);
     const STOCK_AVAILABLE = Number(NORMALIZED_PRODUCT?.availability?.stockAvailable ?? null);
+    const ACTIVE_INVENTORY_ID = NORMALIZED_PRODUCT?.availability?.activeInventoryId || null;
+    const ALLOW_BACKORDER = NORMALIZED_PRODUCT?.availability?.allowBackorder !== false;
     const DELIVERY_PREF_KEY = 'bs_delivery_pref';
     const IS_STOCK_MODE = (NORMALIZED_PRODUCT?.availability?.mode || '').toLowerCase() === 'stock' && Number.isFinite(STOCK_AVAILABLE) && STOCK_AVAILABLE > 0;
     let currentPriceMode = <?= json_encode($defaultPriceMode) ?>;
@@ -530,6 +532,7 @@ $installRateLabel = $installRateValue !== null
     }
       let calcMode = 'dims';
       let lastComputedBoxes = 0;
+      let lastComputedPriceMode = currentPriceMode;
     function syncDeliveryControls(){
       const deliverySelect = document.getElementById('calcDelivery');
       const deliveryToggle = document.getElementById('calcIncludeDelivery');
@@ -571,9 +574,9 @@ $installRateLabel = $installRateValue !== null
         boxesInput.value = boxes > 0 ? boxes : '';
         requestedBoxes = boxes;
       }
-      const maxQty = Number.isFinite(MAX_PURCHASE_QTY) && MAX_PURCHASE_QTY > 0 ? Math.floor(MAX_PURCHASE_QTY) : null;
-      const activePrice = getActivePriceMode();
-      const pricePerUnitNum = Number(activePrice.unitValue);
+      const maxQty = !ALLOW_BACKORDER && Number.isFinite(MAX_PURCHASE_QTY) && MAX_PURCHASE_QTY > 0 ? Math.floor(MAX_PURCHASE_QTY) : null;
+      let activePrice = getActivePriceMode();
+      let pricePerUnitNum = Number(activePrice.unitValue);
       const lengthPerPiece = Number(LENGTH_FT) || 0;
       const piecesPerBox = Number(PIECES_PER_BOX) || 0;
       let coveragePerPackage = Number(COVERAGE_PER_PACKAGE);
@@ -650,6 +653,16 @@ $installRateLabel = $installRateValue !== null
           boxesInput.value = boxes;
         }
       }
+      const shouldForceBackorder = ALLOW_BACKORDER && ((IS_STOCK_MODE && Number.isFinite(STOCK_AVAILABLE) && requestedBoxes > STOCK_AVAILABLE) || !IS_STOCK_MODE || !Number.isFinite(STOCK_AVAILABLE) || STOCK_AVAILABLE <= 0);
+      if(shouldForceBackorder && currentPriceMode === 'stock' && PRICE_MODES['backorder']){
+        currentPriceMode = 'backorder';
+        const backorderInput = document.querySelector('input[name="price_mode"][value="backorder"]');
+        if(backorderInput){
+          backorderInput.checked = true;
+        }
+      }
+      activePrice = getActivePriceMode();
+      pricePerUnitNum = Number(activePrice.unitValue);
       let pricePerPackage = Number(activePrice.packageValue);
       if(!Number.isFinite(pricePerPackage) || pricePerPackage <= 0){
         const pricePerUnit = Number.isFinite(pricePerUnitNum) ? pricePerUnitNum : 0;
@@ -715,17 +728,18 @@ $installRateLabel = $installRateValue !== null
       document.getElementById('calcSummaryInstall').textContent = installTotal > 0 ? `$${installTotal.toFixed(2)}` : '—';
       document.getElementById('calcSummaryDelivery').textContent = deliveryTotal > 0 ? `$${deliveryTotal.toFixed(2)}` : (deliveryEnabled ? '$0.00' : '—');
       document.getElementById('calcSummaryTotal').textContent = grandTotal > 0 ? `$${grandTotal.toFixed(2)}` : '—';
-      const exceededStock = IS_STOCK_MODE && Number.isFinite(STOCK_AVAILABLE) && Number.isFinite(requestedBoxes) && requestedBoxes > STOCK_AVAILABLE;
+      const exceededStock = ALLOW_BACKORDER && IS_STOCK_MODE && Number.isFinite(STOCK_AVAILABLE) && Number.isFinite(requestedBoxes) && requestedBoxes > STOCK_AVAILABLE;
       if(alertEl){
         if(exceededStock){
           const pkgLabel = STOCK_AVAILABLE === 1 ? (PACKAGE_LABEL || 'box') : (PACKAGE_LABEL_PLURAL || ((PACKAGE_LABEL || 'box') + 'es'));
           const coverageText = coveragePerPackage > 0 ? ` (≈ ${formatUnits(STOCK_AVAILABLE * coveragePerPackage)} ${UNIT_LABEL})` : '';
-          alertEl.textContent = `Requested quantity exceeds available stock. ${formatUnits(STOCK_AVAILABLE)} ${pkgLabel} in stock${coverageText}.`;
+          alertEl.textContent = `Requested quantity exceeds available stock. ${formatUnits(STOCK_AVAILABLE)} ${pkgLabel} in stock${coverageText}. Pricing updated to backorder.`;
         }else{
           alertEl.textContent = '';
         }
       }
       lastComputedBoxes = boxes;
+      lastComputedPriceMode = currentPriceMode;
       return boxes;
     }
     function bindOptionCards(){
@@ -771,8 +785,12 @@ $installRateLabel = $installRateValue !== null
       const el = document.getElementById(id);
       if(el){
         el.addEventListener('input', ()=>updateCalc(id));
-        if(id === 'calcBoxes' && Number.isFinite(MAX_PURCHASE_QTY) && MAX_PURCHASE_QTY > 0){
-          el.max = Math.floor(MAX_PURCHASE_QTY);
+        if(id === 'calcBoxes'){
+          if(!ALLOW_BACKORDER && Number.isFinite(MAX_PURCHASE_QTY) && MAX_PURCHASE_QTY > 0){
+            el.max = Math.floor(MAX_PURCHASE_QTY);
+          }else{
+            el.removeAttribute('max');
+          }
         }
       }
     });
@@ -807,7 +825,8 @@ $installRateLabel = $installRateValue !== null
       const boxes = updateCalc();
       if(boxes>0){
         const selectedMode = document.querySelector('input[name="price_mode"]:checked');
-        const priceType = selectedMode ? selectedMode.value : currentPriceMode;
+        let priceType = selectedMode ? selectedMode.value : (lastComputedPriceMode || currentPriceMode);
+        priceType = priceType === 'backorder' ? 'backorder' : 'stock';
         const installSelected = document.getElementById('calcInstall')?.checked;
         const currentDeliveryZone = document.getElementById('calcDelivery')?.value || null;
         deliveryPreferences = {
@@ -815,7 +834,8 @@ $installRateLabel = $installRateValue !== null
           zone: currentDeliveryZone || deliveryPreferences.zone || getDefaultDeliveryZone()
         };
         saveDeliveryPreferences(deliveryPreferences);
-        cart.addItem(SKU, boxes, priceType || 'stock', {install: installSelected});
+        const inventoryId = priceType === 'stock' ? ACTIVE_INVENTORY_ID : null;
+        cart.addItem(SKU, boxes, priceType || 'stock', {install: installSelected, inventoryId});
         if(PRODUCT_TYPE === 'flooring'){
           const goToMolding = window.confirm('¿Quieres añadir moldings para este piso? Te llevaremos a la sección de moldings.');
           if(goToMolding){
