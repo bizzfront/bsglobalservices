@@ -13,9 +13,9 @@
     "truckload": {
       "defaultPricePerPiece": 0,
       "tiers": [
-        { "maxBoxes": 0.25, "pricePerPiece": 0.45 },
-        { "maxBoxes": 0.5, "pricePerPiece": 0.35 },
-        { "maxBoxes": 1, "pricePerPiece": 0.24 }
+        { "maxBoxes": 9, "pricePerPiece": 0.2 },
+        { "maxBoxes": 3, "pricePerPiece": 0.3 },
+        { "maxBoxes": 1, "pricePerPiece": 0.35 }
       ]
     }
   },
