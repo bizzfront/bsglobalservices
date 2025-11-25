@@ -425,16 +425,17 @@ $installRateLabel = $installRateValue !== null
       if(!Number.isFinite(piecesPerBox) || piecesPerBox <= 0 || !Number.isFinite(pieces) || pieces <= 0){
         return 0;
       }
-      const ratio = pieces / piecesPerBox;
+      const ratio = pieces / piecesPerPackage;
       const truckloadConfig = STORE_CONFIG?.molding?.truckload || {};
       const tiers = Array.isArray(truckloadConfig.tiers) ? truckloadConfig.tiers : [];
       const sortedTiers = tiers
         .map(t=>({maxBoxes: Number(t.maxBoxes), pricePerPiece: Number(t.pricePerPiece)}))
         .filter(t=>Number.isFinite(t.maxBoxes) && t.maxBoxes > 0 && Number.isFinite(t.pricePerPiece) && t.pricePerPiece >= 0)
         .sort((a,b)=>a.maxBoxes - b.maxBoxes);
+      const fallbackPrice = sortedTiers.length ? sortedTiers[sortedTiers.length - 1].pricePerPiece : 0;
       let pricePerPiece = Number(truckloadConfig.defaultPricePerPiece);
-      if(!Number.isFinite(pricePerPiece) || pricePerPiece < 0){
-        pricePerPiece = sortedTiers.length ? sortedTiers[sortedTiers.length - 1].pricePerPiece : 0;
+      if(!Number.isFinite(pricePerPiece) || pricePerPiece <= 0){
+        pricePerPiece = fallbackPrice;
       }
       for(const tier of sortedTiers){
         if(ratio <= tier.maxBoxes){
