@@ -417,8 +417,11 @@ $installRateLabel = $installRateValue !== null
     }
     const LENGTH_FT = <?= json_encode($product['length_ft'] ?? null) ?>;
     const PIECES_PER_BOX = <?= json_encode($product['pieces_per_box'] ?? null) ?>;
+    const TRUCKLOAD_PIECES_PER_PACKAGE = (NORMALIZED_PRODUCT?.packageLabel === 'piece' || NORMALIZED_PRODUCT?.packageLabelPlural === 'pieces')
+      ? 1
+      : Number(PIECES_PER_BOX);
     function getMoldingTruckloadPricePerPiece(pieces){
-      const piecesPerBox = Number(PIECES_PER_BOX);
+      const piecesPerBox = Number(TRUCKLOAD_PIECES_PER_PACKAGE);
       if(!Number.isFinite(piecesPerBox) || piecesPerBox <= 0 || !Number.isFinite(pieces) || pieces <= 0){
         return 0;
       }
