@@ -96,10 +96,10 @@ $contact_source = 'website_store';
             <span>Materials</span>
             <strong id="summary-material">$0.00</strong>
           </div>
-          <div class="summary-row">
+          <!--<div class="summary-row">
             <span>Truckload (molding)</span>
             <strong id="summary-truckload">$0.00</strong>
-          </div>
+          </div>-->
           <div class="summary-row">
             <span>Installation</span>
             <strong id="summary-install">$0.00</strong>
@@ -331,7 +331,7 @@ function renderCart(){
     empty.style.display = 'block';
     document.getElementById('summary-items').textContent = 'No items yet';
     document.getElementById('summary-material').textContent = '$0.00';
-    document.getElementById('summary-truckload').textContent = '$0.00';
+    //document.getElementById('summary-truckload').textContent = '$0.00';
     document.getElementById('summary-install').textContent = '$0.00';
     document.getElementById('summary-delivery').textContent = '$0.00';
     document.getElementById('summary-total').textContent = '$0.00';
@@ -391,8 +391,8 @@ function renderCart(){
     `;
   }).join('');
 
-  document.getElementById('summary-material').textContent = formatCurrency(project.totals.material);
-  document.getElementById('summary-truckload').textContent = formatCurrency(project.totals.truckload);
+  document.getElementById('summary-material').textContent = formatCurrency(project.totals.material+project.totals.truckload);
+  //document.getElementById('summary-truckload').textContent = formatCurrency(project.totals.truckload);
   document.getElementById('summary-install').textContent = formatCurrency(project.totals.install);
   document.getElementById('summary-delivery').textContent = formatCurrency(project.totals.delivery);
   document.getElementById('summary-total').textContent = formatCurrency(project.totals.total);
