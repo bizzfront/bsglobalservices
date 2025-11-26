@@ -55,18 +55,7 @@
       }
     ],
     "inventories": [
-      {
-        "id": "BS-HEO-40-20-SN-2024-02",
-        "acquiredAt": "2024-02-12",
-        "stockAvailable": 10,
-        "price_per_unit": 1.40
-      },
-      {
-        "id": "BS-HEO-40-20-SN-2024-09",
-        "acquiredAt": "2024-09-08",
-        "stockAvailable": 10,
-        "price_per_unit": 1.40
-      }
+      
     ]
   },
   "berlin": {
