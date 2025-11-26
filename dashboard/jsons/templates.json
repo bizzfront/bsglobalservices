@@ -15,6 +15,11 @@
       "input_type": "text",
       "default_value": ""
     },
+    "product_type": {
+      "type": "text",
+      "input_type": "text",
+      "default_value": "flooring"
+    },
     "thickness_mm": {
       "type": "text",
       "input_type": "text",

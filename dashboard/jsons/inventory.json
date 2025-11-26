@@ -27,7 +27,7 @@
       }
     ]
   },
-  "crystal": {
+  "BS-HEO-40-20-SN": {
     "mode": "stock",
     "allowBackorder": true,
     "backorderLeadTimeDays": 18,
@@ -56,13 +56,13 @@
     ],
     "inventories": [
       {
-        "id": "crystal-2024-02",
+        "id": "BS-HEO-40-20-SN-2024-02",
         "acquiredAt": "2024-02-12",
         "stockAvailable": 120,
         "price_per_unit": 3.1
       },
       {
-        "id": "crystal-2024-09",
+        "id": "BS-HEO-40-20-SN-2024-09",
         "acquiredAt": "2024-09-08",
         "stockAvailable": 160,
         "price_per_unit": 3.32
@@ -88,84 +88,17 @@
       }
     ]
   },
-  "board-cedar-white-primed-1x4-12ft-1x4in": {
-    "mode": "stock",
-    "allowBackorder": true,
-    "backorderLeadTimeDays": 10,
-    "install": {
-      "moldingRate": 1.35
-    },
-    "notes": [
-      "Trim line paired with Venice floor"
-    ],
-    "deliveryZones": [
-      {
-        "id": "orlando",
-        "label": "Orlando / Kissimmee",
-        "fee": 80
-      },
-      {
-        "id": "meadow",
-        "label": "Meadow Woods / Lake Nona",
-        "fee": 70
-      },
-      {
-        "id": "pick-up",
-        "label": "Warehouse pick-up",
-        "fee": 0
-      }
-    ],
-    "inventories": [
-      {
-        "id": "board-cedar-2024-01",
-        "acquiredAt": "2024-01-20",
-        "stockAvailable": 450,
-        "price_per_unit": 1.85
-      },
-      {
-        "id": "board-cedar-2024-08",
-        "acquiredAt": "2024-08-15",
-        "stockAvailable": 450,
-        "price_per_unit": 1.95
-      }
-    ]
-  },
-  "savannah": {
+  "BS-HEO-40-20-PE": {
     "mode": "stock",
     "allowBackorder": true,
     "backorderLeadTimeDays": 9,
     "inventories": [
       {
-        "id": "savannah-2024-05",
+        "id": "BS-HEO-40-20-PE-2024-05",
         "acquiredAt": "2024-05-10",
-        "stockAvailable": 140,
+        "stockAvailable": 5000,
         "price_per_unit": 2.95
       }
     ]
-  },
-  "hemmo": {
-    "mode": "stock",
-    "allowBackorder": true,
-    "backorderLeadTimeDays": 12,
-    "inventories": [
-      {
-        "id": "hemmo-2024-04",
-        "acquiredAt": "2024-04-02",
-        "stockAvailable": 210,
-        "price_per_unit": 3.05
-      }
-    ]
-  },
-  "peaks": {
-    "mode": "backorder",
-    "allowBackorder": true,
-    "backorderLeadTimeDays": 15,
-    "inventories": []
-  },
-  "ultra_noor": {
-    "mode": "backorder",
-    "allowBackorder": true,
-    "backorderLeadTimeDays": 7,
-    "inventories": []
   }
 }
