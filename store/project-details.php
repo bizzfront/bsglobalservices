@@ -367,7 +367,6 @@ $active = 'cart';
         <div class="summary-list" id="summary-items"></div>
         <div class="summary-subtotals">
           <div class="summary-row"><div class="summary-label">Materials subtotal</div><div class="summary-value" id="summary-material">$0.00</div></div>
-          <div class="summary-row"><div class="summary-label">Truckload (molding)</div><div class="summary-value" id="summary-truckload">$0.00</div></div>
           <div class="summary-row"><div class="summary-label">Installation</div><div class="summary-value" id="summary-install">$0.00</div></div>
           <div class="summary-row"><div class="summary-label">Delivery</div><div class="summary-value" id="summary-delivery">$0.00</div></div>
           <div class="summary-row"><div class="summary-label">Taxes</div><div class="summary-value" id="summary-taxes">$0.00</div></div>
@@ -436,7 +435,7 @@ document.getElementById('project-cart-field').value = JSON.stringify(project.ite
 document.getElementById('project-cart-totals').value = JSON.stringify(project.totals || {});
 
 const itemsContainer = document.getElementById('summary-items');
-const totals = project.totals || {material:0, install:0, truckload:0, delivery:0, taxes:0, total:0};
+const totals = project.totals || {material:0, install:0, delivery:0, taxes:0, total:0};
 
 if(Array.isArray(project.items)){
   itemsContainer.innerHTML = project.items.map(it=>{
@@ -449,11 +448,10 @@ if(Array.isArray(project.items)){
     metaParts.push(`${it.quantity} ${pkgLabel}`);
     if(p.packageCoverage) metaParts.push(`≈ ${formatUnits(it.quantity * p.packageCoverage)} ${unit}`);
     if(it.install) metaParts.push('Install included');
-    if(it.truckloadTotal) metaParts.push(`Truckload ${formatCurrency(it.truckloadTotal)}`);
     if(p.taxesOmit) metaParts.push('Tax exempt');
     else if(it.taxes) metaParts.push(`Taxes ${formatCurrency(it.taxes)}`);
     metaParts.push(priceTypeLabel);
-    const itemTotal = (it.subtotal || 0) + (it.install || 0) + (it.delivery || 0) + (it.truckloadTotal || 0) + (it.taxes || 0);
+    const itemTotal = (it.subtotal || 0) + (it.install || 0) + (it.delivery || 0) + (it.taxes || 0);
     const taxesLabel = p.taxesOmit ? 'Tax exempt' : `Taxes ${formatCurrency(it.taxes || 0)}`;
     return `
       <div class="summary-item">
@@ -470,7 +468,6 @@ if(Array.isArray(project.items)){
 }
 
 document.getElementById('summary-material').textContent = formatCurrency(totals.material);
-document.getElementById('summary-truckload').textContent = formatCurrency(totals.truckload);
 document.getElementById('summary-install').textContent = formatCurrency(totals.install);
 document.getElementById('summary-delivery').textContent = formatCurrency(totals.delivery);
 document.getElementById('summary-taxes').textContent = formatCurrency(totals.taxes);
