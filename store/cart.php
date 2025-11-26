@@ -155,6 +155,7 @@ const ZIP_ZONE_FILE = 'zip_zones.json';
 const ZIP_ZONE_MAPPING = {A: 'meadow', B: 'orlando', C: 'orlando'};
 let ZIP_DATA = [];
 let zipLoadPromise = null;
+let hasRenderedCartWithItems = (cart.getItems()?.length || 0) > 0;
 
 function formatCurrency(value){
   const num = Number(value);
@@ -454,8 +455,13 @@ function refreshDeliveryControls(){
       document.getElementById('summary-taxes').textContent = '$0.00';
       document.getElementById('summary-total').textContent = '$0.00';
       refreshDeliveryControls();
+      if(hasRenderedCartWithItems){
+        setTimeout(()=>{ window.location.href = 'index.php'; }, 150);
+      }
+      hasRenderedCartWithItems = false;
       return;
     }
+  hasRenderedCartWithItems = true;
   empty.style.display = 'none';
   const project = serializeProject(items);
   localStorage.setItem(PROJECT_KEY, JSON.stringify(project));
