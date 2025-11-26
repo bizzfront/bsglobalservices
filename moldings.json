@@ -1,6 +1,6 @@
 [
     {
-        "sku": "general-cedar-white-primed-12ft-11-16in-x-11-16in",
+        "sku": "G-CED-WHI-11/16X11/16X144",
         "name": "Cedar, white primed 11/16 x 12",
         "category": "General",
         "nominal_size": "11/16\" x 11/16\"",
@@ -14,7 +14,7 @@
         "price_per_unit": 0.15,
         "price_loading": 0.35,
         "transport_and_logistic_price": 0.09,
-        "price_percentage": 35,
+        "price_percentage": 100,
         "coverage_per_box": 47040.0,
         "comments": null,
         "image": "",
@@ -24,31 +24,7 @@
         "taxes_omit": false
     },
     {
-        "sku": "general-cedar-white-primed-8ft-11-16in-x-11-16in",
-        "name": "Cedar, white primed 11/16 x 8",
-        "category": "General",
-        "nominal_size": "11/16\" x 11/16\"",
-        "actual_size": "11/16\" x 11/16\" x 8'",
-        "length_ft": 8.0,
-        "pieces_per_box": 3080,
-        "packaging_notes": "Vertically loaded 8ft",
-        "unit_type_raw": "LF",
-        "product_type": "molding",
-        "measurement_unit": "lf",
-        "price_per_unit": 0.15,
-        "price_loading": 0.35,
-        "transport_and_logistic_price": 0.17,
-        "price_percentage": 20,
-        "coverage_per_box": 24640.0,
-        "comments": null,
-        "image": "",
-        "hoverImage": "",
-        "colorFamily": "White",
-        "tone": "Light",
-        "taxes_omit": false
-    },
-    {
-        "sku": "board-cedar-white-primed-1x4-12ft-1x4in",
+        "sku": "B-CED-WHI-1X4X144",
         "name": "Cedar, white primed 1x4\"",
         "category": "Board",
         "nominal_size": "1x4\"",
@@ -72,7 +48,7 @@
         "taxes_omit": false
     },
     {
-        "sku": "crown-molding-cedar-white-primed-1x4-12ft-1x4in",
+        "sku": "CM-CED-WHI-1X4X144",
         "name": "Cedar, white primed 1x4\"",
         "category": "Crown Molding",
         "nominal_size": "1x4\"",
@@ -96,7 +72,7 @@
         "taxes_omit": false
     },
     {
-        "sku": "crown-molding-cedar-white-primed-1x5-12ft-1x5in",
+        "sku": "CM-CED-WHI-1X5X144",
         "name": "Cedar, white primed 1x5\"",
         "category": "Crown Molding",
         "nominal_size": "1x5\"",
@@ -120,7 +96,7 @@
         "taxes_omit": false
     },
     {
-        "sku": "board-cedar-white-primed-1x6-12ft-1x6in",
+        "sku": "B-CED-WHI-1X6X144",
         "name": "Cedar, white primed 1x6\"",
         "category": "Board",
         "nominal_size": "1x6\"",
@@ -144,7 +120,7 @@
         "taxes_omit": false
     },
     {
-        "sku": "board-cedar-white-primed-1x8-12ft-1x8in",
+        "sku": "B-CED-WHI-1X8X144",
         "name": "Cedar, white primed 1x8\"",
         "category": "Board",
         "nominal_size": "1x8\"",
@@ -168,7 +144,7 @@
         "taxes_omit": false
     },
     {
-        "sku": "board-cedar-white-primed-1x6-by-5-1-4-actual-12ft-1x6in",
+        "sku": "B-CED-WHI-1X6X144",
         "name": "Cedar, white primed 1x6\" (by 5-1/4\" actual)",
         "category": "Board",
         "nominal_size": "1x6\"",
@@ -192,7 +168,7 @@
         "taxes_omit": false
     },
     {
-        "sku": "board-cedar-white-primed-1x4-by-3-1-4-actual-12ft-1x4in",
+        "sku": "B-CED-WHI-1X4X144",
         "name": "Cedar, white primed 1x4\" (by 3-1/4\" actual)",
         "category": "Board",
         "nominal_size": "1x4\"",
@@ -216,7 +192,7 @@
         "taxes_omit": false
     },
     {
-        "sku": "window-door-casing-cedar-white-primed-1x4-12ft-1x4in",
+        "sku": "WI-CED-WHI-1X4X144",
         "name": "Cedar, white primed 1x4\"",
         "category": "Window/Door Casing",
         "nominal_size": "1x4\"",
@@ -240,7 +216,7 @@
         "taxes_omit": false
     },
     {
-        "sku": "rb3-casing-cedar-white-primed-2x4-12ft-2x4in",
+        "sku": "RB-CED-WHI-2X4X144",
         "name": "Cedar, white primed 2x4\"",
         "category": "RB3 Casing",
         "nominal_size": "2x4\"",
@@ -264,7 +240,7 @@
         "taxes_omit": false
     },
     {
-        "sku": "stair-riser-plywood-white-primed-4ft-molding",
+        "sku": "ST-PLYWOO-—X48",
         "name": "Plywood white primed",
         "category": "Stair Riser",
         "nominal_size": "\u2014",
@@ -288,7 +264,7 @@
         "taxes_omit": false
     },
     {
-        "sku": "shiplap-cedar-white-primed-12ft-17-32-x-7-1-4",
+        "sku": "SH-CED-WHI-17/32”X7-1/4”X144",
         "name": "Cedar, white primed",
         "category": "Shiplap",
         "nominal_size": "17/32\u201d x 7-1/4\u201d",
