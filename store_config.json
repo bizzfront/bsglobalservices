@@ -15,6 +15,7 @@
       "defaultPricePerPiece": 0,
       "tiers": [
         { "maxBoxes": 9, "pricePerPiece": 0.2 },
+        { "maxBoxes": 6, "pricePerPiece": 0.25 },
         { "maxBoxes": 3, "pricePerPiece": 0.3 },
         { "maxBoxes": 1, "pricePerPiece": 0.35 },
         { "default": true, "pricePerPiece": 0.35 }
