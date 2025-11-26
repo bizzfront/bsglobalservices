@@ -423,7 +423,7 @@ $installRateLabel = $installRateValue !== null
       ? 1
       : Number(PIECES_PER_BOX);
     function getMoldingTruckloadPricePerPiece(pieces){
-      const piecesPerBox = Number(TRUCKLOAD_PIECES_PER_PACKAGE);
+      const piecesPerBox = Number(PIECES_PER_BOX);
       if(!Number.isFinite(piecesPerBox) || piecesPerBox <= 0 || !Number.isFinite(pieces) || pieces <= 0){
         return 0;
       }
@@ -433,17 +433,39 @@ $installRateLabel = $installRateValue !== null
       const sortedTiers = tiers
         .map(t=>({maxBoxes: Number(t.maxBoxes), pricePerPiece: Number(t.pricePerPiece)}))
         .filter(t=>Number.isFinite(t.maxBoxes) && t.maxBoxes > 0 && Number.isFinite(t.pricePerPiece) && t.pricePerPiece >= 0)
-        .sort((a,b)=>a.maxBoxes - b.maxBoxes);
+        .sort((a,b)=>b.maxBoxes - a.maxBoxes);
       const fallbackPrice = sortedTiers.length ? sortedTiers[sortedTiers.length - 1].pricePerPiece : 0;
-      let pricePerPiece = Number(truckloadConfig.defaultPricePerPiece);
-      if(!Number.isFinite(pricePerPiece) || pricePerPiece <= 0){
-        pricePerPiece = fallbackPrice;
-      }
+      let pricePerPiece = Number(truckloadConfig.tiers?.find(t=>t && t.default)?.pricePerPiece ?? truckloadConfig.defaultPricePerPiece);
+      pricePerPiece = Number.isFinite(pricePerPiece) && pricePerPiece >= 0 ? pricePerPiece : fallbackPrice;
       for(const tier of sortedTiers){
-        if(ratio <= tier.maxBoxes){
+        if(Number.isFinite(ratio) && ratio >= tier.maxBoxes){
           pricePerPiece = tier.pricePerPiece;
           break;
         }
+      }
+      return Number.isFinite(pricePerPiece) && pricePerPiece >= 0 ? pricePerPiece : 0;
+    }
+    function computeMoldingBackorderUnitPrice(linearFeet){
+      const providerPrice = Number(NORMALIZED_PRODUCT?.pricing?.providerPrice);
+      const gainPercent = Number(NORMALIZED_PRODUCT?.pricing?.gainPercent);
+      const discountPercent = Number(NORMALIZED_PRODUCT?.pricing?.discountPercent);
+      const lengthPerPiece = Number(LENGTH_FT);
+      if(!Number.isFinite(providerPrice)) return null;
+      const lfRequested = Number(linearFeet);
+      const piecesNeeded = Number.isFinite(lfRequested) && lfRequested > 0 && Number.isFinite(lengthPerPiece) && lengthPerPiece > 0
+        ? lfRequested / lengthPerPiece
+        : null;
+      const truckloadPerPiece = Number.isFinite(piecesNeeded) && piecesNeeded > 0 ? getMoldingTruckloadPricePerPiece(piecesNeeded) : 0;
+      let pricePerPiece = providerPrice + truckloadPerPiece;
+      if(Number.isFinite(gainPercent)){
+        pricePerPiece *= (1 + (gainPercent / 100));
+      }
+      if(Number.isFinite(discountPercent)){
+        const boundedDiscount = Math.max(0, Math.min(100, discountPercent));
+        pricePerPiece *= (1 - (boundedDiscount / 100));
+      }
+      if(Number.isFinite(lengthPerPiece) && lengthPerPiece > 0){
+        return pricePerPiece / lengthPerPiece;
       }
       return pricePerPiece;
     }
@@ -755,6 +777,13 @@ $installRateLabel = $installRateValue !== null
       const sqftForBackorder = boxes > 0 && coveragePerPackage > 0 ? boxes * coveragePerPackage : (unitsNeeded || null);
       if((currentPriceMode === 'backorder' || shouldForceBackorder) && PRODUCT_TYPE === 'flooring'){
         const backorderUnit = computeFlooringBackorderUnitPrice(sqftForBackorder);
+        if(Number.isFinite(backorderUnit)){
+          pricePerUnitNum = backorderUnit;
+          pricePerPackage = coveragePerPackage > 0 ? coveragePerPackage * backorderUnit : pricePerPackage;
+        }
+      }else if((currentPriceMode === 'backorder' || shouldForceBackorder) && PRODUCT_TYPE === 'molding'){
+        const lfForBackorder = boxes > 0 && coveragePerPackage > 0 ? boxes * coveragePerPackage : (unitsNeeded || null);
+        const backorderUnit = computeMoldingBackorderUnitPrice(lfForBackorder);
         if(Number.isFinite(backorderUnit)){
           pricePerUnitNum = backorderUnit;
           pricePerPackage = coveragePerPackage > 0 ? coveragePerPackage * backorderUnit : pricePerPackage;
