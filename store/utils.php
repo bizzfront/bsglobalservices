@@ -121,12 +121,14 @@ function normalize_inventory_entries(array $inventory, array $defaults, string $
         $stockAvailable = parse_store_numeric($entry['stockAvailable'] ?? null);
         $pricePerUnit = parse_store_numeric($entry['price_per_unit'] ?? $entry['pricePerUnit'] ?? null);
         $pricePerPackage = parse_store_numeric($entry['price_per_package'] ?? $entry['pricePerPackage'] ?? null);
+        $discount = parse_store_numeric($entry['descuento'] ?? $entry['discount'] ?? null);
         $entries[] = [
             'id' => $id,
             'acquiredAt' => $entry['acquiredAt'] ?? null,
             'stockAvailable' => $stockAvailable !== null ? max(0, (float) $stockAvailable) : null,
             'pricePerUnit' => $pricePerUnit !== null ? (float) $pricePerUnit : null,
             'pricePerPackage' => $pricePerPackage !== null ? (float) $pricePerPackage : null,
+            'discount' => $discount !== null ? (float) $discount : null,
         ];
     }
 
@@ -215,57 +217,43 @@ function enrich_store_product(array $product): array
             $product['price_per_unit'] = $product['computed_price_per_unit'];
         }
     } else {
-        $truckLoad = array_key_exists('truck_load_1216_pallets', $product) ? parse_store_numeric($product['truck_load_1216_pallets']) : null;
-        $loading = array_key_exists('precio_de_carga', $product) ? parse_store_numeric($product['precio_de_carga']) : null;
-        $storage = array_key_exists('storage_por_sqft_depende_del_mes', $product) ? parse_store_numeric($product['storage_por_sqft_depende_del_mes']) : null;
-        $labor = array_key_exists('transporte_mano_de_obra_por_sqft', $product) ? parse_store_numeric($product['transporte_mano_de_obra_por_sqft']) : null;
-        $margin = array_key_exists('margen_final', $product) ? parse_store_numeric($product['margen_final']) : null;
+        $gainPercent = parse_store_numeric($product['ganancia'] ?? null);
+        $discountPercentProduct = parse_store_numeric($product['descuento'] ?? null);
+        $discountPercentInventory = parse_store_numeric($product['inventory']['descuento'] ?? $product['inventory']['discount'] ?? ($activeInventory['discount'] ?? $activeInventory['descuento'] ?? null));
 
-        $stockComponents = [$truckLoad, $loading, $storage, $labor, $margin];
-        $stockPrice = 0.0;
-        $hasStockPrice = false;
-        foreach ($stockComponents as $value) {
-            if ($value === null) {
-                continue;
+        $discountPercent = $discountPercentInventory !== null ? $discountPercentInventory : $discountPercentProduct;
+        $gainFactor = $gainPercent !== null ? (1 + ($gainPercent / 100)) : 1.0;
+        $discountValue = $discountPercent !== null ? max(0.0, min(100.0, (float) $discountPercent)) : null;
+        $discountFactor = $discountValue !== null ? (1 - ($discountValue / 100)) : 1.0;
+
+        $applyAdjustments = static function (?float $base) use ($gainFactor, $discountFactor): ?float {
+            if ($base === null) {
+                return null;
             }
-            $stockPrice += $value;
-            $hasStockPrice = true;
+
+            $price = $base * $gainFactor * $discountFactor;
+
+            return round($price, 4);
+        };
+
+        $stockBasePrice = $inventoryPricePerUnit !== null ? (float) $inventoryPricePerUnit : null;
+        $backorderBasePrice = parse_store_numeric($product['precio_base'] ?? null);
+
+        $computedStockPrice = $applyAdjustments($stockBasePrice);
+        if ($computedStockPrice !== null) {
+            $product['computed_price_per_unit_stock'] = $computedStockPrice;
+            $product['computed_price_per_unit'] = $computedStockPrice;
+            $product['price_per_unit'] = $computedStockPrice;
         }
 
-        if ($hasStockPrice) {
-            $product['computed_price_per_unit_stock'] = round($stockPrice, 4);
-            $product['computed_price_per_unit'] = $product['computed_price_per_unit_stock'];
-            $product['price_per_unit'] = $product['computed_price_per_unit_stock'];
+        $computedBackorderPrice = $applyAdjustments($backorderBasePrice);
+        if ($computedBackorderPrice !== null) {
+            $product['computed_price_per_unit_backorder'] = $computedBackorderPrice;
         }
 
-        $backorderComponents = [$truckLoad, $loading, $margin];
-        $backorderPrice = 0.0;
-        $hasBackorderPrice = false;
-        foreach ($backorderComponents as $value) {
-            if ($value === null) {
-                continue;
-            }
-            $backorderPrice += $value;
-            $hasBackorderPrice = true;
-        }
-
-        if ($hasBackorderPrice) {
-            $product['computed_price_per_unit_backorder'] = round($backorderPrice, 4);
-        }
-
-        if (!$hasStockPrice) {
-            $existing = null;
-            if (isset($product['computed_price_per_unit'])) {
-                $existing = (float) $product['computed_price_per_unit'];
-            } elseif (isset($product['price_per_unit'])) {
-                $existing = (float) $product['price_per_unit'];
-            } elseif (isset($product['price_sqft'])) {
-                $existing = (float) $product['price_sqft'];
-            }
-            if ($existing !== null) {
-                $product['computed_price_per_unit'] = $existing;
-                $product['price_per_unit'] = $existing;
-            }
+        if (!isset($product['computed_price_per_unit']) && $computedBackorderPrice !== null) {
+            $product['computed_price_per_unit'] = $computedBackorderPrice;
+            $product['price_per_unit'] = $computedBackorderPrice;
         }
     }
 
@@ -299,13 +287,10 @@ function enrich_store_product(array $product): array
         }
     }
 
-    if ($inventoryPricePerUnit !== null) {
-        $product['computed_price_per_unit_stock'] = (float) $inventoryPricePerUnit;
-    }
     if ($inventoryPricePerPackage !== null) {
         $product['computed_price_per_package_stock'] = (float) $inventoryPricePerPackage;
-    } elseif ($inventoryPricePerUnit !== null && isset($product['computed_coverage_per_package'])) {
-        $product['computed_price_per_package_stock'] = (float) $inventoryPricePerUnit * (float) $product['computed_coverage_per_package'];
+    } elseif ($inventoryPricePerUnit !== null && isset($product['computed_coverage_per_package']) && isset($product['computed_price_per_unit_stock'])) {
+        $product['computed_price_per_package_stock'] = (float) $product['computed_price_per_unit_stock'] * (float) $product['computed_coverage_per_package'];
     }
 
     $stockPrice = $product['computed_price_per_unit_stock'] ?? $product['computed_price_per_unit'] ?? $product['price_per_unit'] ?? $product['price_sqft'] ?? null;
