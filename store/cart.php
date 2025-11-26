@@ -236,15 +236,56 @@ function computePricing(item, product){
   if(priceType === 'stock' && (!hasStock || (allowBackorder && Number(item.quantity) > availableStock))){
     priceType = 'backorder';
   }
+  const sqftRequested = coverage > 0 && Number.isFinite(Number(item.quantity)) ? Number(item.quantity) * coverage : null;
+  const backorderUnit = priceType === 'backorder' && product.productType === 'flooring'
+    ? computeFlooringBackorderUnitPrice(sqftRequested, product)
+    : null;
   const packagePrice = priceType === 'backorder'
-    ? (product.pricing?.pricePerPackageBackorder ?? (coverage>0 && product.pricing?.finalPriceBackorderPerUnit ? product.pricing.finalPriceBackorderPerUnit * coverage : null))
+    ? (backorderUnit !== null && coverage>0 ? backorderUnit * coverage : (product.pricing?.pricePerPackageBackorder ?? (coverage>0 && product.pricing?.finalPriceBackorderPerUnit ? product.pricing.finalPriceBackorderPerUnit * coverage : null)))
     : (product.pricing?.pricePerPackageStock ?? (coverage>0 && product.pricing?.finalPriceStockPerUnit ? product.pricing.finalPriceStockPerUnit * coverage : null));
   const unitPrice = priceType === 'backorder'
-    ? (product.pricing?.finalPriceBackorderPerUnit ?? product.pricing?.finalPriceStockPerUnit)
+    ? (backorderUnit !== null ? backorderUnit : (product.pricing?.finalPriceBackorderPerUnit ?? product.pricing?.finalPriceStockPerUnit))
     : (product.pricing?.finalPriceStockPerUnit ?? product.pricing?.finalPriceBackorderPerUnit);
   const subtotal = packagePrice ? packagePrice * item.quantity : 0;
   const inventoryId = priceType === 'stock' ? (item.inventoryId || product.availability?.activeInventoryId || null) : null;
   return {priceType, unitPrice, packagePrice, subtotal, coverage, inventoryId};
+}
+
+function getFlooringTruckloadPricePerPiece(boxRatio){
+  const truckloadConfig = STORE_CONFIG?.flooring?.truckload || {};
+  const tiers = Array.isArray(truckloadConfig.tiers) ? truckloadConfig.tiers : [];
+  let price = Number(tiers.find(t=>t && t.default)?.pricePerPiece ?? truckloadConfig.defaultPricePerPiece);
+  price = Number.isFinite(price) ? price : 0;
+  const sortedTiers = tiers
+    .map(t=>({maxBoxes: Number(t.maxBoxes), pricePerPiece: Number(t.pricePerPiece)}))
+    .filter(t=>Number.isFinite(t.maxBoxes) && t.maxBoxes > 0 && Number.isFinite(t.pricePerPiece))
+    .sort((a,b)=>b.maxBoxes - a.maxBoxes);
+  for(const tier of sortedTiers){
+    if(Number.isFinite(boxRatio) && boxRatio >= tier.maxBoxes){
+      price = tier.pricePerPiece;
+      break;
+    }
+  }
+  return price;
+}
+
+function computeFlooringBackorderUnitPrice(sqftRequested, product){
+  const providerPrice = Number(product?.pricing?.providerPrice);
+  if(!Number.isFinite(providerPrice) || providerPrice <= 0){
+    return null;
+  }
+  const truckloadSqft = Number(product?.pricing?.truckLoadPallets);
+  const boxRatio = Number.isFinite(truckloadSqft) && truckloadSqft > 0 && Number.isFinite(Number(sqftRequested))
+    ? Number(sqftRequested) / truckloadSqft
+    : null;
+  const truckloadPrice = getFlooringTruckloadPricePerPiece(boxRatio);
+  const gain = Number(product?.pricing?.gainPercent);
+  const discount = Number(product?.pricing?.discountPercent);
+  const gainFactor = Number.isFinite(gain) ? (1 + (gain/100)) : 1;
+  const discountFactor = Number.isFinite(discount) ? (1 - (discount/100)) : 1;
+  const basePrice = providerPrice + (Number.isFinite(truckloadPrice) ? truckloadPrice : 0);
+  const adjusted = basePrice * gainFactor * discountFactor;
+  return Number.isFinite(adjusted) ? adjusted : null;
 }
 
 function getMoldingTruckloadPricePerPiece(piecesCount, piecesPerBox){

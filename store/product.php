@@ -450,6 +450,41 @@ $installRateLabel = $installRateValue !== null
     function getActivePriceMode(){
       return PRICE_MODES[currentPriceMode] || {};
     }
+    function getFlooringTruckloadPricePerPiece(boxRatio){
+      const truckloadConfig = STORE_CONFIG?.flooring?.truckload || {};
+      const tiers = Array.isArray(truckloadConfig.tiers) ? truckloadConfig.tiers : [];
+      let price = Number(tiers.find(t=>t && t.default)?.pricePerPiece ?? truckloadConfig.defaultPricePerPiece);
+      price = Number.isFinite(price) ? price : 0;
+      const sortedTiers = tiers
+        .map(t=>({maxBoxes: Number(t.maxBoxes), pricePerPiece: Number(t.pricePerPiece)}))
+        .filter(t=>Number.isFinite(t.maxBoxes) && t.maxBoxes > 0 && Number.isFinite(t.pricePerPiece))
+        .sort((a,b)=>b.maxBoxes - a.maxBoxes);
+      for(const tier of sortedTiers){
+        if(Number.isFinite(boxRatio) && boxRatio >= tier.maxBoxes){
+          price = tier.pricePerPiece;
+          break;
+        }
+      }
+      return price;
+    }
+    function computeFlooringBackorderUnitPrice(sqft){
+      const providerPrice = Number(NORMALIZED_PRODUCT?.pricing?.providerPrice);
+      if(!Number.isFinite(providerPrice) || providerPrice <= 0){
+        return null;
+      }
+      const truckloadSqft = Number(NORMALIZED_PRODUCT?.pricing?.truckLoadPallets);
+      const ratio = Number.isFinite(truckloadSqft) && truckloadSqft > 0 && Number.isFinite(Number(sqft))
+        ? Number(sqft) / truckloadSqft
+        : null;
+      const truckloadPrice = getFlooringTruckloadPricePerPiece(ratio);
+      const gain = Number(NORMALIZED_PRODUCT?.pricing?.gainPercent);
+      const discount = Number(NORMALIZED_PRODUCT?.pricing?.discountPercent);
+      const gainFactor = Number.isFinite(gain) ? (1 + (gain/100)) : 1;
+      const discountFactor = Number.isFinite(discount) ? (1 - (discount/100)) : 1;
+      const basePrice = providerPrice + (Number.isFinite(truckloadPrice) ? truckloadPrice : 0);
+      const adjusted = basePrice * gainFactor * discountFactor;
+      return Number.isFinite(adjusted) ? adjusted : null;
+    }
     function getDeliveryZones(){
       return NORMALIZED_PRODUCT?.delivery?.zones || STORE_CONFIG?.delivery?.zones || [];
     }
@@ -717,6 +752,14 @@ $installRateLabel = $installRateValue !== null
       activePrice = getActivePriceMode();
       pricePerUnitNum = Number(activePrice.unitValue);
       let pricePerPackage = Number(activePrice.packageValue);
+      const sqftForBackorder = boxes > 0 && coveragePerPackage > 0 ? boxes * coveragePerPackage : (unitsNeeded || null);
+      if((currentPriceMode === 'backorder' || shouldForceBackorder) && PRODUCT_TYPE === 'flooring'){
+        const backorderUnit = computeFlooringBackorderUnitPrice(sqftForBackorder);
+        if(Number.isFinite(backorderUnit)){
+          pricePerUnitNum = backorderUnit;
+          pricePerPackage = coveragePerPackage > 0 ? coveragePerPackage * backorderUnit : pricePerPackage;
+        }
+      }
       if(!Number.isFinite(pricePerPackage) || pricePerPackage <= 0){
         const pricePerUnit = Number.isFinite(pricePerUnitNum) ? pricePerUnitNum : 0;
         pricePerPackage = coveragePerPackage > 0 && pricePerUnit > 0 ? coveragePerPackage * pricePerUnit : 0;
