@@ -594,9 +594,11 @@ $installRateLabel = $installRateValue !== null
       if(!helper || PRODUCT_TYPE !== 'molding') return;
       const data = buildFlooringHelperData();
       if(!data.length){
-        helper.innerHTML = '<div class="calc-helper-empty">Agrega un piso al carrito para calcular moldings al 30%.</div>';
+        helper.innerHTML = '';
+        helper.style.display = 'none';
         return;
       }
+      helper.style.display = '';
       const itemsHtml = data.map(d=>{
         const lfText = Number.isFinite(d.suggestedLf) ? `${formatUnits(d.suggestedLf)} lf` : '—';
         const sqftText = `${formatUnits(d.sqft)} sqft`;

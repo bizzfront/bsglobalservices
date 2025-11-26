@@ -47,6 +47,12 @@
     document.dispatchEvent(new CustomEvent('cartchange'));
   }
 
+  function findMatchingIndex(items, sku, priceType, inventoryId){
+    const exactIndex = items.findIndex(i => i.sku === sku && i.priceType === priceType && i.inventoryId === inventoryId);
+    if(exactIndex >= 0) return exactIndex;
+    return items.findIndex(i => i.sku === sku);
+  }
+
   const api = {
     addItem(sku, qty, priceType, options){
       if(!sku) return;
@@ -55,11 +61,13 @@
       const opts = options && typeof options === 'object' ? options : {};
       const cart = load();
       const targetInventory = typeof opts.inventoryId === 'string' ? opts.inventoryId : null;
-      const item = cart.items.find(i => i.sku === sku && i.priceType === normalizedType && i.inventoryId === targetInventory);
-      if(item){
+      const idx = findMatchingIndex(cart.items, sku, normalizedType, targetInventory);
+      if(idx >= 0){
+        const item = cart.items[idx];
         item.quantity += qty;
-        if(typeof opts.install === 'boolean') item.install = opts.install;
+        item.priceType = normalizedType;
         if(targetInventory !== undefined) item.inventoryId = targetInventory;
+        if(typeof opts.install === 'boolean') item.install = opts.install;
       }else{
         cart.items.push({
           sku,
@@ -79,11 +87,13 @@
       const opts = options && typeof options === 'object' ? options : {};
       const cart = load();
       const targetInventory = typeof opts.inventoryId === 'string' ? opts.inventoryId : null;
-      const item = cart.items.find(i => i.sku === sku && i.priceType === normalizedType && i.inventoryId === targetInventory);
-      if(item){
+      const idx = findMatchingIndex(cart.items, sku, normalizedType, targetInventory);
+      if(idx >= 0){
+        const item = cart.items[idx];
         item.quantity = qty;
-        if(typeof opts.install === 'boolean') item.install = opts.install;
+        item.priceType = normalizedType;
         if(targetInventory !== undefined) item.inventoryId = targetInventory;
+        if(typeof opts.install === 'boolean') item.install = opts.install;
       }else{
         cart.items.push({
           sku,
