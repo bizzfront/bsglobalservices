@@ -96,10 +96,6 @@ $contact_source = 'website_store';
             <span>Materials</span>
             <strong id="summary-material">$0.00</strong>
           </div>
-          <!--<div class="summary-row">
-            <span>Truckload (molding)</span>
-            <strong id="summary-truckload">$0.00</strong>
-          </div>-->
           <div class="summary-row">
             <span>Installation</span>
             <strong id="summary-install">$0.00</strong>
@@ -336,20 +332,6 @@ function getMoldingTruckloadPricePerPiece(piecesCount, piecesPerBox){
   return pricePerPiece;
 }
 
-function computeTruckload(item, product){
-  if(product.productType !== 'molding') return {pricePerPiece: 0, total: 0};
-  const piecesPerPackage = (product.packageLabel === 'piece' || product.packageLabelPlural === 'pieces')
-    ? 1
-    : Number(product.pieces_per_box ?? product.piecesPerBox);
-  const packages = Number(item.quantity);
-  if(!Number.isFinite(packages) || packages <= 0 || !Number.isFinite(piecesPerPackage) || piecesPerPackage <= 0){
-    return {pricePerPiece: 0, total: 0};
-  }
-  const totalPieces = packages * piecesPerPackage;
-  const pricePerPiece = getMoldingTruckloadPricePerPiece(totalPieces, piecesPerPackage);
-  const total = Number.isFinite(pricePerPiece) && pricePerPiece > 0 ? pricePerPiece * totalPieces : 0;
-  return {pricePerPiece, total};
-}
 function computeInstall(item, product, coverage){
   if(!item.install) return 0;
   const rate = product.services?.installRate ?? (product.productType === 'molding' ? STORE_CONFIG?.install?.defaultMoldingRate : STORE_CONFIG?.install?.defaultFlooringRate);
@@ -375,7 +357,7 @@ function computeTaxes(taxableBase, product){
 }
 function serializeProject(items){
   const enriched = [];
-  let totals = {material:0, install:0, truckload:0, delivery:0, taxes:0, total:0};
+  let totals = {material:0, install:0, delivery:0, taxes:0, total:0};
   const deliveryZones = getAvailableDeliveryZones();
   const deliveryZone = resolveProjectDeliveryZone();
   const deliveryFee = deliveryPreferences.includeDelivery === false ? 0 : computeDelivery(deliveryZone, deliveryZones);
@@ -390,18 +372,14 @@ function serializeProject(items){
     const product = getProduct(item.sku);
     if(!product) continue;
     const pricing = computePricing(item, product);
-    const truckload = computeTruckload(item, product);
     const install = computeInstall(item, product, pricing.coverage);
-    const taxes = computeTaxes((pricing.subtotal || 0) + (truckload.total || 0) + (install || 0), product);
-    const unitPriceWithTruckload = product.productType === 'molding'
-      ? (Number(pricing.unitPrice) || 0) + (Number(truckload.pricePerPiece) || 0)
-      : pricing.unitPrice;
+    const taxes = computeTaxes((pricing.subtotal || 0) + (install || 0), product);
+    const unitPriceWithTruckload = pricing.unitPrice;
     if(item.priceType !== pricing.priceType || item.inventoryId !== pricing.inventoryId){
       cart.setItem(item.sku, item.quantity, pricing.priceType, {install: item.install, inventoryId: pricing.inventoryId});
     }
     totals.material += pricing.subtotal;
     totals.install += install;
-    totals.truckload += truckload.total;
     totals.taxes += taxes;
     enriched.push({
       ...item,
@@ -411,8 +389,6 @@ function serializeProject(items){
       packagePrice: pricing.packagePrice,
       inventoryId: pricing.inventoryId,
       subtotal: pricing.subtotal,
-      truckloadPricePerPiece: truckload.pricePerPiece,
-      truckloadTotal: truckload.total,
       install,
       taxes,
       taxRate: getTaxRate(),
@@ -423,7 +399,7 @@ function serializeProject(items){
     });
   }
   totals.delivery = deliveryFee;
-  totals.total = totals.material + totals.install + totals.delivery + totals.truckload + totals.taxes;
+  totals.total = totals.material + totals.install + totals.delivery + totals.taxes;
   return {items: enriched, totals, createdAt: Date.now(), deliveryPreferences: {...deliveryPreferences, zone: deliveryZone}, deliveryZone, deliveryInfo};
 }
 function refreshDeliveryControls(){
@@ -473,7 +449,6 @@ function refreshDeliveryControls(){
       empty.style.display = 'block';
       document.getElementById('summary-items').textContent = 'No items yet';
       document.getElementById('summary-material').textContent = '$0.00';
-      //document.getElementById('summary-truckload').textContent = '$0.00';
       document.getElementById('summary-install').textContent = '$0.00';
       document.getElementById('summary-delivery').textContent = '$0.00';
       document.getElementById('summary-taxes').textContent = '$0.00';
@@ -499,7 +474,6 @@ function refreshDeliveryControls(){
       const installRate = p.services?.installRate ?? (p.productType === 'molding' ? STORE_CONFIG?.install?.defaultMoldingRate : STORE_CONFIG?.install?.defaultFlooringRate);
       const installUnitLabel = p.measurementUnit === 'lf' ? 'lf' : (p.measurementUnit === 'piece' ? 'piece' : 'sq ft');
       const installRateLabel = installRate ? ` (${formatCurrency(installRate)} / ${installUnitLabel})` : '';
-      const truckloadLabel = p.productType === 'molding' ? ` | Truckload: ${formatCurrency(it.truckloadTotal || 0)}` : '';
       return `
         <article class="cart-item" data-sku="${it.sku}" data-price-type="${it.priceType}" data-inventory-id="${it.inventoryId || ''}">
           <div>${image ? `<img src="${image}" alt="${p.name}">` : ''}</div>
@@ -529,15 +503,14 @@ function refreshDeliveryControls(){
               </div>
             </div>
           </div>
-            <div class="cart-item-meta">Subtotal: ${formatCurrency(it.subtotal)}${truckloadLabel} | Install: ${formatCurrency(it.install)}</div>
+            <div class="cart-item-meta">Subtotal: ${formatCurrency(it.subtotal)} | Install: ${formatCurrency(it.install)}</div>
             <div class="cart-item-meta">Taxes: ${formatCurrency(it.taxes || 0)}</div>
           </div>
         </article>
       `;
     }).join('');
 
-  document.getElementById('summary-material').textContent = formatCurrency(project.totals.material+project.totals.truckload);
-  //document.getElementById('summary-truckload').textContent = formatCurrency(project.totals.truckload);
+  document.getElementById('summary-material').textContent = formatCurrency(project.totals.material);
   document.getElementById('summary-install').textContent = formatCurrency(project.totals.install);
   document.getElementById('summary-delivery').textContent = formatCurrency(project.totals.delivery);
   document.getElementById('summary-taxes').textContent = formatCurrency(project.totals.taxes);
