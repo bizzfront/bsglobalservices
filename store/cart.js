@@ -6,15 +6,24 @@
     return value === 'backorder' ? 'backorder' : 'stock';
   }
 
+  function normalizeSku(value){
+    return (value ?? '').toString().trim();
+  }
+
+  function normalizeInventoryId(value){
+    if(typeof value === 'string'){ return value; }
+    return value == null ? null : value.toString();
+  }
+
   function sanitizeItems(items){
     if(!Array.isArray(items)) return [];
     const sanitized = [];
     for(const raw of items){
       if(!raw || typeof raw !== 'object') continue;
-      const sku = raw.sku;
+      const sku = normalizeSku(raw.sku);
       const quantity = parseInt(raw.quantity) || 0;
       if(!sku || quantity <= 0) continue;
-      const inventoryId = typeof raw.inventoryId === 'string' ? raw.inventoryId : null;
+      const inventoryId = normalizeInventoryId(raw.inventoryId);
       sanitized.push({
         sku,
         quantity,
@@ -48,20 +57,23 @@
   }
 
   function findMatchingIndex(items, sku, priceType, inventoryId){
-    const exactIndex = items.findIndex(i => i.sku === sku && i.priceType === priceType && i.inventoryId === inventoryId);
+    const normalizedSku = normalizeSku(sku);
+    const normalizedInventoryId = normalizeInventoryId(inventoryId);
+    const exactIndex = items.findIndex(i => normalizeSku(i.sku) === normalizedSku && i.priceType === priceType && normalizeInventoryId(i.inventoryId) === normalizedInventoryId);
     if(exactIndex >= 0) return exactIndex;
-    return items.findIndex(i => i.sku === sku);
+    return items.findIndex(i => normalizeSku(i.sku) === normalizedSku);
   }
 
   const api = {
     addItem(sku, qty, priceType, options){
       if(!sku) return;
       qty = parseInt(qty) || 1;
+      const normalizedSku = normalizeSku(sku);
       const normalizedType = normalizePriceType(priceType);
       const opts = options && typeof options === 'object' ? options : {};
       const cart = load();
-      const targetInventory = typeof opts.inventoryId === 'string' ? opts.inventoryId : null;
-      const idx = findMatchingIndex(cart.items, sku, normalizedType, targetInventory);
+      const targetInventory = normalizeInventoryId(opts.inventoryId);
+      const idx = findMatchingIndex(cart.items, normalizedSku, normalizedType, targetInventory);
       if(idx >= 0){
         const item = cart.items[idx];
         item.quantity += qty;
@@ -70,7 +82,7 @@
         if(typeof opts.install === 'boolean') item.install = opts.install;
       }else{
         cart.items.push({
-          sku,
+          sku: normalizedSku,
           quantity: qty,
           priceType: normalizedType,
           install: !!opts.install,
@@ -83,11 +95,12 @@
     },
     setItem(sku, qty, priceType, options){
       qty = parseInt(qty) || 1;
+      const normalizedSku = normalizeSku(sku);
       const normalizedType = normalizePriceType(priceType);
       const opts = options && typeof options === 'object' ? options : {};
       const cart = load();
-      const targetInventory = typeof opts.inventoryId === 'string' ? opts.inventoryId : null;
-      const idx = findMatchingIndex(cart.items, sku, normalizedType, targetInventory);
+      const targetInventory = normalizeInventoryId(opts.inventoryId);
+      const idx = findMatchingIndex(cart.items, normalizedSku, normalizedType, targetInventory);
       if(idx >= 0){
         const item = cart.items[idx];
         item.quantity = qty;
@@ -96,7 +109,7 @@
         if(typeof opts.install === 'boolean') item.install = opts.install;
       }else{
         cart.items.push({
-          sku,
+          sku: normalizedSku,
           quantity: qty,
           priceType: normalizedType,
           install: !!opts.install,
