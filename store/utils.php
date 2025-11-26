@@ -202,84 +202,68 @@ function enrich_store_product(array $product): array
         $product['price_per_unit_base'] = $product['price_per_unit'];
     }
 
-    if ($type === 'molding') {
-        $base = isset($product['price_per_unit_base']) ? (float) $product['price_per_unit_base'] : (isset($product['price_per_unit']) ? (float) $product['price_per_unit'] : null);
-        if ($base !== null) {
-            $loading = isset($product['price_loading']) ? (float) $product['price_loading'] : 0.0;
-            $transport = isset($product['transport_and_logistic_price']) ? (float) $product['transport_and_logistic_price'] : 0.0;
-            $percentage = isset($product['price_percentage']) ? (float) $product['price_percentage'] : 0.0;
+    $gainPercent = parse_store_numeric($product['ganancia'] ?? null);
+    $discountPercentProduct = parse_store_numeric($product['descuento'] ?? null);
+    $discountPercentInventory = parse_store_numeric($product['inventory']['descuento'] ?? $product['inventory']['discount'] ?? ($activeInventory['discount'] ?? $activeInventory['descuento'] ?? null));
+    $providerPrice = parse_store_numeric($product['provider_price'] ?? $product['providerPrice'] ?? null);
+    $truckloadPallets = parse_store_numeric($product['truck_load_1216_pallets'] ?? $product['truckLoad1216Pallets'] ?? null);
 
-            $first = $base + $loading + $transport;
-            $second = $first * ($percentage / 100);
-            $final = $first + $second;
+    $discountPercent = $discountPercentInventory !== null ? $discountPercentInventory : $discountPercentProduct;
+    $gainFactor = $gainPercent !== null ? (1 + ($gainPercent / 100)) : 1.0;
+    $discountValue = $discountPercent !== null ? max(0.0, min(100.0, (float) $discountPercent)) : null;
+    $discountFactor = $discountValue !== null ? (1 - ($discountValue / 100)) : 1.0;
 
-            $product['computed_price_per_unit'] = round($final, 4);
-            $product['price_per_unit'] = $product['computed_price_per_unit'];
-        }
-    } else {
-        $gainPercent = parse_store_numeric($product['ganancia'] ?? null);
-        $discountPercentProduct = parse_store_numeric($product['descuento'] ?? null);
-        $discountPercentInventory = parse_store_numeric($product['inventory']['descuento'] ?? $product['inventory']['discount'] ?? ($activeInventory['discount'] ?? $activeInventory['descuento'] ?? null));
-        $providerPrice = parse_store_numeric($product['provider_price'] ?? $product['providerPrice'] ?? null);
-        $truckloadPallets = parse_store_numeric($product['truck_load_1216_pallets'] ?? $product['truckLoad1216Pallets'] ?? null);
-
-        $discountPercent = $discountPercentInventory !== null ? $discountPercentInventory : $discountPercentProduct;
-        $gainFactor = $gainPercent !== null ? (1 + ($gainPercent / 100)) : 1.0;
-        $discountValue = $discountPercent !== null ? max(0.0, min(100.0, (float) $discountPercent)) : null;
-        $discountFactor = $discountValue !== null ? (1 - ($discountValue / 100)) : 1.0;
-
-        $flooringTruckloadDefault = 0.0;
-        $storeConfig = load_store_config();
-        $flooringTruckload = $storeConfig['flooring']['truckload'] ?? [];
-        if (!empty($flooringTruckload['tiers']) && is_array($flooringTruckload['tiers'])) {
-            foreach ($flooringTruckload['tiers'] as $tier) {
-                if (!empty($tier['default'])) {
-                    $defaultPrice = parse_store_numeric($tier['pricePerPiece'] ?? null);
-                    if ($defaultPrice !== null) {
-                        $flooringTruckloadDefault = (float) $defaultPrice;
-                        break;
-                    }
+    $storeConfig = load_store_config();
+    $truckloadConfig = $storeConfig[$type]['truckload'] ?? [];
+    $truckloadDefault = 0.0;
+    if (!empty($truckloadConfig['tiers']) && is_array($truckloadConfig['tiers'])) {
+        foreach ($truckloadConfig['tiers'] as $tier) {
+            if (!empty($tier['default'])) {
+                $defaultPrice = parse_store_numeric($tier['pricePerPiece'] ?? null);
+                if ($defaultPrice !== null) {
+                    $truckloadDefault = (float) $defaultPrice;
+                    break;
                 }
             }
         }
-        if ($flooringTruckloadDefault === 0.0) {
-            $defaultFromConfig = parse_store_numeric($flooringTruckload['defaultPricePerPiece'] ?? null);
-            if ($defaultFromConfig !== null) {
-                $flooringTruckloadDefault = (float) $defaultFromConfig;
-            }
+    }
+    if ($truckloadDefault === 0.0) {
+        $defaultFromConfig = parse_store_numeric($truckloadConfig['defaultPricePerPiece'] ?? null);
+        if ($defaultFromConfig !== null) {
+            $truckloadDefault = (float) $defaultFromConfig;
+        }
+    }
+
+    $applyAdjustments = static function (?float $base) use ($gainFactor, $discountFactor): ?float {
+        if ($base === null) {
+            return null;
         }
 
-        $applyAdjustments = static function (?float $base) use ($gainFactor, $discountFactor): ?float {
-            if ($base === null) {
-                return null;
-            }
+        $price = $base * $gainFactor * $discountFactor;
 
-            $price = $base * $gainFactor * $discountFactor;
+        return round($price, 4);
+    };
 
-            return round($price, 4);
-        };
+    $stockBasePrice = $inventoryPricePerUnit !== null ? (float) $inventoryPricePerUnit : null;
+    $backorderBasePrice = $providerPrice !== null
+        ? ($providerPrice + $truckloadDefault)
+        : parse_store_numeric($product['precio_base'] ?? null);
 
-        $stockBasePrice = $inventoryPricePerUnit !== null ? (float) $inventoryPricePerUnit : null;
-        $backorderBasePrice = $providerPrice !== null
-            ? ($providerPrice + $flooringTruckloadDefault)
-            : parse_store_numeric($product['precio_base'] ?? null);
+    $computedStockPrice = $applyAdjustments($stockBasePrice);
+    if ($computedStockPrice !== null) {
+        $product['computed_price_per_unit_stock'] = $computedStockPrice;
+        $product['computed_price_per_unit'] = $computedStockPrice;
+        $product['price_per_unit'] = $computedStockPrice;
+    }
 
-        $computedStockPrice = $applyAdjustments($stockBasePrice);
-        if ($computedStockPrice !== null) {
-            $product['computed_price_per_unit_stock'] = $computedStockPrice;
-            $product['computed_price_per_unit'] = $computedStockPrice;
-            $product['price_per_unit'] = $computedStockPrice;
-        }
+    $computedBackorderPrice = $applyAdjustments($backorderBasePrice);
+    if ($computedBackorderPrice !== null) {
+        $product['computed_price_per_unit_backorder'] = $computedBackorderPrice;
+    }
 
-        $computedBackorderPrice = $applyAdjustments($backorderBasePrice);
-        if ($computedBackorderPrice !== null) {
-            $product['computed_price_per_unit_backorder'] = $computedBackorderPrice;
-        }
-
-        if (!isset($product['computed_price_per_unit']) && $computedBackorderPrice !== null) {
-            $product['computed_price_per_unit'] = $computedBackorderPrice;
-            $product['price_per_unit'] = $computedBackorderPrice;
-        }
+    if (!isset($product['computed_price_per_unit']) && $computedBackorderPrice !== null) {
+        $product['computed_price_per_unit'] = $computedBackorderPrice;
+        $product['price_per_unit'] = $computedBackorderPrice;
     }
 
     $coverage = $product['box_sf'] ?? $product['coverage_per_box'] ?? $product['sqft_per_box'] ?? null;
