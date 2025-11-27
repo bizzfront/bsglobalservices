@@ -115,6 +115,10 @@ $formatNumber = static function($value) {
   return rtrim(rtrim($formatted, '0'), '.');
 };
 $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue) . ' ' . ($unitLabels[$measurementUnit] ?? $measurementUnit) . ' / ' . $packageLabelSingular : '';
+$stockPackageEstimate = ($coveragePerBoxValue && $coveragePerBoxValue > 0 && $stockAvailableValue !== null)
+  ? ((float)$stockAvailableValue / (float)$coveragePerBoxValue)
+  : null;
+$stockDisplayUnitLabel = $unitLabel;
 $normalizedProduct = normalize_store_product($product);
 $storeConfig = load_store_config();
 $installRateValue = $normalizedProduct['services']['installRate'] ?? ($isFlooring
@@ -208,7 +212,14 @@ $installRateLabel = $installRateValue !== null
           <div class="store-price-note"><span class="store-per"><?= htmlspecialchars($coveragePerBoxLabel) ?></span></div>
         <?php endif; ?>
         <?php if($hasInventoryAvailable): ?>
-          <div class="store-price-note"><span class="store-per">In stock: <?= number_format((float)$stockAvailableValue, 0) ?> <?= $stockAvailableValue == 1 ? htmlspecialchars($packageLabelSingular) : htmlspecialchars($packageLabelPlural) ?><?php if($coveragePerBoxValue): ?> (≈ <?= number_format((float)$stockAvailableValue * (float)$coveragePerBoxValue, 0) ?> <?= htmlspecialchars($unitLabel) ?>)<?php endif; ?></span></div>
+          <div class="store-price-note">
+            <span class="store-per">
+              In stock: <?= htmlspecialchars($formatNumber($stockAvailableValue)) ?> <?= htmlspecialchars($stockDisplayUnitLabel) ?>
+              <?php if($stockPackageEstimate !== null): ?>
+                (≈ <?= htmlspecialchars($formatNumber($stockPackageEstimate)) ?> <?= $stockPackageEstimate == 1 ? htmlspecialchars($packageLabelSingular) : htmlspecialchars($packageLabelPlural) ?>)
+              <?php endif; ?>
+            </span>
+          </div>
         <?php endif; ?>
 
         <div id="calc" class="calc">

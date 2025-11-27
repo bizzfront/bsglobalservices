@@ -33,9 +33,16 @@
     let stockLabel = '';
     if(hasStock){
       const pkgLabelPlural = p.packageLabelPlural || `${pkgLabel}es`;
-      const chosenLabel = stockAvailable === 1 ? pkgLabel : pkgLabelPlural;
-      const coverageText = p.packageCoverage ? ` (≈ ${formatNumber(stockAvailable * p.packageCoverage)} ${unit})` : '';
-      stockLabel = `<div class="store-meta">In stock: ${formatNumber(stockAvailable)} ${chosenLabel}${coverageText}</div>`;
+      const unitLabel = unit === 'lf' ? 'linear feet' : unit === 'piece' ? 'pieces' : 'sqft';
+      let approxPackages = '';
+      if(p.packageCoverage){
+        const packagesCount = stockAvailable / p.packageCoverage;
+        if(Number.isFinite(packagesCount) && packagesCount > 0){
+          const chosenPkgLabel = packagesCount === 1 ? pkgLabel : pkgLabelPlural;
+          approxPackages = ` (≈ ${formatNumber(packagesCount)} ${chosenPkgLabel})`;
+        }
+      }
+      stockLabel = `<div class="store-meta">In stock: ${formatNumber(stockAvailable)} ${unitLabel}${approxPackages}</div>`;
     } else if(Number.isFinite(stockAvailable)) {
       stockLabel = `<div class="store-meta">Next batch: ${formatNumber(stockAvailable)} coming</div>`;
     }
