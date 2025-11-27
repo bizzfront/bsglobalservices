@@ -276,24 +276,12 @@ function enrich_store_product(array $product): array
 
     $storageAdjustmentPerUnit = null;
     if ($storageMonthlyRent !== null && $storageMonthlyRent > 0 && $activeInventory) {
-        $inventoriesList = $product['inventory']['inventories'] ?? [];
-        $storageInventory = null;
-        foreach ($inventoriesList as $entry) {
-            if (is_array($entry)) {
-                $storageInventory = $entry;
-                break;
-            }
-        }
-        if ($storageInventory === null) {
-            $storageInventory = $activeInventory;
-        }
-
-        $inventoryStockForStorage = parse_store_numeric($storageInventory['stockAvailable'] ?? null);
+        $inventoryStockForStorage = parse_store_numeric($activeInventory['stockAvailable'] ?? null);
         if ($inventoryStockForStorage === null || $inventoryStockForStorage <= 0) {
-            $inventoryStockForStorage = parse_store_numeric($storageInventory['availableAfterOrders'] ?? null);
+            $inventoryStockForStorage = parse_store_numeric($activeInventory['availableAfterOrders'] ?? null);
         }
 
-        $monthsStored = $calculateMonthsStored($storageInventory['acquiredAt'] ?? null);
+        $monthsStored = $calculateMonthsStored($activeInventory['acquiredAt'] ?? null);
 
         if ($inventoryStockForStorage !== null && $inventoryStockForStorage > 0 && $monthsStored !== null) {
             $storageAdjustmentPerUnit = ((float) $storageMonthlyRent / (float) $inventoryStockForStorage) * $monthsStored;
