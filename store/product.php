@@ -711,7 +711,7 @@ $installRateLabel = $installRateValue !== null
         }
       }
       const availableBoxes = Number.isFinite(STOCK_AVAILABLE)
-        ? (coveragePerPackage > 0 ? Math.ceil(STOCK_AVAILABLE / coveragePerPackage) : STOCK_AVAILABLE)
+        ? (coveragePerPackage > 0 ? STOCK_AVAILABLE / coveragePerPackage : STOCK_AVAILABLE)
         : null;
       let unitsNeeded = null;
       if(PRODUCT_TYPE === 'flooring'){
