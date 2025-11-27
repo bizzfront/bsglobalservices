@@ -221,6 +221,7 @@ function enrich_store_product(array $product): array
     $discountFactor = $discountValue !== null ? (1 - ($discountValue / 100)) : 1.0;
 
     $storeConfig = load_store_config();
+    $inventoryConfig = $storeConfig['inventory'] ?? [];
     $truckloadConfig = $storeConfig[$type]['truckload'] ?? [];
     $truckloadDefault = 0.0;
     if (!empty($truckloadConfig['tiers']) && is_array($truckloadConfig['tiers'])) {
@@ -251,12 +252,63 @@ function enrich_store_product(array $product): array
         return round($price, 4);
     };
 
+    $storageMonthlyRent = parse_store_numeric($inventoryConfig['MonthlyStorageRent'] ?? null);
+    $calculateMonthsStored = static function (?string $acquiredAt) {
+        if ($acquiredAt === null || $acquiredAt === '') {
+            return null;
+        }
+
+        try {
+            $acquiredDate = new DateTimeImmutable($acquiredAt);
+            $now = new DateTimeImmutable('now');
+        } catch (Exception $e) {
+            return null;
+        }
+
+        $diff = $acquiredDate->diff($now);
+        $months = ($diff->y * 12) + $diff->m;
+        if ($diff->d > 0 || $diff->h > 0 || $diff->i > 0 || $diff->s > 0) {
+            $months++;
+        }
+
+        return max(1, $months);
+    };
+
+    $storageAdjustmentPerUnit = null;
+    if ($storageMonthlyRent !== null && $storageMonthlyRent > 0 && $activeInventory) {
+        $inventoriesList = $product['inventory']['inventories'] ?? [];
+        $storageInventory = null;
+        foreach ($inventoriesList as $entry) {
+            if (is_array($entry)) {
+                $storageInventory = $entry;
+                break;
+            }
+        }
+        if ($storageInventory === null) {
+            $storageInventory = $activeInventory;
+        }
+
+        $inventoryStockForStorage = parse_store_numeric($storageInventory['stockAvailable'] ?? null);
+        if ($inventoryStockForStorage === null || $inventoryStockForStorage <= 0) {
+            $inventoryStockForStorage = parse_store_numeric($storageInventory['availableAfterOrders'] ?? null);
+        }
+
+        $monthsStored = $calculateMonthsStored($storageInventory['acquiredAt'] ?? null);
+
+        if ($inventoryStockForStorage !== null && $inventoryStockForStorage > 0 && $monthsStored !== null) {
+            $storageAdjustmentPerUnit = ((float) $storageMonthlyRent / (float) $inventoryStockForStorage) * $monthsStored;
+        }
+    }
+
     $stockBasePrice = $inventoryPricePerUnit !== null ? (float) $inventoryPricePerUnit : null;
     $backorderBasePrice = $providerPrice !== null
         ? ($providerPrice + $truckloadDefault)
         : parse_store_numeric($product['precio_base'] ?? null);
 
     $computedStockPrice = $applyAdjustments($stockBasePrice);
+    if ($computedStockPrice !== null && $storageAdjustmentPerUnit !== null) {
+        $computedStockPrice += $storageAdjustmentPerUnit;
+    }
     if ($computedStockPrice !== null) {
         $product['computed_price_per_unit_stock'] = $computedStockPrice;
         $product['computed_price_per_unit'] = $computedStockPrice;
