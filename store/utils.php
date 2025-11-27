@@ -288,9 +288,13 @@ function enrich_store_product(array $product): array
         }
     }
 
+    $providerPriceFromInventory = $activeInventoryProviderPrice !== null || $inventoryProviderPrice !== null;
+
     $stockBasePrice = $inventoryPricePerUnit !== null
         ? (float) $inventoryPricePerUnit
-        : ($providerPrice !== null ? (float) $providerPrice : parse_store_numeric($product['precio_base'] ?? null));
+        : ($providerPrice !== null
+            ? (float) $providerPrice + ($providerPriceFromInventory ? 0.0 : (float) $truckloadDefault)
+            : parse_store_numeric($product['precio_base'] ?? null));
     $backorderBasePrice = $providerPrice !== null
         ? ($providerPrice + $truckloadDefault)
         : parse_store_numeric($product['precio_base'] ?? null);
