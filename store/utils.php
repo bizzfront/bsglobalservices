@@ -282,6 +282,11 @@ function enrich_store_product(array $product): array
         }
 
         $monthsStored = $calculateMonthsStored($activeInventory['acquiredAt'] ?? null);
+        if ($monthsStored === null) {
+            // Si no tenemos fecha de adquisición, asumimos al menos un mes de
+            // almacenamiento para no perder el recargo adicional de in-stock.
+            $monthsStored = 1;
+        }
 
         if ($inventoryStockForStorage !== null && $inventoryStockForStorage > 0 && $monthsStored !== null) {
             $storageAdjustmentPerUnit = ((float) $storageMonthlyRent / (float) $inventoryStockForStorage) * $monthsStored;
@@ -299,6 +304,9 @@ function enrich_store_product(array $product): array
         ? ($providerPrice + $truckloadDefault)
         : parse_store_numeric($product['precio_base'] ?? null);
 
+    // Apply the regular adjustments and then add the in-stock storage uplift so
+    // immediate-availability inventory reflects the extra holding cost versus
+    // backorder.
     $computedStockPrice = $applyAdjustments($stockBasePrice);
     if ($computedStockPrice !== null && $storageAdjustmentPerUnit !== null) {
         $computedStockPrice += $storageAdjustmentPerUnit;
