@@ -308,24 +308,23 @@ function enrich_store_product(array $product): array
     // immediate-availability inventory reflects the extra holding cost versus
     // backorder.
     $computedStockPrice = $applyAdjustments($stockBasePrice);
-    if ($computedStockPrice !== null && $storageAdjustmentPerUnit !== null) {
-        $computedStockPrice += $storageAdjustmentPerUnit;
-    }
-    if ($computedStockPrice !== null) {
-        $product['computed_price_per_unit_stock'] = $computedStockPrice;
-        $product['computed_price_per_unit'] = $computedStockPrice;
-        $product['price_per_unit'] = $computedStockPrice;
-    }
 
     $computedBackorderPrice = $applyAdjustments($backorderBasePrice);
     if ($computedBackorderPrice !== null) {
         $product['computed_price_per_unit_backorder'] = $computedBackorderPrice;
+
+        // Always start from at least the backorder price so in-stock offers keep the
+        // same base value before storage uplift is applied.
+        if ($computedStockPrice === null || $computedStockPrice < $computedBackorderPrice) {
+            $computedStockPrice = $computedBackorderPrice;
+        }
     }
 
-    if ($computedBackorderPrice !== null && $computedStockPrice !== null && $computedStockPrice < $computedBackorderPrice) {
-        // Ensure in-stock pricing never undercuts the order-in offer so we present
-        // consistent pricing between availability modes.
-        $computedStockPrice = $computedBackorderPrice;
+    if ($computedStockPrice !== null && $storageAdjustmentPerUnit !== null) {
+        $computedStockPrice += $storageAdjustmentPerUnit;
+    }
+
+    if ($computedStockPrice !== null) {
         $product['computed_price_per_unit_stock'] = $computedStockPrice;
         $product['computed_price_per_unit'] = $computedStockPrice;
         $product['price_per_unit'] = $computedStockPrice;
