@@ -116,7 +116,7 @@ $formatNumber = static function($value) {
 };
 $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue) . ' ' . ($unitLabels[$measurementUnit] ?? $measurementUnit) . ' / ' . $packageLabelSingular : '';
 $stockPackageEstimate = ($coveragePerBoxValue && $coveragePerBoxValue > 0 && $stockAvailableValue !== null)
-  ? ((float)$stockAvailableValue / (float)$coveragePerBoxValue)
+  ? ceil((float)$stockAvailableValue / (float)$coveragePerBoxValue)
   : null;
 $stockDisplayUnitLabel = $unitLabel;
 $normalizedProduct = normalize_store_product($product);
@@ -710,6 +710,9 @@ $installRateLabel = $installRateValue !== null
           coveragePerPackage = 0;
         }
       }
+      const availableBoxes = Number.isFinite(STOCK_AVAILABLE)
+        ? (coveragePerPackage > 0 ? Math.ceil(STOCK_AVAILABLE / coveragePerPackage) : STOCK_AVAILABLE)
+        : null;
       let unitsNeeded = null;
       if(PRODUCT_TYPE === 'flooring'){
         let sqft = 0;
@@ -774,7 +777,7 @@ $installRateLabel = $installRateValue !== null
           boxesInput.value = boxes;
         }
       }
-      const shouldForceBackorder = ALLOW_BACKORDER && ((IS_STOCK_MODE && Number.isFinite(STOCK_AVAILABLE) && requestedBoxes > STOCK_AVAILABLE) || !IS_STOCK_MODE || !Number.isFinite(STOCK_AVAILABLE) || STOCK_AVAILABLE <= 0);
+      const shouldForceBackorder = ALLOW_BACKORDER && ((IS_STOCK_MODE && Number.isFinite(availableBoxes) && requestedBoxes > availableBoxes) || !IS_STOCK_MODE || !Number.isFinite(availableBoxes) || availableBoxes <= 0);
       if(shouldForceBackorder && currentPriceMode === 'stock' && PRICE_MODES['backorder']){
         currentPriceMode = 'backorder';
         const backorderInput = document.querySelector('input[name="price_mode"][value="backorder"]');
@@ -827,7 +830,7 @@ $installRateLabel = $installRateValue !== null
         }
       }
       const grandTotal = totalPrice + installTotal + deliveryTotal;
-      const exceededStock = ALLOW_BACKORDER && IS_STOCK_MODE && Number.isFinite(STOCK_AVAILABLE) && Number.isFinite(requestedBoxes) && requestedBoxes > STOCK_AVAILABLE;
+      const exceededStock = ALLOW_BACKORDER && IS_STOCK_MODE && Number.isFinite(availableBoxes) && Number.isFinite(requestedBoxes) && requestedBoxes > availableBoxes;
       const areaText = unitsNeeded ? `${formatUnits(unitsNeeded)} ${UNIT_LABEL}` : '—';
       document.getElementById('calcSummaryArea').textContent = areaText;
       document.getElementById('calcSummaryBoxes').textContent = boxes > 0 ? formatUnits(boxes) : '—';
@@ -842,9 +845,9 @@ $installRateLabel = $installRateValue !== null
       document.getElementById('calcSummaryTotal').textContent = grandTotal > 0 ? `$${grandTotal.toFixed(2)}` : '—';
       if(alertEl){
         if(exceededStock){
-          const pkgLabel = STOCK_AVAILABLE === 1 ? (PACKAGE_LABEL || 'box') : (PACKAGE_LABEL_PLURAL || ((PACKAGE_LABEL || 'box') + 'es'));
-          const coverageText = coveragePerPackage > 0 ? ` (≈ ${formatUnits(STOCK_AVAILABLE * coveragePerPackage)} ${UNIT_LABEL})` : '';
-          alertEl.textContent = `Requested quantity exceeds available stock. ${formatUnits(STOCK_AVAILABLE)} ${pkgLabel} in stock${coverageText}. Pricing updated to backorder.`;
+          const pkgLabel = availableBoxes === 1 ? (PACKAGE_LABEL || 'box') : (PACKAGE_LABEL_PLURAL || ((PACKAGE_LABEL || 'box') + 'es'));
+          const coverageText = coveragePerPackage > 0 ? ` (≈ ${formatUnits(availableBoxes * coveragePerPackage)} ${UNIT_LABEL})` : '';
+          alertEl.textContent = `Requested quantity exceeds available stock. ${formatUnits(availableBoxes)} ${pkgLabel} in stock${coverageText}. Pricing updated to backorder.`;
         }else{
           alertEl.textContent = '';
         }
