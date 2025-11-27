@@ -116,7 +116,7 @@ $formatNumber = static function($value) {
 };
 $coveragePerBoxLabel = $coveragePerBoxValue ? $formatNumber($coveragePerBoxValue) . ' ' . ($unitLabels[$measurementUnit] ?? $measurementUnit) . ' / ' . $packageLabelSingular : '';
 $stockPackageEstimate = ($coveragePerBoxValue && $coveragePerBoxValue > 0 && $stockAvailableValue !== null)
-  ? ((float)$stockAvailableValue / (float)$coveragePerBoxValue)
+  ? ceil((float)$stockAvailableValue / (float)$coveragePerBoxValue)
   : null;
 $stockDisplayUnitLabel = $unitLabel;
 $normalizedProduct = normalize_store_product($product);
