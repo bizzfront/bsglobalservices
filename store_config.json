@@ -10,6 +10,9 @@
     "defaultMoldingRate": 1.25,
     "notes": "Labor covers prep and install; accessories billed separately."
   },
+  "inventory":{
+    "MonthlyStorageRent": "250"
+  },
   "molding": {
     "truckload": {
       "defaultPricePerPiece": 0,
