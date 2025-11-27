@@ -414,6 +414,11 @@ $installRateLabel = $installRateValue !== null
     const PRICE_MODE_KEYS = Object.keys(PRICE_MODES);
     const MAX_PURCHASE_QTY = Number(NORMALIZED_PRODUCT?.availability?.maxPurchaseQuantity ?? null);
     const STOCK_AVAILABLE = Number(NORMALIZED_PRODUCT?.availability?.stockAvailable ?? null);
+    const STOCK_AVAILABLE_BOXES = Number.isFinite(STOCK_AVAILABLE)
+      ? (Number.isFinite(COVERAGE_PER_PACKAGE) && COVERAGE_PER_PACKAGE > 0
+        ? Math.ceil(STOCK_AVAILABLE / COVERAGE_PER_PACKAGE)
+        : Math.ceil(STOCK_AVAILABLE))
+      : null;
     const ACTIVE_INVENTORY_ID = NORMALIZED_PRODUCT?.availability?.activeInventoryId || null;
     const ALLOW_BACKORDER = NORMALIZED_PRODUCT?.availability?.allowBackorder !== false;
     const DELIVERY_PREF_KEY = 'bs_delivery_pref';
