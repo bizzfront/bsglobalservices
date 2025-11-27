@@ -58,13 +58,49 @@
       {
         "id": "BS-HEO-40-20-SN-2024-02",
         "acquiredAt": "2025-11-01",
-        "stockAvailable": "2000",
+        "stockAvailable": "1000",
         "provider_price": "1.05"
       },
       {
         "id": "BS-HEO-40-20-SN-2024-09",
-        "acquiredAt": "2025-11-08",
-        "stockAvailable": "2000"
+        "acquiredAt": "2025-11-10",
+        "stockAvailable": "500"
+      }
+    ]
+  },
+  "BS-HEO-40-20-HA": {
+    "mode": "stock",
+    "allowBackorder": true,
+    "backorderLeadTimeDays": 18,
+    "install": {
+      "flooringRate": 2.6
+    },
+    "notes": [
+      "High-turn floor kept ready for fast installs"
+    ],
+    "deliveryZones": [
+      {
+        "id": "orlando",
+        "label": "Orlando / Kissimmee",
+        "fee": 105
+      },
+      {
+        "id": "meadow",
+        "label": "Meadow Woods / Lake Nona",
+        "fee": 90
+      },
+      {
+        "id": "pick-up",
+        "label": "Warehouse pick-up",
+        "fee": 0
+      }
+    ],
+    "inventories": [
+      {
+        "id": "BS-HEO-40-20-HA-2024-02",
+        "acquiredAt": "2025-11-01",
+        "stockAvailable": "500",
+        "provider_price": "1.05"
       }
     ]
   },
