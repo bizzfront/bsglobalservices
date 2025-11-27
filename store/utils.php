@@ -121,6 +121,7 @@ function normalize_inventory_entries(array $inventory, array $defaults, string $
         $stockAvailable = parse_store_numeric($entry['stockAvailable'] ?? null);
         $pricePerUnit = parse_store_numeric($entry['price_per_unit'] ?? $entry['pricePerUnit'] ?? null);
         $pricePerPackage = parse_store_numeric($entry['price_per_package'] ?? $entry['pricePerPackage'] ?? null);
+        $providerPrice = parse_store_numeric($entry['provider_price'] ?? $entry['providerPrice'] ?? null);
         $discount = parse_store_numeric($entry['descuento'] ?? $entry['discount'] ?? null);
         $entries[] = [
             'id' => $id,
@@ -128,6 +129,7 @@ function normalize_inventory_entries(array $inventory, array $defaults, string $
             'stockAvailable' => $stockAvailable !== null ? max(0, (float) $stockAvailable) : null,
             'pricePerUnit' => $pricePerUnit !== null ? (float) $pricePerUnit : null,
             'pricePerPackage' => $pricePerPackage !== null ? (float) $pricePerPackage : null,
+            'providerPrice' => $providerPrice !== null ? (float) $providerPrice : null,
             'discount' => $discount !== null ? (float) $discount : null,
         ];
     }
@@ -183,6 +185,8 @@ function enrich_store_product(array $product): array
     $activeInventory = $product['inventory']['activeInventory'] ?? null;
     $inventoryPricePerUnit = $activeInventory['pricePerUnit'] ?? null;
     $inventoryPricePerPackage = $activeInventory['pricePerPackage'] ?? null;
+    $inventoryProviderPrice = parse_store_numeric($product['inventory']['provider_price'] ?? $product['inventory']['providerPrice'] ?? null);
+    $activeInventoryProviderPrice = parse_store_numeric($activeInventory['providerPrice'] ?? null);
 
     if (!isset($product['package_label']) || !isset($product['package_label_plural'])) {
         if ($type === 'molding') {
@@ -205,7 +209,10 @@ function enrich_store_product(array $product): array
     $gainPercent = parse_store_numeric($product['ganancia'] ?? null);
     $discountPercentProduct = parse_store_numeric($product['descuento'] ?? null);
     $discountPercentInventory = parse_store_numeric($product['inventory']['descuento'] ?? $product['inventory']['discount'] ?? ($activeInventory['discount'] ?? $activeInventory['descuento'] ?? null));
-    $providerPrice = parse_store_numeric($product['provider_price'] ?? $product['providerPrice'] ?? null);
+    $providerPrice = $activeInventoryProviderPrice
+        ?? $inventoryProviderPrice
+        ?? parse_store_numeric($product['provider_price'] ?? $product['providerPrice'] ?? null);
+    $product['computed_provider_price'] = $providerPrice;
     $truckloadPallets = parse_store_numeric($product['truck_load_1216_pallets'] ?? $product['truckLoad1216Pallets'] ?? null);
 
     $discountPercent = $discountPercentInventory !== null ? $discountPercentInventory : $discountPercentProduct;
@@ -381,7 +388,7 @@ function normalize_store_product(array $product): array
     $packageCoverage = $product['computed_coverage_per_package'] ?? $product['coverage_per_box'] ?? $product['sqft_per_box'] ?? null;
     $packageCoverage = parse_store_numeric($packageCoverage);
     $taxesOmit = !empty($product['taxes_omit']);
-    $providerPrice = parse_store_numeric($product['provider_price'] ?? $product['providerPrice'] ?? null);
+    $providerPrice = parse_store_numeric($product['computed_provider_price'] ?? $product['provider_price'] ?? $product['providerPrice'] ?? null);
     $truckLoadPallets = parse_store_numeric($product['truck_load_1216_pallets'] ?? $product['truckLoad1216Pallets'] ?? null);
     $gainPercent = parse_store_numeric($product['ganancia'] ?? null);
     $discountPercent = parse_store_numeric($product['descuento'] ?? null);
