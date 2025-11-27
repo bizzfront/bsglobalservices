@@ -288,7 +288,9 @@ function enrich_store_product(array $product): array
         }
     }
 
-    $stockBasePrice = $inventoryPricePerUnit !== null ? (float) $inventoryPricePerUnit : null;
+    $stockBasePrice = $inventoryPricePerUnit !== null
+        ? (float) $inventoryPricePerUnit
+        : ($providerPrice !== null ? (float) $providerPrice : parse_store_numeric($product['precio_base'] ?? null));
     $backorderBasePrice = $providerPrice !== null
         ? ($providerPrice + $truckloadDefault)
         : parse_store_numeric($product['precio_base'] ?? null);
