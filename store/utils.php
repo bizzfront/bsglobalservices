@@ -314,6 +314,15 @@ function enrich_store_product(array $product): array
         $product['computed_price_per_unit_backorder'] = $computedBackorderPrice;
     }
 
+    if ($computedBackorderPrice !== null && $computedStockPrice !== null && $computedStockPrice < $computedBackorderPrice) {
+        // Ensure in-stock pricing never undercuts the order-in offer so we present
+        // consistent pricing between availability modes.
+        $computedStockPrice = $computedBackorderPrice;
+        $product['computed_price_per_unit_stock'] = $computedStockPrice;
+        $product['computed_price_per_unit'] = $computedStockPrice;
+        $product['price_per_unit'] = $computedStockPrice;
+    }
+
     if (!isset($product['computed_price_per_unit']) && $computedBackorderPrice !== null) {
         $product['computed_price_per_unit'] = $computedBackorderPrice;
         $product['price_per_unit'] = $computedBackorderPrice;
