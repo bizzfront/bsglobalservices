@@ -17,13 +17,95 @@
     return Number.isInteger(num) ? num.toString() : num.toLocaleString(undefined, {maximumFractionDigits: 2});
   }
 
+  function computePriceType(product, qty){
+    const stockAvailable = Number(product?.availability?.stockAvailable ?? NaN);
+    const allowBackorder = product?.availability?.allowBackorder !== false;
+    const baseType = product?.pricing?.activePriceType || product?.availability?.activePriceType || product?.availability?.mode || 'stock';
+    let priceType = baseType === 'backorder' ? 'backorder' : 'stock';
+
+    if(priceType === 'stock' && allowBackorder && Number.isFinite(stockAvailable)){
+      if(stockAvailable <= 0) return 'backorder';
+      if(Number.isFinite(qty) && qty > stockAvailable) return 'backorder';
+    }
+
+    return priceType;
+  }
+
+  function buildPriceHtml(product, priceType, unit){
+    const coverage = Number(product.packageCoverage ?? NaN);
+    const pkgLabel = product.packageLabel || 'box';
+    const badgeStock = STORE_CONFIG?.ui?.badges?.stock || 'In stock';
+    const badgeBackorder = STORE_CONFIG?.ui?.badges?.backorder || 'Order-in';
+
+    const getPackagePrice = (mode)=>{
+      if(mode === 'stock'){
+        const pkgPrice = product.pricing?.pricePerPackageStock;
+        if(pkgPrice != null) return pkgPrice;
+        const unitPrice = Number(product.pricing?.finalPriceStockPerUnit ?? NaN);
+        if(Number.isFinite(unitPrice) && Number.isFinite(coverage) && coverage > 0) return unitPrice * coverage;
+      }
+      if(mode === 'backorder'){
+        const pkgPrice = product.pricing?.pricePerPackageBackorder;
+        if(pkgPrice != null) return pkgPrice;
+        const unitPrice = Number(product.pricing?.finalPriceBackorderPerUnit ?? NaN);
+        if(Number.isFinite(unitPrice) && Number.isFinite(coverage) && coverage > 0) return unitPrice * coverage;
+      }
+      const unitPrice = Number(product.pricing?.activePricePerPackage ?? NaN);
+      return Number.isFinite(unitPrice) ? unitPrice : null;
+    };
+
+    const priceModes = {};
+    const stockUnit = Number(product.pricing?.finalPriceStockPerUnit ?? NaN);
+    const backorderUnit = Number(product.pricing?.finalPriceBackorderPerUnit ?? NaN);
+    const activeUnit = Number(product.pricing?.activePricePerUnit ?? NaN);
+
+    if(Number.isFinite(stockUnit)){
+      priceModes.stock = {
+        label: badgeStock,
+        unit: stockUnit,
+        pkg: getPackagePrice('stock')
+      };
+    }
+    if(Number.isFinite(backorderUnit)){
+      priceModes.backorder = {
+        label: badgeBackorder,
+        unit: backorderUnit,
+        pkg: getPackagePrice('backorder')
+      };
+    }
+
+    if(!Object.keys(priceModes).length && Number.isFinite(activeUnit)){
+      priceModes.stock = {
+        label: badgeStock,
+        unit: activeUnit,
+        pkg: getPackagePrice('stock')
+      };
+    }
+
+    const targetMode = priceModes[priceType] ? priceType : (priceModes.stock ? 'stock' : Object.keys(priceModes)[0]);
+    const modeData = targetMode ? priceModes[targetMode] : null;
+    if(!modeData){
+      return '<div class="store-price-line"><b>Call for price</b></div>';
+    }
+
+    const badge = targetMode === 'stock' ? badgeStock : badgeBackorder;
+    const pkgPrice = modeData.pkg;
+
+    const pkgLine = pkgPrice != null
+      ? `<div class="store-price-line" style="color:#6a605e;"><span class="store-per">≈ ${formatCurrency(pkgPrice)} / ${pkgLabel}</span></div>`
+      : '';
+
+    return `
+      <div class="store-price-line"><span class="store-badge-new">${badge}</span><b>${formatCurrency(modeData.unit)}</b><span>/${unit}</span></div>
+      ${pkgLine}
+    `;
+  }
+
   function renderCard(p){
     const unit = p.measurementUnit === 'lf' ? 'lf' : p.measurementUnit === 'piece' ? 'piece' : 'sqft';
-    const priceType = p.pricing?.activePriceType || p.availability?.activePriceType || p.availability?.mode;
+    const priceType = computePriceType(p, 1);
     const badgeLabel = priceType === 'stock' ? (STORE_CONFIG?.ui?.badges?.stock || 'In stock') : (STORE_CONFIG?.ui?.badges?.backorder || 'Order-in');
     const badgeClass = priceType === 'stock' ? '' : 'backorder';
-    const stockPrice = p.pricing?.finalPriceStockPerUnit;
-    const backorderPrice = p.pricing?.finalPriceBackorderPerUnit;
     const stockAvailable = Number(p.availability?.stockAvailable ?? null);
     const hasStock = (p.availability?.mode || '').toLowerCase() === 'stock' && Number.isFinite(stockAvailable) && stockAvailable > 0;
     const pkgLabel = p.packageLabel || 'box';
@@ -47,13 +129,7 @@
       stockLabel = `<div class="store-meta">Next batch: ${formatNumber(stockAvailable)} coming</div>`;
     }
 
-    let priceHtml = '';
-    if(priceType === 'stock' && stockPrice != null){
-      priceHtml += `<div class="store-price-line"><span class="store-badge-new">Stock</span><b>${formatCurrency(stockPrice)}</b><span>/${unit}</span></div>`;
-    }
-    if(priceType === 'backorder' && backorderPrice != null){
-      priceHtml += `<div class="store-price-line"><span class="store-badge-new">Order-in</span><b>${formatCurrency(backorderPrice)}</b><span>/${unit}</span></div>`;
-    }
+    const priceHtml = buildPriceHtml(p, priceType, unit);
 
     return `
       <article class="store-card-new" data-sku="${p.sku}">
@@ -150,6 +226,37 @@
     if(resultSummary){
       resultSummary.textContent = `Showing ${list.length} of ${BS_PRODUCTS.length} products`;
     }
+    grid.querySelectorAll('.store-card-new').forEach(card=>{
+      const sku = card.dataset?.sku;
+      const product = list.find(p=>p.sku === sku);
+      const qtyInput = card.querySelector('.qty');
+      const badge = card.querySelector('.store-tag');
+      const priceContainer = card.querySelector('.store-prices');
+      if(!product) return;
+      const unit = product.measurementUnit === 'lf' ? 'lf' : product.measurementUnit === 'piece' ? 'piece' : 'sqft';
+      const updateCardPricing = ()=>{
+        let qty = parseInt(qtyInput?.value || '1', 10) || 1;
+        const maxQty = Number(qtyInput?.max || '');
+        if(Number.isFinite(maxQty) && maxQty > 0 && qty > maxQty){
+          qty = maxQty;
+          if(qtyInput) qtyInput.value = qty;
+        }
+        if(qty < 1){
+          qty = 1;
+          if(qtyInput) qtyInput.value = qty;
+        }
+
+        const priceType = computePriceType(product, qty);
+        const badgeLabel = priceType === 'stock' ? (STORE_CONFIG?.ui?.badges?.stock || 'In stock') : (STORE_CONFIG?.ui?.badges?.backorder || 'Order-in');
+        badge?.classList.toggle('backorder', priceType !== 'stock');
+        if(badge) badge.textContent = badgeLabel;
+        if(priceContainer) priceContainer.innerHTML = buildPriceHtml(product, priceType, unit);
+      };
+
+      qtyInput?.addEventListener('input', updateCardPricing);
+      qtyInput?.addEventListener('change', updateCardPricing);
+      updateCardPricing();
+    });
     grid.querySelectorAll('.add-cart').forEach(btn=>{
       btn.addEventListener('click', async ()=>{
         const card = btn.closest('.store-card-new');
@@ -163,12 +270,7 @@
         const sku = card?.dataset?.sku;
         if(!sku) return;
         const product = list.find(p=>p.sku===sku);
-        const stockAvailable = Number(product?.availability?.stockAvailable ?? NaN);
-        const allowBackorder = product?.availability?.allowBackorder !== false;
-        let priceType = (product?.pricing?.activePriceType || product?.availability?.activePriceType || 'stock');
-        if(priceType === 'stock' && allowBackorder && Number.isFinite(stockAvailable) && stockAvailable > 0 && qty > stockAvailable){
-          priceType = 'backorder';
-        }
+        const priceType = computePriceType(product, qty);
         const inventoryId = priceType === 'stock' ? (product?.availability?.activeInventoryId || null) : null;
         cart.addItem(sku, qty, priceType, {inventoryId});
         btn.textContent = 'Added';
