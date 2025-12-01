@@ -338,7 +338,15 @@ function enrich_store_product(array $product): array
 
     $coverage = $product['box_sf'] ?? $product['coverage_per_box'] ?? $product['sqft_per_box'] ?? null;
     $coverageValue = parse_store_numeric($coverage);
-    if ($coverageValue === null || $coverageValue <= 0) {
+    if (($product['product_type'] ?? '') === 'molding') {
+        // For moldings the package represents a single piece, so coverage should
+        // reflect the piece length rather than legacy coverage_per_box values
+        // that can be extremely large (e.g., total truckload footage).
+        $length = isset($product['length_ft']) ? (float) $product['length_ft'] : null;
+        if ($length && $length > 0) {
+            $coverageValue = $length;
+        }
+    } elseif ($coverageValue === null || $coverageValue <= 0) {
         $length = isset($product['length_ft']) ? (float) $product['length_ft'] : null;
         $pieces = isset($product['pieces_per_box']) ? (float) $product['pieces_per_box'] : null;
         if ($length && $pieces) {
