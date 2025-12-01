@@ -23,9 +23,17 @@
     const baseType = product?.pricing?.activePriceType || product?.availability?.activePriceType || product?.availability?.mode || 'stock';
     let priceType = baseType === 'backorder' ? 'backorder' : 'stock';
 
+    let comparableQty = Number(qty);
+    if(product?.productType === 'molding'){
+      const perPieceCoverage = Number(product?.packageCoverage ?? NaN);
+      if(Number.isFinite(perPieceCoverage) && perPieceCoverage > 0 && Number.isFinite(comparableQty)){
+        comparableQty = comparableQty * perPieceCoverage;
+      }
+    }
+
     if(priceType === 'stock' && allowBackorder && Number.isFinite(stockAvailable)){
       if(stockAvailable <= 0) return 'backorder';
-      if(Number.isFinite(qty) && qty > stockAvailable) return 'backorder';
+      if(Number.isFinite(comparableQty) && comparableQty > stockAvailable) return 'backorder';
     }
 
     return priceType;
