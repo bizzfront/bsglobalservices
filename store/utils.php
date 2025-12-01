@@ -371,8 +371,15 @@ function enrich_store_product(array $product): array
         $product['computed_price_per_package_stock'] = (float) $product['computed_price_per_unit_stock'] * (float) $product['computed_coverage_per_package'];
     }
 
-    $stockPrice = $product['computed_price_per_unit_stock'] ?? $product['computed_price_per_unit'] ?? $product['price_per_unit'] ?? $product['price_sqft'] ?? null;
-    $backorderPrice = $product['computed_price_per_unit_backorder'] ?? null;
+    $stockPrice = $product['computed_price_per_unit_stock']
+        ?? $product['pricing']['finalPriceStockPerUnit']
+        ?? $product['computed_price_per_unit']
+        ?? $product['price_per_unit']
+        ?? $product['price_sqft']
+        ?? null;
+    $backorderPrice = $product['computed_price_per_unit_backorder']
+        ?? $product['pricing']['finalPriceBackorderPerUnit']
+        ?? null;
     $product['pricing'] = [
         'finalPriceStockPerUnit' => $stockPrice !== null ? (float) $stockPrice : null,
         'finalPriceBackorderPerUnit' => $backorderPrice !== null ? (float) $backorderPrice : null,
@@ -462,8 +469,15 @@ function normalize_store_product(array $product): array
     }
     $packageCoverage = $packageCoverage !== null && $packageCoverage > 0 ? $packageCoverage : null;
 
-    $stockPrice = $product['pricing']['finalPriceStockPerUnit'] ?? null;
-    $backorderPrice = $product['pricing']['finalPriceBackorderPerUnit'] ?? null;
+    $stockPrice = $product['computed_price_per_unit_stock']
+        ?? $product['pricing']['finalPriceStockPerUnit']
+        ?? $product['computed_price_per_unit']
+        ?? $product['price_per_unit']
+        ?? $product['price_sqft']
+        ?? null;
+    $backorderPrice = $product['computed_price_per_unit_backorder']
+        ?? $product['pricing']['finalPriceBackorderPerUnit']
+        ?? null;
     $activePriceType = $product['pricing']['activePriceType'] ?? ($product['availability']['activePriceType'] ?? ($product['availability']['mode'] ?? 'stock'));
     $activePricePerUnit = $product['pricing']['activePricePerUnit'] ?? null;
     $activePricePerPackage = $product['pricing']['activePricePerPackage'] ?? null;
