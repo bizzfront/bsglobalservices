@@ -153,6 +153,8 @@ $installRateLabel = $installRateValue !== null
     .calc-helper-meta { color:#6a605e; font-size:0.9rem; }
     .calc-helper-action { color:#5a1620; font-weight:700; white-space:nowrap; }
     .calc-helper-empty { color:#6a605e; font-size:0.95rem; text-align:left; }
+    .store-color-pill { display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; background:#f4ede7; border:1px solid #e5dad2; color:#4a3c39; font-weight:600; }
+    .store-color-pill .dot { width:11px; height:11px; border-radius:50%; background:radial-gradient(circle at 30% 30%, #fff, #c7b6a8); box-shadow:inset 0 0 0 1px rgba(0,0,0,0.05); }
   </style>
 </head>
 <body class="store-product">
@@ -164,6 +166,12 @@ $installRateLabel = $installRateValue !== null
           <h1 data-i18n="h_popular"><?= htmlspecialchars($product['name']) ?></h2>
         </div>
         <span class="pill"><?= htmlspecialchars($product['name']) ?></span>
+        <?php if($isFlooring && !empty($normalizedProduct['colorName'])): ?>
+          <span class="store-color-pill" aria-label="Color <?= htmlspecialchars($normalizedProduct['colorName']) ?>">
+            <span class="dot" aria-hidden="true"></span>
+            <span><?= htmlspecialchars($normalizedProduct['colorName']) ?></span>
+          </span>
+        <?php endif; ?>
     </div>
     <h1></h1>
     <div class="product-top">
