@@ -24,10 +24,14 @@
     let priceType = baseType === 'backorder' ? 'backorder' : 'stock';
 
     let comparableQty = Number(qty);
-    if(product?.productType === 'molding'){
-      const perPieceCoverage = Number(product?.packageCoverage ?? NaN);
-      if(Number.isFinite(perPieceCoverage) && perPieceCoverage > 0 && Number.isFinite(comparableQty)){
-        comparableQty = comparableQty * perPieceCoverage;
+    const perPackageCoverage = Number(product?.packageCoverage ?? NaN);
+    const unit = (product?.measurementUnit || '').toLowerCase();
+
+    if(Number.isFinite(comparableQty) && Number.isFinite(perPackageCoverage) && perPackageCoverage > 0){
+      if(product?.productType === 'molding'){
+        comparableQty = comparableQty * perPackageCoverage;
+      } else if(unit === 'sqft' || unit === 'lf'){
+        comparableQty = comparableQty * perPackageCoverage;
       }
     }
 
