@@ -505,20 +505,25 @@ $installRateLabel = $installRateValue !== null
       if(!Number.isFinite(num)) return '';
       return `$${num.toFixed(2)}`;
     }
-    function updatePriceDisplay(modeKey, forceBackorder){
+    function updatePriceDisplay(modeKey, forceBackorder, displayOverride){
       const fallbackKey = PRICE_MODE_KEYS[0] || null;
       const mode = PRICE_MODES[modeKey] || PRICE_MODES[currentPriceMode] || (fallbackKey ? PRICE_MODES[fallbackKey] : null);
       const effectiveKey = mode ? modeKey : fallbackKey;
+      const overrideUnit = Number(displayOverride?.unit);
+      const overridePackage = Number(displayOverride?.package);
+      const overrideLabel = displayOverride?.label;
       if(STORE_PRICE_VALUE_EL){
-        if(mode && Number.isFinite(Number(mode.unitValue))){
-          STORE_PRICE_VALUE_EL.textContent = formatCurrencyValue(mode.unitValue);
+        const unitValue = Number.isFinite(overrideUnit) ? overrideUnit : Number(mode?.unitValue);
+        if(Number.isFinite(unitValue)){
+          STORE_PRICE_VALUE_EL.textContent = formatCurrencyValue(unitValue);
         }else{
           STORE_PRICE_VALUE_EL.textContent = 'Call for price';
         }
       }
       if(STORE_PRICE_PACKAGE_EL){
-        if(mode && Number.isFinite(Number(mode.packageValue))){
-          STORE_PRICE_PACKAGE_EL.textContent = `≈ ${formatCurrencyValue(mode.packageValue)} / ${PACKAGE_LABEL}`;
+        const packageValue = Number.isFinite(overridePackage) ? overridePackage : Number(mode?.packageValue);
+        if(Number.isFinite(packageValue)){
+          STORE_PRICE_PACKAGE_EL.textContent = `≈ ${formatCurrencyValue(packageValue)} / ${PACKAGE_LABEL}`;
           STORE_PRICE_PACKAGE_EL.style.display = '';
         }else{
           STORE_PRICE_PACKAGE_EL.textContent = '';
@@ -526,8 +531,9 @@ $installRateLabel = $installRateValue !== null
         }
       }
       if(STORE_PRICE_LABEL_EL){
-        STORE_PRICE_LABEL_EL.textContent = mode?.label || '';
-        STORE_PRICE_LABEL_EL.style.display = mode?.label ? 'block' : 'none';
+        const labelValue = overrideLabel ?? mode?.label ?? '';
+        STORE_PRICE_LABEL_EL.textContent = labelValue;
+        STORE_PRICE_LABEL_EL.style.display = labelValue ? 'block' : 'none';
       }
       if(STORE_STOCK_NOTE_EL){
         const hideStock = forceBackorder || effectiveKey === 'backorder';
@@ -890,13 +896,17 @@ $installRateLabel = $installRateValue !== null
       const grandTotal = totalPrice + installTotal + deliveryTotal;
       const exceededStock = ALLOW_BACKORDER && IS_STOCK_MODE && Number.isFinite(availableBoxes) && Number.isFinite(requestedBoxes) && requestedBoxes > availableBoxes;
       const isBackorderMode = currentPriceMode === 'backorder' || exceededStock;
-      updatePriceDisplay(isBackorderMode ? 'backorder' : currentPriceMode, isBackorderMode);
-      const areaText = unitsNeeded ? `${formatUnits(unitsNeeded)} ${UNIT_LABEL}` : '—';
-      document.getElementById('calcSummaryArea').textContent = areaText;
-      document.getElementById('calcSummaryBoxes').textContent = boxes > 0 ? formatUnits(boxes) : '—';
       const priceModeLabel = isBackorderMode
         ? (PRICE_MODES['backorder']?.label || 'Order-in')
         : (activePrice.label || 'In stock');
+      updatePriceDisplay(
+        isBackorderMode ? 'backorder' : currentPriceMode,
+        isBackorderMode,
+        {unit: pricePerUnitNum, package: pricePerPackage, label: priceModeLabel}
+      );
+      const areaText = unitsNeeded ? `${formatUnits(unitsNeeded)} ${UNIT_LABEL}` : '—';
+      document.getElementById('calcSummaryArea').textContent = areaText;
+      document.getElementById('calcSummaryBoxes').textContent = boxes > 0 ? formatUnits(boxes) : '—';
       document.getElementById('calcSummaryCondition').textContent = priceModeLabel || '—';
       document.getElementById('calcSummaryMaterial').textContent = totalPrice > 0 ? `$${totalPrice.toFixed(2)}` : '—';
       document.getElementById('calcSummaryInstall').textContent = installTotal > 0 ? `$${installTotal.toFixed(2)}` : '—';
