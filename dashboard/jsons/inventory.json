@@ -57,47 +57,63 @@
     "inventories": [
       {
         "id": "BS-HEO-40-20-SN-2024-02",
-        "acquiredAt": "2024-02-12",
-        "stockAvailable": 120,
-        "price_per_unit": 3.1
+        "acquiredAt": "2025-11-01",
+        "stockAvailable": "500",
+        "provider_price": "1.05",
+        "descuento": "30%"
       },
       {
         "id": "BS-HEO-40-20-SN-2024-09",
-        "acquiredAt": "2024-09-08",
-        "stockAvailable": 160,
-        "price_per_unit": 3.32
+        "acquiredAt": "2025-11-10",
+        "stockAvailable": "500"
       }
     ]
   },
-  "berlin": {
+  "BS-HEO-40-20-HA": {
     "mode": "stock",
     "allowBackorder": true,
-    "backorderLeadTimeDays": 14,
-    "notes": [
-      "Bulk orders auto switch to backorder pricing"
-    ],
+    "backorderLeadTimeDays": 18,
     "install": {
-      "flooringRate": 2.45
+      "flooringRate": 2.6
     },
+    "notes": [
+      "High-turn floor kept ready for fast installs"
+    ],
+    "deliveryZones": [
+      {
+        "id": "orlando",
+        "label": "Orlando / Kissimmee",
+        "fee": 105
+      },
+      {
+        "id": "meadow",
+        "label": "Meadow Woods / Lake Nona",
+        "fee": 90
+      },
+      {
+        "id": "pick-up",
+        "label": "Warehouse pick-up",
+        "fee": 0
+      }
+    ],
     "inventories": [
       {
-        "id": "berlin-2024-03",
-        "acquiredAt": "2024-03-18",
-        "stockAvailable": 150,
-        "price_per_unit": 3.25
+        "id": "BS-HEO-40-20-HA-2024-02",
+        "acquiredAt": "2025-11-01",
+        "stockAvailable": "1000",
+        "provider_price": "1.05"
       }
     ]
   },
-  "BS-HEO-40-20-PE": {
+  "G-CED-WHI-11/16X11/16X144": {
     "mode": "stock",
     "allowBackorder": true,
     "backorderLeadTimeDays": 9,
     "inventories": [
       {
         "id": "BS-HEO-40-20-PE-2024-05",
-        "acquiredAt": "2024-05-10",
-        "stockAvailable": 5000,
-        "price_per_unit": 2.95
+        "acquiredAt": "2025-10-10",
+        "stockAvailable": "5000"
       }
     ]
   }
