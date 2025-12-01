@@ -197,29 +197,22 @@ $installRateLabel = $installRateValue !== null
             <?php endforeach; ?>
           </div>
         <?php else: ?>
-          <div class="store-price" id="storePrice">
+          <div class="store-price">
             <?php if($firstMode['unit'] !== null): ?>
-              <div><b id="storePriceValue" data-mode="<?= htmlspecialchars($defaultPriceMode) ?>"><?= $formatCurrency($firstMode['unit']) ?></b><span class="store-per"><?= htmlspecialchars($unitSuffix) ?></span></div>
+              <div><b><?= $formatCurrency($firstMode['unit']) ?></b><span class="store-per"><?= htmlspecialchars($unitSuffix) ?></span></div>
             <?php else: ?>
-              <div><b id="storePriceValue">Call for price</b></div>
+              <div><b>Call for price</b></div>
             <?php endif; ?>
-            <div>
-              <span class="store-per" id="storePricePackage" style="<?= $firstMode['package'] !== null ? '' : 'display:none;' ?>">
-                <?php if($firstMode['package'] !== null): ?>
-                  ≈ <?= $formatCurrency($firstMode['package']) ?> / <?= htmlspecialchars($packageLabelSingular) ?>
-                <?php endif; ?>
-              </span>
-            </div>
-            <div id="storePriceLabel" class="store-price-label" style="display: <?= !empty($firstMode['label']) ? 'block' : 'none' ?>;">
-              <?= htmlspecialchars($firstMode['label'] ?? '') ?>
-            </div>
+            <?php if($firstMode['package'] !== null): ?>
+              <div><span class="store-per">≈ <?= $formatCurrency($firstMode['package']) ?> / <?= htmlspecialchars($packageLabelSingular) ?></span></div>
+            <?php endif; ?>
           </div>
         <?php endif; ?>
         <?php if($coveragePerBoxLabel): ?>
           <div class="store-price-note"><span class="store-per"><?= htmlspecialchars($coveragePerBoxLabel) ?></span></div>
         <?php endif; ?>
         <?php if($hasInventoryAvailable): ?>
-          <div class="store-price-note" id="storeStockNote">
+          <div class="store-price-note">
             <span class="store-per">
               In stock: <?= htmlspecialchars($formatNumber($stockAvailableValue)) ?> <?= htmlspecialchars($stockDisplayUnitLabel) ?>
               <?php if($stockPackageEstimate !== null): ?>
@@ -411,7 +404,6 @@ $installRateLabel = $installRateValue !== null
     const PRODUCT_TYPE = <?= json_encode($productType) ?>;
     const MEASUREMENT_UNIT = <?= json_encode($measurementUnit) ?>;
     const UNIT_LABEL = <?= json_encode($unitLabel) ?>;
-    const UNIT_SUFFIX = <?= json_encode($unitSuffix) ?>;
     const PACKAGE_LABEL = <?= json_encode($packageLabelSingular) ?>;
     const PACKAGE_LABEL_PLURAL = <?= json_encode($packageLabelPlural) ?>;
     const COVERAGE_PER_PACKAGE = <?= json_encode($coveragePerBoxValue) ?>;
@@ -432,10 +424,6 @@ $installRateLabel = $installRateValue !== null
     const DELIVERY_PREF_KEY = 'bs_delivery_pref';
     const ZIP_ZONE_FILE = 'zip_zones.json';
     const ZIP_ZONE_MAPPING = {A: 'meadow', B: 'orlando', C: 'orlando'};
-    const STORE_PRICE_VALUE_EL = document.getElementById('storePriceValue');
-    const STORE_PRICE_PACKAGE_EL = document.getElementById('storePricePackage');
-    const STORE_PRICE_LABEL_EL = document.getElementById('storePriceLabel');
-    const STORE_STOCK_NOTE_EL = document.getElementById('storeStockNote');
     let ZIP_DATA = [];
     let zipLoadPromise = null;
     const IS_STOCK_MODE = (NORMALIZED_PRODUCT?.availability?.mode || '').toLowerCase() === 'stock' && Number.isFinite(STOCK_AVAILABLE) && STOCK_AVAILABLE > 0;
@@ -494,41 +482,6 @@ $installRateLabel = $installRateValue !== null
         return pricePerPiece / lengthPerPiece;
       }
       return pricePerPiece;
-    }
-    function formatCurrencyValue(value){
-      const num = Number(value);
-      if(!Number.isFinite(num)) return '';
-      return `$${num.toFixed(2)}`;
-    }
-    function updatePriceDisplay(modeKey, forceBackorder){
-      const fallbackKey = PRICE_MODE_KEYS[0] || null;
-      const mode = PRICE_MODES[modeKey] || PRICE_MODES[currentPriceMode] || (fallbackKey ? PRICE_MODES[fallbackKey] : null);
-      const effectiveKey = mode ? modeKey : fallbackKey;
-      if(STORE_PRICE_VALUE_EL){
-        if(mode && Number.isFinite(Number(mode.unitValue))){
-          STORE_PRICE_VALUE_EL.textContent = formatCurrencyValue(mode.unitValue);
-        }else{
-          STORE_PRICE_VALUE_EL.textContent = 'Call for price';
-        }
-      }
-      if(STORE_PRICE_PACKAGE_EL){
-        if(mode && Number.isFinite(Number(mode.packageValue))){
-          STORE_PRICE_PACKAGE_EL.textContent = `≈ ${formatCurrencyValue(mode.packageValue)} / ${PACKAGE_LABEL}`;
-          STORE_PRICE_PACKAGE_EL.style.display = '';
-        }else{
-          STORE_PRICE_PACKAGE_EL.textContent = '';
-          STORE_PRICE_PACKAGE_EL.style.display = 'none';
-        }
-      }
-      if(STORE_PRICE_LABEL_EL){
-        STORE_PRICE_LABEL_EL.textContent = mode?.label || '';
-        STORE_PRICE_LABEL_EL.style.display = mode?.label ? 'block' : 'none';
-      }
-      if(STORE_STOCK_NOTE_EL){
-        const hideStock = forceBackorder || effectiveKey === 'backorder';
-        STORE_STOCK_NOTE_EL.style.display = hideStock ? 'none' : '';
-        STORE_STOCK_NOTE_EL.setAttribute('aria-hidden', hideStock ? 'true' : 'false');
-      }
     }
     function getActivePriceMode(){
       return PRICE_MODES[currentPriceMode] || {};
@@ -884,11 +837,10 @@ $installRateLabel = $installRateValue !== null
       }
       const grandTotal = totalPrice + installTotal + deliveryTotal;
       const exceededStock = ALLOW_BACKORDER && IS_STOCK_MODE && Number.isFinite(availableBoxes) && Number.isFinite(requestedBoxes) && requestedBoxes > availableBoxes;
-      const isBackorderMode = currentPriceMode === 'backorder' || exceededStock;
-      updatePriceDisplay(isBackorderMode ? 'backorder' : currentPriceMode, isBackorderMode);
       const areaText = unitsNeeded ? `${formatUnits(unitsNeeded)} ${UNIT_LABEL}` : '—';
       document.getElementById('calcSummaryArea').textContent = areaText;
       document.getElementById('calcSummaryBoxes').textContent = boxes > 0 ? formatUnits(boxes) : '—';
+      const isBackorderMode = currentPriceMode === 'backorder' || exceededStock;
       const priceModeLabel = isBackorderMode
         ? (PRICE_MODES['backorder']?.label || 'Order-in')
         : (activePrice.label || 'In stock');
