@@ -130,7 +130,7 @@ function normalize_inventory_entries(array $inventory, array $defaults, string $
             'pricePerUnit' => $pricePerUnit !== null ? (float) $pricePerUnit : null,
             'pricePerPackage' => $pricePerPackage !== null ? (float) $pricePerPackage : null,
             'providerPrice' => $providerPrice !== null ? (float) $providerPrice : null,
-            'discount' => $discount !== null ? (float) $discount : null,
+            'descuento' => $discount !== null ? (float) $discount : null,
         ];
     }
 
@@ -208,17 +208,20 @@ function enrich_store_product(array $product): array
 
     $gainPercent = parse_store_numeric($product['ganancia'] ?? null);
     $discountPercentProduct = parse_store_numeric($product['descuento'] ?? null);
-    $discountPercentInventory = parse_store_numeric($product['inventory']['descuento'] ?? $product['inventory']['discount'] ?? ($activeInventory['discount'] ?? $activeInventory['descuento'] ?? null));
+    $discountPercentInventory = parse_store_numeric($product['inventory']['descuento'] ?? ($activeInventory['descuento'] ?? null));
     $providerPrice = $activeInventoryProviderPrice
         ?? $inventoryProviderPrice
         ?? parse_store_numeric($product['provider_price'] ?? $product['providerPrice'] ?? null);
     $product['computed_provider_price'] = $providerPrice;
     $truckloadPallets = parse_store_numeric($product['truck_load_1216_pallets'] ?? $product['truckLoad1216Pallets'] ?? null);
 
-    $discountPercent = $discountPercentInventory !== null ? $discountPercentInventory : $discountPercentProduct;
+    $discountPercentStock = $discountPercentInventory !== null ? $discountPercentInventory : $discountPercentProduct;
+    $discountPercentBackorder = $discountPercentProduct;
     $gainFactor = $gainPercent !== null ? (1 + ($gainPercent / 100)) : 1.0;
-    $discountValue = $discountPercent !== null ? max(0.0, min(100.0, (float) $discountPercent)) : null;
-    $discountFactor = $discountValue !== null ? (1 - ($discountValue / 100)) : 1.0;
+    $discountValueStock = $discountPercentStock !== null ? max(0.0, min(100.0, (float) $discountPercentStock)) : null;
+    $discountValueBackorder = $discountPercentBackorder !== null ? max(0.0, min(100.0, (float) $discountPercentBackorder)) : null;
+    $discountFactorStock = $discountValueStock !== null ? (1 - ($discountValueStock / 100)) : 1.0;
+    $discountFactorBackorder = $discountValueBackorder !== null ? (1 - ($discountValueBackorder / 100)) : 1.0;
 
     $storeConfig = load_store_config();
     $inventoryConfig = $storeConfig['inventory'] ?? [];
@@ -242,12 +245,12 @@ function enrich_store_product(array $product): array
         }
     }
 
-    $applyAdjustments = static function (?float $base) use ($gainFactor, $discountFactor): ?float {
+    $applyAdjustments = static function (?float $base, float $gain, float $discount): ?float {
         if ($base === null) {
             return null;
         }
 
-        $price = $base * $gainFactor * $discountFactor;
+        $price = $base * $gain * $discount;
 
         return round($price, 4);
     };
@@ -307,21 +310,19 @@ function enrich_store_product(array $product): array
     // Apply the regular adjustments and then add the in-stock storage uplift so
     // immediate-availability inventory reflects the extra holding cost versus
     // backorder.
-    $computedStockPrice = $applyAdjustments($stockBasePrice);
+    $computedStockPrice = $applyAdjustments($stockBasePrice, $gainFactor, $discountFactorStock);
 
-    $computedBackorderPrice = $applyAdjustments($backorderBasePrice);
+    $computedBackorderPrice = $applyAdjustments($backorderBasePrice, $gainFactor, $discountFactorBackorder);
     if ($computedBackorderPrice !== null) {
         $product['computed_price_per_unit_backorder'] = $computedBackorderPrice;
-
-        // Always start from at least the backorder price so in-stock offers keep the
-        // same base value before storage uplift is applied.
-        if ($computedStockPrice === null || $computedStockPrice < $computedBackorderPrice) {
-            $computedStockPrice = $computedBackorderPrice;
-        }
     }
 
     if ($computedStockPrice !== null && $storageAdjustmentPerUnit !== null) {
         $computedStockPrice += $storageAdjustmentPerUnit;
+    }
+
+    if ($computedBackorderPrice !== null && $computedStockPrice !== null && $computedStockPrice < $computedBackorderPrice) {
+        $computedStockPrice = $computedBackorderPrice;
     }
 
     if ($computedStockPrice !== null) {
