@@ -32,73 +32,25 @@
   }
 
   function buildPriceHtml(product, priceType, unit){
-    const coverage = Number(product.packageCoverage ?? NaN);
-    const pkgLabel = product.packageLabel || 'box';
-    const badgeStock = STORE_CONFIG?.ui?.badges?.stock || 'In stock';
-    const badgeBackorder = STORE_CONFIG?.ui?.badges?.backorder || 'Order-in';
+    const stockPrice = product.pricing?.finalPriceStockPerUnit;
+    const backorderPrice = product.pricing?.finalPriceBackorderPerUnit;
+    let priceHtml = '';
 
-    const getPackagePrice = (mode)=>{
-      if(mode === 'stock'){
-        const pkgPrice = product.pricing?.pricePerPackageStock;
-        if(pkgPrice != null) return pkgPrice;
-        const unitPrice = Number(product.pricing?.finalPriceStockPerUnit ?? NaN);
-        if(Number.isFinite(unitPrice) && Number.isFinite(coverage) && coverage > 0) return unitPrice * coverage;
+    if(priceType === 'stock' && stockPrice != null){
+      priceHtml = `<div class="store-price-line"><span class="store-badge-new">Stock</span><b>${formatCurrency(stockPrice)}</b><span>/${unit}</span></div>`;
+    } else if(priceType === 'backorder' && backorderPrice != null){
+      priceHtml = `<div class="store-price-line"><span class="store-badge-new">Order-in</span><b>${formatCurrency(backorderPrice)}</b><span>/${unit}</span></div>`;
+    }
+
+    if(!priceHtml){
+      if(stockPrice != null){
+        priceHtml = `<div class="store-price-line"><span class="store-badge-new">Stock</span><b>${formatCurrency(stockPrice)}</b><span>/${unit}</span></div>`;
+      } else if(backorderPrice != null){
+        priceHtml = `<div class="store-price-line"><span class="store-badge-new">Order-in</span><b>${formatCurrency(backorderPrice)}</b><span>/${unit}</span></div>`;
       }
-      if(mode === 'backorder'){
-        const pkgPrice = product.pricing?.pricePerPackageBackorder;
-        if(pkgPrice != null) return pkgPrice;
-        const unitPrice = Number(product.pricing?.finalPriceBackorderPerUnit ?? NaN);
-        if(Number.isFinite(unitPrice) && Number.isFinite(coverage) && coverage > 0) return unitPrice * coverage;
-      }
-      const unitPrice = Number(product.pricing?.activePricePerPackage ?? NaN);
-      return Number.isFinite(unitPrice) ? unitPrice : null;
-    };
-
-    const priceModes = {};
-    const stockUnit = Number(product.pricing?.finalPriceStockPerUnit ?? NaN);
-    const backorderUnit = Number(product.pricing?.finalPriceBackorderPerUnit ?? NaN);
-    const activeUnit = Number(product.pricing?.activePricePerUnit ?? NaN);
-
-    if(Number.isFinite(stockUnit)){
-      priceModes.stock = {
-        label: badgeStock,
-        unit: stockUnit,
-        pkg: getPackagePrice('stock')
-      };
-    }
-    if(Number.isFinite(backorderUnit)){
-      priceModes.backorder = {
-        label: badgeBackorder,
-        unit: backorderUnit,
-        pkg: getPackagePrice('backorder')
-      };
     }
 
-    if(!Object.keys(priceModes).length && Number.isFinite(activeUnit)){
-      priceModes.stock = {
-        label: badgeStock,
-        unit: activeUnit,
-        pkg: getPackagePrice('stock')
-      };
-    }
-
-    const targetMode = priceModes[priceType] ? priceType : (priceModes.stock ? 'stock' : Object.keys(priceModes)[0]);
-    const modeData = targetMode ? priceModes[targetMode] : null;
-    if(!modeData){
-      return '<div class="store-price-line"><b>Call for price</b></div>';
-    }
-
-    const badge = targetMode === 'stock' ? badgeStock : badgeBackorder;
-    const pkgPrice = modeData.pkg;
-
-    const pkgLine = pkgPrice != null
-      ? `<div class="store-price-line" style="color:#6a605e;"><span class="store-per">≈ ${formatCurrency(pkgPrice)} / ${pkgLabel}</span></div>`
-      : '';
-
-    return `
-      <div class="store-price-line"><span class="store-badge-new">${badge}</span><b>${formatCurrency(modeData.unit)}</b><span>/${unit}</span></div>
-      ${pkgLine}
-    `;
+    return priceHtml || '<div class="store-price-line"><b>Call for price</b></div>';
   }
 
   function renderCard(p){

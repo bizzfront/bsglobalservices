@@ -57,7 +57,7 @@
     "inventories": [
       {
         "id": "BS-HEO-40-20-SN-2024-02",
-        "acquiredAt": "2025-11-10",
+        "acquiredAt": "2025-11-01",
         "stockAvailable": "500",
         "provider_price": "1.05",
         "discount": "30%"
