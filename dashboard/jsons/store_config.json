@@ -10,13 +10,30 @@
     "defaultMoldingRate": 1.25,
     "notes": "Labor covers prep and install; accessories billed separately."
   },
+  "inventory":{
+    "MonthlyStorageRent": "250"
+  },
   "molding": {
     "truckload": {
       "defaultPricePerPiece": 0,
       "tiers": [
         { "maxBoxes": 9, "pricePerPiece": 0.2 },
+        { "maxBoxes": 6, "pricePerPiece": 0.25 },
         { "maxBoxes": 3, "pricePerPiece": 0.3 },
-        { "maxBoxes": 1, "pricePerPiece": 0.35 }
+        { "maxBoxes": 1, "pricePerPiece": 0.35 },
+        { "default": true, "pricePerPiece": 0.35 }
+      ]
+    }
+  },
+  "flooring": {
+    "truckload": {
+      "defaultPricePerPiece": 0,
+      "tiers": [
+        { "maxBoxes": 9, "pricePerPiece": 0.2 },
+        { "maxBoxes": 6, "pricePerPiece": 0.25 },
+        { "maxBoxes": 3, "pricePerPiece": 0.3 },
+        { "maxBoxes": 1, "pricePerPiece": 0.35 },
+        { "default": true, "pricePerPiece": 0.35 }
       ]
     }
   },
