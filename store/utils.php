@@ -315,16 +315,14 @@ function enrich_store_product(array $product): array
     $computedBackorderPrice = $applyAdjustments($backorderBasePrice, $gainFactor, $discountFactorBackorder);
     if ($computedBackorderPrice !== null) {
         $product['computed_price_per_unit_backorder'] = $computedBackorderPrice;
-
-        // Always start from at least the backorder price so in-stock offers keep the
-        // same base value before storage uplift is applied.
-        if ($computedStockPrice === null || $computedStockPrice < $computedBackorderPrice) {
-            $computedStockPrice = $computedBackorderPrice;
-        }
     }
 
     if ($computedStockPrice !== null && $storageAdjustmentPerUnit !== null) {
         $computedStockPrice += $storageAdjustmentPerUnit;
+    }
+
+    if ($computedBackorderPrice !== null && $computedStockPrice !== null && $computedStockPrice < $computedBackorderPrice) {
+        $computedStockPrice = $computedBackorderPrice;
     }
 
     if ($computedStockPrice !== null) {
