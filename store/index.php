@@ -84,6 +84,8 @@ $heroSubtitle = $type === 'molding'
     .store-tag.backorder { background:#cda349; color:#1f1f1f; }
     .store-card-body { padding:16px; display:flex; flex-direction:column; gap:10px; }
     .store-card-body h3 { margin:0; font-size:1.05rem; color:#1f1f1f; }
+    .store-card-color { display:inline-flex; align-items:center; gap:7px; padding:7px 11px; border-radius:999px; background:#f4ede7; border:1px solid #e5dad2; color:#4a3c39; font-weight:600; font-size:0.9rem; width:fit-content; }
+    .store-card-color .dot { width:10px; height:10px; border-radius:50%; background:radial-gradient(circle at 30% 30%, #fff, #c7b6a8); box-shadow:inset 0 0 0 1px rgba(0,0,0,0.05); }
     .store-meta { color:#6a605e; font-size:0.9rem; }
     .store-meta strong { color:#3a2e2b; }
     .store-prices { display:flex; flex-direction:column; gap:4px; }

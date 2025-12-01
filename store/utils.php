@@ -501,6 +501,7 @@ function normalize_store_product(array $product): array
         'productType' => $product['product_type'] ?? 'flooring',
         'category' => $product['category'] ?? null,
         'collection' => $product['collection'] ?? null,
+        'colorName' => $product['colorName'] ?? ($product['color_name'] ?? null),
         'brand' => $product['brand'] ?? null,
         'colorFamily' => $product['colorFamily'] ?? null,
         'tone' => $product['tone'] ?? null,

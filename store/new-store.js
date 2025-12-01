@@ -72,6 +72,9 @@
     const coverLabel = p.packageCoverage ? `${formatNumber(p.packageCoverage)} ${unit} / ${pkgLabel}` : '';
     const href = `product.php?sku=${encodeURIComponent(p.sku)}`;
     const img = p.images?.[0] ? `../${p.images[0]}` : '';
+    const colorChip = (p.productType === 'flooring' && p.colorName)
+      ? `<div class="store-card-color" aria-label="Color ${p.colorName}"><span class="dot" aria-hidden="true"></span><span>${p.colorName}</span></div>`
+      : '';
     let stockLabel = '';
     if(hasStock){
       const pkgLabelPlural = p.packageLabelPlural || `${pkgLabel}es`;
@@ -100,6 +103,7 @@
           <div>
             <h3><a href="${href}">${p.name}</a></h3>
             <div class="store-meta">${p.collection || ''} ${p.category ? '· '+p.category : ''}</div>
+            ${colorChip}
           </div>
           <div class="store-prices">${priceHtml || '<div class="store-price-line"><b>Call for price</b></div>'}</div>
           ${stockLabel || (coverLabel ? `<div class="store-meta">${coverLabel}</div>` : '')}
