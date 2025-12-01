@@ -153,7 +153,7 @@ $installRateLabel = $installRateValue !== null
     .calc-helper-meta { color:#6a605e; font-size:0.9rem; }
     .calc-helper-action { color:#5a1620; font-weight:700; white-space:nowrap; }
     .calc-helper-empty { color:#6a605e; font-size:0.95rem; text-align:left; }
-    .store-color-pill { display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; background:#f4ede7; border:1px solid #e5dad2; color:#4a3c39; font-weight:600; }
+    .store-color-pill { display:inline-flex; white-space: nowrap; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; background:#f4ede7; border:1px solid #e5dad2; color:#4a3c39; font-weight:600; }
     .store-color-pill .dot { width:11px; height:11px; border-radius:50%; background:radial-gradient(circle at 30% 30%, #fff, #c7b6a8); box-shadow:inset 0 0 0 1px rgba(0,0,0,0.05); }
   </style>
 </head>
@@ -165,7 +165,7 @@ $installRateLabel = $installRateValue !== null
           <div class="eyebrow" data-i18n="ey_popular">Popular Vinyl Plank Options</div>
           <h1 data-i18n="h_popular"><?= htmlspecialchars($product['name']) ?></h2>
         </div>
-        <span class="pill"><?= htmlspecialchars($product['name']) ?></span>
+        <span class="pill"><?= htmlspecialchars($product['collection']) ?></span>
         <?php if($isFlooring && !empty($normalizedProduct['colorName'])): ?>
           <span class="store-color-pill" aria-label="Color <?= htmlspecialchars($normalizedProduct['colorName']) ?>">
             <span class="dot" aria-hidden="true"></span>
@@ -369,8 +369,7 @@ $installRateLabel = $installRateValue !== null
       <ul>
         <?php if($isFlooring): ?>
           <?php if($product['thickness_mm']): ?><li><strong>Thickness:</strong> <?= $product['thickness_mm'] ?> mm</li><?php endif; ?>
-          <?php if($product['wear_layer_mil']): ?><li><strong>Wear layer:</strong> <?= $product['wear_layer_mil'] ?> mil</li><?php endif; ?>
-          <?php if($product['width_in'] && $product['length_in']): ?><li><strong>Plank size:</strong> <?= $product['width_in'] ?>×<?= $product['length_in'] ?> in</li><?php endif; ?>
+          
           <?php if($product['core']): ?><li><strong>Core:</strong> <?= htmlspecialchars($product['core']) ?></li><?php endif; ?>
           <?php if($product['pad']): ?><li><strong>Pad:</strong> <?= htmlspecialchars($product['pad']) ?> <?= htmlspecialchars($product['pad_material'] ?? '') ?></li><?php endif; ?>
           <?php if($product['installation']): ?><li><strong>Installation:</strong> <?= htmlspecialchars($product['installation']) ?></li><?php endif; ?>
