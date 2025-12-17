@@ -317,8 +317,8 @@
         "comments": null,
         "image": "",
         "hoverImage": "",
-        "colorFamily": "Grey",
-        "tone": "Dark",
+        "colorFamily": "White",
+        "tone": "Light",
         "taxes_omit": false
     }
 ]
