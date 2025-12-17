@@ -2,7 +2,8 @@
   const grid = document.getElementById('store-grid');
   const resultSummary = document.getElementById('resultSummary');
   const typeSwitch = document.getElementById('typeSwitch');
-  if(!grid || !Array.isArray(BS_PRODUCTS)) return;
+  const PRODUCTS = Array.isArray(window.BS_PRODUCTS) ? window.BS_PRODUCTS : [];
+  if(!grid) return;
 
   function formatCurrency(value){
     const num = Number(value);
@@ -150,23 +151,23 @@
   function applyFilters(list){
     const colorFilters = getCheckedValues('.filter-color');
     const availabilityFilters = getCheckedValues('.filter-availability');
-    const toneFilters = colorFilters.filter(v=>['light','medium','dark'].includes(v));
-    const familyFilters = colorFilters.filter(v=>!['light','medium','dark'].includes(v));
     const thkMin = parseFloat(document.getElementById('fThkMin')?.value || '') || 0;
     const wearMin = parseFloat(document.getElementById('fWearMin')?.value || '') || 0;
 
-    let filtered = [...list];
-    if(CURRENT_TYPE === 'flooring'){
-      filtered = filtered.filter(p=>{
-        const tone = (p.tone || '').toLowerCase();
-        const family = (p.colorFamily || '').toLowerCase();
-        if(toneFilters.length && !toneFilters.includes(tone)) return false;
-        if(familyFilters.length && !familyFilters.includes(family)) return false;
+    let filtered = list.filter(p=>{
+      const tone = (p.tone || '').toLowerCase();
+      const family = (p.colorFamily || '').toLowerCase();
+      if(colorFilters.length){
+        const matchesTone = tone && colorFilters.includes(tone);
+        const matchesFamily = family && colorFilters.includes(family);
+        if(!matchesTone && !matchesFamily) return false;
+      }
+      if(CURRENT_TYPE === 'flooring'){
         if(thkMin && (parseFloat(p.thickness) || 0) < thkMin) return false;
         if(wearMin && (parseFloat(p.wearLayer) || 0) < wearMin) return false;
-        return true;
-      });
-    }
+      }
+      return true;
+    });
     filtered = filtered.filter(p=>matchesAvailability(p, availabilityFilters));
     return filtered;
   }
@@ -189,7 +190,7 @@
   }
 
   function render(){
-    const list = applySort(applyFilters(BS_PRODUCTS));
+    const list = applySort(applyFilters(PRODUCTS));
     grid.innerHTML = list.map(renderCard).join('');
     if(resultSummary){
       resultSummary.textContent = `Showing ${list.length} of ${BS_PRODUCTS.length} products`;
