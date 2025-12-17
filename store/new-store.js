@@ -2,8 +2,7 @@
   const grid = document.getElementById('store-grid');
   const resultSummary = document.getElementById('resultSummary');
   const typeSwitch = document.getElementById('typeSwitch');
-  const PRODUCTS = Array.isArray(window.BS_PRODUCTS) ? window.BS_PRODUCTS : [];
-  if(!grid) return;
+  if(!grid || !Array.isArray(BS_PRODUCTS)) return;
 
   function formatCurrency(value){
     const num = Number(value);
@@ -187,7 +186,7 @@
   }
 
   function render(){
-    const list = applySort(applyFilters(PRODUCTS));
+    const list = applySort(applyFilters(BS_PRODUCTS));
     grid.innerHTML = list.map(renderCard).join('');
     if(resultSummary){
       resultSummary.textContent = `Showing ${list.length} of ${BS_PRODUCTS.length} products`;
