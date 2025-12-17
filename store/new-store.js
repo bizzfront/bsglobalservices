@@ -150,8 +150,6 @@
   function applyFilters(list){
     const colorFilters = getCheckedValues('.filter-color');
     const availabilityFilters = getCheckedValues('.filter-availability');
-    const toneFilters = colorFilters.filter(v=>['light','medium','dark'].includes(v));
-    const familyFilters = colorFilters.filter(v=>!['light','medium','dark'].includes(v));
     const thkMin = parseFloat(document.getElementById('fThkMin')?.value || '') || 0;
     const wearMin = parseFloat(document.getElementById('fWearMin')?.value || '') || 0;
 
