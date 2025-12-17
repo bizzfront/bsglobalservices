@@ -155,18 +155,17 @@
     const thkMin = parseFloat(document.getElementById('fThkMin')?.value || '') || 0;
     const wearMin = parseFloat(document.getElementById('fWearMin')?.value || '') || 0;
 
-    let filtered = [...list];
-    if(CURRENT_TYPE === 'flooring'){
-      filtered = filtered.filter(p=>{
-        const tone = (p.tone || '').toLowerCase();
-        const family = (p.colorFamily || '').toLowerCase();
-        if(toneFilters.length && !toneFilters.includes(tone)) return false;
-        if(familyFilters.length && !familyFilters.includes(family)) return false;
+    let filtered = list.filter(p=>{
+      const tone = (p.tone || '').toLowerCase();
+      const family = (p.colorFamily || '').toLowerCase();
+      if(toneFilters.length && !toneFilters.includes(tone)) return false;
+      if(familyFilters.length && !familyFilters.includes(family)) return false;
+      if(CURRENT_TYPE === 'flooring'){
         if(thkMin && (parseFloat(p.thickness) || 0) < thkMin) return false;
         if(wearMin && (parseFloat(p.wearLayer) || 0) < wearMin) return false;
-        return true;
-      });
-    }
+      }
+      return true;
+    });
     filtered = filtered.filter(p=>matchesAvailability(p, availabilityFilters));
     return filtered;
   }
