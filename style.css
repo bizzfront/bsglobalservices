@@ -120,6 +120,10 @@
     .popular-carousel{-ms-overflow-style:none;scrollbar-width:none}
     .popular-carousel .card{flex:0 0 calc((100% - 2rem)/3);scroll-snap-align:start}
     @media (max-width:980px){.popular-carousel .card{flex-basis:100%}}
+    .popular-price{display:flex;align-items:center;gap:.45rem;margin:.45rem 0 .2rem;font-weight:700;color:var(--burgundy)}
+    .popular-price .price-unit{color:#6a605e;font-weight:500;font-size:.95rem}
+    .price-pill{background:#f8f1e8;border-color:#eadfcd;color:#4a3c39}
+    .price-pill--backorder{background:#fff6df;border-color:#e8cf9a;color:#8a5a00}
     .carousel-btn{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:none;background:var(--burgundy);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2}
     .carousel-btn.prev{left:-20px}
     .carousel-btn.next{right:-20px}
@@ -507,4 +511,3 @@
       .register-page .slot[aria-pressed="true"]{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
       .register-page .slot[disabled]{opacity:.45;cursor:not-allowed}
       .register-page .badge{display:inline-block;border:1px solid #eadfcd;border-radius:999px;padding:.2rem .6rem;margin-top:6px;font-size:.8rem}
-
