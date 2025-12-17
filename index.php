@@ -2,6 +2,15 @@
 $base = '';
 $active = 'home';
 $contact_source = 'website_home';
+require_once __DIR__.'/store/utils.php';
+$homeStoreProducts = array_map('normalize_store_product', load_store_products());
+$homeFloorings = array_values(array_filter($homeStoreProducts, fn($p)=>($p['productType'] ?? 'flooring') === 'flooring'));
+$homeFloorings = array_values(array_filter($homeFloorings, function($p){
+  $price = $p['pricing']['activePricePerUnit'] ?? $p['pricing']['finalPriceStockPerUnit'] ?? $p['pricing']['finalPriceBackorderPerUnit'] ?? null;
+  return $price !== null;
+}));
+$homeLatestProducts = array_reverse(array_slice($homeFloorings, -6));
+$homeStoreConfig = load_store_config();
 ?>
 <!doctype html>
 <html lang="en">
@@ -264,6 +273,9 @@ $contact_source = 'website_home';
       <div class="slide active" style="background-image:url('images/sliders/flooring_install.png')"></div>
     </div>
   <script>
+    const HOME_PRODUCTS = <?= json_encode($homeLatestProducts) ?>;
+    const STORE_CONFIG = <?= json_encode($homeStoreConfig) ?>;
+
     // Mobile menu toggle
     const burger = document.getElementById('burger');
     const menu = document.getElementById('menu');
@@ -361,42 +373,82 @@ $contact_source = 'website_home';
       });
     }
 
-    fetch('floorings.json')
-      .then(res=>res.json())
-      .then(products=>{
-        const carousel = document.getElementById('popular-carousel');
-        products.forEach(p=>{
-          const art = document.createElement('article');
-          art.className = 'card';
-          const img = document.createElement('img');
-          img.src = p.image;
-          img.alt = p.name + ' LVP';
-          img.style = 'aspect-ratio:16/10;object-fit:cover;border-radius:10px';
-          img.dataset.default = p.image;
-          img.dataset.hover = p.hoverImage;
+    function formatCurrency(value){
+      const num = Number(value);
+      return Number.isFinite(num) ? `$${num.toFixed(2)}` : '';
+    }
+
+    function resolvePriceInfo(product){
+      const badges = STORE_CONFIG?.ui?.badges || {};
+      const preferred = (product?.pricing?.activePriceType || product?.availability?.activePriceType || product?.availability?.mode || 'stock').toLowerCase();
+      const stockPrice = product?.pricing?.finalPriceStockPerUnit ?? null;
+      const backorderPrice = product?.pricing?.finalPriceBackorderPerUnit ?? null;
+      let type = preferred === 'backorder' ? 'backorder' : 'stock';
+      let value = type === 'stock' ? stockPrice : backorderPrice;
+      if(value == null){
+        if(stockPrice != null){ type = 'stock'; value = stockPrice; }
+        else if(backorderPrice != null){ type = 'backorder'; value = backorderPrice; }
+      }
+      const label = type === 'backorder' ? (badges.backorder || 'Order-in') : (badges.stock || 'In stock');
+      const unitRaw = (product?.measurementUnit || '').toLowerCase();
+      const unit = unitRaw === 'lf' ? 'lf' : (unitRaw === 'piece' ? 'piece' : 'sqft');
+      return {type, value, label, unit};
+    }
+
+    function getHomeProducts(){
+      if(!Array.isArray(HOME_PRODUCTS)) return [];
+      return HOME_PRODUCTS.slice(0, 6);
+    }
+
+    function renderPopularProducts(){
+      const carousel = document.getElementById('popular-carousel');
+      if(!carousel) return;
+      carousel.innerHTML = '';
+      getHomeProducts().forEach(p=>{
+        const art = document.createElement('article');
+        art.className = 'card';
+        const img = document.createElement('img');
+        const primaryImg = p.images?.[0] || p.image || '';
+        const hoverImg = p.images?.[1] || p.hoverImage || '';
+        if(primaryImg) img.src = primaryImg;
+        img.alt = (p.name || 'LVP option') + ' LVP';
+        img.style = 'aspect-ratio:16/10;object-fit:cover;border-radius:10px';
+        img.dataset.default = primaryImg;
+        img.dataset.hover = hoverImg;
+        if(hoverImg){
           img.addEventListener('mouseenter',()=>{img.src=img.dataset.hover;});
           img.addEventListener('mouseleave',()=>{img.src=img.dataset.default;});
-          const h3 = document.createElement('h3');
-          h3.style = 'margin:.7rem 0 0';
-          h3.textContent = p.name;
-          const cta = document.createElement('div');
-          cta.className = 'hero-cta';
-          const storeLink = document.createElement('a');
-          storeLink.href = 'store/product.php?sku='+encodeURIComponent(p.sku);
-          storeLink.className = 'btn btn-ghost popular-check';
-          storeLink.dataset.sku = p.sku;
-          storeLink.textContent = 'Check Store';
-          const quoteLink = document.createElement('a');
-          quoteLink.href = '#contact';
-          quoteLink.className = 'btn btn-primary popular-quote';
-          quoteLink.dataset.sku = p.sku;
-          quoteLink.textContent = 'Get install Quote';
-          cta.append(storeLink, quoteLink);
-          art.append(img, h3, cta);
-          carousel?.appendChild(art);
-        });
-        bindPopularButtons();
+        }
+        const h3 = document.createElement('h3');
+        h3.style = 'margin:.7rem 0 0';
+        h3.textContent = p.name;
+        const price = resolvePriceInfo(p);
+        const priceRow = document.createElement('div');
+        priceRow.className = 'popular-price';
+        if(price.value != null){
+          priceRow.innerHTML = `<span class="pill price-pill ${price.type==='backorder'?'price-pill--backorder':''}">${price.label}</span><strong>${formatCurrency(price.value)}</strong><span class="price-unit">/${price.unit}</span>`;
+        } else {
+          priceRow.innerHTML = `<span class="pill price-pill">${price.label}</span><strong>Call for price</strong>`;
+        }
+        const cta = document.createElement('div');
+        cta.className = 'hero-cta';
+        const storeLink = document.createElement('a');
+        storeLink.href = 'store/product.php?sku='+encodeURIComponent(p.sku);
+        storeLink.className = 'btn btn-ghost popular-check';
+        storeLink.dataset.sku = p.sku;
+        storeLink.textContent = 'Check Store';
+        const quoteLink = document.createElement('a');
+        quoteLink.href = '#contact';
+        quoteLink.className = 'btn btn-primary popular-quote';
+        quoteLink.dataset.sku = p.sku;
+        quoteLink.textContent = 'Get install Quote';
+        cta.append(storeLink, quoteLink);
+        art.append(img, h3, priceRow, cta);
+        carousel?.appendChild(art);
       });
+      bindPopularButtons();
+    }
+    renderPopularProducts();
 
     // Popular carousel scrolling
     const popCarousel = document.getElementById('popular-carousel');
