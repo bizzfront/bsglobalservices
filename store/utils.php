@@ -503,7 +503,7 @@ function normalize_store_product(array $product): array
         'collection' => $product['collection'] ?? null,
         'colorName' => $product['colorName'] ?? ($product['color_name'] ?? null),
         'brand' => $product['brand'] ?? null,
-        'colorFamily' => $product['colorFamily'] ?? null,
+        'colorFamily' => $product['colorFamily'] ?? ($product['color_family'] ?? null),
         'tone' => $product['tone'] ?? null,
         'thickness' => $product['thickness_mm'] ?? null,
         'wearLayer' => $product['wear_layer_mil'] ?? null,
