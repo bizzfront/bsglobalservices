@@ -157,11 +157,8 @@
     let filtered = list.filter(p=>{
       const tone = (p.tone || '').toLowerCase();
       const family = (p.colorFamily || '').toLowerCase();
-      if(colorFilters.length){
-        const matchesTone = tone && colorFilters.includes(tone);
-        const matchesFamily = family && colorFilters.includes(family);
-        if(!matchesTone && !matchesFamily) return false;
-      }
+      if(toneFilters.length && !toneFilters.includes(tone)) return false;
+      if(familyFilters.length && !familyFilters.includes(family)) return false;
       if(CURRENT_TYPE === 'flooring'){
         if(thkMin && (parseFloat(p.thickness) || 0) < thkMin) return false;
         if(wearMin && (parseFloat(p.wearLayer) || 0) < wearMin) return false;
