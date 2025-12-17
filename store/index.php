@@ -181,7 +181,6 @@ $heroSubtitle = $type === 'molding'
             <label><input type="checkbox" class="filter-availability" value="nextday" /> Next day (&lt; 7 days)</label>
           </div>
         </div>
-        <?php if($type === 'flooring'): ?>
         <div class="filter-group">
           <div class="filter-title">Color &amp; Tone</div>
           <div class="filter-options">
@@ -194,6 +193,7 @@ $heroSubtitle = $type === 'molding'
             <label><input type="checkbox" class="filter-color" value="White" /> White</label>
           </div>
         </div>
+        <?php if($type === 'flooring'): ?>
         <div class="filter-group">
           <div class="filter-title">Specs</div>
           <div class="filter-options">
