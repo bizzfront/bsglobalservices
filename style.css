@@ -511,3 +511,69 @@
       .register-page .slot[aria-pressed="true"]{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
       .register-page .slot[disabled]{opacity:.45;cursor:not-allowed}
       .register-page .badge{display:inline-block;border:1px solid #eadfcd;border-radius:999px;padding:.2rem .6rem;margin-top:6px;font-size:.8rem}
+
+      /* Flooring install forms */
+      .flooring-install-forms .bs-section{padding:3rem 0}
+      .flooring-install-forms .bs-section--light{background-color:#ffffff}
+      .flooring-install-forms .bs-container{max-width:960px;margin:0 auto;padding:0 1.5rem}
+      .flooring-install-forms .bs-section-header{margin-bottom:1.5rem;text-align:left}
+      .flooring-install-forms .bs-heading{font-size:1.9rem;line-height:1.2;margin:0 0 .5rem}
+      .flooring-install-forms .bs-subheading{margin:0 0 .25rem;font-size:.95rem;color:#4b5563}
+      .flooring-install-forms .bs-language-note{margin:0;font-size:.9rem;color:#6b7280}
+
+      .flooring-install-forms .install-form-steps{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.5rem 0 1.25rem;font-size:.8rem}
+      .flooring-install-forms .install-step-indicator{padding:.35rem .7rem;border-radius:999px;border:1px solid #e5e7eb;color:#6b7280;background-color:#f9fafb}
+      .flooring-install-forms .install-step-indicator.is-active{color:#111827;background-color:#e5e7eb;font-weight:600}
+
+      .flooring-install-forms .install-form{background:#ffffff;border-radius:.75rem;border:1px solid #e5e7eb;padding:1.75rem 1.5rem;box-shadow:0 10px 30px rgba(15,23,42,.06)}
+      .flooring-install-forms .install-step{display:none;border:0;padding:0;margin:0}
+      .flooring-install-forms .install-step.is-active{display:block}
+      .flooring-install-forms .install-step-title{font-size:1.1rem;margin:0 0 1rem}
+      .flooring-install-forms .install-field{margin-bottom:1.1rem}
+      .flooring-install-forms .install-field label,
+      .flooring-install-forms .install-label{display:block;font-weight:500;margin-bottom:.35rem;font-size:.9rem}
+      .flooring-install-forms .install-field input[type="text"],
+      .flooring-install-forms .install-field input[type="tel"],
+      .flooring-install-forms .install-field input[type="email"],
+      .flooring-install-forms .install-field input[type="number"],
+      .flooring-install-forms .install-field select,
+      .flooring-install-forms .install-field textarea{width:100%;padding:.55rem .7rem;border-radius:.4rem;border:1px solid #d1d5db;font:inherit;font-size:11px;color:#111827;background-color:#ffffff}
+      .flooring-install-forms .install-field textarea{resize:vertical}
+      .flooring-install-forms .install-field input:focus,
+      .flooring-install-forms .install-field select:focus,
+      .flooring-install-forms .install-field textarea:focus{outline:none;border-color:#111827;box-shadow:0 0 0 1px #11182711}
+      .flooring-install-forms .install-options{display:flex;flex-direction:column;gap:.35rem;font-size:.9rem}
+      .flooring-install-forms .install-options label{display:flex;align-items:center;gap:.4rem}
+      .flooring-install-forms .install-options input[type="radio"],
+      .flooring-install-forms .install-options input[type="checkbox"]{margin:0}
+      .flooring-install-forms .install-options-multi label{font-weight:400}
+      .flooring-install-forms .install-help{font-size:.75rem;color:#6b7280}
+      .flooring-install-forms .required{color:#dc2626;margin-left:.2rem}
+      .flooring-install-forms .install-form-nav{display:flex;justify-content:space-between;gap:.75rem;margin-top:1.25rem}
+
+      .flooring-install-forms .contact-estimate-layout{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.2fr);gap:2rem;align-items:flex-start}
+      .flooring-install-forms .contact-estimate-main{max-width:640px}
+      .flooring-install-forms .contact-estimate-info h3{margin-top:0;margin-bottom:.5rem}
+      .flooring-install-forms .contact-estimate-info p{margin:.2rem 0;font-size:.9rem}
+
+      .flooring-install-forms .install-compact-form{margin-top:1rem;padding:1.25rem 1rem;border-radius:.75rem;border:1px solid #e5e7eb;background-color:#ffffff}
+      .flooring-install-forms .install-field--inline{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+      .flooring-install-forms .install-extra{margin:1rem 0 .5rem;border-top:1px dashed #e5e7eb;padding-top:.75rem}
+      .flooring-install-forms .install-extra-toggle{background:none;border:none;padding:0;margin:0 0 .5rem;font:inherit;color:#111827;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:.3rem}
+      .flooring-install-forms .install-extra-toggle::after{content:"▼";font-size:.7rem;transform:translateY(1px)}
+      .flooring-install-forms .install-extra-toggle[aria-expanded="true"]::after{content:"▲"}
+      .flooring-install-forms .install-legal{font-size:.75rem;color:#6b7280;margin:.5rem 0 1rem;text-align:center}
+
+      .flooring-install-forms .button{display:inline-flex;align-items:center;justify-content:center;padding:.6rem 1.4rem;border-radius:999px;border:1px solid #111827;background-color:#111827;color:#ffffff;font-size:.9rem;font-weight:500;text-decoration:none;cursor:pointer;transition:background-color .15s ease,color .15s ease,border-color .15s ease}
+      .flooring-install-forms .button:hover{background-color:#000000;border-color:#000000;color:#ffffff}
+      .flooring-install-forms .button--ghost{background-color:#ffffff;color:#111827}
+      .flooring-install-forms .button--ghost:hover{background-color:#f3f4f6;color:#111827}
+      .flooring-install-forms .button--primary{width:100%}
+
+      @media (max-width:800px){.flooring-install-forms .contact-estimate-layout{grid-template-columns:minmax(0,1fr)}}
+      @media (max-width:640px){
+        .flooring-install-forms .install-form{padding:1.25rem 1rem}
+        .flooring-install-forms .install-form-nav{flex-direction:row}
+        .flooring-install-forms .button--primary{width:100%}
+      }
+      @media (max-width:600px){.flooring-install-forms .install-field--inline{grid-template-columns:minmax(0,1fr)}}
