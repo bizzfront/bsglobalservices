@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>B&S Floor Supply – Flooring Installation Quote</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Meta opcionales -->
+  <meta name="description" content="Request a detailed flooring installation quote with B&S Floor Supply. Waterproof LVP, laminate and wood. Clear quotes and human support.">
+
+  <style>
+    /* ====== ESTILOS BASE (pueden mezclarse con los del theme) ====== */
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #111827;
+      background-color: #f9fafb;
+    }
+
+    .bs-section {
+      padding: 3rem 0;
+    }
+
+    .bs-section--light {
+      background-color: #ffffff;
+    }
+
+    .bs-container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .bs-section-header {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .bs-heading {
+      font-size: 1.9rem;
+      line-height: 1.2;
+      margin: 0 0 .5rem;
+    }
+
+    .bs-subheading {
+      margin: 0 0 .25rem;
+      font-size: 0.95rem;
+      color: #4b5563;
+    }
+
+    .bs-language-note {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+
+    /* ====== PASOS DEL FORMULARIO ====== */
+
+    .install-form-steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin: 1.5rem 0 1.25rem;
+      font-size: .8rem;
+    }
+
+    .install-step-indicator {
+      padding: .35rem .7rem;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      color: #6b7280;
+      background-color: #f9fafb;
+    }
+
+    .install-step-indicator.is-active {
+      color: #111827;
+      background-color: #e5e7eb;
+      font-weight: 600;
+    }
+
+    /* ====== FORMULARIO ====== */
+
+    .install-form {
+      background: #ffffff;
+      border-radius: .75rem;
+      border: 1px solid #e5e7eb;
+      padding: 1.75rem 1.5rem;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    }
+
+    .install-step {
+      display: none;
+      border: 0;
+      padding: 0;
+      margin: 0;
+    }
+
+    .install-step.is-active {
+      display: block;
+    }
+
+    .install-step-title {
+      font-size: 1.1rem;
+      margin: 0 0 1rem;
+    }
+
+    .install-field {
+      margin-bottom: 1rem;
+    }
+
+    .install-field label,
+    .install-label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: .35rem;
+      font-size: 0.9rem;
+    }
+
+    .install-field input[type="text"],
+    .install-field input[type="tel"],
+    .install-field input[type="email"],
+    .install-field input[type="number"],
+    .install-field select,
+    .install-field textarea {
+      width: 100%;
+      padding: .55rem .7rem;
+      border-radius: .4rem;
+      border: 1px solid #d1d5db;
+      font: inherit;
+      color: #111827;
+      background-color: #ffffff;
+    }
+
+    .install-field textarea {
+      resize: vertical;
+    }
+
+    .install-field input:focus,
+    .install-field select:focus,
+    .install-field textarea:focus {
+      outline: none;
+      border-color: #111827;
+      box-shadow: 0 0 0 1px #11182711;
+    }
+
+    .install-options {
+      display: flex;
+      flex-direction: column;
+      gap: .25rem;
+      font-size: 0.9rem;
+    }
+
+    .install-options-multi label {
+      font-weight: 400;
+    }
+
+    .install-help {
+      font-size: .75rem;
+      color: #6b7280;
+    }
+
+    .required {
+      color: #dc2626;
+      margin-left: .2rem;
+    }
+
+    .install-form-nav {
+      display: flex;
+      justify-content: space-between;
+      gap: .75rem;
+      margin-top: 1.25rem;
+    }
+
+    /* ====== BOTONES ====== */
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: .6rem 1.4rem;
+      border-radius: 999px;
+      border: 1px solid #111827;
+      background-color: #111827;
+      color: #ffffff;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+    }
+
+    .button:hover {
+      background-color: #000000;
+      border-color: #000000;
+      color: #ffffff;
+    }
+
+    .button--primary {
+      width: 100%;
+    }
+
+    .button--ghost {
+      background-color: #ffffff;
+      color: #111827;
+    }
+
+    .button--ghost:hover {
+      background-color: #f3f4f6;
+      color: #111827;
+    }
+
+    .install-legal {
+      font-size: .75rem;
+      color: #6b7280;
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    @media (max-width: 640px) {
+      .install-form {
+        padding: 1.25rem 1rem;
+      }
+
+      .install-form-nav {
+        flex-direction: row;
+      }
+
+      .button--primary {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SECCIÓN FORMULARIO FLOORING INSTALL -->
+  <section id="installation-quote-form" class="bs-section bs-section--light">
+    <div class="bs-container">
+      <div class="bs-section-header">
+        <h2 class="bs-heading">Flooring Installation – Detailed quote</h2>
+        <p class="bs-subheading">
+          Tell us a bit about your space so we can give you a clear, no-surprise estimate.
+        </p>
+        <p class="bs-language-note">
+          Prefer to speak Spanish? We also answer in <strong>español</strong>.
+        </p>
+      </div>
+
+      <!-- Indicador de pasos -->
+      <div class="install-form-steps">
+        <span class="install-step-indicator is-active" data-step="1">1. Your info</span>
+        <span class="install-step-indicator" data-step="2">2. Your space</span>
+        <span class="install-step-indicator" data-step="3">3. Existing floor</span>
+        <span class="install-step-indicator" data-step="4">4. Floor &amp; timing</span>
+      </div>
+
+      <!-- FORMULARIO MULTI-STEP -->
+      <form id="installQuoteForm" class="install-form" action="#" method="post" novalidate>
+        <!-- STEP 1 – Your info -->
+        <fieldset class="install-step is-active" data-step="1">
+          <legend class="install-step-title">Your info</legend>
+
+          <div class="install-field">
+            <label for="full_name">Full name<span class="required">*</span></label>
+            <input type="text" id="full_name" name="full_name" required>
+          </div>
+
+          <div class="install-field">
+            <label for="phone">Phone / WhatsApp<span class="required">*</span></label>
+            <input type="tel" id="phone" name="phone" placeholder="+1 (689) 000-0000" required>
+          </div>
+
+          <div class="install-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com">
+          </div>
+
+          <div class="install-field">
+            <span class="install-label">Preferred language<span class="required">*</span></span>
+            <div class="install-options">
+              <label>
+                <input type="radio" name="preferred_language" value="english" checked required>
+                English
+              </label>
+              <label>
+                <input type="radio" name="preferred_language" value="spanish" required>
+                Español
+              </label>
+            </div>
+          </div>
+
+          <div class="install-field">
+            <label for="city">City / Area<span class="required">*</span></label>
+            <input type="text" id="city" name="city" placeholder="Orlando, Kissimmee, St. Cloud…" required>
+            <small class="install-help">Service area: Orlando &amp; nearby cities.</small>
+          </div>
+
+          <div class="install-form-nav">
+            <button type="button" class="button install-btn-next" data-next-step="2">
+              Next
+            </button>
+          </div>
+        </fieldset>
+
+        <!-- STEP 2 – Your space -->
+        <fieldset class="install-step" data-step="2">
+          <legend class="install-step-title">Your space</legend>
+
+          <div class="install-field">
+            <label for="property_type">Property type<span class="required">*</span></label>
+            <select id="property_type" name="property_type" required>
+              <option value="">Select an option</option>
+              <option value="house">House</option>
+              <option value="apartment">Apartment / Condo</option>
+              <option value="townhouse">Townhouse</option>
+              <option value="business">Business / Commercial</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="install-field">
+            <span class="install-label">Is the property currently…?<span class="required">*</span></span>
+            <div class="install-options">
+              <label>
+                <input type="radio" name="occupancy" value="occupied" required>
+                Occupied (we live/work here)
+              </label>
+              <label>
+                <input type="radio" name="occupancy" value="vacant" required>
+                Vacant
+              </label>
+            </div>
+          </div>
+
+          <div class="install-field">
+            <span class="install-label">Areas you want to install</span>
+            <div class="install-options install-options-multi">
+              <label><input type="checkbox" name="areas[]" value="living_room"> Living room / Family room</label>
+              <label><input type="checkbox" name="areas[]" value="bedrooms"> Bedrooms</label>
+              <label><input type="checkbox" name="areas[]" value="hallways"> Hallways</label>
+              <label><input type="checkbox" name="areas[]" value="kitchen"> Kitchen</label>
+              <label><input type="checkbox" name="areas[]" value="bathrooms"> Bathrooms</label>
+              <label><input type="checkbox" name="areas[]" value="stairs"> Stairs</label>
+              <label><input type="checkbox" name="areas[]" value="entire_home"> Entire home</label>
+              <label><input type="checkbox" name="areas[]" value="other"> Other</label>
+            </div>
+          </div>
+
+          <div class="install-field">
+            <label for="square_footage">Approximate square footage</label>
+            <input type="number" id="square_footage" name="square_footage" min="0" step="1" placeholder="Example: 900">
+            <small class="install-help">Example: 900 sq ft (3 bedrooms + hallway).</small>
+          </div>
+
+          <div class="install-field">
+            <span class="install-label">Do you have stairs to cover?<span class="required">*</span></span>
+            <div class="install-options">
+              <label><input type="radio" name="has_stairs" value="yes" required> Yes</label>
+              <label><input type="radio" name="has_stairs" value="no" required> No</label>
+              <label><input type="radio" name="has_stairs" value="not_sure" required> Not sure yet</label>
+            </div>
+          </div>
+
+          <div class="install-form-nav">
+            <button type="button" class="button button--ghost install-btn-back" data-prev-step="1">
+              Back
+            </button>
+            <button type="button" class="button install-btn-next" data-next-step="3">
+              Next
+            </button>
+          </div>
+        </fieldset>
+
+        <!-- STEP 3 – Existing floor & preparation -->
+        <fieldset class="install-step" data-step="3">
+          <legend class="install-step-title">Existing floor &amp; preparation</legend>
+
+          <div class="install-field">
+            <label for="current_floor">Current flooring (what you have now)<span class="required">*</span></label>
+            <select id="current_floor" name="current_floor" required>
+              <option value="">Select an option</option>
+              <option value="tile">Tile</option>
+              <option value="carpet">Carpet</option>
+              <option value="laminate">Laminate</option>
+              <option value="vinyl_lvp">Vinyl / LVP</option>
+              <option value="wood">Wood (solid/engineered)</option>
+              <option value="concrete">Bare concrete</option>
+              <option value="not_sure">I’m not sure</option>
+            </select>
+          </div>
+
+          <div class="install-field">
+            <span class="install-label">Do you need removal &amp; disposal of old floor?<span class="required">*</span></span>
+            <div class="install-options">
+              <label><input type="radio" name="need_removal" value="yes" required> Yes, I need removal &amp; disposal</label>
+              <label><input type="radio" name="need_removal" value="no" required> No, floor is already removed</label>
+              <label><input type="radio" name="need_removal" value="not_sure" required> Not sure, I need advice</label>
+            </div>
+          </div>
+
+          <div class="install-field">
+            <span class="install-label">Subfloor / condition</span>
+            <div class="install-options install-options-multi">
+              <label><input type="checkbox" name="subfloor_condition[]" value="cracks_uneven"> I know there are cracks / uneven areas</label>
+              <label><input type="checkbox" name="subfloor_condition[]" value="moisture_issues"> I’ve had moisture issues before</label>
+              <label><input type="checkbox" name="subfloor_condition[]" value="dont_know"> I don’t know, please check during visit</label>
+            </div>
+          </div>
+
+          <div class="install-form-nav">
+            <button type="button" class="button button--ghost install-btn-back" data-prev-step="2">
+              Back
+            </button>
+            <button type="button" class="button install-btn-next" data-next-step="4">
+              Next
+            </button>
+          </div>
+        </fieldset>
+
+        <!-- STEP 4 – Floor & service, timing, notes -->
+        <fieldset class="install-step" data-step="4">
+          <legend class="install-step-title">Floor &amp; timing</legend>
+
+          <div class="install-field">
+            <span class="install-label">Do you already have the flooring material?<span class="required">*</span></span>
+            <div class="install-options">
+              <label><input type="radio" name="has_material" value="need_supply" required> No, I need you to supply it</label>
+              <label><input type="radio" name="has_material" value="already_have" required> Yes, I already bought the material</label>
+              <label><input type="radio" name="has_material" value="need_guidance" required> I’m not sure, need guidance</label>
+            </div>
+          </div>
+
+          <div class="install-field">
+            <label for="floor_type">Floor type you’re interested in<span class="required">*</span></label>
+            <select id="floor_type" name="floor_type" required>
+              <option value="">Select an option</option>
+              <option value="waterproof_lvp">Waterproof LVP</option>
+              <option value="laminate">Laminate</option>
+              <option value="wood">Wood (solid/engineered)</option>
+              <option value="deciding">Still deciding / Need recommendation</option>
+            </select>
+          </div>
+
+          <div class="install-field">
+            <span class="install-label">Service type<span class="required">*</span></span>
+            <div class="install-options">
+              <label>
+                <input type="radio" name="service_type" value="lvp_supply_install" required>
+                Waterproof LVP – supply &amp; install
+              </label>
+              <label>
+                <input type="radio" name="service_type" value="installation_only" required>
+                Installation only (Laminate / Vinyl / Hardwood)
+              </label>
+              <label>
+                <input type="radio" name="service_type" value="other_service" required>
+                Other flooring service
+              </label>
+            </div>
+          </div>
+
+          <div class="install-field">
+            <span class="install-label">Extras you might need</span>
+            <div class="install-options install-options-multi">
+              <label><input type="checkbox" name="extras[]" value="baseboards"> Baseboards / trims</label>
+              <label><input type="checkbox" name="extras[]" value="quarter_round"> Quarter round / transitions</label>
+              <label><input type="checkbox" name="extras[]" value="underlayment"> Underlayment / moisture barrier</label>
+              <label><input type="checkbox" name="extras[]" value="old_floor_removal"> Old floor removal &amp; disposal</label>
+              <label><input type="checkbox" name="extras[]" value="furniture_moving"> Furniture moving</label>
+              <label><input type="checkbox" name="extras[]" value="other"> Other</label>
+            </div>
+          </div>
+
+          <div class="install-field">
+            <label for="install_timing">When are you planning to install?<span class="required">*</span></label>
+            <select id="install_timing" name="install_timing" required>
+              <option value="">Select an option</option>
+              <option value="asap">As soon as possible (1–2 weeks)</option>
+              <option value="1_month">Within 1 month</option>
+              <option value="2_3_months">In 2–3 months</option>
+              <option value="exploring">Just exploring options</option>
+            </select>
+          </div>
+
+          <div class="install-field">
+            <label for="budget_range">Approximate budget range</label>
+            <select id="budget_range" name="budget_range">
+              <option value="">Select an option</option>
+              <option value="under_2000">Under $2,000</option>
+              <option value="2000_5000">$2,000 – $5,000</option>
+              <option value="5000_10000">$5,000 – $10,000</option>
+              <option value="over_10000">More than $10,000</option>
+              <option value="not_sure">I’m not sure yet</option>
+            </select>
+          </div>
+
+          <div class="install-field">
+            <label for="how_hear">How did you hear about us?</label>
+            <select id="how_hear" name="how_hear">
+              <option value="">Select an option</option>
+              <option value="google">Google search</option>
+              <option value="social">Instagram / Facebook</option>
+              <option value="referral">Referral / Friend</option>
+              <option value="contractor">Contractor</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="install-field">
+            <label for="project_notes">Project details / Notes</label>
+            <textarea id="project_notes" name="project_notes" rows="4" placeholder="Tell us anything important: pets, kids, deadlines, special rooms, HOA rules…"></textarea>
+          </div>
+
+          <div class="install-form-nav">
+            <button type="button" class="button button--ghost install-btn-back" data-prev-step="3">
+              Back
+            </button>
+            <button type="submit" class="button button--primary install-btn-submit">
+              Get my installation quote
+            </button>
+          </div>
+
+          <p class="install-legal">
+            By sending, you agree to be contacted via WhatsApp, phone or email about your flooring project. No spam.
+          </p>
+        </fieldset>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      const form = document.getElementById('installQuoteForm');
+      if (!form) return;
+
+      const steps = Array.from(form.querySelectorAll('.install-step'));
+      const indicators = Array.from(document.querySelectorAll('.install-step-indicator'));
+
+      // WhatsApp oficial B&S: +1 (689) 296-8515
+      const WHATSAPP_NUMBER = '16892968515';
+
+      function showStep(stepNumber) {
+        steps.forEach(step => {
+          step.classList.toggle('is-active', step.dataset.step === String(stepNumber));
+        });
+        indicators.forEach(ind => {
+          ind.classList.toggle('is-active', ind.dataset.step === String(stepNumber));
+        });
+
+        // Aquí podrías disparar eventos de analítica:
+        // dataLayer.push({ event: 'install_quote_step', step: stepNumber });
+      }
+
+      form.addEventListener('click', function (e) {
+        const nextBtn = e.target.closest('.install-btn-next');
+        const backBtn = e.target.closest('.install-btn-back');
+        if (nextBtn) {
+          const nextStep = nextBtn.getAttribute('data-next-step');
+          showStep(nextStep);
+        }
+        if (backBtn) {
+          const prevStep = backBtn.getAttribute('data-prev-step');
+          showStep(prevStep);
+        }
+      });
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // Validación básica del navegador
+        if (!form.reportValidity()) {
+          return;
+        }
+
+        const fullName = form.full_name.value || '-';
+        const phone = form.phone.value || '-';
+        const email = form.email.value || '-';
+        const city = form.city.value || '-';
+
+        const preferredLanguage = (form.preferred_language.value || 'english');
+
+        const propertyType = form.property_type.value || '-';
+        const occupancy = form.occupancy.value || '-';
+
+        const areasSelected = Array.from(form.querySelectorAll('input[name="areas[]"]:checked'))
+          .map(el => el.parentElement.textContent.trim())
+          .join(', ') || '-';
+
+        const squareFootage = form.square_footage.value || '-';
+        const hasStairs = form.has_stairs.value || '-';
+
+        const currentFloor = form.current_floor.value || '-';
+        const needRemoval = form.need_removal.value || '-';
+
+        const subfloorCond = Array.from(form.querySelectorAll('input[name="subfloor_condition[]"]:checked'))
+          .map(el => el.parentElement.textContent.trim())
+          .join(', ') || '-';
+
+        const hasMaterial = form.has_material.value || '-';
+        const floorType = form.floor_type.value || '-';
+        const serviceType = form.service_type.value || '-';
+
+        const extras = Array.from(form.querySelectorAll('input[name="extras[]"]:checked'))
+          .map(el => el.parentElement.textContent.trim())
+          .join(', ') || '-';
+
+        const installTiming = form.install_timing.value || '-';
+        const budgetRange = form.budget_range.value || '-';
+        const howHear = form.how_hear.value || '-';
+        const projectNotes = form.project_notes.value || '-';
+
+        const messageLines = [
+          '📋 *New flooring installation request*',
+          '',
+          '*Client info*',
+          `Name: ${fullName}`,
+          `Phone: ${phone}`,
+          `Email: ${email}`,
+          `City/Area: ${city}`,
+          `Preferred language: ${preferredLanguage === 'spanish' ? 'Español' : 'English'}`,
+          '',
+          '*Property & space*',
+          `Property type: ${propertyType}`,
+          `Occupancy: ${occupancy}`,
+          `Areas to install: ${areasSelected}`,
+          `Approx. square footage: ${squareFootage}`,
+          `Stairs to cover: ${hasStairs}`,
+          '',
+          '*Existing floor & condition*',
+          `Current flooring: ${currentFloor}`,
+          `Need removal/disposal: ${needRemoval}`,
+          `Subfloor / condition: ${subfloorCond}`,
+          '',
+          '*Floor & service*',
+          `Has material: ${hasMaterial}`,
+          `Floor type interested in: ${floorType}`,
+          `Service type: ${serviceType}`,
+          `Extras: ${extras}`,
+          '',
+          '*Timing & budget*',
+          `When to install: ${installTiming}`,
+          `Budget range: ${budgetRange}`,
+          `How did you hear about us?: ${howHear}`,
+          '',
+          '*Project details / Notes*',
+          projectNotes,
+          '',
+          '— Form submitted from Flooring Install page.'
+        ];
+
+        const message = messageLines.join('\\n');
+        const encoded = encodeURIComponent(message);
+        const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
+
+        // Analítica de envío (ejemplo)
+        // dataLayer.push({ event: 'install_quote_submit' });
+
+        window.open(waUrl, '_blank');
+      });
+
+      // Mostrar primer paso por defecto
+      showStep(1);
+    })();
+  </script>
+
+</body>
+</html>

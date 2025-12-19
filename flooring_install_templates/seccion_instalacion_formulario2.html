@@ -1,0 +1,426 @@
+<section id="contact-free-estimate" class="bs-section bs-section--light">
+  <div class="bs-container contact-estimate-layout">
+    <div class="contact-estimate-main">
+      <h2 class="bs-heading">Contact & free estimate</h2>
+      <p class="bs-subheading">
+        Tell us about your flooring project and we’ll get back with a clear estimate.
+      </p>
+
+      <p class="bs-language-note">
+        Available in English &amp; Spanish · También atendemos en <strong>español</strong>.
+      </p>
+
+      <!-- Botón directo a WhatsApp (como el que ya tienes) -->
+      <p style="margin: 0 0 1rem;">
+        <a class="button button--ghost" href="https://wa.me/16892968515" target="_blank" rel="noopener">
+          Chat on WhatsApp
+        </a>
+      </p>
+
+      <!-- FORMULARIO COMPACTO PARA LA SECCIÓN -->
+      <form id="installQuoteForm" class="install-compact-form" action="#" method="post" novalidate>
+        <!-- Bloque principal: similar al actual -->
+        <div class="install-field">
+          <label for="full_name">Full name<span class="required">*</span></label>
+          <input type="text" id="full_name" name="full_name" required>
+        </div>
+
+        <div class="install-field">
+          <label for="phone">Phone / WhatsApp<span class="required">*</span></label>
+          <input type="tel" id="phone" name="phone" required placeholder="+1 (689) 000-0000">
+        </div>
+
+        <div class="install-field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com">
+        </div>
+
+        <div class="install-field">
+          <label for="city">City / Area<span class="required">*</span></label>
+          <input type="text" id="city" name="city" required placeholder="Orlando, Kissimmee, St. Cloud…">
+        </div>
+
+        <div class="install-field">
+          <label for="service">Service<span class="required">*</span></label>
+          <select id="service" name="service" required>
+            <option value="">Select an option</option>
+            <option value="lvp_supply_install">Waterproof LVP – supply &amp; install</option>
+            <option value="installation_only">Installation only (Laminate / Vinyl / Hardwood)</option>
+            <option value="other_flooring">Other flooring</option>
+          </select>
+        </div>
+
+        <div class="install-field">
+          <label for="project_details">Project details</label>
+          <textarea id="project_details" name="project_details" rows="3"
+            placeholder="Rooms, deadlines, special conditions, kids/pets, HOA rules…"></textarea>
+        </div>
+
+        <!-- DETALLES EXTRA (OPCIONALES) EN BLOQUE PLEGABLE -->
+        <div class="install-extra">
+          <button type="button" class="install-extra-toggle" aria-expanded="false">
+            More project details (optional)
+          </button>
+
+          <div class="install-extra-panel" hidden>
+            <div class="install-field">
+              <label for="property_type">Property type</label>
+              <select id="property_type" name="property_type">
+                <option value="">Select an option</option>
+                <option value="house">House</option>
+                <option value="apartment">Apartment / Condo</option>
+                <option value="townhouse">Townhouse</option>
+                <option value="business">Business / Commercial</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="install-field">
+              <span class="install-label">Areas you want to install</span>
+              <div class="install-options install-options-multi">
+                <label><input type="checkbox" name="areas[]" value="living_room"> Living room / Family room</label>
+                <label><input type="checkbox" name="areas[]" value="bedrooms"> Bedrooms</label>
+                <label><input type="checkbox" name="areas[]" value="hallways"> Hallways</label>
+                <label><input type="checkbox" name="areas[]" value="kitchen"> Kitchen</label>
+                <label><input type="checkbox" name="areas[]" value="bathrooms"> Bathrooms</label>
+                <label><input type="checkbox" name="areas[]" value="stairs"> Stairs</label>
+                <label><input type="checkbox" name="areas[]" value="entire_home"> Entire home</label>
+              </div>
+            </div>
+
+            <div class="install-field install-field--inline">
+              <div>
+                <label for="square_footage">Approx. square footage</label>
+                <input type="number" id="square_footage" name="square_footage" min="0" step="1"
+                  placeholder="Example: 900">
+              </div>
+              <div>
+                <label for="has_stairs">Stairs to cover</label>
+                <select id="has_stairs" name="has_stairs">
+                  <option value="">Select</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                  <option value="not_sure">Not sure</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="install-field">
+              <span class="install-label">Do you already have the flooring material?</span>
+              <div class="install-options">
+                <label><input type="radio" name="has_material" value="need_supply"> No, I need you to supply it</label>
+                <label><input type="radio" name="has_material" value="already_have"> Yes, I already bought it</label>
+                <label><input type="radio" name="has_material" value="need_guidance"> I’m not sure, need guidance</label>
+              </div>
+            </div>
+
+            <div class="install-field install-field--inline">
+              <div>
+                <label for="floor_type">Floor type interested in</label>
+                <select id="floor_type" name="floor_type">
+                  <option value="">Select</option>
+                  <option value="waterproof_lvp">Waterproof LVP</option>
+                  <option value="laminate">Laminate</option>
+                  <option value="wood">Wood (solid/engineered)</option>
+                  <option value="deciding">Still deciding / Need recommendation</option>
+                </select>
+              </div>
+              <div>
+                <label for="install_timing">When are you planning to install?</label>
+                <select id="install_timing" name="install_timing">
+                  <option value="">Select</option>
+                  <option value="asap">As soon as possible (1–2 weeks)</option>
+                  <option value="1_month">Within 1 month</option>
+                  <option value="2_3_months">In 2–3 months</option>
+                  <option value="exploring">Just exploring options</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="install-legal">
+          By sending, you agree to be contacted via WhatsApp, phone or email.
+        </p>
+
+        <button type="submit" class="button button--primary">
+          Send request
+        </button>
+      </form>
+    </div>
+
+    <!-- Columna derecha: puedes mantener tu bloque actual de Contact info -->
+    <aside class="contact-estimate-info">
+      <h3>Contact info</h3>
+      <p><strong>Phone (WhatsApp):</strong> <a href="https://wa.me/16892968515" target="_blank" rel="noopener">+1 (689) 296-8515</a></p>
+      <p><strong>Alt. phone:</strong> +1 (407) 225-1284</p>
+      <p><strong>Email:</strong> info@globalservices.com</p>
+      <p><strong>Service area:</strong> Orlando, FL</p>
+    </aside>
+  </div>
+</section>
+
+<style>
+  /* Layout de la sección (2 columnas en desktop, 1 columna en mobile) */
+  .contact-estimate-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr);
+    gap: 2rem;
+    align-items: flex-start;
+  }
+
+  @media (max-width: 800px) {
+    .contact-estimate-layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .contact-estimate-main {
+    max-width: 640px;
+  }
+
+  .contact-estimate-info h3 {
+    margin-top: 0;
+    margin-bottom: .5rem;
+  }
+
+  .contact-estimate-info p {
+    margin: .2rem 0;
+    font-size: 0.9rem;
+  }
+
+  /* Formulario compacto */
+
+  .install-compact-form {
+    margin-top: 1rem;
+    padding: 1.25rem 1rem;
+    border-radius: .75rem;
+    border: 1px solid #e5e7eb;
+    background-color: #ffffff;
+  }
+
+  .install-field {
+    margin-bottom: .75rem;
+  }
+
+  .install-field label,
+  .install-label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: .25rem;
+    font-size: 0.9rem;
+  }
+
+  .install-field input,
+  .install-field select,
+  .install-field textarea {
+    width: 100%;
+    padding: .5rem .7rem;
+    border-radius: .4rem;
+    border: 1px solid #d1d5db;
+    font: inherit;
+  }
+
+  .install-field textarea {
+    resize: vertical;
+  }
+
+  .install-field input:focus,
+  .install-field select:focus,
+  .install-field textarea:focus {
+    outline: none;
+    border-color: #111827;
+    box-shadow: 0 0 0 1px #11182711;
+  }
+
+  .install-help {
+    font-size: .75rem;
+    color: #6b7280;
+  }
+
+  .required {
+    color: #dc2626;
+    margin-left: .2rem;
+  }
+
+  .install-options {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    font-size: 0.88rem;
+  }
+
+  .install-options-multi label {
+    font-weight: 400;
+  }
+
+  .install-field--inline {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .75rem;
+  }
+
+  @media (max-width: 600px) {
+    .install-field--inline {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .install-extra {
+    margin: 1rem 0 .5rem;
+    border-top: 1px dashed #e5e7eb;
+    padding-top: .75rem;
+  }
+
+  .install-extra-toggle {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0 0 .5rem;
+    font: inherit;
+    color: #111827;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+  }
+
+  .install-extra-toggle::after {
+    content: "▼";
+    font-size: .7rem;
+    transform: translateY(1px);
+  }
+
+  .install-extra-toggle[aria-expanded="true"]::after {
+    content: "▲";
+  }
+
+  .install-legal {
+    font-size: .75rem;
+    color: #6b7280;
+    margin: .5rem 0 1rem;
+  }
+
+  /* Botones genéricos coherentes con el resto del sitio */
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: .55rem 1.3rem;
+    border-radius: 999px;
+    border: 1px solid #111827;
+    background-color: #111827;
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+  }
+
+  .button:hover {
+    background-color: #000000;
+    border-color: #000000;
+  }
+
+  .button--ghost {
+    background-color: #ffffff;
+    color: #111827;
+  }
+
+  .button--ghost:hover {
+    background-color: #f3f4f6;
+  }
+
+  .button--primary {
+    width: 100%;
+  }
+</style>
+
+<script>
+  (function () {
+    const form = document.getElementById('installQuoteForm');
+    if (!form) return;
+
+    const WHATSAPP_NUMBER = '16892968515'; // +1 (689) 296-8515
+
+    // Toggle detalles extra
+    const extraToggle = form.querySelector('.install-extra-toggle');
+    const extraPanel = form.querySelector('.install-extra-panel');
+
+    if (extraToggle && extraPanel) {
+      extraToggle.addEventListener('click', function () {
+        const expanded = extraToggle.getAttribute('aria-expanded') === 'true';
+        extraToggle.setAttribute('aria-expanded', String(!expanded));
+        extraPanel.hidden = expanded;
+      });
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      if (!form.reportValidity()) {
+        return;
+      }
+
+      // Campos básicos
+      const fullName = form.full_name.value || '-';
+      const phone = form.phone.value || '-';
+      const email = form.email.value || '-';
+      const city = form.city.value || '-';
+      const service = form.service.value || '-';
+      const projectDetails = form.project_details.value || '-';
+
+      // Campos extra (opcionales)
+      const propertyType = form.property_type ? (form.property_type.value || '-') : '-';
+
+      const areasSelected = Array.from(form.querySelectorAll('input[name="areas[]"]:checked'))
+        .map(el => el.parentElement.textContent.trim())
+        .join(', ') || '-';
+
+      const squareFootage = form.square_footage ? (form.square_footage.value || '-') : '-';
+      const hasStairs = form.has_stairs ? (form.has_stairs.value || '-') : '-';
+
+      const hasMaterial = form.has_material ? (form.has_material.value || '-') : '-';
+      const floorType = form.floor_type ? (form.floor_type.value || '-') : '-';
+      const installTiming = form.install_timing ? (form.install_timing.value || '-') : '-';
+
+      const lines = [
+        '📋 *New flooring estimate request*',
+        '',
+        '*Client info*',
+        `Name: ${fullName}`,
+        `Phone: ${phone}`,
+        `Email: ${email}`,
+        `City/Area: ${city}`,
+        '',
+        '*Service*',
+        `Requested service: ${service}`,
+        '',
+        '*Project details*',
+        projectDetails,
+        '',
+        '*Extra project info*',
+        `Property type: ${propertyType}`,
+        `Areas to install: ${areasSelected}`,
+        `Approx. square footage: ${squareFootage}`,
+        `Stairs to cover: ${hasStairs}`,
+        `Has material: ${hasMaterial}`,
+        `Floor type interested in: ${floorType}`,
+        `When to install: ${installTiming}`,
+        '',
+        '— Submitted from Flooring Install – Contact & free estimate section.'
+      ];
+
+      const message = lines.join('\n');
+      const encoded = encodeURIComponent(message);
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
+
+      // Aquí podrías disparar eventos de analítica (GA4 / Meta)
+      // dataLayer.push({ event: 'install_quote_submit' });
+
+      window.open(url, '_blank');
+    });
+  })();
+</script>
