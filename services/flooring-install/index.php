@@ -62,7 +62,7 @@ $contact_source = 'website_services';
 
         <form id="lead-form-hero" class="install-form" action="<?=$base?>lead.php" method="POST" novalidate>
           <fieldset class="install-step is-active" data-step="1">
-            <legend class="install-step-title">Your info</legend>
+            <!--<legend class="install-step-title">Your info</legend>-->
 
             <div class="install-field">
               <label for="full_name_hero">Full name<span class="required">*</span></label>
@@ -108,7 +108,7 @@ $contact_source = 'website_services';
           </fieldset>
 
           <fieldset class="install-step" data-step="2">
-            <legend class="install-step-title">Your space</legend>
+            <!--<legend class="install-step-title">Your space</legend>-->
 
             <div class="install-field">
               <label for="property_type_hero">Property type<span class="required">*</span></label>
@@ -176,7 +176,7 @@ $contact_source = 'website_services';
           </fieldset>
 
           <fieldset class="install-step" data-step="3">
-            <legend class="install-step-title">Existing floor &amp; preparation</legend>
+            <!--<legend class="install-step-title">Existing floor &amp; preparation</legend>-->
 
             <div class="install-field">
               <label for="current_floor_hero">Current flooring (what you have now)<span class="required">*</span></label>
@@ -221,7 +221,7 @@ $contact_source = 'website_services';
           </fieldset>
 
           <fieldset class="install-step" data-step="4">
-            <legend class="install-step-title">Floor &amp; timing</legend>
+            <!--<legend class="install-step-title">Floor &amp; timing</legend>-->
 
             <div class="install-field">
               <span class="install-label">Do you already have the flooring material?<span class="required">*</span></span>
