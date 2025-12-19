@@ -529,7 +529,7 @@
       .flooring-install-forms .install-step{display:none;border:0;padding:0;margin:0}
       .flooring-install-forms .install-step.is-active{display:block}
       .flooring-install-forms .install-step-title{font-size:1.1rem;margin:0 0 1rem}
-      .flooring-install-forms .install-field{margin-bottom:1.1rem}
+      .flooring-install-forms .install-field{margin-bottom:1rem}
       .flooring-install-forms .install-field label,
       .flooring-install-forms .install-label{display:block;font-weight:500;margin-bottom:.35rem;font-size:.9rem}
       .flooring-install-forms .install-field input[type="text"],
@@ -537,15 +537,12 @@
       .flooring-install-forms .install-field input[type="email"],
       .flooring-install-forms .install-field input[type="number"],
       .flooring-install-forms .install-field select,
-      .flooring-install-forms .install-field textarea{width:100%;padding:.55rem .7rem;border-radius:.4rem;border:1px solid #d1d5db;font:inherit;font-size:11px;color:#111827;background-color:#ffffff}
+      .flooring-install-forms .install-field textarea{width:100%;padding:.55rem .7rem;border-radius:.4rem;border:1px solid #d1d5db;font:inherit;color:#111827;background-color:#ffffff}
       .flooring-install-forms .install-field textarea{resize:vertical}
       .flooring-install-forms .install-field input:focus,
       .flooring-install-forms .install-field select:focus,
       .flooring-install-forms .install-field textarea:focus{outline:none;border-color:#111827;box-shadow:0 0 0 1px #11182711}
-      .flooring-install-forms .install-options{display:flex;flex-direction:column;gap:.35rem;font-size:.9rem}
-      .flooring-install-forms .install-options label{display:flex;align-items:center;gap:.4rem}
-      .flooring-install-forms .install-options input[type="radio"],
-      .flooring-install-forms .install-options input[type="checkbox"]{margin:0}
+      .flooring-install-forms .install-options{display:flex;flex-direction:column;gap:.25rem;font-size:.9rem}
       .flooring-install-forms .install-options-multi label{font-weight:400}
       .flooring-install-forms .install-help{font-size:.75rem;color:#6b7280}
       .flooring-install-forms .required{color:#dc2626;margin-left:.2rem}
