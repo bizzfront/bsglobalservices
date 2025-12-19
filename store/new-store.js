@@ -152,6 +152,9 @@
     const availabilityFilters = getCheckedValues('.filter-availability');
     const thkMin = parseFloat(document.getElementById('fThkMin')?.value || '') || 0;
     const wearMin = parseFloat(document.getElementById('fWearMin')?.value || '') || 0;
+    const toneOptions = ['light', 'medium', 'dark'];
+    const toneFilters = colorFilters.filter(value => toneOptions.includes(value));
+    const familyFilters = colorFilters.filter(value => !toneOptions.includes(value));
 
     let filtered = list.filter(p=>{
       const tone = (p.tone || '').toLowerCase();
