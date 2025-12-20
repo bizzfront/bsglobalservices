@@ -5,7 +5,7 @@
         <div class="eyebrow" style="color:#F5EBDD" data-i18n="ey_reviews">What clients say</div>
         <h2 data-i18n="h_reviews">Reviews & results</h2>
       </div>
-      <a href="#contact" class="pill" data-i18n="pill_quote">Ask for references</a>
+      <a href="#contact" class="pill" data-i18n="pill_references">Ask for references</a>
     </div>
     <div class="twrap">
       <figure class="t">
