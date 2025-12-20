@@ -155,7 +155,7 @@ window.SLOT_MINUTES=60;
 
 <script>
   
-(function(){
+
   // Lead form behavior
   const leadForm = document.getElementById('leadForm');
   const waLeadBtn = document.getElementById('waLeadBtn');
@@ -216,6 +216,7 @@ Notes: ${notes}`;
   }
 
   const ZIP_ZONE_FILE = '<?=$base?>store/zip_zones.json';
+  console.log(ZIP_ZONE_FILE)
   let zipLoadPromise = null;
   let ZIP_DATA = [];
 
@@ -367,6 +368,8 @@ Notes: ${notes}`;
       .then(_=>{ schedNote.style.display='block'; schedNote.textContent='Appointment sent. Check your calendar file (ICS).'; })
       .catch(_=>{ schedNote.style.display='block'; schedNote.textContent='Could not send. Please try again or use WhatsApp.'; });
 })();
+
+
 </script>
 
 <!-- SEO JSON-LD -->

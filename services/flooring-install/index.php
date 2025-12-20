@@ -70,8 +70,8 @@ $contact_source = 'website_services';
             </div>
 
             <div class="install-field">
-              <label for="phone_hero"><span data-i18n="flooring_install_label_phone">Phone / WhatsApp</span><span class="required">*</span></label>
-              <input type="tel" id="phone_hero" name="phone" placeholder="+1 (689) 000-0000" data-i18n-placeholder="flooring_install_placeholder_phone" required maxlength="255">
+              <label for="phone_hero"><span data-i18n="flooring_install_label_phone">Phone / WhatsApp</span></label>
+              <input type="tel" id="phone_hero" name="phone" placeholder="+1 (689) 000-0000" data-i18n-placeholder="flooring_install_placeholder_phone" maxlength="255">
             </div>
 
             <div class="install-field">
@@ -80,7 +80,7 @@ $contact_source = 'website_services';
             </div>
 
             <div class="install-field">
-              <span class="install-label"><span data-i18n="flooring_install_label_language">Preferred language</span><span class="required">*</span></span>
+              <span class="install-label"><span data-i18n="flooring_install_label_language">Preferred language</span></span>
               <div class="install-options">
                 <label>
                   <input type="radio" class="ratio-correct-display" name="preferred_language" value="english" checked required>
