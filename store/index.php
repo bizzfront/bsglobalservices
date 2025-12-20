@@ -2,6 +2,17 @@
 require_once __DIR__.'/utils.php';
 
 $products = array_map('normalize_store_product', load_store_products());
+$maxMoldingLength = 0;
+foreach ($products as $product) {
+  if (($product['productType'] ?? '') !== 'molding') {
+    continue;
+  }
+  $lengthFt = $product['lengthFt'] ?? null;
+  if (is_numeric($lengthFt) && $lengthFt > $maxMoldingLength) {
+    $maxMoldingLength = (float) $lengthFt;
+  }
+}
+$maxMoldingLength = $maxMoldingLength > 0 ? $maxMoldingLength : null;
 $type = $_GET['type'] ?? 'flooring';
 if (!in_array($type, ['flooring', 'molding'], true)) {
   $type = 'flooring';
@@ -203,6 +214,16 @@ $heroSubtitle = $type === 'molding'
           <div class="filter-options">
             <label><input id="fThkMin" type="number" step="0.1" placeholder="Thickness ≥ mm" data-i18n-placeholder="store_filter_thickness_placeholder" style="width:100%; padding:9px 10px; border-radius:8px; border:1px solid var(--store-border);" /></label>
             <label><input id="fWearMin" type="number" step="1" placeholder="Wear layer ≥ mil" data-i18n-placeholder="store_filter_wear_placeholder" style="width:100%; padding:9px 10px; border-radius:8px; border:1px solid var(--store-border);" /></label>
+          </div>
+        </div>
+        <?php endif; ?>
+        <?php if($type === 'molding'): ?>
+        <div class="filter-group">
+          <div class="filter-title">Length (ft)</div>
+          <div class="filter-options">
+            <label>
+              <input id="fLengthMax" type="number" step="0.1" min="0" <?= $maxMoldingLength !== null ? 'max="'.$maxMoldingLength.'"' : '' ?> placeholder="Length ≤ ft" style="width:100%; padding:9px 10px; border-radius:8px; border:1px solid var(--store-border);" />
+            </label>
           </div>
         </div>
         <?php endif; ?>

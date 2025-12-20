@@ -170,6 +170,7 @@
     const availabilityFilters = getCheckedValues('.filter-availability');
     const thkMin = parseFloat(document.getElementById('fThkMin')?.value || '') || 0;
     const wearMin = parseFloat(document.getElementById('fWearMin')?.value || '') || 0;
+    const lengthMax = parseFloat(document.getElementById('fLengthMax')?.value || '') || 0;
     const toneOptions = ['light', 'medium', 'dark'];
     const toneFilters = colorFilters.filter(value => toneOptions.includes(value));
     const familyFilters = colorFilters.filter(value => !toneOptions.includes(value));
@@ -182,6 +183,12 @@
       if(CURRENT_TYPE === 'flooring'){
         if(thkMin && (parseFloat(p.thickness) || 0) < thkMin) return false;
         if(wearMin && (parseFloat(p.wearLayer) || 0) < wearMin) return false;
+      }
+      if(CURRENT_TYPE === 'molding'){
+        if(lengthMax){
+          const lengthValue = parseFloat(p.lengthFt);
+          if(!Number.isFinite(lengthValue) || lengthValue > lengthMax) return false;
+        }
       }
       return true;
     });
@@ -279,14 +286,14 @@
     });
   }
 
-  ['sortSel','fThkMin','fWearMin'].forEach(id=>{
+  ['sortSel','fThkMin','fWearMin','fLengthMax'].forEach(id=>{
     document.getElementById(id)?.addEventListener('change', render);
   });
   document.querySelectorAll('.filter-color,.filter-availability').forEach(el=>{
     el.addEventListener('change', render);
   });
   document.getElementById('clearFilters')?.addEventListener('click', ()=>{
-    ['fThkMin','fWearMin'].forEach(id=>{
+    ['fThkMin','fWearMin','fLengthMax'].forEach(id=>{
       const el = document.getElementById(id);
       if(el) el.value = '';
     });
