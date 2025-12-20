@@ -27,7 +27,7 @@ $contact_source = 'website_services';
 </nav>
 
 <main id="main">
-  <div class="container hero">
+  <div class="container hero flooring-install--hero">
     
     <div class="hero-copy">
       <span class="badge">Bilingual EN/ES · Orlando, FL</span>
@@ -83,11 +83,11 @@ $contact_source = 'website_services';
               <span class="install-label">Preferred language<span class="required">*</span></span>
               <div class="install-options">
                 <label>
-                  <input type="radio" name="preferred_language" value="english" checked required>
+                  <input type="radio" class="ratio-correct-display" name="preferred_language" value="english" checked required>
                   English
                 </label>
                 <label>
-                  <input type="radio" name="preferred_language" value="spanish" required>
+                  <input type="radio" class="ratio-correct-display" name="preferred_language" value="spanish" required>
                   Español
                 </label>
               </div>
@@ -126,11 +126,11 @@ $contact_source = 'website_services';
               <span class="install-label">Is the property currently…?<span class="required">*</span></span>
               <div class="install-options">
                 <label>
-                  <input type="radio" name="occupancy" value="occupied" required>
+                  <input type="radio" class="ratio-correct-display" name="occupancy" value="occupied" required>
                   Occupied (we live/work here)
                 </label>
                 <label>
-                  <input type="radio" name="occupancy" value="vacant" required>
+                  <input type="radio" class="ratio-correct-display" name="occupancy" value="vacant" required>
                   Vacant
                 </label>
               </div>
@@ -139,14 +139,14 @@ $contact_source = 'website_services';
             <div class="install-field">
               <span class="install-label">Areas you want to install</span>
               <div class="install-options install-options-multi">
-                <label><input type="checkbox" name="areas[]" value="living_room"> Living room / Family room</label>
-                <label><input type="checkbox" name="areas[]" value="bedrooms"> Bedrooms</label>
-                <label><input type="checkbox" name="areas[]" value="hallways"> Hallways</label>
-                <label><input type="checkbox" name="areas[]" value="kitchen"> Kitchen</label>
-                <label><input type="checkbox" name="areas[]" value="bathrooms"> Bathrooms</label>
-                <label><input type="checkbox" name="areas[]" value="stairs"> Stairs</label>
-                <label><input type="checkbox" name="areas[]" value="entire_home"> Entire home</label>
-                <label><input type="checkbox" name="areas[]" value="other"> Other</label>
+                <label><input type="checkbox" class="ratio-correct-display"name="areas[]" value="living_room"> Living room / Family room</label>
+                <label><input type="checkbox" class="ratio-correct-display"name="areas[]" value="bedrooms"> Bedrooms</label>
+                <label><input type="checkbox" class="ratio-correct-display"name="areas[]" value="hallways"> Hallways</label>
+                <label><input type="checkbox" class="ratio-correct-display"name="areas[]" value="kitchen"> Kitchen</label>
+                <label><input type="checkbox" class="ratio-correct-display"name="areas[]" value="bathrooms"> Bathrooms</label>
+                <label><input type="checkbox" class="ratio-correct-display"name="areas[]" value="stairs"> Stairs</label>
+                <label><input type="checkbox" class="ratio-correct-display"name="areas[]" value="entire_home"> Entire home</label>
+                <label><input type="checkbox" class="ratio-correct-display"name="areas[]" value="other"> Other</label>
               </div>
             </div>
 
@@ -159,9 +159,9 @@ $contact_source = 'website_services';
             <div class="install-field">
               <span class="install-label">Do you have stairs to cover?<span class="required">*</span></span>
               <div class="install-options">
-                <label><input type="radio" name="has_stairs" value="yes" required> Yes</label>
-                <label><input type="radio" name="has_stairs" value="no" required> No</label>
-                <label><input type="radio" name="has_stairs" value="not_sure" required> Not sure yet</label>
+                <label><input type="radio" class="ratio-correct-display" name="has_stairs" value="yes" required> Yes</label>
+                <label><input type="radio" class="ratio-correct-display" name="has_stairs" value="no" required> No</label>
+                <label><input type="radio" class="ratio-correct-display" name="has_stairs" value="not_sure" required> Not sure yet</label>
               </div>
             </div>
 
@@ -195,18 +195,18 @@ $contact_source = 'website_services';
             <div class="install-field">
               <span class="install-label">Do you need removal &amp; disposal of old floor?<span class="required">*</span></span>
               <div class="install-options">
-                <label><input type="radio" name="need_removal" value="yes" required> Yes, I need removal &amp; disposal</label>
-                <label><input type="radio" name="need_removal" value="no" required> No, floor is already removed</label>
-                <label><input type="radio" name="need_removal" value="not_sure" required> Not sure, I need advice</label>
+                <label><input type="radio" class="ratio-correct-display" name="need_removal" value="yes" required> Yes, I need removal &amp; disposal</label>
+                <label><input type="radio" class="ratio-correct-display" name="need_removal" value="no" required> No, floor is already removed</label>
+                <label><input type="radio" class="ratio-correct-display" name="need_removal" value="not_sure" required> Not sure, I need advice</label>
               </div>
             </div>
 
             <div class="install-field">
               <span class="install-label">Subfloor / condition</span>
               <div class="install-options install-options-multi">
-                <label><input type="checkbox" name="subfloor_condition[]" value="cracks_uneven"> I know there are cracks / uneven areas</label>
-                <label><input type="checkbox" name="subfloor_condition[]" value="moisture_issues"> I’ve had moisture issues before</label>
-                <label><input type="checkbox" name="subfloor_condition[]" value="dont_know"> I don’t know, please check during visit</label>
+                <label><input type="checkbox" class="ratio-correct-display"name="subfloor_condition[]" value="cracks_uneven"> I know there are cracks / uneven areas</label>
+                <label><input type="checkbox" class="ratio-correct-display"name="subfloor_condition[]" value="moisture_issues"> I’ve had moisture issues before</label>
+                <label><input type="checkbox" class="ratio-correct-display"name="subfloor_condition[]" value="dont_know"> I don’t know, please check during visit</label>
               </div>
             </div>
 
@@ -226,9 +226,9 @@ $contact_source = 'website_services';
             <div class="install-field">
               <span class="install-label">Do you already have the flooring material?<span class="required">*</span></span>
               <div class="install-options">
-                <label><input type="radio" name="has_material" value="need_supply" required> No, I need you to supply it</label>
-                <label><input type="radio" name="has_material" value="already_have" required> Yes, I already bought the material</label>
-                <label><input type="radio" name="has_material" value="need_guidance" required> I’m not sure, need guidance</label>
+                <label><input type="radio" class="ratio-correct-display" name="has_material" value="need_supply" required> No, I need you to supply it</label>
+                <label><input type="radio" class="ratio-correct-display" name="has_material" value="already_have" required> Yes, I already bought the material</label>
+                <label><input type="radio" class="ratio-correct-display" name="has_material" value="need_guidance" required> I’m not sure, need guidance</label>
               </div>
             </div>
 
@@ -247,15 +247,15 @@ $contact_source = 'website_services';
               <span class="install-label">Service type<span class="required">*</span></span>
               <div class="install-options">
                 <label>
-                  <input type="radio" name="service_type" value="lvp_supply_install" required>
+                  <input type="radio" class="ratio-correct-display" name="service_type" value="lvp_supply_install" required>
                   Waterproof LVP – supply &amp; install
                 </label>
                 <label>
-                  <input type="radio" name="service_type" value="installation_only" required>
+                  <input type="radio" class="ratio-correct-display" name="service_type" value="installation_only" required>
                   Installation only (Laminate / Vinyl / Hardwood)
                 </label>
                 <label>
-                  <input type="radio" name="service_type" value="other_service" required>
+                  <input type="radio" class="ratio-correct-display" name="service_type" value="other_service" required>
                   Other flooring service
                 </label>
               </div>
@@ -264,12 +264,12 @@ $contact_source = 'website_services';
             <div class="install-field">
               <span class="install-label">Extras you might need</span>
               <div class="install-options install-options-multi">
-                <label><input type="checkbox" name="extras[]" value="baseboards"> Baseboards / trims</label>
-                <label><input type="checkbox" name="extras[]" value="quarter_round"> Quarter round / transitions</label>
-                <label><input type="checkbox" name="extras[]" value="underlayment"> Underlayment / moisture barrier</label>
-                <label><input type="checkbox" name="extras[]" value="old_floor_removal"> Old floor removal &amp; disposal</label>
-                <label><input type="checkbox" name="extras[]" value="furniture_moving"> Furniture moving</label>
-                <label><input type="checkbox" name="extras[]" value="other"> Other</label>
+                <label><input type="checkbox" class="ratio-correct-display"name="extras[]" value="baseboards"> Baseboards / trims</label>
+                <label><input type="checkbox" class="ratio-correct-display"name="extras[]" value="quarter_round"> Quarter round / transitions</label>
+                <label><input type="checkbox" class="ratio-correct-display"name="extras[]" value="underlayment"> Underlayment / moisture barrier</label>
+                <label><input type="checkbox" class="ratio-correct-display"name="extras[]" value="old_floor_removal"> Old floor removal &amp; disposal</label>
+                <label><input type="checkbox" class="ratio-correct-display"name="extras[]" value="furniture_moving"> Furniture moving</label>
+                <label><input type="checkbox" class="ratio-correct-display"name="extras[]" value="other"> Other</label>
               </div>
             </div>
 
@@ -538,13 +538,13 @@ $contact_source = 'website_services';
               <div class="install-field">
                 <span class="install-label">Areas you want to install</span>
                 <div class="install-options install-options-multi">
-                  <label><input type="checkbox" name="areas[]" value="living_room"> Living room / Family room</label>
-                  <label><input type="checkbox" name="areas[]" value="bedrooms"> Bedrooms</label>
-                  <label><input type="checkbox" name="areas[]" value="hallways"> Hallways</label>
-                  <label><input type="checkbox" name="areas[]" value="kitchen"> Kitchen</label>
-                  <label><input type="checkbox" name="areas[]" value="bathrooms"> Bathrooms</label>
-                  <label><input type="checkbox" name="areas[]" value="stairs"> Stairs</label>
-                  <label><input type="checkbox" name="areas[]" value="entire_home"> Entire home</label>
+                  <label><input type="checkbox" class="ratio-correct-display"name="areas[]" value="living_room"> Living room / Family room</label>
+                  <label><input type="checkbox" class="ratio-correct-display"name="areas[]" value="bedrooms"> Bedrooms</label>
+                  <label><input type="checkbox" class="ratio-correct-display"name="areas[]" value="hallways"> Hallways</label>
+                  <label><input type="checkbox" class="ratio-correct-display"name="areas[]" value="kitchen"> Kitchen</label>
+                  <label><input type="checkbox" class="ratio-correct-display"name="areas[]" value="bathrooms"> Bathrooms</label>
+                  <label><input type="checkbox" class="ratio-correct-display"name="areas[]" value="stairs"> Stairs</label>
+                  <label><input type="checkbox" class="ratio-correct-display"name="areas[]" value="entire_home"> Entire home</label>
                 </div>
               </div>
 
@@ -567,9 +567,9 @@ $contact_source = 'website_services';
               <div class="install-field">
                 <span class="install-label">Do you already have the flooring material?</span>
                 <div class="install-options">
-                  <label><input type="radio" name="has_material" value="need_supply"> No, I need you to supply it</label>
-                  <label><input type="radio" name="has_material" value="already_have"> Yes, I already bought it</label>
-                  <label><input type="radio" name="has_material" value="need_guidance"> I’m not sure, need guidance</label>
+                  <label><input type="radio" class="ratio-correct-display" name="has_material" value="need_supply"> No, I need you to supply it</label>
+                  <label><input type="radio" class="ratio-correct-display" name="has_material" value="already_have"> Yes, I already bought it</label>
+                  <label><input type="radio" class="ratio-correct-display" name="has_material" value="need_guidance"> I’m not sure, need guidance</label>
                 </div>
               </div>
 

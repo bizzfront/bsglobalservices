@@ -546,8 +546,9 @@
       .flooring-install-forms .install-options-multi label{font-weight:400}
       .flooring-install-forms .install-help{font-size:.75rem;color:#6b7280}
       .flooring-install-forms .required{color:#dc2626;margin-left:.2rem}
+      .flooring-install-forms .ratio-correct-display{display: inline-block; width: auto;}
       .flooring-install-forms .install-form-nav{display:flex;justify-content:space-between;gap:.75rem;margin-top:1.25rem}
-
+      .flooring-install--hero{grid-template-columns: .9fr 1.2fr;}
       .flooring-install-forms .contact-estimate-layout{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.2fr);gap:2rem;align-items:flex-start}
       .flooring-install-forms .contact-estimate-main{max-width:640px}
       .flooring-install-forms .contact-estimate-info h3{margin-top:0;margin-bottom:.5rem}
