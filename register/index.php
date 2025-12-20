@@ -162,7 +162,7 @@ window.SLOT_MINUTES=60;
   const leadNote = document.getElementById('leadNote');
   const schedForm = document.getElementById('schedForm');
 
-  ['name','email','phone','zip'].forEach(fn=>{
+  ['name','email','phone'].forEach(fn=>{
     const lf = leadForm.querySelector(`[name="${fn}"]`);
     const sf = schedForm.querySelector(`[name="${fn}"]`);
     if(lf && sf){
@@ -250,14 +250,15 @@ Notes: ${notes}`;
       });
       zipInputs.forEach(({input, city}) => {
         if (!input) return;
-        const entry = resolveZipEntry(input.value);
-        if (entry && city) city.value = entry.city || '';
-        input.addEventListener('change', () => {
+        const updateCity = () => {
           const selected = resolveZipEntry(input.value);
           if (city) city.value = selected?.city || '';
           buildLeadWA();
           buildSchedWA();
-        });
+        };
+        updateCity();
+        input.addEventListener('input', updateCity);
+        input.addEventListener('change', updateCity);
       });
     });
   }
@@ -366,7 +367,6 @@ Notes: ${notes}`;
       .then(_=>{ schedNote.style.display='block'; schedNote.textContent='Appointment sent. Check your calendar file (ICS).'; })
       .catch(_=>{ schedNote.style.display='block'; schedNote.textContent='Could not send. Please try again or use WhatsApp.'; });
 })();
-})
 </script>
 
 <!-- SEO JSON-LD -->
