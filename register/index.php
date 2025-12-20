@@ -154,6 +154,7 @@ window.SLOT_MINUTES=60;
 <?php include $base.'includes/footer.php'; ?>
 
 <script>
+  
 (function(){
   // Lead form behavior
   const leadForm = document.getElementById('leadForm');
@@ -365,6 +366,7 @@ Notes: ${notes}`;
       .then(_=>{ schedNote.style.display='block'; schedNote.textContent='Appointment sent. Check your calendar file (ICS).'; })
       .catch(_=>{ schedNote.style.display='block'; schedNote.textContent='Could not send. Please try again or use WhatsApp.'; });
 })();
+})
 </script>
 
 <!-- SEO JSON-LD -->
