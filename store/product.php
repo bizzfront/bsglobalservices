@@ -165,13 +165,13 @@ $installRateLabel = $installRateValue !== null
           <div class="eyebrow" data-i18n="ey_popular">Popular Vinyl Plank Options</div>
           <h1 data-i18n="h_popular"><?= htmlspecialchars($product['name']) ?></h2>
         </div>
-        <span class="pill"><?= htmlspecialchars($product['collection']) ?></span>
+        <!--<?= htmlspecialchars($product['collection']) ?></span>
         <?php if($isFlooring && !empty($normalizedProduct['colorName'])): ?>
           <span class="store-color-pill" aria-label="Color <?= htmlspecialchars($normalizedProduct['colorName']) ?>">
             <span class="dot" aria-hidden="true"></span>
             <span><?= htmlspecialchars($normalizedProduct['colorName']) ?></span>
           </span>
-        <?php endif; ?>
+        <?php endif; ?>-->
     </div>
     <h1></h1>
     <div class="product-top">
