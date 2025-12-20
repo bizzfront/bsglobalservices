@@ -317,7 +317,7 @@
       .product-top .slider{aspect-ratio: 1/1;}
       @media (min-width:981px){
         .product-top{flex-direction:row;align-items:flex-start}
-        .product-top .slider{width:60%}
+        .product-top .slider{width:60%;position:sticky;top:1.5rem;align-self:flex-start}
         .product-top .product-cart{width:40%}
       }
 
