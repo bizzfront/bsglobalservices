@@ -163,7 +163,7 @@ $installRateLabel = $installRateValue !== null
     <div class="sec-head">
         <div style="margin-top:1.6vw;" >
           <div class="eyebrow" data-i18n="ey_popular">Popular Vinyl Plank Options</div>
-          <h1 data-i18n="h_popular"><?= htmlspecialchars($product['name']) ?></h2>
+          <h1><?= htmlspecialchars($product['name']) ?></h2>
         </div>
         <!--<?= htmlspecialchars($product['collection']) ?></span>
         <?php if($isFlooring && !empty($normalizedProduct['colorName'])): ?>
