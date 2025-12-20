@@ -18,18 +18,14 @@ if (!$product) {
   echo 'Product not found';
   exit;
 }
-$imagePaths = array_filter([$product['image'] ?? '', $product['hoverImage'] ?? '']);
-$baseDir = $imagePaths ? dirname(dirname($imagePaths[0])) : null;
-$basePath = $baseDir ? __DIR__ . '/../' . $baseDir : null;
-$images = [];
-if ($basePath && is_dir($basePath)) {
-  $images = array_merge(glob($basePath.'/*.png') ?: [], glob($basePath.'/*/*.png') ?: []);
-  $images = array_map(function($p){return str_replace(__DIR__.'/../','',$p);}, $images);
+$galleryImages = $product['gallery'] ?? [];
+if (!is_array($galleryImages)) {
+  $galleryImages = [];
 }
-$selected = array_unique(array_filter([$product['image'] ?? '', $product['hoverImage'] ?? '']));
-$others = array_diff($images, $selected);
-shuffle($others);
-$selected = array_merge($selected, array_slice($others, 0, max(0, 4 - count($selected))));
+$selected = array_unique(array_filter(array_merge(
+  [$product['image'] ?? '', $product['hoverImage'] ?? ''],
+  $galleryImages
+)));
 $base = '../';
 $active = 'store';
 $contact_source = 'website_store';
