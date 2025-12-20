@@ -470,8 +470,8 @@ function normalize_store_product(array $product): array
     $truckLoadPallets = parse_store_numeric($product['truck_load_1216_pallets'] ?? $product['truckLoad1216Pallets'] ?? null);
     $gainPercent = parse_store_numeric($product['ganancia'] ?? null);
     $discountPercent = parse_store_numeric($product['descuento'] ?? null);
+    $lengthFt = parse_store_numeric($product['length_ft'] ?? null);
     if (($product['product_type'] ?? '') === 'molding') {
-        $lengthFt = parse_store_numeric($product['length_ft'] ?? null);
         if ($lengthFt !== null && $lengthFt > 0) {
             $packageCoverage = $lengthFt;
         }
@@ -509,6 +509,7 @@ function normalize_store_product(array $product): array
         'wearLayer' => $product['wear_layer_mil'] ?? null,
         'widthIn' => $product['width_in'] ?? null,
         'lengthIn' => $product['length_in'] ?? null,
+        'lengthFt' => $lengthFt !== null && $lengthFt > 0 ? $lengthFt : null,
         'measurementUnit' => $measurementUnit,
         'packageLabel' => $product['package_label'] ?? ($product['product_type'] === 'molding' ? 'piece' : 'box'),
         'packageLabelPlural' => $product['package_label_plural'] ?? ($product['product_type'] === 'molding' ? 'pieces' : 'boxes'),
