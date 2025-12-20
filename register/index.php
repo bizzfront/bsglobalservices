@@ -52,15 +52,12 @@ window.SLOT_MINUTES=60;
           <input name="phone" type="tel" required autocomplete="tel" />
         </label>
         <label>
-          City
-          <select name="city">
-            <option value="">Select</option>
-            <option>Orlando</option>
-            <option>Kissimmee</option>
-            <option>St. Cloud</option>
-            <option>Other</option>
-          </select>
+          ZIP Code
+          <input name="zip" id="zipLead" list="zip_list_lead" placeholder="Select your ZIP Code" inputmode="numeric" pattern="\\d*" />
+          <datalist id="zip_list_lead" data-zip-list></datalist>
+          <small class="help">Service area ZIPs supported by B&amp;S.</small>
         </label>
+        <input type="hidden" name="city" id="leadCity" />
         <label class="row">
           Interest
           <select name="service" id="interest">
@@ -106,12 +103,10 @@ window.SLOT_MINUTES=60;
           </select>
         </label>
         <label>
-          Location
-          <select name="location">
-            <option>Orlando</option>
-            <option>Kissimmee</option>
-            <option>St. Cloud</option>
-          </select>
+          ZIP Code
+          <input name="zip" id="zipSched" list="zip_list_sched" placeholder="Select your ZIP Code" inputmode="numeric" pattern="\\d*" />
+          <datalist id="zip_list_sched" data-zip-list></datalist>
+          <small class="help">Service area ZIPs supported by B&amp;S.</small>
         </label>
         <label>
           Date*
@@ -166,7 +161,7 @@ window.SLOT_MINUTES=60;
   const leadNote = document.getElementById('leadNote');
   const schedForm = document.getElementById('schedForm');
 
-  ['name','email','phone','city'].forEach(fn=>{
+  ['name','email','phone','zip'].forEach(fn=>{
     const lf = leadForm.querySelector(`[name="${fn}"]`);
     const sf = schedForm.querySelector(`[name="${fn}"]`);
     if(lf && sf){
@@ -181,14 +176,16 @@ window.SLOT_MINUTES=60;
     const name = (data.get('name')||'').toString().trim();
     const email = (data.get('email')||'').toString().trim();
     const phone = (data.get('phone')||'').toString().trim();
+    const zip = (data.get('zip')||'').toString().trim();
     const city = (data.get('city')||'').toString().trim();
     const interest = (data.get('service')||'catalog').toString();
     const notes = (data.get('message')||'').toString().trim();
+    const zipLine = zip ? `ZIP Code: ${zip}${city ? ` (${city})` : ''}` : 'ZIP Code:';
     const msg = `Hi! I'd like ${interest.replace('both','the catalog and a quick estimate')}.
 Name: ${name}
 Email: ${email}
 Phone: ${phone}
-City: ${city}
+${zipLine}
 Notes: ${notes}`;
     const url = `https://wa.me/${window.WA_NUMBER}?text=${encodeURIComponent(msg)}`;
     waLeadBtn.setAttribute('href', url);
@@ -213,7 +210,56 @@ Notes: ${notes}`;
   const schedNote = document.getElementById('schedNote');
   const tzLabel = document.getElementById('tzLabel');
 
-  tzLabel.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  if (tzLabel) {
+    tzLabel.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  }
+
+  const ZIP_ZONE_FILE = '<?=$base?>store/zip_zones.json';
+  let zipLoadPromise = null;
+  let ZIP_DATA = [];
+
+  function loadZipData(){
+    if(zipLoadPromise) return zipLoadPromise;
+    zipLoadPromise = fetch(ZIP_ZONE_FILE)
+      .then(res => res.ok ? res.json() : [])
+      .then(data => {
+        ZIP_DATA = Array.isArray(data) ? data : [];
+        return ZIP_DATA;
+      })
+      .catch(() => {
+        ZIP_DATA = [];
+        return ZIP_DATA;
+      });
+    return zipLoadPromise;
+  }
+
+  function resolveZipEntry(zip){
+    const normalized = (zip || '').toString().trim();
+    return ZIP_DATA.find(z => z.zip === normalized);
+  }
+
+  function setupZipInputs(){
+    const zipInputs = [
+      {input: document.getElementById('zipLead'), city: document.getElementById('leadCity')},
+      {input: document.getElementById('zipSched'), city: document.getElementById('schedCity')},
+    ];
+    loadZipData().then(() => {
+      document.querySelectorAll('[data-zip-list]').forEach(list => {
+        list.innerHTML = ZIP_DATA.map(z => `<option value="${z.zip}">${z.city || ''}</option>`).join('');
+      });
+      zipInputs.forEach(({input, city}) => {
+        if (!input) return;
+        const entry = resolveZipEntry(input.value);
+        if (entry && city) city.value = entry.city || '';
+        input.addEventListener('change', () => {
+          const selected = resolveZipEntry(input.value);
+          if (city) city.value = selected?.city || '';
+          buildLeadWA();
+          buildSchedWA();
+        });
+      });
+    });
+  }
 
   function setMinDate(){
     const today = new Date();
@@ -228,6 +274,7 @@ Notes: ${notes}`;
   }
 
   function buildSlots(){
+    if (!slotsEl) return;
     slotsEl.innerHTML='';
     timeEl.value='';
     const val = dateEl.value;
@@ -262,18 +309,20 @@ Notes: ${notes}`;
   function buildSchedWA(){
     const data = new FormData(schedForm);
     const appt = (data.get('appt_type')||'Showroom visit').toString();
-    const loc  = (data.get('location')||'Orlando').toString();
+    const zip  = (data.get('zip')||'').toString().trim();
+    const city = (data.get('city')||'').toString().trim();
     const date = (data.get('date')||'').toString();
     const time = (data.get('time')||'').toString();
     const dur  = (data.get('duration')||'60').toString();
     const notes= (data.get('notes')||'').toString().trim();
-    const msg = `Hi! I'd like to schedule: ${appt}\nLocation: ${loc}\nDate: ${date}\nTime: ${time}\nDuration: ${dur} min\nNotes: ${notes}`;
+    const zipLine = zip ? `ZIP Code: ${zip}${city ? ` (${city})` : ''}` : 'ZIP Code:';
+    const msg = `Hi! I'd like to schedule: ${appt}\n${zipLine}\nDate: ${date}\nTime: ${time}\nDuration: ${dur} min\nNotes: ${notes}`;
     waSchedBtn.setAttribute('href', `https://wa.me/${window.WA_NUMBER}?text=${encodeURIComponent(msg)}`);
   }
 
   schedForm.addEventListener('change', buildSchedWA);
   dateEl.addEventListener('change', ()=>{ buildSlots(); buildSchedWA(); });
-  document.addEventListener('DOMContentLoaded', ()=>{ setMinDate(); buildSlots(); buildSchedWA(); });
+  document.addEventListener('DOMContentLoaded', ()=>{ setMinDate(); buildSlots(); setupZipInputs(); buildLeadWA(); buildSchedWA(); });
 
   schedForm.addEventListener('submit', function(ev){
     ev.preventDefault();
@@ -284,7 +333,10 @@ Notes: ${notes}`;
     if(!data.get('name') || (!data.get('email') && !data.get('phone'))){
       schedNote.style.display='block'; schedNote.textContent='Please complete your contact info in the first form.'; return;
     }
-    const msgFull = `Appointment type: ${data.get('appt_type')||''}\nLocation: ${data.get('location')||''}\nDate: ${data.get('date')||''}\nTime: ${data.get('time')||''}\nDuration: ${data.get('duration')||''} min\nNotes: ${(data.get('notes')||'')}`;
+    const zip = (data.get('zip')||'').toString().trim();
+    const city = (data.get('city')||'').toString().trim();
+    const zipLine = zip ? `ZIP Code: ${zip}${city ? ` (${city})` : ''}` : 'ZIP Code:';
+    const msgFull = `Appointment type: ${data.get('appt_type')||''}\n${zipLine}\nDate: ${data.get('date')||''}\nTime: ${data.get('time')||''}\nDuration: ${data.get('duration')||''} min\nNotes: ${(data.get('notes')||'')}`;
     data.set('message', msgFull);
     // Build ICS (calendar file) for convenience
     const dt = new Date(data.get('date')+'T'+data.get('time')+':00');
@@ -298,7 +350,7 @@ Notes: ${notes}`;
       'DTSTART:'+fmt(dt),
       'DTEND:'+fmt(dtEnd),
       'SUMMARY:'+('Appointment — '+(data.get('appt_type')||'')),
-      'LOCATION:'+ (data.get('location')||''),
+      'LOCATION:'+ (zip ? `ZIP ${zip}${city ? ' ' + city : ''}` : ''),
       'DESCRIPTION:'+ (data.get('notes')||''),
       'END:VEVENT','END:VCALENDAR'
     ].join('\r\n');
