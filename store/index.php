@@ -112,46 +112,50 @@ $heroSubtitle = $type === 'molding'
   <div class="container store-hero-inner">
     <div class="store-hero-top">
       <div>
-        <h1 class="store-hero-title">B&S Store — <?= $type === 'molding' ? 'Moldings & Trim' : 'Waterproof LVP Floors' ?></h1>
-        <p class="store-hero-sub">Explore in-stock and order-in options for Orlando & Meadow Woods. Prices by sqft and linear foot with matching trims, delivery and install add-ons.</p>
+        <h1 class="store-hero-title" data-i18n="<?= $type === 'molding' ? 'store_hero_title_molding' : 'store_hero_title_flooring' ?>">
+          B&S Store — <?= $type === 'molding' ? 'Moldings & Trim' : 'Waterproof LVP Floors' ?>
+        </h1>
+        <p class="store-hero-sub" data-i18n="<?= $type === 'molding' ? 'store_hero_subtitle_molding' : 'store_hero_subtitle_flooring' ?>">
+          Explore in-stock and order-in options for Orlando & Meadow Woods. Prices by sqft and linear foot with matching trims, delivery and install add-ons.
+        </p>
       </div>
       <div class="store-type-switch">
-        <a class="btn <?= $type === 'flooring' ? 'btn-primary' : 'btn-ghost' ?>" href="?type=flooring">Flooring</a>
-        <a class="btn <?= $type === 'molding' ? 'btn-primary' : 'btn-ghost' ?>" href="?type=molding">Moldings</a>
+        <a class="btn <?= $type === 'flooring' ? 'btn-primary' : 'btn-ghost' ?>" href="?type=flooring" data-i18n="store_type_flooring">Flooring</a>
+        <a class="btn <?= $type === 'molding' ? 'btn-primary' : 'btn-ghost' ?>" href="?type=molding" data-i18n="store_type_molding">Moldings</a>
       </div>
     </div>
     <div class="store-hero-pills">
-      <span class="pill">Waterproof core</span>
-      <span class="pill">Attached pad</span>
-      <span class="pill">Contractor pricing</span>
-      <span class="pill">SPC/WPC</span>
+      <span class="pill" data-i18n="store_pill_waterproof_core">Waterproof core</span>
+      <span class="pill" data-i18n="store_pill_attached_pad">Attached pad</span>
+      <span class="pill" data-i18n="store_pill_contractor_pricing">Contractor pricing</span>
+      <span class="pill" data-i18n="store_pill_spc_wpc">SPC/WPC</span>
     </div>
     <div class="store-promo">
-      <div class="promo-card">🚚 Delivery + install quotes inside your cart</div>
-      <div class="promo-card">🏷️ Stock vs. order-in pricing clearly labeled</div>
-      <div class="promo-card">📦 Matching trims & reducers for every floor</div>
+      <div class="promo-card" data-i18n="store_promo_delivery_install">🚚 Delivery + install quotes inside your cart</div>
+      <div class="promo-card" data-i18n="store_promo_stock_order">🏷️ Stock vs. order-in pricing clearly labeled</div>
+      <div class="promo-card" data-i18n="store_promo_trims">📦 Matching trims & reducers for every floor</div>
     </div>
   </div>
 </section>
 <div class="store-toolbar">
   <div class="container">
     <div class="store-toolbar-inner">
-      <div class="breadcrumb">Home &gt; <span>Store</span></div>
-      <span class="pill" id="resultSummary">Showing 0 products</span>
+      <div class="breadcrumb"><span data-i18n="store_breadcrumb_home">Home</span> &gt; <span data-i18n="store_breadcrumb_store">Store</span></div>
+      <span class="pill" id="resultSummary" data-i18n="store_result_summary_initial">Showing 0 products</span>
       <div class="store-toolbar-actions">
         <div>
-          <label for="typeSwitch">Category</label><br />
+          <label for="typeSwitch" data-i18n="store_label_category">Category</label><br />
           <select id="typeSwitch" class="select">
-            <option value="flooring" <?= $type === 'flooring' ? 'selected' : '' ?>>Floors</option>
-            <option value="molding" <?= $type === 'molding' ? 'selected' : '' ?>>Moldings &amp; Trim</option>
+            <option value="flooring" <?= $type === 'flooring' ? 'selected' : '' ?> data-i18n="store_option_floors">Floors</option>
+            <option value="molding" <?= $type === 'molding' ? 'selected' : '' ?> data-i18n="store_option_moldings_trim">Moldings &amp; Trim</option>
           </select>
         </div>
         <div>
-          <label for="sortSel">Sort by</label><br />
+          <label for="sortSel" data-i18n="store_label_sort_by">Sort by</label><br />
           <select id="sortSel" class="select">
-            <option value="relevance" selected>Recommended</option>
-            <option value="price-asc">Price (low → high)</option>
-            <option value="price-desc">Price (high → low)</option>
+            <option value="relevance" selected data-i18n="store_sort_recommended">Recommended</option>
+            <option value="price-asc" data-i18n="store_sort_price_low_high">Price (low → high)</option>
+            <option value="price-desc" data-i18n="store_sort_price_high_low">Price (high → low)</option>
           </select>
         </div>
       </div>
@@ -163,42 +167,42 @@ $heroSubtitle = $type === 'molding'
     <aside class="filters-panel">
       <div class="filter-card">
         <header>
-          <span>Filters</span>
-          <button id="clearFilters" class="clear-btn" type="button">Clear</button>
+          <span data-i18n="store_filters_title">Filters</span>
+          <button id="clearFilters" class="clear-btn" type="button" data-i18n="store_filters_clear">Clear</button>
         </header>
         <div class="filter-group">
-          <div class="filter-title">Category</div>
+          <div class="filter-title" data-i18n="store_filter_category">Category</div>
           <div class="filter-links">
-            <a class="filter-pill <?= $type === 'flooring' ? 'active' : '' ?>" href="?type=flooring">Floors</a>
-            <a class="filter-pill <?= $type === 'molding' ? 'active' : '' ?>" href="?type=molding">Moldings &amp; Trim</a>
+            <a class="filter-pill <?= $type === 'flooring' ? 'active' : '' ?>" href="?type=flooring" data-i18n="store_option_floors">Floors</a>
+            <a class="filter-pill <?= $type === 'molding' ? 'active' : '' ?>" href="?type=molding" data-i18n="store_option_moldings_trim">Moldings &amp; Trim</a>
           </div>
         </div>
         <div class="filter-group">
-          <div class="filter-title">Availability</div>
+          <div class="filter-title" data-i18n="store_filter_availability">Availability</div>
           <div class="filter-options">
-            <label><input type="checkbox" class="filter-availability" value="stock" /> In stock</label>
-            <label><input type="checkbox" class="filter-availability" value="backorder" /> Order-in (7–30 days)</label>
-            <label><input type="checkbox" class="filter-availability" value="nextday" /> Next day (&lt; 7 days)</label>
+            <label><input type="checkbox" class="filter-availability" value="stock" /> <span data-i18n="store_filter_in_stock">In stock</span></label>
+            <label><input type="checkbox" class="filter-availability" value="backorder" /> <span data-i18n="store_filter_order_in">Order-in (7–30 days)</span></label>
+            <label><input type="checkbox" class="filter-availability" value="nextday" /> <span data-i18n="store_filter_next_day">Next day (&lt; 7 days)</span></label>
           </div>
         </div>
         <div class="filter-group">
-          <div class="filter-title">Color &amp; Tone</div>
+          <div class="filter-title" data-i18n="store_filter_color_tone">Color &amp; Tone</div>
           <div class="filter-options">
-            <label><input type="checkbox" class="filter-color" value="Light" /> Light</label>
-            <label><input type="checkbox" class="filter-color" value="Medium" /> Medium</label>
-            <label><input type="checkbox" class="filter-color" value="Dark" /> Dark</label>
-            <label><input type="checkbox" class="filter-color" value="Brown" /> Brown</label>
-            <label><input type="checkbox" class="filter-color" value="Gray" /> Gray</label>
-            <label><input type="checkbox" class="filter-color" value="Neutral" /> Neutral</label>
-            <label><input type="checkbox" class="filter-color" value="White" /> White</label>
+            <label><input type="checkbox" class="filter-color" value="Light" /> <span data-i18n="store_color_light">Light</span></label>
+            <label><input type="checkbox" class="filter-color" value="Medium" /> <span data-i18n="store_color_medium">Medium</span></label>
+            <label><input type="checkbox" class="filter-color" value="Dark" /> <span data-i18n="store_color_dark">Dark</span></label>
+            <label><input type="checkbox" class="filter-color" value="Brown" /> <span data-i18n="store_color_brown">Brown</span></label>
+            <label><input type="checkbox" class="filter-color" value="Gray" /> <span data-i18n="store_color_gray">Gray</span></label>
+            <label><input type="checkbox" class="filter-color" value="Neutral" /> <span data-i18n="store_color_neutral">Neutral</span></label>
+            <label><input type="checkbox" class="filter-color" value="White" /> <span data-i18n="store_color_white">White</span></label>
           </div>
         </div>
         <?php if($type === 'flooring'): ?>
         <div class="filter-group">
-          <div class="filter-title">Specs</div>
+          <div class="filter-title" data-i18n="store_filter_specs">Specs</div>
           <div class="filter-options">
-            <label><input id="fThkMin" type="number" step="0.1" placeholder="Thickness ≥ mm" style="width:100%; padding:9px 10px; border-radius:8px; border:1px solid var(--store-border);" /></label>
-            <label><input id="fWearMin" type="number" step="1" placeholder="Wear layer ≥ mil" style="width:100%; padding:9px 10px; border-radius:8px; border:1px solid var(--store-border);" /></label>
+            <label><input id="fThkMin" type="number" step="0.1" placeholder="Thickness ≥ mm" data-i18n-placeholder="store_filter_thickness_placeholder" style="width:100%; padding:9px 10px; border-radius:8px; border:1px solid var(--store-border);" /></label>
+            <label><input id="fWearMin" type="number" step="1" placeholder="Wear layer ≥ mil" data-i18n-placeholder="store_filter_wear_placeholder" style="width:100%; padding:9px 10px; border-radius:8px; border:1px solid var(--store-border);" /></label>
           </div>
         </div>
         <?php endif; ?>

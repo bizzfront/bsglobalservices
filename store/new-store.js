@@ -3,6 +3,18 @@
   const resultSummary = document.getElementById('resultSummary');
   const typeSwitch = document.getElementById('typeSwitch');
   if(!grid || !Array.isArray(BS_PRODUCTS)) return;
+  const t = (key, fallback = '') => window.bsI18n?.t?.(key) || fallback;
+  const formatTemplate = (template, data) => template.replace(/\{\{(\w+)\}\}/g, (_, key) => data[key] ?? '');
+  const unitShortLabel = (unit) => {
+    if(unit === 'lf') return t('store_unit_lf', 'lf');
+    if(unit === 'piece') return t('store_unit_piece', 'piece');
+    return t('store_unit_sqft_short', 'sqft');
+  };
+  const unitLongLabel = (unit) => {
+    if(unit === 'lf') return t('store_unit_linear_feet', 'linear feet');
+    if(unit === 'piece') return t('store_unit_pieces', 'pieces');
+    return t('store_unit_sqft', 'sqft');
+  };
 
   function formatCurrency(value){
     const num = Number(value);
@@ -49,40 +61,44 @@
     let priceHtml = '';
 
     if(priceType === 'stock' && stockPrice != null){
-      priceHtml = `<div class="store-price-line"><span class="store-badge-new">Stock</span><b>${formatCurrency(stockPrice)}</b><span>/${unit}</span></div>`;
+      priceHtml = `<div class="store-price-line"><span class="store-badge-new">${t('store_badge_stock', 'Stock')}</span><b>${formatCurrency(stockPrice)}</b><span>/${unit}</span></div>`;
     } else if(priceType === 'backorder' && backorderPrice != null){
-      priceHtml = `<div class="store-price-line"><span class="store-badge-new">Order-in</span><b>${formatCurrency(backorderPrice)}</b><span>/${unit}</span></div>`;
+      priceHtml = `<div class="store-price-line"><span class="store-badge-new">${t('store_badge_order_in', 'Order-in')}</span><b>${formatCurrency(backorderPrice)}</b><span>/${unit}</span></div>`;
     }
 
     if(!priceHtml){
       if(stockPrice != null){
-        priceHtml = `<div class="store-price-line"><span class="store-badge-new">Stock</span><b>${formatCurrency(stockPrice)}</b><span>/${unit}</span></div>`;
+        priceHtml = `<div class="store-price-line"><span class="store-badge-new">${t('store_badge_stock', 'Stock')}</span><b>${formatCurrency(stockPrice)}</b><span>/${unit}</span></div>`;
       } else if(backorderPrice != null){
-        priceHtml = `<div class="store-price-line"><span class="store-badge-new">Order-in</span><b>${formatCurrency(backorderPrice)}</b><span>/${unit}</span></div>`;
+        priceHtml = `<div class="store-price-line"><span class="store-badge-new">${t('store_badge_order_in', 'Order-in')}</span><b>${formatCurrency(backorderPrice)}</b><span>/${unit}</span></div>`;
       }
     }
 
-    return priceHtml || '<div class="store-price-line"><b>Call for price</b></div>';
+    return priceHtml || `<div class="store-price-line"><b>${t('price_call', 'Call for price')}</b></div>`;
   }
 
   function renderCard(p){
     const unit = p.measurementUnit === 'lf' ? 'lf' : p.measurementUnit === 'piece' ? 'piece' : 'sqft';
+    const unitLabelShort = unitShortLabel(unit);
+    const unitLabelLong = unitLongLabel(unit);
     const priceType = computePriceType(p, 1);
-    const badgeLabel = priceType === 'stock' ? (STORE_CONFIG?.ui?.badges?.stock || 'In stock') : (STORE_CONFIG?.ui?.badges?.backorder || 'Order-in');
+    const badgeLabel = priceType === 'stock'
+      ? (STORE_CONFIG?.ui?.badges?.stock || t('store_badge_in_stock', 'In stock'))
+      : (STORE_CONFIG?.ui?.badges?.backorder || t('store_badge_order_in', 'Order-in'));
     const badgeClass = priceType === 'stock' ? '' : 'backorder';
     const stockAvailable = Number(p.availability?.stockAvailable ?? null);
     const hasStock = (p.availability?.mode || '').toLowerCase() === 'stock' && Number.isFinite(stockAvailable) && stockAvailable > 0;
     const pkgLabel = p.packageLabel || 'box';
-    const coverLabel = p.packageCoverage ? `${formatNumber(p.packageCoverage)} ${unit} / ${pkgLabel}` : '';
+    const coverLabel = p.packageCoverage ? `${formatNumber(p.packageCoverage)} ${unitLabelShort} / ${pkgLabel}` : '';
     const href = `product.php?sku=${encodeURIComponent(p.sku)}`;
     const img = p.images?.[0] ? `../${p.images[0]}` : '';
     const colorChip = (p.productType === 'flooring' && p.colorName)
-      ? `<div class="store-card-color" aria-label="Color ${p.colorName}"><span class="dot" aria-hidden="true"></span><span>${p.colorName}</span></div>`
+      ? `<div class="store-card-color" aria-label="${t('store_color_label', 'Color')} ${p.colorName}"><span class="dot" aria-hidden="true"></span><span>${p.colorName}</span></div>`
       : '';
     let stockLabel = '';
     if(hasStock){
       const pkgLabelPlural = p.packageLabelPlural || `${pkgLabel}es`;
-      const unitLabel = unit === 'lf' ? 'linear feet' : unit === 'piece' ? 'pieces' : 'sqft';
+      const unitLabel = unitLabelLong;
       let approxPackages = '';
       if(p.packageCoverage){
         const packagesCount = stockAvailable / p.packageCoverage;
@@ -91,12 +107,14 @@
           approxPackages = ` (≈ ${formatNumber(packagesCount)} ${chosenPkgLabel})`;
         }
       }
-      stockLabel = `<div class="store-meta">In stock: ${formatNumber(stockAvailable)} ${unitLabel}${approxPackages}</div>`;
+      const template = t('store_stock_label', 'In stock: {{count}} {{unit}}{{approx}}');
+      stockLabel = `<div class="store-meta">${formatTemplate(template, {count: formatNumber(stockAvailable), unit: unitLabel, approx: approxPackages})}</div>`;
     } else if(Number.isFinite(stockAvailable)) {
-      stockLabel = `<div class="store-meta">Next batch: ${formatNumber(stockAvailable)} coming</div>`;
+      const template = t('store_next_batch_label', 'Next batch: {{count}} coming');
+      stockLabel = `<div class="store-meta">${formatTemplate(template, {count: formatNumber(stockAvailable)})}</div>`;
     }
 
-    const priceHtml = buildPriceHtml(p, priceType, unit);
+    const priceHtml = buildPriceHtml(p, priceType, unitLabelShort);
 
     return `
       <article class="store-card-new" data-sku="${p.sku}">
@@ -109,22 +127,22 @@
             <div class="store-meta">${p.collection || ''} ${p.category ? '· '+p.category : ''}</div>
             ${colorChip}
           </div>
-          <div class="store-prices">${priceHtml || '<div class="store-price-line"><b>Call for price</b></div>'}</div>
+          <div class="store-prices">${priceHtml || `<div class="store-price-line"><b>${t('price_call', 'Call for price')}</b></div>`}</div>
           ${stockLabel || (coverLabel ? `<div class="store-meta">${coverLabel}</div>` : '')}
           ${stockLabel && coverLabel ? `<div class="store-meta">${coverLabel}</div>` : ''}
           <div class="store-badges">
             ${p.thickness ? `<span class="store-badge-new">${p.thickness} mm</span>` : ''}
-            ${p.wearLayer ? `<span class="store-badge-new">${p.wearLayer} mil wear</span>` : ''}
-            ${p.widthIn && p.lengthIn ? `<span class="store-badge-new">${p.widthIn}×${p.lengthIn} in</span>` : ''}
+            ${p.wearLayer ? `<span class="store-badge-new">${p.wearLayer} ${t('store_wear_layer_unit', 'mil wear')}</span>` : ''}
+            ${p.widthIn && p.lengthIn ? `<span class="store-badge-new">${p.widthIn}×${p.lengthIn} ${t('store_unit_inches', 'in')}</span>` : ''}
             ${p.colorFamily ? `<span class="store-badge-new">${p.colorFamily}</span>` : ''}
           </div>
           <div class="store-cta-row">
             <label style="display:flex; align-items:center; gap:6px;">
-              <span style="font-size:0.9rem; color:#6a605e;">${p.packageLabelPlural || 'Qty'}</span>
+              <span style="font-size:0.9rem; color:#6a605e;">${p.packageLabelPlural || t('store_qty_label', 'Qty')}</span>
               <input type="number" class="qty" min="1" value="1" ${p.availability?.maxPurchaseQuantity ? `max="${p.availability.maxPurchaseQuantity}"` : ''}>
             </label>
-            <button class="btn btn-primary add-cart" type="button">Add to project</button>
-            <a class="btn btn-ghost" href="${href}">View details</a>
+            <button class="btn btn-primary add-cart" type="button">${t('store_add_to_project', 'Add to project')}</button>
+            <a class="btn btn-ghost" href="${href}">${t('store_view_details', 'View details')}</a>
           </div>
         </div>
       </article>
@@ -192,7 +210,8 @@
     const list = applySort(applyFilters(BS_PRODUCTS));
     grid.innerHTML = list.map(renderCard).join('');
     if(resultSummary){
-      resultSummary.textContent = `Showing ${list.length} of ${BS_PRODUCTS.length} products`;
+      const template = t('store_result_summary', 'Showing {{shown}} of {{total}} products');
+      resultSummary.textContent = formatTemplate(template, {shown: list.length, total: BS_PRODUCTS.length});
     }
     grid.querySelectorAll('.store-card-new').forEach(card=>{
       const sku = card.dataset?.sku;
