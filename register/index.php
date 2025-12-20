@@ -210,7 +210,56 @@ Notes: ${notes}`;
   const schedNote = document.getElementById('schedNote');
   const tzLabel = document.getElementById('tzLabel');
 
-  tzLabel.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  if (tzLabel) {
+    tzLabel.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  }
+
+  const ZIP_ZONE_FILE = '<?=$base?>store/zip_zones.json';
+  let zipLoadPromise = null;
+  let ZIP_DATA = [];
+
+  function loadZipData(){
+    if(zipLoadPromise) return zipLoadPromise;
+    zipLoadPromise = fetch(ZIP_ZONE_FILE)
+      .then(res => res.ok ? res.json() : [])
+      .then(data => {
+        ZIP_DATA = Array.isArray(data) ? data : [];
+        return ZIP_DATA;
+      })
+      .catch(() => {
+        ZIP_DATA = [];
+        return ZIP_DATA;
+      });
+    return zipLoadPromise;
+  }
+
+  function resolveZipEntry(zip){
+    const normalized = (zip || '').toString().trim();
+    return ZIP_DATA.find(z => z.zip === normalized);
+  }
+
+  function setupZipInputs(){
+    const zipInputs = [
+      {input: document.getElementById('zipLead'), city: document.getElementById('leadCity')},
+      {input: document.getElementById('zipSched'), city: document.getElementById('schedCity')},
+    ];
+    loadZipData().then(() => {
+      document.querySelectorAll('[data-zip-list]').forEach(list => {
+        list.innerHTML = ZIP_DATA.map(z => `<option value="${z.zip}">${z.city || ''}</option>`).join('');
+      });
+      zipInputs.forEach(({input, city}) => {
+        if (!input) return;
+        const entry = resolveZipEntry(input.value);
+        if (entry && city) city.value = entry.city || '';
+        input.addEventListener('change', () => {
+          const selected = resolveZipEntry(input.value);
+          if (city) city.value = selected?.city || '';
+          buildLeadWA();
+          buildSchedWA();
+        });
+      });
+    });
+  }
 
   const ZIP_ZONE_FILE = '<?=$base?>store/zip_zones.json';
   let zipLoadPromise = null;
@@ -272,6 +321,7 @@ Notes: ${notes}`;
   }
 
   function buildSlots(){
+    if (!slotsEl) return;
     slotsEl.innerHTML='';
     timeEl.value='';
     const val = dateEl.value;
