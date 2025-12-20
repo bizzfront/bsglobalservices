@@ -343,7 +343,7 @@
     "store_color_label": "Color",
     "store_wear_layer_unit": "mil wear",
     "store_qty_label": "Qty",
-    "store_add_to_project": "Add to project",
+    "store_add_to_project": "add to cart",
     "store_view_details": "View details",
     "store_result_summary": "Showing {{shown}} of {{total}} products",
     "store_project_builder": "Project builder",

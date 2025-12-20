@@ -141,7 +141,7 @@
               <span style="font-size:0.9rem; color:#6a605e;">${p.packageLabelPlural || t('store_qty_label', 'Qty')}</span>
               <input type="number" class="qty" min="1" value="1" ${p.availability?.maxPurchaseQuantity ? `max="${p.availability.maxPurchaseQuantity}"` : ''}>
             </label>
-            <button class="btn btn-primary add-cart" type="button">${t('store_add_to_project', 'Add to project')}</button>
+            <button class="btn btn-primary add-cart" type="button">${t('store_add_to_project', 'Add to Cart')}</button>
             <a class="btn btn-ghost" href="${href}">${t('store_view_details', 'View details')}</a>
           </div>
         </div>
@@ -261,7 +261,7 @@
         const inventoryId = priceType === 'stock' ? (product?.availability?.activeInventoryId || null) : null;
         cart.addItem(sku, qty, priceType, {inventoryId});
         btn.textContent = 'Added';
-        setTimeout(()=>{btn.textContent='Add to project';}, 1200);
+        setTimeout(()=>{btn.textContent='Add to Cart';}, 1200);
         if(CURRENT_TYPE === 'flooring'){
           const goToMolding = await bsModal.confirm({
             title: 'Añadir moldings',
