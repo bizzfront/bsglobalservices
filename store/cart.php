@@ -78,56 +78,56 @@ $contact_source = 'website_store';
 <main class="container" style="padding:32px 0 40px;">
   <div class="sec-head">
     <div>
-      <div class="eyebrow">Project builder</div>
-      <h2 style="color:var(--burgundy);">Your cart</h2>
+      <div class="eyebrow" data-i18n="store_project_builder">Project builder</div>
+      <h2 style="color:var(--burgundy);" data-i18n="store_your_cart">Your cart</h2>
     </div>
   </div>
   <div class="cart-board">
     <section class="cart-card">
       <div id="cart-items"></div>
-      <p id="cart-empty" class="cart-empty">Your project list is empty.</p>
+      <p id="cart-empty" class="cart-empty" data-i18n="store_cart_empty">Your project list is empty.</p>
     </section>
     <aside class="cart-stack">
       <section class="cart-card cart-summary-card">
-        <div class="cart-summary-title">Project summary</div>
-        <div class="cart-summary-sub" id="summary-items">No items yet</div>
+        <div class="cart-summary-title" data-i18n="store_project_summary">Project summary</div>
+        <div class="cart-summary-sub" id="summary-items" data-i18n="store_no_items_yet">No items yet</div>
         <div class="cart-summary-block">
           <div class="summary-row">
-            <span>Materials</span>
+            <span data-i18n="store_summary_materials">Materials</span>
             <strong id="summary-material">$0.00</strong>
           </div>
           <div class="summary-row">
-            <span>Installation</span>
+            <span data-i18n="store_summary_installation">Installation</span>
             <strong id="summary-install">$0.00</strong>
           </div>
           <div class="summary-row">
-            <span>Delivery (estimate)</span>
+            <span data-i18n="store_summary_delivery_estimate">Delivery (estimate)</span>
             <strong id="summary-delivery">$0.00</strong>
           </div>
           <div class="summary-row">
-            <span>Taxes</span>
+            <span data-i18n="store_summary_taxes">Taxes</span>
             <strong id="summary-taxes">$0.00</strong>
           </div>
           <div class="summary-divider"></div>
           <div class="summary-row">
-            <span><strong>Estimated total</strong></span>
+            <span><strong data-i18n="store_summary_estimated_total">Estimated total</strong></span>
             <strong id="summary-total">$0.00</strong>
           </div>
         </div>
-        <p class="summary-note" id="summary-note">Final quote may adjust based on exact measurements, delivery zone and scheduling.</p>
+        <p class="summary-note" id="summary-note" data-i18n="store_summary_note">Final quote may adjust based on exact measurements, delivery zone and scheduling.</p>
         <div class="summary-divider"></div>
         <div class="cart-service-card cart-service-card--delivery" role="group" aria-labelledby="delivery-title">
             <div class="cart-service-card__control">
-              <div class="cart-service-card__title" id="delivery-title">Delivery & zone</div>
-              <div class="cart-service-card__desc">Choose delivery or warehouse pick-up for this project.</div>
+              <div class="cart-service-card__title" id="delivery-title" data-i18n="store_delivery_zone_title">Delivery & zone</div>
+              <div class="cart-service-card__desc" data-i18n="store_delivery_zone_desc">Choose delivery or warehouse pick-up for this project.</div>
             <label class="summary-toggle" for="delivery-toggle">
               <input type="checkbox" id="delivery-toggle" checked />
-              <span>I’d like B&S to handle delivery for this project.</span>
+              <span data-i18n="store_delivery_toggle">I’d like B&S to handle delivery for this project.</span>
             </label>
             <div class="cart-service-card__select">
               <label style="width:100%; display:block;">
-                <span style="display:block; margin-bottom:6px; color:#4b4240; font-weight:600;">Delivery ZIP Code</span>
-                <input type="text" id="delivery-zip" list="delivery-zip-list" placeholder="Enter ZIP Code" style="width:100%; min-width:180px; padding:10px; border-radius:10px; border:1px solid #d2c8c1;" inputmode="numeric" pattern="\\d*" />
+                <span style="display:block; margin-bottom:6px; color:#4b4240; font-weight:600;" data-i18n="store_delivery_zip_label">Delivery ZIP Code</span>
+                <input type="text" id="delivery-zip" list="delivery-zip-list" placeholder="Enter ZIP Code" data-i18n-placeholder="store_delivery_zip_placeholder" style="width:100%; min-width:180px; padding:10px; border-radius:10px; border:1px solid #d2c8c1;" inputmode="numeric" pattern="\\d*" />
                 <datalist id="delivery-zip-list"></datalist>
               </label>
             </div>
@@ -136,10 +136,10 @@ $contact_source = 'website_store';
             </div>
           </div>
         <div class="cart-footer-actions">
-          <button type="button" id="go-project" class="btn btn-primary" style="flex:1;">Continue to project details</button>
-          <button type="button" class="btn btn-ghost" style="flex:1;" onclick="window.location.href='index.php'">Back to store</button>
+          <button type="button" id="go-project" class="btn btn-primary" style="flex:1;" data-i18n="store_continue_project_details">Continue to project details</button>
+          <button type="button" class="btn btn-ghost" style="flex:1;" onclick="window.location.href='index.php'" data-i18n="store_back_to_store">Back to store</button>
         </div>
-        <p class="summary-note" style="margin-top:8px;">By continuing, you’ll send this project to our team. No payment is made on this page.</p>
+        <p class="summary-note" style="margin-top:8px;" data-i18n="store_cart_disclaimer">By continuing, you’ll send this project to our team. No payment is made on this page.</p>
       </section>
     </aside>
   </div>
@@ -156,6 +156,18 @@ const ZIP_ZONE_MAPPING = {A: 'meadow', B: 'orlando', C: 'orlando'};
 let ZIP_DATA = [];
 let zipLoadPromise = null;
 let hasRenderedCartWithItems = (cart.getItems()?.length || 0) > 0;
+const t = (key, fallback = '') => window.bsI18n?.t?.(key) || fallback;
+const formatTemplate = (template, data) => template.replace(/\{\{(\w+)\}\}/g, (_, key) => data[key] ?? '');
+const unitShortLabel = (unit) => {
+  if(unit === 'lf') return t('store_unit_lf', 'lf');
+  if(unit === 'piece') return t('store_unit_piece', 'piece');
+  return t('store_unit_sqft_short', 'sqft');
+};
+const unitLongLabel = (unit) => {
+  if(unit === 'lf') return t('store_unit_linear_feet', 'linear feet');
+  if(unit === 'piece') return t('store_unit_pieces', 'pieces');
+  return t('store_unit_sqft', 'sqft');
+};
 
 function formatCurrency(value){
   const num = Number(value);
@@ -418,7 +430,7 @@ function refreshDeliveryControls(){
     zipInput.disabled = !deliveryPreferences.includeDelivery;
   }
   if(note){
-    note.textContent = STORE_CONFIG.delivery?.notes || 'Delivery cost may vary based on access conditions.';
+    note.textContent = STORE_CONFIG.delivery?.notes || t('store_delivery_note', 'Delivery cost may vary based on access conditions.');
   }
   if(cityNote){
     const zoneId = resolveProjectDeliveryZone();
@@ -426,9 +438,9 @@ function refreshDeliveryControls(){
     const pickup = zones.find(z=>z.id === 'pick-up');
     const cityLabel = deliveryPreferences.zip && deliveryPreferences.city ? `${deliveryPreferences.city} (${deliveryPreferences.zip})` : '';
     const zoneLabel = zone ? `${zone.label}${zone.fee!=null ? ' — '+formatCurrency(zone.fee) : ''}` : '';
-    const pickupLabel = pickup ? `${pickup.label}${pickup.fee!=null ? ' — '+formatCurrency(pickup.fee) : ''}` : 'Warehouse pick-up (default)';
+    const pickupLabel = pickup ? `${pickup.label}${pickup.fee!=null ? ' — '+formatCurrency(pickup.fee) : ''}` : t('store_pickup_default', 'Warehouse pick-up (default)');
     cityNote.textContent = deliveryPreferences.includeDelivery !== false
-      ? [cityLabel || 'Delivery ZIP pending', zoneLabel].filter(Boolean).join(' · ')
+      ? [cityLabel || t('store_delivery_zip_pending', 'Delivery ZIP pending'), zoneLabel].filter(Boolean).join(' · ')
       : pickupLabel;
   }
   if(zipList){
@@ -448,7 +460,7 @@ function refreshDeliveryControls(){
     if(items.length === 0){
       container.innerHTML = '';
       empty.style.display = 'block';
-      document.getElementById('summary-items').textContent = 'No items yet';
+      document.getElementById('summary-items').textContent = t('store_no_items_yet', 'No items yet');
       document.getElementById('summary-material').textContent = '$0.00';
       document.getElementById('summary-install').textContent = '$0.00';
       document.getElementById('summary-delivery').textContent = '$0.00';
@@ -468,17 +480,18 @@ function refreshDeliveryControls(){
   container.innerHTML = project.items.map(it=>{
     const p = it.product;
     const unit = p.measurementUnit === 'lf' ? 'lf' : p.measurementUnit === 'piece' ? 'piece' : 'sqft';
-    const coverLabel = it.product.packageCoverage ? `${formatUnits(it.product.packageCoverage)} ${unit} / ${p.packageLabel || 'box'}` : '';
+    const unitLabelShort = unitShortLabel(unit);
+    const coverLabel = it.product.packageCoverage ? `${formatUnits(it.product.packageCoverage)} ${unitLabelShort} / ${p.packageLabel || t('store_package_box', 'box')}` : '';
     const image = p.images?.[0] ? `../${p.images[0]}` : '';
     const unitPriceLabel = Number.isFinite(Number(it.unitPriceWithTruckload))
-      ? `${formatCurrency(Number(it.unitPriceWithTruckload))} / ${unit}`
+      ? `${formatCurrency(Number(it.unitPriceWithTruckload))} / ${unitLabelShort}`
       : '';
-    const packagePriceLabel = it.packagePrice ? `${formatCurrency(it.packagePrice)} / ${p.packageLabel || 'box'}` : '';
-      const priceLabel = [unitPriceLabel, packagePriceLabel].filter(Boolean).join(' · ') || 'Call for price';
-      const priceTypeLabel = it.priceType === 'backorder' ? 'Order-in' : 'In stock';
-      const taxLabel = p.taxesOmit ? '<span class="badge">Tax exempt</span>' : '';
+    const packagePriceLabel = it.packagePrice ? `${formatCurrency(it.packagePrice)} / ${p.packageLabel || t('store_package_box', 'box')}` : '';
+      const priceLabel = [unitPriceLabel, packagePriceLabel].filter(Boolean).join(' · ') || t('price_call', 'Call for price');
+      const priceTypeLabel = it.priceType === 'backorder' ? t('store_label_order_in', 'Order-in') : t('store_label_in_stock', 'In stock');
+      const taxLabel = p.taxesOmit ? `<span class="badge">${t('store_tax_exempt', 'Tax exempt')}</span>` : '';
       const installRate = p.services?.installRate ?? (p.productType === 'molding' ? STORE_CONFIG?.install?.defaultMoldingRate : STORE_CONFIG?.install?.defaultFlooringRate);
-      const installUnitLabel = p.measurementUnit === 'lf' ? 'lf' : (p.measurementUnit === 'piece' ? 'piece' : 'sq ft');
+      const installUnitLabel = unitShortLabel(p.measurementUnit === 'lf' ? 'lf' : (p.measurementUnit === 'piece' ? 'piece' : 'sqft'));
       const installRateLabel = installRate ? ` (${formatCurrency(installRate)} / ${installUnitLabel})` : '';
       return `
         <article class="cart-item" data-sku="${it.sku}" data-price-type="${it.priceType}" data-inventory-id="${it.inventoryId || ''}">
@@ -490,27 +503,27 @@ function refreshDeliveryControls(){
                 <div class="cart-item-meta">${p.collection || ''} ${coverLabel ? '· '+coverLabel : ''}</div>
                 <div class="cart-item-meta"><span class="badge ${it.priceType === 'backorder' ? 'backorder' : 'stock'}">${priceTypeLabel}</span>${taxLabel ? ' · '+taxLabel : ''}</div>
               </div>
-              <button type="button" class="remove btn btn-ghost" style="padding:6px 10px;">Remove</button>
+              <button type="button" class="remove btn btn-ghost" style="padding:6px 10px;">${t('store_remove', 'Remove')}</button>
             </div>
             <div class="cart-item-meta" style="margin:6px 0;">${priceLabel}</div>
           <div class="cart-actions">
-            <label class="cart-qty-control">Qty
+            <label class="cart-qty-control">${t('store_qty_label', 'Qty')}
               <input type="number" class="qty" min="1" value="${it.quantity}">
             </label>
             <div class="cart-service-cards">
               <div class="cart-service-card cart-service-card--install ${it.install ? 'selected' : ''}" role="button" tabindex="0" aria-pressed="${it.install ? 'true' : 'false'}">
                 <div class="cart-service-card__text">
-                  <div class="cart-service-card__title">Installation${installRateLabel}</div>
-                  <div class="cart-service-card__desc">${it.install ? 'Installation added to this item.' : 'Add an installation estimate based on your area.'}</div>
+                  <div class="cart-service-card__title">${t('store_summary_installation', 'Installation')}${installRateLabel}</div>
+                  <div class="cart-service-card__desc">${it.install ? t('store_install_added', 'Installation added to this item.') : t('store_install_add_prompt', 'Add an installation estimate based on your area.')}</div>
                 </div>
                 <div class="cart-service-card__action">
-                  <input type="checkbox" class="install-toggle" ${it.install ? 'checked' : ''} aria-label="Toggle installation">
+                  <input type="checkbox" class="install-toggle" ${it.install ? 'checked' : ''} aria-label="${t('store_toggle_installation', 'Toggle installation')}">
                 </div>
               </div>
             </div>
           </div>
-            <div class="cart-item-meta">Subtotal: ${formatCurrency(it.subtotal)} | Install: ${formatCurrency(it.install)}</div>
-            <div class="cart-item-meta">Taxes: ${formatCurrency(it.taxes || 0)}</div>
+            <div class="cart-item-meta">${t('store_subtotal_label', 'Subtotal')}: ${formatCurrency(it.subtotal)} | ${t('store_install_label', 'Install')}: ${formatCurrency(it.install)}</div>
+            <div class="cart-item-meta">${t('store_summary_taxes', 'Taxes')}: ${formatCurrency(it.taxes || 0)}</div>
           </div>
         </article>
       `;
@@ -522,7 +535,13 @@ function refreshDeliveryControls(){
   document.getElementById('summary-taxes').textContent = formatCurrency(project.totals.taxes);
   document.getElementById('summary-total').textContent = formatCurrency(project.totals.total);
   const totalUnits = project.items.reduce((sum, it)=> sum + (it.quantity || 0), 0);
-  document.getElementById('summary-items').textContent = `${project.items.length} item${project.items.length === 1 ? '' : 's'} · ${formatUnits(totalUnits)} package${totalUnits === 1 ? '' : 's'}`;
+  const itemsTemplate = t('store_summary_items_count', '{{items}} item{{items_plural}} · {{packages}} package{{packages_plural}}');
+  document.getElementById('summary-items').textContent = formatTemplate(itemsTemplate, {
+    items: project.items.length,
+    items_plural: project.items.length === 1 ? '' : t('store_plural_suffix', 's'),
+    packages: formatUnits(totalUnits),
+    packages_plural: totalUnits === 1 ? '' : t('store_plural_suffix', 's')
+  });
   refreshDeliveryControls();
 
   container.querySelectorAll('.qty').forEach(input=>{

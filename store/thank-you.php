@@ -20,12 +20,12 @@ $active = 'cart';
 <?php include $base.'includes/header.php'; ?>
 <main class="container">
   <div class="thank-card">
-    <div class="eyebrow">Project submitted</div>
-    <h2 style="color:var(--burgundy);">Thank you!</h2>
-    <p>We received your project. A B&S specialist will confirm stock, delivery windows and installation scheduling shortly.</p>
+    <div class="eyebrow" data-i18n="store_project_submitted">Project submitted</div>
+    <h2 style="color:var(--burgundy);" data-i18n="store_thank_you">Thank you!</h2>
+    <p data-i18n="store_thank_you_message">We received your project. A B&S specialist will confirm stock, delivery windows and installation scheduling shortly.</p>
     <div id="project-summary"></div>
     <div style="margin-top:14px;">
-      <a class="btn btn-primary" href="index.php">Back to store</a>
+      <a class="btn btn-primary" href="index.php" data-i18n="store_back_to_store">Back to store</a>
     </div>
   </div>
 </main>
@@ -35,12 +35,14 @@ const project = (()=>{ try { return JSON.parse(localStorage.getItem('bs_project'
 function formatCurrency(value){ const num = Number(value); return Number.isFinite(num) ? `$${num.toFixed(2)}` : '$0.00'; }
 const container = document.getElementById('project-summary');
 if(!project.items || !project.items.length){
-  container.innerHTML = '<p class="note">No project data found.</p>';
+  const t = (key, fallback = '') => window.bsI18n?.t?.(key) || fallback;
+  container.innerHTML = `<p class="note">${t('store_no_project_data', 'No project data found.')}</p>`;
 }else{
   container.innerHTML = `
     <div class="proj-list">${project.items.map(it=>`<div class="proj-item"><span>${it.product?.name || it.sku} × ${it.quantity}</span><span>${formatCurrency((it.subtotal||0)+(it.install||0)+(it.delivery||0))}</span></div>`).join('')}</div>
-    <div class="proj-total"><span>Total</span><span>${formatCurrency(project.totals?.total)}</span></div>
+    <div class="proj-total"><span data-i18n="store_total_label">Total</span><span>${formatCurrency(project.totals?.total)}</span></div>
   `;
+  window.bsI18n?.applyTranslations?.(container);
 }
 </script>
 </body>

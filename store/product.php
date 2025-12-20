@@ -180,8 +180,8 @@ $installRateLabel = $installRateValue !== null
           <?php foreach($selected as $i => $img): ?>
             <img src="../<?= $img ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="<?= $i===0 ? 'active' : '' ?>">
           <?php endforeach; ?>
-          <button class="prev" type="button">Prev</button>
-          <button class="next" type="button">Next</button>
+          <button class="prev" type="button" data-i18n="store_slider_prev">Prev</button>
+          <button class="next" type="button" data-i18n="store_slider_next">Next</button>
           <?php if(!empty($product['promo'])): ?>
             <div class="store-promo"><span><?= htmlspecialchars($product['promo']) ?></span></div>
           <?php endif; ?>
@@ -196,11 +196,21 @@ $installRateLabel = $installRateValue !== null
               <label class="store-price-option">
                 <input type="radio" name="price_mode" value="<?= htmlspecialchars($modeKey) ?>" <?= $modeKey === $defaultPriceMode ? 'checked' : '' ?>>
                 <div>
-                  <span class="store-price-option-label"><?= htmlspecialchars($modeData['label']) ?></span>
+                  <?php
+                    $labelKey = null;
+                    if($modeKey === 'stock'){
+                      $labelKey = 'store_label_in_stock';
+                    }else if($modeKey === 'backorder'){
+                      $labelKey = 'store_label_order_in';
+                    }else if(strtolower($modeData['label'] ?? '') === 'standard'){
+                      $labelKey = 'store_label_standard';
+                    }
+                  ?>
+                  <span class="store-price-option-label" <?= $labelKey ? 'data-i18n="'.$labelKey.'"' : '' ?>><?= htmlspecialchars($modeData['label']) ?></span>
                   <?php if($modeData['unit'] !== null): ?>
                     <span class="store-price-option-main"><b><?= $formatCurrency($modeData['unit']) ?></b><span class="store-per"><?= htmlspecialchars($unitSuffix) ?></span></span>
                   <?php else: ?>
-                    <span class="store-price-option-main"><b>Call for price</b></span>
+                    <span class="store-price-option-main"><b data-i18n="price_call">Call for price</b></span>
                   <?php endif; ?>
                   <?php if($modeData['package'] !== null): ?>
                     <span class="store-price-option-sub">≈ <?= $formatCurrency($modeData['package']) ?> / <?= htmlspecialchars($packageLabelSingular) ?></span>
@@ -211,10 +221,20 @@ $installRateLabel = $installRateValue !== null
           </div>
         <?php else: ?>
           <div class="store-price" id="storePrice">
+            <?php
+              $firstLabelKey = null;
+              if($defaultPriceMode === 'stock'){
+                $firstLabelKey = 'store_label_in_stock';
+              }else if($defaultPriceMode === 'backorder'){
+                $firstLabelKey = 'store_label_order_in';
+              }else if(strtolower($firstMode['label'] ?? '') === 'standard'){
+                $firstLabelKey = 'store_label_standard';
+              }
+            ?>
             <?php if($firstMode['unit'] !== null): ?>
               <div><b id="storePriceValue" data-mode="<?= htmlspecialchars($defaultPriceMode) ?>"><?= $formatCurrency($firstMode['unit']) ?></b><span class="store-per"><?= htmlspecialchars($unitSuffix) ?></span></div>
             <?php else: ?>
-              <div><b id="storePriceValue">Call for price</b></div>
+              <div><b id="storePriceValue" data-i18n="price_call">Call for price</b></div>
             <?php endif; ?>
             <div>
               <span class="store-per" id="storePricePackage" style="<?= $firstMode['package'] !== null ? '' : 'display:none;' ?>">
@@ -223,7 +243,7 @@ $installRateLabel = $installRateValue !== null
                 <?php endif; ?>
               </span>
             </div>
-            <div id="storePriceLabel" class="store-price-label" style="display: <?= !empty($firstMode['label']) ? 'block' : 'none' ?>;">
+            <div id="storePriceLabel" class="store-price-label" <?= $firstLabelKey ? 'data-i18n="'.$firstLabelKey.'"' : '' ?> style="display: <?= !empty($firstMode['label']) ? 'block' : 'none' ?>;">
               <?= htmlspecialchars($firstMode['label'] ?? '') ?>
             </div>
           </div>
@@ -234,7 +254,7 @@ $installRateLabel = $installRateValue !== null
         <?php if($hasInventoryAvailable): ?>
           <div class="store-price-note" id="storeStockNote">
             <span class="store-per">
-              In stock: <?= htmlspecialchars($formatNumber($stockAvailableValue)) ?> <?= htmlspecialchars($stockDisplayUnitLabel) ?>
+              <span data-i18n="store_stock_prefix">In stock:</span> <?= htmlspecialchars($formatNumber($stockAvailableValue)) ?> <?= htmlspecialchars($stockDisplayUnitLabel) ?>
               <?php if($stockPackageEstimate !== null): ?>
                 (≈ <?= htmlspecialchars($formatNumber($stockPackageEstimate)) ?> <?= $stockPackageEstimate == 1 ? htmlspecialchars($packageLabelSingular) : htmlspecialchars($packageLabelPlural) ?>)
               <?php endif; ?>
@@ -243,46 +263,46 @@ $installRateLabel = $installRateValue !== null
         <?php endif; ?>
 
         <div id="calc" class="calc">
-          <h3 class="calc-title" style="color: var(--burgundy);">Calculate your floor</h3>
-          <p class="calc-subtitle">Estimate material and optional services for this product.</p>
+          <h3 class="calc-title" style="color: var(--burgundy);" data-i18n="store_calc_title">Calculate your floor</h3>
+          <p class="calc-subtitle" data-i18n="store_calc_subtitle">Estimate material and optional services for this product.</p>
           <?php if($isFlooring): ?>
             <div class="calc-mode-toggle">
-              <button type="button" class="calc-mode-btn active" data-calc-mode="dims">I know my room dimensions</button>
-              <button type="button" class="calc-mode-btn" data-calc-mode="sqft">I already know my total sq ft</button>
+              <button type="button" class="calc-mode-btn active" data-calc-mode="dims" data-i18n="store_calc_mode_dims">I know my room dimensions</button>
+              <button type="button" class="calc-mode-btn" data-calc-mode="sqft" data-i18n="store_calc_mode_sqft">I already know my total sq ft</button>
             </div>
 
             <div class="calc-mode calc-mode-dims" data-mode="dims">
               <div class="calc-field-row">
                 <label>
-                  Length
+                  <span data-i18n="store_calc_length">Length</span>
                   <div class="calc-input-wrap">
-                    <input type="number" id="calcLen" step="0.1" min="0" placeholder="e.g. 20">
-                    <span class="calc-unit">ft</span>
+                    <input type="number" id="calcLen" step="0.1" min="0" placeholder="e.g. 20" data-i18n-placeholder="store_calc_length_placeholder">
+                    <span class="calc-unit" data-i18n="store_unit_feet">ft</span>
                   </div>
                 </label>
                 <label>
-                  Width
+                  <span data-i18n="store_calc_width">Width</span>
                   <div class="calc-input-wrap">
-                    <input type="number" id="calcWid" step="0.1" min="0" placeholder="e.g. 12">
-                    <span class="calc-unit">ft</span>
+                    <input type="number" id="calcWid" step="0.1" min="0" placeholder="e.g. 12" data-i18n-placeholder="store_calc_width_placeholder">
+                    <span class="calc-unit" data-i18n="store_unit_feet">ft</span>
                   </div>
                 </label>
               </div>
-              <button type="button" class="calc-action" id="calcFromDims">Calculate area</button>
+              <button type="button" class="calc-action" id="calcFromDims" data-i18n="store_calc_area_button">Calculate area</button>
             </div>
 
             <div class="calc-mode calc-mode-sqft" data-mode="sqft" style="display:none;">
               <label class="full">
-                Square footage (sqft)
+                <span data-i18n="store_calc_square_footage">Square footage (sqft)</span>
                 <div class="calc-input-wrap">
-                  <input type="number" id="calcSqft" step="0.1" min="0" placeholder="e.g. 240">
-                  <span class="calc-unit">sq ft</span>
+                  <input type="number" id="calcSqft" step="0.1" min="0" placeholder="e.g. 240" data-i18n-placeholder="store_calc_square_footage_placeholder">
+                  <span class="calc-unit" data-i18n="store_unit_sq_ft">sq ft</span>
                 </div>
               </label>
             </div>
           <?php else: ?>
             <label class="full">
-              <?= htmlspecialchars(ucfirst($unitLabel)) ?> needed
+              <?= htmlspecialchars(ucfirst($unitLabel)) ?> <span data-i18n="store_calc_units_needed_suffix">needed</span>
               <input type="number" id="calcUnits" step="0.1" min="0">
             </label>
             <label class="full">
@@ -293,21 +313,21 @@ $installRateLabel = $installRateValue !== null
           <?php endif; ?>
 
           <div class="calc-options">
-            <h4>Optional services</h4>
+            <h4 data-i18n="store_optional_services">Optional services</h4>
             <div class="calc-option-cards">
               <div class="calc-option-card" data-checkbox="calcInstall" role="button" tabindex="0" aria-pressed="false">
                 <input type="checkbox" id="calcInstall" class="calc-option-checkbox" aria-hidden="true">
                 <div class="calc-option-content">
-                  <div class="calc-option-title">Include installation estimate<?= $installRateLabel ? ' ('.$installRateLabel.')' : '' ?></div>
-                  <div class="calc-option-desc">Get a ballpark for installation based on your area.</div>
+                  <div class="calc-option-title" data-i18n="store_include_install">Include installation estimate<?= $installRateLabel ? ' ('.$installRateLabel.')' : '' ?></div>
+                  <div class="calc-option-desc" data-i18n="store_include_install_desc">Get a ballpark for installation based on your area.</div>
                 </div>
               </div>
               <?php if($isFlooring): ?>
                 <div class="calc-option-card" data-checkbox="calcIncludeDelivery" role="button" tabindex="0" aria-pressed="false">
                   <input type="checkbox" id="calcIncludeDelivery" class="calc-option-checkbox" aria-hidden="true">
                   <div class="calc-option-content">
-                    <div class="calc-option-title">Include delivery</div>
-                    <div class="calc-option-desc">Select delivery zone and see the estimated fee.</div>
+                    <div class="calc-option-title" data-i18n="store_include_delivery">Include delivery</div>
+                    <div class="calc-option-desc" data-i18n="store_include_delivery_desc">Select delivery zone and see the estimated fee.</div>
                   </div>
                 </div>
               <?php endif; ?>
@@ -315,16 +335,16 @@ $installRateLabel = $installRateValue !== null
             <?php if($isFlooring): ?>
               <div id="calcDeliveryWrap" class="calc-delivery" style="display:none;">
                 <label>
-                  Delivery ZIP Code
-                  <input type="text" id="calcDeliveryZip" list="calcDeliveryZipList" placeholder="Enter ZIP Code" inputmode="numeric" pattern="\\d*">
+                  <span data-i18n="store_delivery_zip_label">Delivery ZIP Code</span>
+                  <input type="text" id="calcDeliveryZip" list="calcDeliveryZipList" placeholder="Enter ZIP Code" data-i18n-placeholder="store_delivery_zip_placeholder" inputmode="numeric" pattern="\\d*">
                   <datalist id="calcDeliveryZipList"></datalist>
                 </label>
                 <p class="calc-note" id="calcDeliveryZipNote"></p>
               </div>
             <?php else: ?>
               <label class="full">
-                Delivery / pick-up
-                <input type="text" id="calcDelivery" list="calcDeliveryZipList" placeholder="Enter ZIP Code or leave blank for warehouse" inputmode="numeric" pattern="\\d*">
+                <span data-i18n="store_delivery_pickup_label">Delivery / pick-up</span>
+                <input type="text" id="calcDelivery" list="calcDeliveryZipList" placeholder="Enter ZIP Code or leave blank for warehouse" data-i18n-placeholder="store_delivery_pickup_placeholder" inputmode="numeric" pattern="\\d*">
                 <datalist id="calcDeliveryZipList"></datalist>
                 <p class="calc-note" id="calcDeliveryZipNote"></p>
               </label>
@@ -332,26 +352,26 @@ $installRateLabel = $installRateValue !== null
           </div>
 
           <div class="calc-summary">
-            <h4>Estimate summary</h4>
-            <div class="calc-summary-line"><span>Area:</span><span id="calcSummaryArea">—</span></div>
-            <div class="calc-summary-line"><span><?= htmlspecialchars(ucfirst($packageLabelPlural)) ?> needed:</span><span id="calcSummaryBoxes">—</span></div>
-            <div class="calc-summary-line"><span>Condition:</span><span id="calcSummaryCondition">—</span></div>
-            <div class="calc-summary-line"><span>Material:</span><span id="calcSummaryMaterial">—</span></div>
-            <div class="calc-summary-line"><span>Installation:</span><span id="calcSummaryInstall">—</span></div>
-            <div class="calc-summary-line"><span>Delivery:</span><span id="calcSummaryDelivery">—</span></div>
-            <div class="calc-summary-total"><span>Estimated total:</span><span id="calcSummaryTotal">—</span></div>
-            <p class="calc-note" id="calcSummaryNote">This is an estimate. Final quote may adjust based on project details and promotions.</p>
+            <h4 data-i18n="store_estimate_summary">Estimate summary</h4>
+            <div class="calc-summary-line"><span data-i18n="store_estimate_area">Area:</span><span id="calcSummaryArea">—</span></div>
+            <div class="calc-summary-line"><span><?= htmlspecialchars(ucfirst($packageLabelPlural)) ?> <span data-i18n="store_estimate_packages_suffix">needed</span>:</span><span id="calcSummaryBoxes">—</span></div>
+            <div class="calc-summary-line"><span data-i18n="store_estimate_condition">Condition:</span><span id="calcSummaryCondition">—</span></div>
+            <div class="calc-summary-line"><span data-i18n="store_estimate_material">Material:</span><span id="calcSummaryMaterial">—</span></div>
+            <div class="calc-summary-line"><span data-i18n="store_estimate_installation">Installation:</span><span id="calcSummaryInstall">—</span></div>
+            <div class="calc-summary-line"><span data-i18n="store_estimate_delivery">Delivery:</span><span id="calcSummaryDelivery">—</span></div>
+            <div class="calc-summary-total"><span data-i18n="store_estimate_total">Estimated total:</span><span id="calcSummaryTotal">—</span></div>
+            <p class="calc-note" id="calcSummaryNote" data-i18n="store_estimate_note">This is an estimate. Final quote may adjust based on project details and promotions.</p>
             <p id="calcAlert" class="calc-note calc-alert"></p>
           </div>
 
-          <button type="button" id="addToCart" class="btn btn-primary full" style="margin-top:10px;">Add to cart</button>
+          <button type="button" id="addToCart" class="btn btn-primary full" style="margin-top:10px;" data-i18n="store_add_to_cart">Add to cart</button>
         </div>
       </div>
     </div>
 
     <div class="tabs">
-      <button class="tab-btn active" data-target="overview">Overview</button>
-      <button class="tab-btn" data-target="specs">Specifications</button>
+      <button class="tab-btn active" data-target="overview" data-i18n="store_tab_overview">Overview</button>
+      <button class="tab-btn" data-target="specs" data-i18n="store_tab_specs">Specifications</button>
     </div>
     <div id="overview" class="tab-content active">
       <?php if(!empty($product['short_desc'])): ?>
@@ -368,33 +388,35 @@ $installRateLabel = $installRateValue !== null
     <div id="specs" class="tab-content">
       <ul>
         <?php if($isFlooring): ?>
-          <?php if($product['thickness_mm']): ?><li><strong>Thickness:</strong> <?= $product['thickness_mm'] ?> mm</li><?php endif; ?>
+          <?php if($product['thickness_mm']): ?><li><strong data-i18n="store_spec_thickness">Thickness:</strong> <?= $product['thickness_mm'] ?> mm</li><?php endif; ?>
           
-          <?php if($product['core']): ?><li><strong>Core:</strong> <?= htmlspecialchars($product['core']) ?></li><?php endif; ?>
-          <?php if($product['pad']): ?><li><strong>Pad:</strong> <?= htmlspecialchars($product['pad']) ?> <?= htmlspecialchars($product['pad_material'] ?? '') ?></li><?php endif; ?>
-          <?php if($product['installation']): ?><li><strong>Installation:</strong> <?= htmlspecialchars($product['installation']) ?></li><?php endif; ?>
-          <?php if($product['waterproof']): ?><li><strong>Waterproof:</strong> <?= htmlspecialchars($product['waterproof']) ?></li><?php endif; ?>
-          <?php if($product['scratch_resistant']): ?><li><strong>Scratch resistant:</strong> <?= htmlspecialchars($product['scratch_resistant']) ?></li><?php endif; ?>
+          <?php if($product['core']): ?><li><strong data-i18n="store_spec_core">Core:</strong> <?= htmlspecialchars($product['core']) ?></li><?php endif; ?>
+          <?php if($product['pad']): ?><li><strong data-i18n="store_spec_pad">Pad:</strong> <?= htmlspecialchars($product['pad']) ?> <?= htmlspecialchars($product['pad_material'] ?? '') ?></li><?php endif; ?>
+          <?php if($product['installation']): ?><li><strong data-i18n="store_spec_installation">Installation:</strong> <?= htmlspecialchars($product['installation']) ?></li><?php endif; ?>
+          <?php if($product['waterproof']): ?><li><strong data-i18n="store_spec_waterproof">Waterproof:</strong> <?= htmlspecialchars($product['waterproof']) ?></li><?php endif; ?>
+          <?php if($product['scratch_resistant']): ?><li><strong data-i18n="store_spec_scratch_resistant">Scratch resistant:</strong> <?= htmlspecialchars($product['scratch_resistant']) ?></li><?php endif; ?>
         <?php else: ?>
-          <?php if($product['category']): ?><li><strong>Category:</strong> <?= htmlspecialchars($product['category']) ?></li><?php endif; ?>
-          <?php if($product['nominal_size']): ?><li><strong>Nominal size:</strong> <?= htmlspecialchars($product['nominal_size']) ?></li><?php endif; ?>
-          <?php if($product['actual_size']): ?><li><strong>Actual size:</strong> <?= htmlspecialchars($product['actual_size']) ?></li><?php endif; ?>
-          <?php if($product['length_ft']): ?><li><strong>Length per piece:</strong> <?= $product['length_ft'] ?> ft</li><?php endif; ?>
-          <?php if($product['pieces_per_box']): ?><li><strong>Pieces per box:</strong> <?= $product['pieces_per_box'] ?></li><?php endif; ?>
-          <?php if($coveragePerBoxValue): ?><li><strong>Coverage per <?= htmlspecialchars($packageLabelSingular) ?>:</strong> <?= $coveragePerBoxLabel ?></li><?php endif; ?>
-          <?php if($product['packaging_notes']): ?><li><strong>Packaging:</strong> <?= htmlspecialchars($product['packaging_notes']) ?></li><?php endif; ?>
-          <?php if($product['comments']): ?><li><strong>Comments:</strong> <?= htmlspecialchars($product['comments']) ?></li><?php endif; ?>
+          <?php if($product['category']): ?><li><strong data-i18n="store_spec_category">Category:</strong> <?= htmlspecialchars($product['category']) ?></li><?php endif; ?>
+          <?php if($product['nominal_size']): ?><li><strong data-i18n="store_spec_nominal_size">Nominal size:</strong> <?= htmlspecialchars($product['nominal_size']) ?></li><?php endif; ?>
+          <?php if($product['actual_size']): ?><li><strong data-i18n="store_spec_actual_size">Actual size:</strong> <?= htmlspecialchars($product['actual_size']) ?></li><?php endif; ?>
+          <?php if($product['length_ft']): ?><li><strong data-i18n="store_spec_length_per_piece">Length per piece:</strong> <?= $product['length_ft'] ?> ft</li><?php endif; ?>
+          <?php if($product['pieces_per_box']): ?><li><strong data-i18n="store_spec_pieces_per_box">Pieces per box:</strong> <?= $product['pieces_per_box'] ?></li><?php endif; ?>
+          <?php if($coveragePerBoxValue): ?><li><strong><span data-i18n="store_spec_coverage_per">Coverage per</span> <?= htmlspecialchars($packageLabelSingular) ?>:</strong> <?= $coveragePerBoxLabel ?></li><?php endif; ?>
+          <?php if($product['packaging_notes']): ?><li><strong data-i18n="store_spec_packaging">Packaging:</strong> <?= htmlspecialchars($product['packaging_notes']) ?></li><?php endif; ?>
+          <?php if($product['comments']): ?><li><strong data-i18n="store_spec_comments">Comments:</strong> <?= htmlspecialchars($product['comments']) ?></li><?php endif; ?>
         <?php endif; ?>
       </ul>
     </div>
     <div class="hero-cta" style="margin-top:1rem;">
-      <a href="#contact" class="btn btn-primary">Get install Quote</a>
+      <a href="#contact" class="btn btn-primary" data-i18n="store_get_install_quote">Get install Quote</a>
     </div>
   </main>
 
 <?php include $base.'includes/contact.php'; ?>
 <?php include $base.'includes/footer.php'; ?>
   <script>
+    const t = (key, fallback = '') => window.bsI18n?.t?.(key) || fallback;
+    const formatTemplate = (template, data) => template.replace(/\{\{(\w+)\}\}/g, (_, key) => data[key] ?? '');
     const burger = document.getElementById('burger');
     const menu = document.getElementById('menu');
     burger?.addEventListener('click', () => {
@@ -432,6 +454,16 @@ $installRateLabel = $installRateValue !== null
     const FLOORING_PRODUCTS = PRODUCT_TYPE === 'molding' ? <?= json_encode($flooringProducts) ?> : [];
     const PRICE_MODES = <?= json_encode($priceModesData) ?>;
     const PRICE_MODE_KEYS = Object.keys(PRICE_MODES);
+    Object.keys(PRICE_MODES).forEach((key)=>{
+      const label = PRICE_MODES[key]?.label || '';
+      if(key === 'stock'){
+        PRICE_MODES[key].label = t('store_label_in_stock', label || 'In stock');
+      }else if(key === 'backorder'){
+        PRICE_MODES[key].label = t('store_label_order_in', label || 'Order-in');
+      }else if(label.toLowerCase() === 'standard'){
+        PRICE_MODES[key].label = t('store_label_standard', label || 'Standard');
+      }
+    });
     const MAX_PURCHASE_QTY = Number(NORMALIZED_PRODUCT?.availability?.maxPurchaseQuantity ?? null);
     const STOCK_AVAILABLE = Number(NORMALIZED_PRODUCT?.availability?.stockAvailable ?? null);
     const STOCK_AVAILABLE_BOXES = Number.isFinite(STOCK_AVAILABLE)
@@ -524,7 +556,7 @@ $installRateLabel = $installRateValue !== null
         if(Number.isFinite(unitValue)){
           STORE_PRICE_VALUE_EL.textContent = formatCurrencyValue(unitValue);
         }else{
-          STORE_PRICE_VALUE_EL.textContent = 'Call for price';
+          STORE_PRICE_VALUE_EL.textContent = t('price_call', 'Call for price');
         }
       }
       if(STORE_PRICE_PACKAGE_EL){
@@ -725,10 +757,10 @@ $installRateLabel = $installRateValue !== null
         const zone = zones.find(z=>z.id === preferredZone);
         const zoneLabel = zone ? `${zone.label}${zone.fee!=null ? ' — $'+Number(zone.fee).toFixed(2) : ''}` : '';
         const pickup = zones.find(z=>z.id === 'pick-up');
-        const pickupLabel = pickup ? `${pickup.label}${pickup.fee!=null ? ' — $'+Number(pickup.fee).toFixed(2) : ''}` : 'Warehouse pick-up (default)';
+        const pickupLabel = pickup ? `${pickup.label}${pickup.fee!=null ? ' — $'+Number(pickup.fee).toFixed(2) : ''}` : t('store_pickup_default', 'Warehouse pick-up (default)');
         const cityLabel = deliveryPreferences.zip && deliveryPreferences.city ? `${deliveryPreferences.city} (${deliveryPreferences.zip})` : '';
         deliveryNote.textContent = deliveryPreferences.includeDelivery !== false
-          ? [cityLabel || 'Delivery ZIP pending', zoneLabel].filter(Boolean).join(' · ')
+          ? [cityLabel || t('store_delivery_zip_pending', 'Delivery ZIP pending'), zoneLabel].filter(Boolean).join(' · ')
           : pickupLabel;
       }
       if(zipList){
@@ -904,8 +936,8 @@ $installRateLabel = $installRateValue !== null
       const exceededStock = ALLOW_BACKORDER && IS_STOCK_MODE && Number.isFinite(availableBoxes) && Number.isFinite(requestedBoxes) && requestedBoxes > availableBoxes;
       const isBackorderMode = currentPriceMode === 'backorder' || exceededStock;
       const priceModeLabel = isBackorderMode
-        ? (PRICE_MODES['backorder']?.label || 'Order-in')
-        : (activePrice.label || 'In stock');
+        ? (PRICE_MODES['backorder']?.label || t('store_label_order_in', 'Order-in'))
+        : (activePrice.label || t('store_label_in_stock', 'In stock'));
       updatePriceDisplay(
         isBackorderMode ? 'backorder' : currentPriceMode,
         isBackorderMode,
@@ -923,7 +955,12 @@ $installRateLabel = $installRateValue !== null
         if(exceededStock){
           const pkgLabel = availableBoxes === 1 ? (PACKAGE_LABEL || 'box') : (PACKAGE_LABEL_PLURAL || ((PACKAGE_LABEL || 'box') + 'es'));
           const coverageText = coveragePerPackage > 0 ? ` (≈ ${formatUnits(availableBoxes * coveragePerPackage)} ${UNIT_LABEL})` : '';
-          alertEl.textContent = `Requested quantity exceeds available stock. ${formatUnits(availableBoxes)} ${pkgLabel} in stock${coverageText}. Pricing updated to backorder.`;
+          const alertTemplate = t('store_stock_exceeded', 'Requested quantity exceeds available stock. {{count}} {{package}} in stock{{coverage}}. Pricing updated to backorder.');
+          alertEl.textContent = formatTemplate(alertTemplate, {
+            count: formatUnits(availableBoxes),
+            package: pkgLabel,
+            coverage: coverageText
+          });
         }else{
           alertEl.textContent = '';
         }
@@ -1056,10 +1093,10 @@ $installRateLabel = $installRateValue !== null
         cart.addItem(SKU, boxes, priceType || 'stock', {install: installSelected, inventoryId});
         if(PRODUCT_TYPE === 'flooring'){
           const goToMolding = await bsModal.confirm({
-            title: 'Añadir moldings',
-            message: '¿Quieres añadir moldings para este piso? Te llevaremos a la sección de moldings.',
-            confirmText: 'Sí, llévame',
-            cancelText: 'No por ahora'
+            title: t('store_add_moldings_title', 'Add moldings'),
+            message: t('store_add_moldings_message', 'Would you like to add moldings for this floor? We can take you to the moldings section.'),
+            confirmText: t('store_add_moldings_confirm', 'Yes, take me'),
+            cancelText: t('store_add_moldings_cancel', 'Not now')
           });
           if(goToMolding){
             window.location.href = 'index.php?type=molding';
@@ -1086,17 +1123,17 @@ $installRateLabel = $installRateValue !== null
         const originalBtnText = sendBtn ? sendBtn.textContent : '';
         trackEvent('lead_submit', {form_name: formName});
         status?.classList.remove('hide');
-        if(status) status.textContent = 'Sending your request…';
+        if(status) status.textContent = t('store_sending_request', 'Sending your request…');
         const formData = new FormData(form);
         Array.from(form.elements).forEach(el=>el.disabled=true);
-        if(sendBtn) sendBtn.textContent = 'Sending…';
+        if(sendBtn) sendBtn.textContent = t('store_sending', 'Sending…');
         try{
           const res = await fetch(form.action || '<?=$base?>lead.php', {method:'POST', body:formData});
           const data = await res.json();
-          if(status) status.textContent = data.data || 'Request sent.';
+          if(status) status.textContent = data.data || t('store_request_sent', 'Request sent.');
           if(res.ok && data.code === '01') form.reset();
         }catch(err){
-          if(status) status.textContent = 'An error occurred. Please try again later.';
+          if(status) status.textContent = t('store_error_generic', 'An error occurred. Please try again later.');
         }finally{
           if(form) Array.from(form.elements).forEach(el=>el.disabled=false);
           if(sendBtn) sendBtn.textContent = originalBtnText;
