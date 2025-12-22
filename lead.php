@@ -14,7 +14,7 @@ if (file_exists($envPath)) {
     }
 }
 
-header('Access-Control-Allow-Origin: ' . (getenv('ALLOW_ORIGIN') ?: 'https://bsglobalservices.com'));
+header('Access-Control-Allow-Origin: ' . (getenv('ALLOW_ORIGIN') ?: 'https://bsfloorsupply.com'));
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
 header('Content-Type: application/json');
@@ -121,7 +121,8 @@ if (is_array($cartItems) && $cartItems) {
     }
 }
 
-if ($name === '' || ($email === '' && $phone === '') || $service === '' || $message === '') {
+//if ($name === '' || ($email === '' && $phone === '') || $service === '' || $message === '') {
+if ($name === '') {
     echo json_encode(['code' => '03', 'data' => 'Please complete all fields of the form.', 'fields' => [$name, $email, $phone, $service, $message]]);
     exit;
 }
@@ -144,8 +145,8 @@ if ($phone !== '' && !preg_match('/^[0-9 +()-]{7,20}$/', $phone)) {
 $dbHost = getenv('DB_HOST') ?: 'localhost';
 $dbPort = getenv('DB_PORT') ?: '5432';
 $dbName = getenv('DB_NAME') ?: 'bizz';
-$dbUser = getenv('DB_USER') ?: 'postgres';
-$dbPass = getenv('DB_PASS') ?: 'masterroot';
+$dbUser = getenv('DB_USER') ?: 'user_db_bizzfront';
+$dbPass = getenv('DB_PASS') ?: '548D466s4@·$-';
 
 $formNameDb = $formName !== '' ? $formName : 'Formulario sin nombre';
 $formPayload = [
@@ -211,7 +212,7 @@ try {
 unset($pdo, $stmt);
 
 $subject = 'New Request. Service: ' . $service . ' | Email: ' . $email . ' | Date: ' . date('d/m/Y') . ' | Time: ' . date('H:i:s');
-$subjectCopy = 'B&S Interior Design. Thanks for your request. ' . $service;
+$subjectCopy = 'B&S Floor Supply. Thanks for your request. ' . $service;
 
 $replyTo = preg_replace('/[\r\n]+/', '', $email);
 $from = getenv('MAIL_FROM') ?: 'info@bsfloorsupply.com';
@@ -226,14 +227,14 @@ ob_start();
 include __DIR__ . '/email-template.php';
 $body = ob_get_clean();
 
-$headers = 'From: "B&S Interior Design" <' . $from . ">\r\n";
+$headers = 'From: "B&S Floor Supply" <' . $from . ">\r\n";
 $headers .= 'Reply-To: ' . $replyTo . "\r\n";
 $headers .= "MIME-Version: 1.0\r\n";
 $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 $headers .= 'X-Mailer: PHP/' . phpversion() . "\r\n";
 
 if (mail($to, $subject, $body, $headers)) {
-    $headersCopy = 'From: "B&S Interior Design" <' . $from . ">\r\n";
+    $headersCopy = 'From: "B&S Floor Supply" <' . $from . ">\r\n";
     $headersCopy .= "MIME-Version: 1.0\r\n";
     $headersCopy .= "Content-Type: text/html; charset=UTF-8\r\n";
     $headersCopy .= 'X-Mailer: PHP/' . phpversion() . "\r\n";
