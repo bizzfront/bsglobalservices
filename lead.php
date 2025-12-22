@@ -1,4 +1,8 @@
 <?php
+
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 // Load environment variables from a local .env file if available
 $envPath = __DIR__ . '/.env';
 if (file_exists($envPath)) {
