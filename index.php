@@ -23,13 +23,13 @@ $homeStoreConfig = load_store_config();
   <meta property="og:title" content="B&S Floor Supply – Waterproof LVP | Sales & Installation" />
   <meta property="og:description" content="Waterproof LVP in Orlando. Plus installation of laminate, vinyl and hardwood. Free estimate by WhatsApp." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://bsglobalservices.com/" />
-  <meta property="og:image" content="https://bsglobalservices.com/newweb/assets/og-cover.jpg" />
+  <meta property="og:url" content="https://bsfloorsupply.com/" />
+  <meta property="og:image" content="https://bsfloorsupply.com/newweb/assets/og-cover.jpg" />
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="B&S Floor Supply – Waterproof LVP | Sales & Installation" />
   <meta name="twitter:description" content="Waterproof LVP in Orlando. Plus installation of laminate, vinyl and hardwood." />
-  <meta name="twitter:image" content="https://bsglobalservices.com/newweb/assets/og-cover.jpg" />
+  <meta name="twitter:image" content="https://bsfloorsupply.com/newweb/assets/og-cover.jpg" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -43,7 +43,7 @@ $homeStoreConfig = load_store_config();
     "@type":"LocalBusiness",
     "name":"B&S Floor Supply",
     "description":"Waterproof LVP flooring in Orlando – sales and installation of laminate, vinyl and hardwood.",
-    "url":"https://bsglobalservices.com/",
+    "url":"https://bsfloorsupply.com/",
     "telephone":"+1-689-296-8515",
     "address":{"@type":"PostalAddress","addressLocality":"Orlando","addressRegion":"FL","addressCountry":"US"},
     "areaServed":"Orlando, Florida",

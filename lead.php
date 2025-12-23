@@ -203,13 +203,13 @@ try {
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
     ]);
 
-    $stmt = $pdo->prepare('INSERT INTO bizz.data_formularios (nombre_formulario, area_datos_recolectados) VALUES (:nombre_formulario, :area_datos_recolectados)');
+    $stmt = $pdo->prepare('INSERT INTO bizz.data_formularios (nombre_formulario, datos_recolectados) VALUES (:nombre_formulario, :datos_recolectados)');
     $stmt->bindValue(':nombre_formulario', $formNameDb, PDO::PARAM_STR);
-    $stmt->bindValue(':area_datos_recolectados', $formPayloadJson, PDO::PARAM_STR);
+    $stmt->bindValue(':datos_recolectados', $formPayloadJson, PDO::PARAM_STR);
     $stmt->execute();
 } catch (Exception $e) {
     $error = $e->getMessage();
-    echo json_encode(['code' => '02', 'data' => 'A error occurred while saving the form. Please try again later - '+$error+'' ] );
+    echo json_encode(['code' => '02', 'data' => 'A error occurred while saving the form. Please try again later - '.$error.'' ] );
     exit;
 }
 
@@ -219,8 +219,8 @@ $subject = 'New Request. Service: ' . $service . ' | Email: ' . $email . ' | Dat
 $subjectCopy = 'B&S Floor Supply. Thanks for your request. ' . $service;
 
 $replyTo = preg_replace('/[\r\n]+/', '', $email);
-$from = getenv('MAIL_FROM') ?: 'info@bsfloorsupply.com';
-$to = getenv('MAIL_TO') ?: 'info@bsfloorsupply.com';
+$from = getenv('MAIL_FROM') ?: 'B&S Floor Supply <info@bsfloorsupply.com>';
+$to = getenv('MAIL_TO') ?: 'B&S Floor Supply <info@bsfloorsupply.com>';
 
 $osFamily = defined('PHP_OS_FAMILY') ? PHP_OS_FAMILY : PHP_OS;
 if (stripos($osFamily, 'Windows') === 0) {
@@ -232,7 +232,7 @@ include __DIR__ . '/email-template.php';
 $body = ob_get_clean();
 
 $headers = 'From: "B&S Floor Supply" <' . $from . ">\r\n";
-$headers .= 'Reply-To: ' . $replyTo . "\r\n";
+//$headers .= 'Reply-To: ' . $replyTo . "\r\n";
 $headers .= "MIME-Version: 1.0\r\n";
 $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 $headers .= 'X-Mailer: PHP/' . phpversion() . "\r\n";

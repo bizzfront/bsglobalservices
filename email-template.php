@@ -1,7 +1,7 @@
 <table style='width: 400px; margin: 0 auto;'>
   <tr>
     <td style='background-color: #f2f2f2; text-align: center;'>
-      <img src='https://bsglobalservices.com/img/bsglobalservicesemail2.jpg' alt='B&S Global Services'>
+      <img src='https://bsfloorsupply.com/images/bsglobalservicesemail2.jpg' alt='B&S Global Services'>
     </td>
   </tr>
   <tr>
@@ -20,7 +20,7 @@
   </tr>
   <tr>
     <td style='background-color: #f2f2f2; text-align: center;'>
-      Official Website: <a href='https://bsglobalservices.com'>www.bsglobalservices.com</a><br>
+      Official Website: <a href='https://bsfloorsupply.com'>www.bsglobalservices.com</a><br>
       <small>Do not reply this email</small>
     </td>
   </tr>
